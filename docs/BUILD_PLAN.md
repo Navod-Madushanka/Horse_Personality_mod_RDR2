@@ -31,7 +31,7 @@ Every horse is built from three layers: the breed sets the limits, the individua
 
 ### Three layers
 
-1. **Breed** (vanilla, untouched): stats tier, handling class, and default demeanor. The Arabian stays fastest, drafts stay heavy.
+1. **Breed** (vanilla, untouched): stats tier (its Handling class), and default demeanor. The Arabian stays fastest, drafts stay heavy.
 2. **Individual** (rolled once, hidden):
    - **Traits:** Courage (big threats), Nerves (small or random things), Temper (bucking, refusing), Bond affinity (how fast it bonds).
    - **Natural stats:** small ups and downs in speed, acceleration, health and stamina. They set the horse's ceiling.
@@ -80,6 +80,7 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 ### Hard rules
 
 - Stats and skills never push a horse past its breed tier. A trained draft never handles like an Arabian.
+- The tier is the breed's Handling class from the sheet: Heavy, Standard, Race or Elite. There is no separate stats tier column.
 - Spooks, bucks, kicks and quirks are off during story missions and cutscenes.
 - Every behavior has a cooldown so nothing spams.
 - Vanilla pat, brush and feed animations stay; reactions play after them.
@@ -442,7 +443,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
 - [ ] Should story-scripted horses (mission horses, gang horses) be treated as NPC horses?
-- [ ] Stat tier: the sheet has Handling but no stats tier column. What sets the tier caps in Phase 3?
+- [x] Stat tier: decided, the breed's Handling class is its tier (see Hard rules).
 - [ ] Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster) have models but no sheet row. Leave them vanilla in v1?
 
 ## Rules for the coding agent

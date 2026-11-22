@@ -64,12 +64,12 @@ The Game and DevTools projects compile with no warnings against ScriptHookRDR2Do
 
 ## Questions for you
 
-1. **Stat tier.** The plan says stats never pass the breed's tier, but the sheet has Handling (Standard, Race, Elite, Heavy) and no stats tier column. Phase 3 needs one. Should I add a "Stat tier" column, or use Handling?
+1. **Stat tier.** Answered: the breed's Handling class (Heavy, Standard, Race, Elite) is its tier. breeds.json now rejects any other value.
 2. **Demeanor.** The sheet's Demeanor column is a sentence. Phase 7 needs it as behaviors the code can act on (for example "fidgets when kept standing"). That can wait until Phase 7, but it will need new columns.
 3. **Special models.** 25 models have no breed: gang horses (`a_c_horse_gang_*`), Buell, Eagle Flies' horse, the Murfree Brood mangy horses, `a_c_horse_winter02_01` and the epilogue horses. This ties into the plan's open question about story horses. For now they get no personality.
 4. **Online-only breeds.** Breton, Criollo, Gypsy Cob, Kladruber and Norfolk Roadster exist as models but aren't in the sheet, so they get no personality. Fine for v1?
 5. **New setting.** I added `LogLevel` (Debug, Info, Warn, Error; default Info) to the INI. It's in the plan's settings table now.
-6. **License.** The repo has no license file. Do you want one (MIT is common for mods), or keep it all rights reserved?
+6. **License.** Answered: MIT.
 
 ## In-game test steps
 
