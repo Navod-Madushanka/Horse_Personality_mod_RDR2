@@ -1,0 +1,19 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core:
+    # Core, the sheet converter and their tests need no game and no hook DLL.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Unit tests
+        run: dotnet test tests/HorsePersonalities.Tests -c Release
+      - name: breeds.json matches the sheet export
+        run: dotnet run --project tools/sheet-to-json -c Release -- --check
