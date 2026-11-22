@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Phase 1 trigger spike and test helpers. Builds HorsePersonalities.DevTools.dll, a separate script the game loads
+    next to the mod. Never shipped. Compiles in Core and the game adapter, so it does not depend on HorsePersonalities.dll.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>HorsePersonalities.DevTools</RootNamespace>
+    <AssemblyName>HorsePersonalities.DevTools</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\HorsePersonalities.Core\**\*.cs" Exclude="..\HorsePersonalities.Core\obj\**;..\HorsePersonalities.Core\bin\**" Link="Core\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\HorsePersonalities.Game\RdrGameApi.cs;..\HorsePersonalities.Game\Natives.cs;..\HorsePersonalities.Game\FileLog.cs;..\HorsePersonalities.Game\ModPaths.cs;..\HorsePersonalities.Game\ModBootstrap.cs" Link="Game\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ScriptHookRDRNetAPI">
+      <HintPath>$(ShdnApiPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\data\breeds.json" Link="HorsePersonalities\breeds.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CheckShdnApi" BeforeTargets="ResolveAssemblyReferences" Condition="!Exists('$(ShdnApiPath)')">
+    <Error Text="ScriptHookRDRNetAPI.dll not found at $(ShdnApiPath). Copy it from your ScriptHookRDR2DotNet V2 release into lib/ (see lib/README.md)." />
+  </Target>
+
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(RDR2ScriptsDir)' != ''">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RDR2ScriptsDir)" />
+    <Copy SourceFiles="$(OutDir)HorsePersonalities\breeds.json" DestinationFolder="$(RDR2ScriptsDir)\HorsePersonalities" />
+    <Message Importance="high" Text="Deployed $(TargetFileName) to $(RDR2ScriptsDir). Press Insert in game to reload scripts." />
+  </Target>
+</Project>
