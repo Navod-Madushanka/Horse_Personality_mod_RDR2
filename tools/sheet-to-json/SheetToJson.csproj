@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Turns the breed sheet's CSV export (plus data/horse-models.csv) into data/breeds.json. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>HorsePersonalities.Tools.SheetToJson</RootNamespace>
+    <AssemblyName>sheet-to-json</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HorsePersonalities.Core\HorsePersonalities.Core.csproj" />
+  </ItemGroup>
+</Project>

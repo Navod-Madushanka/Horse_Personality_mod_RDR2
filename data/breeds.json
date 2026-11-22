@@ -1,0 +1,529 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
+  "multiClassPenalty": 0.1,
+  "classes": {
+    "Superior": {
+      "physical": 1.5,
+      "combat": 0.8
+    },
+    "Race": {
+      "physical": 1.3,
+      "combat": 0.7
+    },
+    "Riding": {
+      "physical": 1,
+      "combat": 1
+    },
+    "Work": {
+      "physical": 0.9,
+      "combat": 1.1
+    },
+    "War": {
+      "physical": 0.8,
+      "combat": 1.5
+    },
+    "Draft": {
+      "physical": 0.6,
+      "combat": 1.2
+    }
+  },
+  "breeds": [
+    {
+      "name": "American Paint",
+      "models": ["a_c_horse_americanpaint_greyovero", "a_c_horse_americanpaint_overo", "a_c_horse_americanpaint_splashedwhite", "a_c_horse_americanpaint_tobiano"],
+      "classes": ["Work"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Nosy", "Shadow"],
+      "demeanor": "Easygoing ranch horse. Calm around camp and cattle, curious about people."
+    },
+    {
+      "name": "American Standardbred",
+      "models": ["a_c_horse_americanstandardbred_black", "a_c_horse_americanstandardbred_buckskin", "a_c_horse_americanstandardbred_lightbuckskin", "a_c_horse_americanstandardbred_palominodapple", "a_c_horse_americanstandardbred_silvertailbuckskin"],
+      "classes": ["Race"],
+      "handling": "Race",
+      "leans": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["HeadTosser", "Shadow"],
+      "demeanor": "Eager and forward. Fidgets when held back, sweet-natured in camp."
+    },
+    {
+      "name": "Andalusian",
+      "models": ["a_c_horse_andalusian_darkbay", "a_c_horse_andalusian_perlino", "a_c_horse_andalusian_rosegray"],
+      "classes": ["War"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["ShowOff", "Nosy"],
+      "demeanor": "Proud and showy. Head held high, brave but sensitive, quick to learn tricks."
+    },
+    {
+      "name": "Appaloosa",
+      "models": ["a_c_horse_appaloosa_blacksnowflake", "a_c_horse_appaloosa_blanket", "a_c_horse_appaloosa_brownleopard", "a_c_horse_appaloosa_fewspotted_pc", "a_c_horse_appaloosa_leopard", "a_c_horse_appaloosa_leopardblanket"],
+      "classes": ["Work"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Kicker", "Wanderer"],
+      "demeanor": "Tough and a little stubborn. Sure-footed, likes to test new riders."
+    },
+    {
+      "name": "Arabian",
+      "models": ["a_c_horse_arabian_black", "a_c_horse_arabian_grey", "a_c_horse_arabian_redchestnut", "a_c_horse_arabian_redchestnut_pc", "a_c_horse_arabian_rosegreybay", "a_c_horse_arabian_warpedbrindle_pc", "a_c_horse_arabian_white"],
+      "classes": ["Superior"],
+      "handling": "Elite",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Nosy", "Chatterbox", "HeadTosser"],
+      "demeanor": "Hot-blooded. Ears and head always moving, alert to everything, tail carried high. Bonds deeply once it trusts you."
+    },
+    {
+      "name": "Ardennes",
+      "models": ["a_c_horse_ardennes_bayroan", "a_c_horse_ardennes_irongreyroan", "a_c_horse_ardennes_strawberryroan"],
+      "classes": ["War"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Shadow", "Wanderer"],
+      "demeanor": "Unflappable. Stands like a rock and barely reacts to nearby gunfire."
+    },
+    {
+      "name": "Belgian Draft",
+      "models": ["a_c_horse_belgian_blondchestnut", "a_c_horse_belgian_mealychestnut"],
+      "classes": ["Draft"],
+      "handling": "Heavy",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Wanderer"],
+      "demeanor": "Gentle giant. Slow to react, leans into pats."
+    },
+    {
+      "name": "Dutch Warmblood",
+      "models": ["a_c_horse_dutchwarmblood_chocolateroan", "a_c_horse_dutchwarmblood_sealbrown", "a_c_horse_dutchwarmblood_sootybuckskin"],
+      "classes": ["Work"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Shadow"],
+      "demeanor": "Even-tempered and dependable. Brave without any fuss."
+    },
+    {
+      "name": "Hungarian Halfbred",
+      "models": ["a_c_horse_hungarianhalfbred_darkdapplegrey", "a_c_horse_hungarianhalfbred_flaxenchestnut", "a_c_horse_hungarianhalfbred_liverchestnut", "a_c_horse_hungarianhalfbred_piebaldtobiano"],
+      "classes": ["War"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Kicker", "Nosy"],
+      "demeanor": "Fearless in noise and chaos. Steady in a gunfight, a bit aloof in town."
+    },
+    {
+      "name": "Kentucky Saddler",
+      "models": ["a_c_horse_kentuckysaddle_black", "a_c_horse_kentuckysaddle_buttermilkbuckskin_pc", "a_c_horse_kentuckysaddle_chestnutpinto", "a_c_horse_kentuckysaddle_grey", "a_c_horse_kentuckysaddle_silverbay"],
+      "classes": ["Riding"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Chatterbox", "ShowOff"],
+      "demeanor": "Showy and alert. High head, likes attention and company."
+    },
+    {
+      "name": "Missouri Fox Trotter",
+      "models": ["a_c_horse_missourifoxtrotter_amberchampagne", "a_c_horse_missourifoxtrotter_blacktovero", "a_c_horse_missourifoxtrotter_blueroan", "a_c_horse_missourifoxtrotter_buckskinbrindle", "a_c_horse_missourifoxtrotter_dapplegrey", "a_c_horse_missourifoxtrotter_sablechampagne", "a_c_horse_missourifoxtrotter_silverdapplepinto"],
+      "classes": ["Race", "Work"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 0,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Shadow", "PickyEater"],
+      "demeanor": "Calm trail horse. Smooth, steady and friendly with people."
+    },
+    {
+      "name": "Morgan",
+      "models": ["a_c_horse_morgan_bay", "a_c_horse_morgan_bayroan", "a_c_horse_morgan_flaxenchestnut", "a_c_horse_morgan_liverchestnut_pc", "a_c_horse_morgan_palomino"],
+      "classes": ["Riding"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Shadow", "Wanderer"],
+      "demeanor": "Low-maintenance companion. Patient, happy to stand and wait."
+    },
+    {
+      "name": "Mustang",
+      "models": ["a_c_horse_mustang_blackovero", "a_c_horse_mustang_buckskin", "a_c_horse_mustang_chestnuttovero", "a_c_horse_mustang_goldendun", "a_c_horse_mustang_grullodun", "a_c_horse_mustang_reddunovero", "a_c_horse_mustang_tigerstripedbay", "a_c_horse_mustang_wildbay"],
+      "classes": ["War", "Work"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 1,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "likelyQuirks": ["Kicker", "Nosy"],
+      "demeanor": "Wild streak. Wary of strangers, scans the horizon, hard to win over but loyal once bonded."
+    },
+    {
+      "name": "Nokota",
+      "models": ["a_c_horse_nokota_blueroan", "a_c_horse_nokota_reversedappleroan", "a_c_horse_nokota_whiteroan"],
+      "classes": ["Race"],
+      "handling": "Race",
+      "leans": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Nosy", "HeadTosser"],
+      "demeanor": "Quick and sure-footed. Alert but sensible on normal rides."
+    },
+    {
+      "name": "Shire",
+      "models": ["a_c_horse_shire_darkbay", "a_c_horse_shire_lightgrey", "a_c_horse_shire_ravenblack"],
+      "classes": ["Draft"],
+      "handling": "Heavy",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Wanderer"],
+      "demeanor": "Gentle giant. Slow and patient, ignores most fuss."
+    },
+    {
+      "name": "Suffolk Punch",
+      "models": ["a_c_horse_suffolkpunch_redchestnut", "a_c_horse_suffolkpunch_sorrel"],
+      "classes": ["Draft"],
+      "handling": "Heavy",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["Wanderer", "PickyEater"],
+      "demeanor": "Stoic worker. Never seems tired, happy to graze."
+    },
+    {
+      "name": "Tennessee Walker",
+      "models": ["a_c_horse_tennesseewalker_blackrabicano", "a_c_horse_tennesseewalker_chestnut", "a_c_horse_tennesseewalker_dapplebay", "a_c_horse_tennesseewalker_flaxenroan", "a_c_horse_tennesseewalker_goldpalomino_pc", "a_c_horse_tennesseewalker_mahoganybay", "a_c_horse_tennesseewalker_redroan"],
+      "classes": ["Riding"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 0,
+        "nerves": -1,
+        "temper": -2,
+        "bondAffinity": 1
+      },
+      "likelyQuirks": ["Shadow"],
+      "demeanor": "Gentle and easygoing. A beginner's horse that rarely fusses."
+    },
+    {
+      "name": "Thoroughbred",
+      "models": ["a_c_horse_thoroughbred_blackchestnut", "a_c_horse_thoroughbred_bloodbay", "a_c_horse_thoroughbred_brindle", "a_c_horse_thoroughbred_dapplegrey", "a_c_horse_thoroughbred_reversedappleblack"],
+      "classes": ["Race"],
+      "handling": "Race",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["HeadTosser", "Chatterbox"],
+      "demeanor": "Highly strung. Fidgety at rest, spooks easily, always wants to run."
+    },
+    {
+      "name": "Turkoman",
+      "models": ["a_c_horse_turkoman_black", "a_c_horse_turkoman_chestnut", "a_c_horse_turkoman_darkbay", "a_c_horse_turkoman_gold", "a_c_horse_turkoman_grey", "a_c_horse_turkoman_perlino", "a_c_horse_turkoman_silver"],
+      "classes": ["Race", "War"],
+      "handling": "Standard",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "likelyQuirks": ["HeadTosser", "PickyEater", "ShowOff"],
+      "demeanor": "Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4."
+    }
+  ],
+  "otherModels": [
+    {
+      "model": "a_c_horse_breton_grullodun",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_breton_mealydapplebay",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_breton_redroan",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_breton_sealbrown",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_breton_sorrel",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_breton_steelgrey",
+      "note": "Online-only breed: Breton"
+    },
+    {
+      "model": "a_c_horse_buell_warvets",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_criollo_baybrindle",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_criollo_bayframeovero",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_criollo_blueroanovero",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_criollo_dun",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_criollo_marblesabino",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_criollo_sorrelovero",
+      "note": "Online-only breed: Criollo"
+    },
+    {
+      "model": "a_c_horse_eagleflies",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_gang_bill",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_charles",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_charles_endlesssummer",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_dutch",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_hosea",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_javier",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_john",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_karen",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_kieran",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_lenny",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_micah",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_sadie",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_sadie_endlesssummer",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_sean",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_trelawney",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_uncle",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gang_uncle_endlesssummer",
+      "note": "Gang member's horse (story-scripted)"
+    },
+    {
+      "model": "a_c_horse_gypsycob_palominoblagdon",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_gypsycob_piebald",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_gypsycob_skewbald",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_gypsycob_splashedbay",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_gypsycob_splashedpiebald",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_gypsycob_whiteblagdon",
+      "note": "Online-only breed: Gypsy Cob"
+    },
+    {
+      "model": "a_c_horse_john_endlesssummer",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_kladruber_black",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_kladruber_cremello",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_kladruber_dapplerosegrey",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_kladruber_grey",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_kladruber_silver",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_kladruber_white",
+      "note": "Online-only breed: Kladruber"
+    },
+    {
+      "model": "a_c_horse_mp_mangy_backup",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_murfreebrood_mange_01",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_murfreebrood_mange_02",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_murfreebrood_mange_03",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_black",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_dappledbuckskin",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_piebaldroan",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_rosegrey",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_speckledgrey",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_norfolkroadster_spottedtricolor",
+      "note": "Online-only breed: Norfolk Roadster"
+    },
+    {
+      "model": "a_c_horse_winter02_01",
+      "note": "Special story or Online model"
+    },
+    {
+      "model": "a_c_horsemule_01",
+      "note": "Mule"
+    },
+    {
+      "model": "a_c_horsemulepainted_01",
+      "note": "Mule"
+    }
+  ]
+}

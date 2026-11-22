@@ -1,0 +1,9 @@
+Multi-class penalty,10%,"Multi-class breeds use their best class, minus this.",
+,,,
+Class,Physical learning,Combat learning,Why
+Superior,1.50,0.80,"Arabians: smart and quick to train, but hot-blooded under fire."
+Race,1.30,0.70,"Built for speed, rattled more easily."
+Riding,1.00,1.00,The baseline.
+Work,0.90,1.10,Steady and practical.
+War,0.80,1.50,Bred to keep its head under fire.
+Draft,0.60,1.20,"Slow to train, hard to rattle."
