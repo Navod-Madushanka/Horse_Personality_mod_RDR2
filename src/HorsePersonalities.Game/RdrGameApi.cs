@@ -1,0 +1,159 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using HorsePersonalities.Core.GameApi;
+using HorsePersonalities.Core.Hashing;
+using RDR2.Math;
+using RDR2.Native;
+using RDR2.UI;
+
+namespace HorsePersonalities.Game
+{
+    /// <summary>
+    /// The one place the mod talks to RDR2 (rule 4). Every call goes through a hash in <see cref="Natives"/>,
+    /// not through the hook's typed wrappers, so a hook update that renames a wrapper cannot break the mod.
+    /// After a game update, fix things here first.
+    ///
+    /// Arguments marked "unverified" are best guesses from the native DB and RedM scripts; Phase 1 checks them in game.
+    /// </summary>
+    public sealed class RdrGameApi : IGameApi
+    {
+        private const int AiEventGroup = 0; // SCRIPT_EVENT_QUEUE_AI
+        private const int MaxEventData = 16;
+        private readonly List<GameEvent> _events = new List<GameEvent>();
+
+        // ---- Time and session ----
+
+        public int GameTimeMs => Function.Call<int>(Natives.GET_GAME_TIMER);
+        public bool IsLoadingScreenActive => Function.Call<bool>(Natives.GET_IS_LOADING_SCREEN_ACTIVE);
+        public bool IsPlayerPlaying => Function.Call<bool>(Natives.IS_PLAYER_PLAYING, PlayerId);
+        /// <summary>MISC::GET_MISSION_FLAG. Phase 1 checks it is true for the whole of a story mission.</summary>
+        public bool IsMissionActive => Function.Call<bool>(Natives.GET_MISSION_FLAG);
+        public bool IsScreenFadedOut => Function.Call<bool>(Natives.IS_SCREEN_FADED_OUT);
+        public bool IsPlayerControlOn => Function.Call<bool>(Natives.IS_PLAYER_CONTROL_ON, PlayerId);
+
+        // ---- Player and horses ----
+
+        private static int PlayerId => Function.Call<int>(Natives.PLAYER_ID);
+        public int PlayerPed => Function.Call<int>(Natives.PLAYER_PED_ID);
+        public int GetMount(int ped) => Function.Call<int>(Natives.GET_MOUNT, ped);
+        public int GetLastMount(int ped) => Function.Call<int>(Natives.GET_LAST_MOUNT, ped);
+        public int GetSaddleHorse() => Function.Call<int>(Natives.GET_SADDLE_HORSE_FOR_PLAYER, PlayerId);
+        public int GetActiveHorse() => Function.Call<int>(Natives.GET_ACTIVE_HORSE_FOR_PLAYER, PlayerId);
+        public int GetTempHorse() => Function.Call<int>(Natives.GET_TEMP_PLAYER_HORSE, PlayerId);
+        public bool Exists(int entity) => entity != 0 && Function.Call<bool>(Natives.DOES_ENTITY_EXIST, entity);
+        public bool IsDead(int entity) => Function.Call<bool>(Natives.IS_ENTITY_DEAD, entity);
+        public uint GetModel(int entity) => Function.Call<uint>(Natives.GET_ENTITY_MODEL, entity);
+        public bool IsMale(int ped) => Function.Call<bool>(Natives.IS_PED_MALE, ped);
+        public int GetTamingState(int horse) => Function.Call<int>(Natives.GET_HORSE_TAMING_STATE, horse);
+
+        public float DistanceBetween(int a, int b)
+        {
+            Vector3 pa = Coords(a), pb = Coords(b);
+            float dx = pa.X - pb.X, dy = pa.Y - pb.Y, dz = pa.Z - pb.Z;
+            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        private static Vector3 Coords(int entity) => Function.Call<Vector3>(Natives.GET_ENTITY_COORDS, entity, true, true);
+
+        public unsafe int GetClosestHumanPed(int aroundEntity, float radius, int excludePed)
+        {
+            // PED::GET_CLOSEST_PED: p4/p5/p7-p9 unverified; pedType -1 = any.
+            Vector3 p = Coords(aroundEntity);
+            int found = 0;
+            bool ok = Function.Call<bool>(Natives.GET_CLOSEST_PED, p.X, p.Y, p.Z, radius, true, true, &found, false, false, false, -1);
+            if (!ok || found == 0 || found == excludePed || found == aroundEntity) return 0;
+            return Function.Call<bool>(Natives.IS_PED_HUMAN, found) ? found : 0;
+        }
+
+        // ---- Attributes ----
+
+        public AttributeReading ReadAttribute(int ped, PedAttribute attribute)
+        {
+            int a = (int)attribute;
+            return new AttributeReading
+            {
+                Attribute = attribute,
+                Rank = Function.Call<int>(Natives.GET_ATTRIBUTE_RANK, ped, a),
+                BaseRank = Function.Call<int>(Natives.GET_ATTRIBUTE_BASE_RANK, ped, a),
+                BonusRank = Function.Call<int>(Natives.GET_ATTRIBUTE_BONUS_RANK, ped, a),
+                MaxRank = Function.Call<int>(Natives.GET_MAX_ATTRIBUTE_RANK, ped, a),
+                Points = Function.Call<int>(Natives.GET_ATTRIBUTE_POINTS, ped, a),
+                MaxPoints = Function.Call<int>(Natives.GET_MAX_ATTRIBUTE_POINTS, ped, a),
+            };
+        }
+
+        public void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank) =>
+            Function.Call(Natives.SET_ATTRIBUTE_BONUS_RANK, ped, (int)attribute, rank);
+
+        public int GetCoreValue(int ped, AttributeCore core) => Function.Call<int>(Natives.GET_ATTRIBUTE_CORE_VALUE, ped, (int)core);
+
+        // ---- Behaviors ----
+
+        public void PlayVocalization(int ped, string vocalizationName) =>
+            Function.Call(Natives.PLAY_ANIMAL_VOCALIZATION, ped, vocalizationName, true); // p2 unverified
+
+        public bool IsVocalizationPlaying(int ped) => Function.Call<bool>(Natives.IS_ANIMAL_VOCALIZATION_PLAYING, ped);
+
+        public void LookAtEntity(int ped, int target, int durationMs) =>
+            Function.Call(Natives.TASK_LOOK_AT_ENTITY, ped, target, durationMs, 2048, 3, 0); // flags/priority as in RedM scripts; unverified
+
+        public void ClearLookAt(int ped) => Function.Call(Natives.TASK_CLEAR_LOOK_AT, ped);
+
+        public void HorseAction(int horse, int actionId) =>
+            Function.Call(Natives.TASK_HORSE_ACTION, horse, actionId, 0, 0); // p2, p3 are 0 in R* scripts
+
+        public void HorseAgitate(int horse, bool kickOffRider) => Function.Call(Natives.HORSE_AGITATE, horse, kickOffRider);
+
+        public void DismountPlayer() => Function.Call(Natives.TASK_DISMOUNT_ANIMAL, PlayerPed, 0, 0, 0, 0, 0);
+
+        public void StartScenario(int ped, string scenarioName, int durationMs) =>
+            // heading -1 is meant to keep the current heading; unverified
+            Function.Call(Natives.TASK_START_SCENARIO_IN_PLACE_HASH, ped, Joaat.Hash(scenarioName), durationMs, true, 0u, -1.0f, false);
+
+        public void FollowEntity(int ped, int target, float offsetBehind, int timeoutMs) =>
+            Function.Call(Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY, ped, target, 0.0f, -offsetBehind, 0.0f,
+                1.0f, timeoutMs, 1.5f, true, false, true, false, false, false); // walk speed; p9/p11-p13 unverified
+
+        public void FleeFrom(int ped, int threat, float distance, int timeMs) =>
+            Function.Call(Natives.TASK_SMART_FLEE_PED, ped, threat, distance, timeMs, 0, 3.0f, 0);
+
+        public void Combat(int ped, int target) => Function.Call(Natives.TASK_COMBAT_PED, ped, target, 0, 16);
+
+        public void ClearTasks(int ped) => Function.Call(Natives.CLEAR_PED_TASKS, ped, false, false);
+
+        // ---- Events ----
+
+        public unsafe IReadOnlyList<GameEvent> ReadAiEvents()
+        {
+            _events.Clear();
+            int count = Function.Call<int>(Natives.GET_NUMBER_OF_EVENTS, AiEventGroup);
+            ulong* buffer = stackalloc ulong[MaxEventData];
+            for (int i = 0; i < count; i++)
+            {
+                uint hash = Function.Call<uint>(Natives.GET_EVENT_AT_INDEX, AiEventGroup, i);
+                long[] data = Array.Empty<long>();
+                if (GameEvents.TryGet(hash, out GameEventType type) && type.DataSize > 0 && type.DataSize <= MaxEventData)
+                {
+                    for (int k = 0; k < type.DataSize; k++) buffer[k] = 0;
+                    if (Function.Call<bool>(Natives.GET_EVENT_DATA, AiEventGroup, i, buffer, type.DataSize))
+                    {
+                        data = new long[type.DataSize];
+                        // Each field sits in an 8-byte slot; handles and hashes use the low 32 bits.
+                        for (int k = 0; k < type.DataSize; k++) data[k] = unchecked((int)(uint)buffer[k]);
+                    }
+                }
+                _events.Add(new GameEvent { Hash = hash, Data = data });
+            }
+            return _events;
+        }
+
+        // ---- Output ----
+
+        public void ShowSubtitle(string text) => RDR2.UI.Screen.PrintSubtitle(text);
+
+        /// <summary>x and y are in the hook's 1280x720 screen space.</summary>
+        public void DrawText(string text, float x, float y, float scale) =>
+            new TextElement(text, new PointF(x, y), scale, Color.White, Alignment.Left, true, true).Draw();
+    }
+}

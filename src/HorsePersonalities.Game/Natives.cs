@@ -1,0 +1,98 @@
+// Generated from the native list in ScriptHookRDR2DotNet V2 (RDR2.Native/NativeDecl.cs), which follows
+// alloc8or's RDR3 native DB: https://alloc8or.github.io/rdr3-native-db/
+// Rule 5: every native the mod calls is listed here with its namespace and signature. Look one up in the DB
+// before adding it. Hashes are the game's and do not change between hook releases.
+namespace HorsePersonalities.Game
+{
+    internal static class Natives
+    {
+        /// <summary>MISC::GET_GAME_TIMER() -> int</summary>
+        public const ulong GET_GAME_TIMER = 0x4F67E8ECA7D3F667;
+        /// <summary>DLC::GET_IS_LOADING_SCREEN_ACTIVE() -> bool</summary>
+        public const ulong GET_IS_LOADING_SCREEN_ACTIVE = 0x71D4BF5890659B0C;
+        /// <summary>PLAYER::IS_PLAYER_PLAYING(int player) -> bool</summary>
+        public const ulong IS_PLAYER_PLAYING = 0xBFFB35986CAAE58C;
+        /// <summary>MISC::GET_MISSION_FLAG() -> bool</summary>
+        public const ulong GET_MISSION_FLAG = 0xB15CD1CF58771DE1;
+        /// <summary>CAM::IS_SCREEN_FADED_OUT() -> bool</summary>
+        public const ulong IS_SCREEN_FADED_OUT = 0xF5472C80DF2FF847;
+        /// <summary>PLAYER::IS_PLAYER_CONTROL_ON(int player) -> bool</summary>
+        public const ulong IS_PLAYER_CONTROL_ON = 0x7964097FCE4C244B;
+        /// <summary>PLAYER::PLAYER_ID() -> int</summary>
+        public const ulong PLAYER_ID = 0x217E9DC48139933D;
+        /// <summary>PLAYER::PLAYER_PED_ID() -> int</summary>
+        public const ulong PLAYER_PED_ID = 0x096275889B8E0EE0;
+        /// <summary>PED::GET_MOUNT(int ped) -> int</summary>
+        public const ulong GET_MOUNT = 0xE7E11B8DCBED1058;
+        /// <summary>PED::_GET_LAST_MOUNT(int ped) -> int</summary>
+        public const ulong GET_LAST_MOUNT = 0x4C8B59171957BCF7;
+        /// <summary>PLAYER::_GET_SADDLE_HORSE_FOR_PLAYER(int player) -> int</summary>
+        public const ulong GET_SADDLE_HORSE_FOR_PLAYER = 0xB48050D326E9A2F3;
+        /// <summary>PLAYER::_GET_ACTIVE_HORSE_FOR_PLAYER(int player) -> int</summary>
+        public const ulong GET_ACTIVE_HORSE_FOR_PLAYER = 0x46FA0AE18F4C7FA9;
+        /// <summary>PLAYER::_GET_TEMP_PLAYER_HORSE(int player) -> int</summary>
+        public const ulong GET_TEMP_PLAYER_HORSE = 0xD3F7445CEA2E5035;
+        /// <summary>ENTITY::DOES_ENTITY_EXIST(int entity) -> bool</summary>
+        public const ulong DOES_ENTITY_EXIST = 0xD42BD6EB2E0F1677;
+        /// <summary>ENTITY::IS_ENTITY_DEAD(int entity) -> bool</summary>
+        public const ulong IS_ENTITY_DEAD = 0x7D5B1F88E7504BBA;
+        /// <summary>ENTITY::GET_ENTITY_MODEL(int entity) -> uint</summary>
+        public const ulong GET_ENTITY_MODEL = 0xDA76A9F39210D365;
+        /// <summary>PED::IS_PED_MALE(int ped) -> bool</summary>
+        public const ulong IS_PED_MALE = 0x6D9F5FAA7488BA46;
+        /// <summary>PED::_GET_HORSE_TAMING_STATE(int horse) -> int</summary>
+        public const ulong GET_HORSE_TAMING_STATE = 0x454AD4DA6C41B5BD;
+        /// <summary>ENTITY::GET_ENTITY_COORDS(int entity, bool alive, bool realCoords) -> Vector3</summary>
+        public const ulong GET_ENTITY_COORDS = 0xA86D5F069399F44D;
+        /// <summary>PED::GET_CLOSEST_PED(float x, float y, float z, float radius, bool p4, bool p5, int* outPed, bool p7, bool p8, bool p9, int pedType) -> bool</summary>
+        public const ulong GET_CLOSEST_PED = 0xC33AB876A77F8164;
+        /// <summary>PED::IS_PED_HUMAN(int ped) -> bool</summary>
+        public const ulong IS_PED_HUMAN = 0xB980061DA992779D;
+        /// <summary>ATTRIBUTE::GET_ATTRIBUTE_RANK(int ped, int attributeIndex) -> int</summary>
+        public const ulong GET_ATTRIBUTE_RANK = 0xA4C8E23E29040DE0;
+        /// <summary>ATTRIBUTE::GET_ATTRIBUTE_BASE_RANK(int ped, int attributeIndex) -> int</summary>
+        public const ulong GET_ATTRIBUTE_BASE_RANK = 0x147149F2E909323C;
+        /// <summary>ATTRIBUTE::GET_ATTRIBUTE_BONUS_RANK(int ped, int coreIndex) -> int</summary>
+        public const ulong GET_ATTRIBUTE_BONUS_RANK = 0x0EFA71F4B4330E04;
+        /// <summary>ATTRIBUTE::GET_MAX_ATTRIBUTE_RANK(int ped, int attributeIndex) -> int</summary>
+        public const ulong GET_MAX_ATTRIBUTE_RANK = 0x704674A0535A471D;
+        /// <summary>ATTRIBUTE::GET_ATTRIBUTE_POINTS(int ped, int attributeIndex) -> int</summary>
+        public const ulong GET_ATTRIBUTE_POINTS = 0x219DA04BAA9CB065;
+        /// <summary>ATTRIBUTE::GET_MAX_ATTRIBUTE_POINTS(int ped, int attributeIndex) -> int</summary>
+        public const ulong GET_MAX_ATTRIBUTE_POINTS = 0x223BF310F854871C;
+        /// <summary>ATTRIBUTE::SET_ATTRIBUTE_BONUS_RANK(int ped, int attributeIndex, int newValue) -> void</summary>
+        public const ulong SET_ATTRIBUTE_BONUS_RANK = 0x920F9488BD115EFB;
+        /// <summary>ATTRIBUTE::_GET_ATTRIBUTE_CORE_VALUE(int ped, int coreIndex) -> int</summary>
+        public const ulong GET_ATTRIBUTE_CORE_VALUE = 0x36731AC041289BB1;
+        /// <summary>AUDIO::PLAY_ANIMAL_VOCALIZATION(int ped, string vocalizationName, bool p2) -> void</summary>
+        public const ulong PLAY_ANIMAL_VOCALIZATION = 0xEE066C7006C49C0A;
+        /// <summary>AUDIO::IS_ANIMAL_VOCALIZATION_PLAYING(int pedHandle) -> bool</summary>
+        public const ulong IS_ANIMAL_VOCALIZATION_PLAYING = 0xC265DF9FB44A9FBD;
+        /// <summary>TASK::TASK_LOOK_AT_ENTITY(int ped, int lookAtTarget, int duration, int p3, int p4, int p5) -> void</summary>
+        public const ulong TASK_LOOK_AT_ENTITY = 0x69F4BE8C8CC4796C;
+        /// <summary>TASK::TASK_CLEAR_LOOK_AT(int ped) -> void</summary>
+        public const ulong TASK_CLEAR_LOOK_AT = 0x0F804F1DB19B9689;
+        /// <summary>TASK::TASK_HORSE_ACTION(int ped, int action, int targetPed, ulong p3) -> void</summary>
+        public const ulong TASK_HORSE_ACTION = 0xA09CFD29100F06C3;
+        /// <summary>PED::_HORSE_AGITATE(int mount, bool kickOffRider) -> void</summary>
+        public const ulong HORSE_AGITATE = 0xBAE08F00021BFFB2;
+        /// <summary>TASK::TASK_DISMOUNT_ANIMAL(int rider, int taskFlag, ulong p2, ulong p3, ulong p4, int targetPed) -> void</summary>
+        public const ulong TASK_DISMOUNT_ANIMAL = 0x48E92D3DDE23C23A;
+        /// <summary>TASK::TASK_START_SCENARIO_IN_PLACE_HASH(int ped, uint scenarioHash, int duration, bool playEnterAnim, uint conditionalHash, float heading, bool p6) -> void</summary>
+        public const ulong TASK_START_SCENARIO_IN_PLACE_HASH = 0x524B54361229154F;
+        /// <summary>TASK::TASK_FOLLOW_TO_OFFSET_OF_ENTITY(int ped, int entity, float offsetX, float offsetY, float offsetZ, float movementSpeed, int timeout, float stoppingRange, bool persistFollowing, bool p9, bool walkOnly, bool p11, bool p12, bool p13) -> void</summary>
+        public const ulong TASK_FOLLOW_TO_OFFSET_OF_ENTITY = 0x304AE42E357B8C7E;
+        /// <summary>TASK::TASK_SMART_FLEE_PED(int ped, int fleeFromTarget, float fleeDistance, int fleeTime, int fleeType, float fleeSpeed, int targetPed) -> void</summary>
+        public const ulong TASK_SMART_FLEE_PED = 0x22B0D0E37CCB840D;
+        /// <summary>TASK::TASK_COMBAT_PED(int ped, int targetPed, int p2, int p3) -> void</summary>
+        public const ulong TASK_COMBAT_PED = 0xF166E48407BAC484;
+        /// <summary>TASK::CLEAR_PED_TASKS(int ped, bool p1, bool p2) -> void</summary>
+        public const ulong CLEAR_PED_TASKS = 0xE1EF3C1216AFF2CD;
+        /// <summary>SCRIPTS::GET_NUMBER_OF_EVENTS(int eventGroup) -> int</summary>
+        public const ulong GET_NUMBER_OF_EVENTS = 0x5CE8DE5909565748;
+        /// <summary>SCRIPTS::GET_EVENT_AT_INDEX(int eventGroup, int eventIndex) -> uint</summary>
+        public const ulong GET_EVENT_AT_INDEX = 0xA85E614430EFF816;
+        /// <summary>SCRIPTS::GET_EVENT_DATA(int eventGroup, int eventIndex, ulong* eventData, int eventDataSize) -> bool</summary>
+        public const ulong GET_EVENT_DATA = 0x57EC5FA4D4D6AFCA;
+    }
+}
