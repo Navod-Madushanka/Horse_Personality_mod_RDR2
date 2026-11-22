@@ -84,3 +84,7 @@ dotnet test tests/HorsePersonalities.Tests
 ```
 
 The tool finds columns by their header names, so adding or moving columns in the sheet is fine. It refuses to write the file if a class, quirk or breed name doesn't match, and lists every problem at once. A test fails if `breeds.json` is out of date with the CSVs.
+
+## License
+
+[MIT](LICENSE). Red Dead Redemption 2 belongs to Rockstar Games; Script Hook RDR2 and ScriptHookRDR2DotNet V2 are their authors' own projects and are not included here.

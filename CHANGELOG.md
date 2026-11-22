@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Handling is now each breed's stat tier (Heavy, Standard, Race, Elite); breeds.json and the sheet converter reject any other value.
+- MIT license.
+
 ### Phase 0: Setup and hello world
 - Solution with Core, Game, DevTools, Tests and the sheet-to-json tool.
 - The game script shows "Horse Personalities loaded" once the game is playable.
