@@ -16,6 +16,18 @@ namespace HorsePersonalities.Core.Breeds
         ShowOff,
     }
 
+    /// <summary>
+    /// A breed's stat tier, which is its Handling class on the sheet (Build plan: Hard rules). Natural stats and
+    /// skills never push a horse past its tier's caps. Listed from lowest ceiling to highest; do not reorder.
+    /// </summary>
+    public enum StatTier
+    {
+        Heavy = 0,
+        Standard = 1,
+        Race = 2,
+        Elite = 3,
+    }
+
     public static class NameMatching
     {
         /// <summary>
@@ -29,6 +41,21 @@ namespace HorsePersonalities.Core.Breeds
             foreach (char c in s)
                 if (char.IsLetterOrDigit(c)) sb.Append(char.ToLowerInvariant(c));
             return sb.ToString();
+        }
+
+        public static bool TryParseTier(string text, out StatTier tier)
+        {
+            string n = Normalize(text);
+            foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
+            {
+                if (Normalize(t.ToString()) == n)
+                {
+                    tier = t;
+                    return true;
+                }
+            }
+            tier = default;
+            return false;
         }
 
         public static bool TryParseQuirk(string text, out Quirk quirk)

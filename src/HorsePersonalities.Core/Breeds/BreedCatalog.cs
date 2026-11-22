@@ -222,6 +222,10 @@ namespace HorsePersonalities.Core.Breeds
             foreach (JsonValue m in j["models"].Kind == JsonKind.Array ? j["models"].Items : Array.Empty<JsonValue>())
                 if (m.Kind == JsonKind.String && !string.IsNullOrWhiteSpace(m.AsString())) models.Add(m.AsString().Trim().ToLowerInvariant());
 
+            string handling = j.GetString("handling", null);
+            if (!NameMatching.TryParseTier(handling, out StatTier tier))
+                problems.Add($"{name}: handling \"{handling}\" must be one of {string.Join(", ", Enum.GetNames(typeof(StatTier)))}.");
+
             LearningRate computed = LearningRates.Compute(classes, classRates, penalty);
             LearningRate learning = computed;
             bool overridden = false;
@@ -233,7 +237,7 @@ namespace HorsePersonalities.Core.Breeds
                 if (learning.Physical <= 0 || learning.Combat <= 0) problems.Add($"{name}: learning rates must be positive.");
             }
 
-            return new Breed(name.Trim(), classes, j.GetString("handling", "Standard"), leans, quirks,
+            return new Breed(name.Trim(), classes, tier, leans, quirks,
                 j.GetString("demeanor", ""), models, learning, overridden);
         }
     }

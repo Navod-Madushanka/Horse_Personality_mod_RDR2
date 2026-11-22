@@ -131,6 +131,10 @@ namespace HorsePersonalities.Tools.SheetToJson
                         else problems.Add($"{where}: unknown quirk \"{q.Trim()}\". Known: {string.Join(", ", Enum.GetNames(typeof(Quirk)))}.");
                     }
 
+                    string handling = Cell(r, cHand).Trim();
+                    if (!NameMatching.TryParseTier(handling, out StatTier tier))
+                        problems.Add($"{where}: Handling \"{handling}\" must be one of {string.Join(", ", Enum.GetNames(typeof(StatTier)))}. It is the breed's stat tier.");
+
                     modelsByBreed.TryGetValue(name, out var models);
                     models = models ?? new List<string>();
                     models.Sort(StringComparer.Ordinal);
@@ -144,7 +148,7 @@ namespace HorsePersonalities.Tools.SheetToJson
                         .Set("name", name)
                         .Set("models", modelArray)
                         .Set("classes", classArray)
-                        .Set("handling", Cell(r, cHand).Trim().Length > 0 ? Cell(r, cHand).Trim() : "Standard")
+                        .Set("handling", tier.ToString())
                         .Set("leans", leans)
                         .Set("likelyQuirks", quirks)
                         .Set("demeanor", Cell(r, cDem).Trim());

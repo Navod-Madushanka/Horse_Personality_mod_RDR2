@@ -72,6 +72,15 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void UnknownHandlingIsAnError()
+        {
+            string breeds = TestData.Read("data", "sheet-export", "Breeds.csv").Replace("\"Nosy, Chatterbox, Head-tosser\",Elite,", "\"Nosy, Chatterbox, Head-tosser\",Superfast,");
+            var ex = Assert.Throws<ConversionException>(() =>
+                SheetConverter.Convert(breeds, TestData.Read("data", "sheet-export", "Classes.csv"), TestData.Read("data", "horse-models.csv")));
+            Assert.Contains("Handling \"Superfast\"", ex.Message);
+        }
+
+        [Fact]
         public void ModelForAMissingBreedIsAnError()
         {
             string models = TestData.Read("data", "horse-models.csv") + "a_c_horse_fake_01,Pegasus,,\n";

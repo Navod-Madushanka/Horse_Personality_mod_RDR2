@@ -85,6 +85,21 @@ namespace HorsePersonalities.Tests
             Check("Shire", 0.6, 1.2);
         }
 
+        [Theory]
+        [InlineData("Arabian", StatTier.Elite)]
+        [InlineData("Thoroughbred", StatTier.Race)]
+        [InlineData("Turkoman", StatTier.Standard)]
+        [InlineData("Shire", StatTier.Heavy)]
+        public void HandlingIsTheStatTier(string breed, StatTier tier)
+        {
+            Assert.True(Shipped().TryGetBreed(breed, out var b));
+            Assert.Equal(tier, b.Tier);
+        }
+
+        [Fact]
+        public void TiersRunFromHeavyToElite() =>
+            Assert.True(StatTier.Heavy < StatTier.Standard && StatTier.Standard < StatTier.Race && StatTier.Race < StatTier.Elite);
+
         [Fact]
         public void BreakDifficultyIsTemperMinusBondAffinity()
         {
@@ -106,6 +121,8 @@ namespace HorsePersonalities.Tests
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]
+        [InlineData("\"handling\": \"Standard\"", "\"handling\": \"Fast\"", "handling \"Fast\"")]
+        [InlineData("\"handling\": \"Standard\", ", "", "handling \"\"")]
         [InlineData("\"a_c_horsemule_01\"", "\"a_c_horse_turkoman_gold\"", "both Turkoman and otherModels")]
         public void RejectsBadData(string find, string replace, string expected)
         {
