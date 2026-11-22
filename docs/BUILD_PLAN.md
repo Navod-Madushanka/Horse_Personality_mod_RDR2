@@ -218,6 +218,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 | DebugOverlay | false | Shows hidden values on screen |
 | DebugKey | F9 | Toggles the overlay |
 | ResetAllHorses | false | Wipes saved personalities on next load, for a new playthrough |
+| LogLevel | Info | Lowest level written to log.txt: Debug, Info, Warn or Error |
 
 ## What the player sees
 
@@ -441,6 +442,8 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
 - [ ] Should story-scripted horses (mission horses, gang horses) be treated as NPC horses?
+- [ ] Stat tier: the sheet has Handling but no stats tier column. What sets the tier caps in Phase 3?
+- [ ] Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster) have models but no sheet row. Leave them vanilla in v1?
 
 ## Rules for the coding agent
 
