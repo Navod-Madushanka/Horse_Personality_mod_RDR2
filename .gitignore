@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+# Third-party binaries: copy your own from the ScriptHookRDR2DotNet V2 release (see lib/README.md)
+lib/*.dll
+lib/*.xml
+# Release output
+dist/

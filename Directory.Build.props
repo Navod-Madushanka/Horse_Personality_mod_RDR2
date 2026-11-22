@@ -1,0 +1,28 @@
+<Project>
+  <!-- Shared settings for every project in the solution. -->
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Version>0.1.0</Version>
+    <Authors>Navod</Authors>
+    <Product>Horse Personalities</Product>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+
+    <!--
+      Path to ScriptHookRDRNetAPI.dll from the ScriptHookRDR2DotNet V2 release you installed.
+      Default: lib/ScriptHookRDRNetAPI.dll. Override with /p:ShdnApiPath=... or an env var of the same name.
+    -->
+    <ShdnApiPath Condition="'$(ShdnApiPath)' == ''">$(RepoRoot)lib\ScriptHookRDRNetAPI.dll</ShdnApiPath>
+
+    <!--
+      Optional: your game's scripts folder, e.g.
+      C:\Program Files (x86)\Steam\steamapps\common\Red Dead Redemption 2\scripts
+      When set (env var RDR2_SCRIPTS_DIR or /p:RDR2ScriptsDir=...), builds of the Game and DevTools
+      projects copy themselves straight into the game.
+    -->
+    <RDR2ScriptsDir Condition="'$(RDR2ScriptsDir)' == ''">$(RDR2_SCRIPTS_DIR)</RDR2ScriptsDir>
+  </PropertyGroup>
+</Project>

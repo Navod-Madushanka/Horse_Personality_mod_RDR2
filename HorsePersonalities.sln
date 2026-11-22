@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2B474D05-603C-4CBC-8806-5AB252F0DE84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorsePersonalities.Core", "src\HorsePersonalities.Core\HorsePersonalities.Core.csproj", "{C4143A63-6B5D-400E-9687-A5F868C071B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{A8A2623A-1D46-4E5A-9ECE-AF1238FAFA2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SheetToJson", "tools\sheet-to-json\SheetToJson.csproj", "{EC596598-67CD-45DB-93FB-2943713DC933}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5B9A7119-538D-42EE-B5B5-0384F1A6B106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorsePersonalities.Tests", "tests\HorsePersonalities.Tests\HorsePersonalities.Tests.csproj", "{C4D99100-0220-488F-8A5D-FDB37BADD0FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorsePersonalities.Game", "src\HorsePersonalities.Game\HorsePersonalities.Game.csproj", "{3600D62C-00B9-4AC9-B681-54BFBA97D3FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorsePersonalities.DevTools", "src\HorsePersonalities.DevTools\HorsePersonalities.DevTools.csproj", "{8B430754-7B32-46B5-8BBD-427F358BD75F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4143A63-6B5D-400E-9687-A5F868C071B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4143A63-6B5D-400E-9687-A5F868C071B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4143A63-6B5D-400E-9687-A5F868C071B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4143A63-6B5D-400E-9687-A5F868C071B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC596598-67CD-45DB-93FB-2943713DC933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC596598-67CD-45DB-93FB-2943713DC933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC596598-67CD-45DB-93FB-2943713DC933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC596598-67CD-45DB-93FB-2943713DC933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D99100-0220-488F-8A5D-FDB37BADD0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D99100-0220-488F-8A5D-FDB37BADD0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D99100-0220-488F-8A5D-FDB37BADD0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D99100-0220-488F-8A5D-FDB37BADD0FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3600D62C-00B9-4AC9-B681-54BFBA97D3FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3600D62C-00B9-4AC9-B681-54BFBA97D3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3600D62C-00B9-4AC9-B681-54BFBA97D3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3600D62C-00B9-4AC9-B681-54BFBA97D3FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B430754-7B32-46B5-8BBD-427F358BD75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B430754-7B32-46B5-8BBD-427F358BD75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B430754-7B32-46B5-8BBD-427F358BD75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B430754-7B32-46B5-8BBD-427F358BD75F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C4143A63-6B5D-400E-9687-A5F868C071B9} = {2B474D05-603C-4CBC-8806-5AB252F0DE84}
+		{EC596598-67CD-45DB-93FB-2943713DC933} = {A8A2623A-1D46-4E5A-9ECE-AF1238FAFA2E}
+		{C4D99100-0220-488F-8A5D-FDB37BADD0FE} = {5B9A7119-538D-42EE-B5B5-0384F1A6B106}
+		{3600D62C-00B9-4AC9-B681-54BFBA97D3FE} = {2B474D05-603C-4CBC-8806-5AB252F0DE84}
+		{8B430754-7B32-46B5-8BBD-427F358BD75F} = {2B474D05-603C-4CBC-8806-5AB252F0DE84}
+	EndGlobalSection
+EndGlobal
