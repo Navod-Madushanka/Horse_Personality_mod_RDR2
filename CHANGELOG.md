@@ -4,6 +4,7 @@
 
 - Handling is now each breed's stat tier (Heavy, Standard, Race, Elite); breeds.json and the sheet converter reject any other value.
 - MIT license.
+- Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.
 
 ### Phase 0: Setup and hello world
 - Solution with Core, Game, DevTools, Tests and the sheet-to-json tool.

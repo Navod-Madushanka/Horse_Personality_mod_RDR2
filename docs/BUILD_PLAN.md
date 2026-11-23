@@ -56,6 +56,7 @@ Every horse is built from three layers: the breed sets the limits, the individua
 ### Who gets a personality
 
 - NPC and wild horses: none. Pure vanilla.
+- Horses with no breed row in the sheet: none, ever, in v1. That covers gang and other story-only models (`a_c_horse_gang_*`, Buell, Eagle Flies' horse, the Murfree Brood horses, the epilogue horses), mules, and the Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster). They stay vanilla even when the player mounts or saddles one.
 - When the player mounts one: a temporary personality, gone on reload.
 - When the player puts their saddle on it: that same personality becomes permanent.
 - Horses the player already owns, including the starting horse, are rolled the first time the mod sees them.
@@ -442,9 +443,9 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
-- [ ] Should story-scripted horses (mission horses, gang horses) be treated as NPC horses?
+- [ ] Should story mission horses that use a normal breed model be treated as NPC horses? (Gang and other story-only models are decided: vanilla in v1.)
 - [x] Stat tier: decided, the breed's Handling class is its tier (see Hard rules).
-- [ ] Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster) have models but no sheet row. Leave them vanilla in v1?
+- [x] Online-only breeds: decided, vanilla in v1 (see Who gets a personality).
 
 ## Rules for the coding agent
 

@@ -35,7 +35,7 @@ a_c_horse_breton_redroan,,Online-only breed: Breton,no
 a_c_horse_breton_sealbrown,,Online-only breed: Breton,no
 a_c_horse_breton_sorrel,,Online-only breed: Breton,no
 a_c_horse_breton_steelgrey,,Online-only breed: Breton,no
-a_c_horse_buell_warvets,,Special story or Online model,yes: breed unknown
+a_c_horse_buell_warvets,,Special story or Online model,no: vanilla in v1
 a_c_horse_criollo_baybrindle,,Online-only breed: Criollo,no
 a_c_horse_criollo_bayframeovero,,Online-only breed: Criollo,no
 a_c_horse_criollo_blueroanovero,,Online-only breed: Criollo,no
@@ -45,24 +45,24 @@ a_c_horse_criollo_sorrelovero,,Online-only breed: Criollo,no
 a_c_horse_dutchwarmblood_chocolateroan,Dutch Warmblood,,
 a_c_horse_dutchwarmblood_sealbrown,Dutch Warmblood,,
 a_c_horse_dutchwarmblood_sootybuckskin,Dutch Warmblood,,
-a_c_horse_eagleflies,,Special story or Online model,yes: breed unknown
-a_c_horse_gang_bill,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_charles,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_charles_endlesssummer,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_dutch,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_hosea,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_javier,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_john,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_karen,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_kieran,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_lenny,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_micah,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_sadie,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_sadie_endlesssummer,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_sean,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_trelawney,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_uncle,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
-a_c_horse_gang_uncle_endlesssummer,,Gang member's horse (story-scripted),yes: breed unknown; see open question on story horses
+a_c_horse_eagleflies,,Special story or Online model,no: vanilla in v1
+a_c_horse_gang_bill,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_charles,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_charles_endlesssummer,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_dutch,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_hosea,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_javier,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_john,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_karen,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_kieran,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_lenny,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_micah,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_sadie,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_sadie_endlesssummer,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_sean,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_trelawney,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_uncle,,Gang member's horse (story-scripted),no: vanilla in v1
+a_c_horse_gang_uncle_endlesssummer,,Gang member's horse (story-scripted),no: vanilla in v1
 a_c_horse_gypsycob_palominoblagdon,,Online-only breed: Gypsy Cob,no
 a_c_horse_gypsycob_piebald,,Online-only breed: Gypsy Cob,no
 a_c_horse_gypsycob_skewbald,,Online-only breed: Gypsy Cob,no
@@ -73,7 +73,7 @@ a_c_horse_hungarianhalfbred_darkdapplegrey,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_flaxenchestnut,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_liverchestnut,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_piebaldtobiano,Hungarian Halfbred,,
-a_c_horse_john_endlesssummer,,Special story or Online model,yes: breed unknown
+a_c_horse_john_endlesssummer,,Special story or Online model,no: vanilla in v1
 a_c_horse_kentuckysaddle_black,Kentucky Saddler,,
 a_c_horse_kentuckysaddle_buttermilkbuckskin_pc,Kentucky Saddler,,PC-only coat: confirm it is in story mode
 a_c_horse_kentuckysaddle_chestnutpinto,Kentucky Saddler,,
@@ -97,10 +97,10 @@ a_c_horse_morgan_bayroan,Morgan,,
 a_c_horse_morgan_flaxenchestnut,Morgan,,
 a_c_horse_morgan_liverchestnut_pc,Morgan,,PC-only coat: confirm it is in story mode
 a_c_horse_morgan_palomino,Morgan,,
-a_c_horse_mp_mangy_backup,,Special story or Online model,yes: breed unknown
-a_c_horse_murfreebrood_mange_01,,Special story or Online model,yes: breed unknown
-a_c_horse_murfreebrood_mange_02,,Special story or Online model,yes: breed unknown
-a_c_horse_murfreebrood_mange_03,,Special story or Online model,yes: breed unknown
+a_c_horse_mp_mangy_backup,,Special story or Online model,no: vanilla in v1
+a_c_horse_murfreebrood_mange_01,,Special story or Online model,no: vanilla in v1
+a_c_horse_murfreebrood_mange_02,,Special story or Online model,no: vanilla in v1
+a_c_horse_murfreebrood_mange_03,,Special story or Online model,no: vanilla in v1
 a_c_horse_mustang_blackovero,Mustang,,
 a_c_horse_mustang_buckskin,Mustang,,
 a_c_horse_mustang_chestnuttovero,Mustang,,
@@ -142,6 +142,6 @@ a_c_horse_turkoman_gold,Turkoman,,
 a_c_horse_turkoman_grey,Turkoman,,
 a_c_horse_turkoman_perlino,Turkoman,,
 a_c_horse_turkoman_silver,Turkoman,,
-a_c_horse_winter02_01,,Special story or Online model,yes: breed unknown
+a_c_horse_winter02_01,,Special story or Online model,no: vanilla in v1
 a_c_horsemule_01,,Mule,no
 a_c_horsemulepainted_01,,Mule,no
