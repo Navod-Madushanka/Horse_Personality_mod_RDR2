@@ -21,7 +21,9 @@ namespace HorsePersonalities.Game
     {
         private const string Log = "Main";
 
-        private readonly IGameApi _game = new RdrGameApi();
+        private readonly RdrGameApi _game = new RdrGameApi();
+        private readonly Stopwatch _sinceStart = Stopwatch.StartNew();
+        private long _nextDiagMs = 3000;
         private readonly MountWatcher _mounts = new MountWatcher();
         private readonly IntervalGate _perfReport = new IntervalGate(60_000);
         private readonly Stopwatch _tickTimer = new Stopwatch();
@@ -54,8 +56,9 @@ namespace HorsePersonalities.Game
             if (_boot == null) return;
             _tickTimer.Restart();
 
+            // Mount tracking never waits for the startup banner: if a startup native misbehaves, mounts still report.
             if (!_announced) _guard.Run("Startup", Announce);
-            else _guard.Run("MountTracking", TrackMount);
+            _guard.Run("MountTracking", TrackMount);
 
             _tickTimer.Stop();
             RecordTickTime(_tickTimer.Elapsed.TotalMilliseconds);
@@ -63,7 +66,21 @@ namespace HorsePersonalities.Game
 
         private void Announce()
         {
-            if (_game.IsLoadingScreenActive || !_game.IsPlayerPlaying) return;
+            // GET_IS_LOADING_SCREEN_ACTIVE reads true for the whole session in game (the hook's IsLoading too), so it is
+            // not used. A playing player who is not faded out means the world is up.
+            bool ready = _game.IsPlayerPlaying && !_game.IsScreenFadedOut;
+            // Safety net: never leave the banner waiting forever. Log what the checks said so a bad native shows up.
+            if (!ready && _sinceStart.ElapsedMilliseconds > 30_000) ready = true;
+            if (!ready)
+            {
+                if (_sinceStart.ElapsedMilliseconds >= _nextDiagMs)
+                {
+                    _nextDiagMs += 5000;
+                    _boot.Log.Info(Log, "Waiting to announce: " + _game.StartupDiagnostics());
+                }
+                return;
+            }
+            _boot.Log.Info(Log, "Startup check passed: " + _game.StartupDiagnostics());
             _announced = true;
             string message = "Horse Personalities loaded";
             if (_boot.BreedsError != null) message += " - " + _boot.BreedsError;
