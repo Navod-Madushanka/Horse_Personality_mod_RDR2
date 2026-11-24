@@ -59,6 +59,10 @@ namespace HorsePersonalities.Core.GameApi
         // ---- Time and session ----
         /// <summary>GET_GAME_TIMER: milliseconds since the game started. Pauses with the game.</summary>
         int GameTimeMs { get; }
+        /// <summary>
+        /// DLC::GET_IS_LOADING_SCREEN_ACTIVE. Do not use as a gate: in game (hook 2.2.0) it reads true for the whole
+        /// session, so anything waiting on it never runs (found in Phase 0). Use IsPlayerPlaying and !IsScreenFadedOut.
+        /// </summary>
         bool IsLoadingScreenActive { get; }
         bool IsPlayerPlaying { get; }
         bool IsMissionActive { get; }

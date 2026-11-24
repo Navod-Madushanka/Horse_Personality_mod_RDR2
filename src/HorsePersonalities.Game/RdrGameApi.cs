@@ -27,7 +27,6 @@ namespace HorsePersonalities.Game
         public int GameTimeMs => Function.Call<int>(Natives.GET_GAME_TIMER);
         public bool IsLoadingScreenActive => Function.Call<bool>(Natives.GET_IS_LOADING_SCREEN_ACTIVE);
         public bool IsPlayerPlaying => Function.Call<bool>(Natives.IS_PLAYER_PLAYING, PlayerId);
-        /// <summary>MISC::GET_MISSION_FLAG. Phase 1 checks it is true for the whole of a story mission.</summary>
         /// <summary>Cross-check using the hook's own wrappers, for when a native hash is wrong. Used only by Phase 0 diagnostics.</summary>
         public string StartupDiagnostics()
         {
@@ -37,6 +36,7 @@ namespace HorsePersonalities.Game
             return native + "; " + hook;
         }
 
+        /// <summary>MISC::GET_MISSION_FLAG. Phase 1 checks it is true for the whole of a story mission.</summary>
         public bool IsMissionActive => Function.Call<bool>(Natives.GET_MISSION_FLAG);
         public bool IsScreenFadedOut => Function.Call<bool>(Natives.IS_SCREEN_FADED_OUT);
         public bool IsPlayerControlOn => Function.Call<bool>(Natives.IS_PLAYER_CONTROL_ON, PlayerId);
