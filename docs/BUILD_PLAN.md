@@ -44,6 +44,9 @@ Every horse is built from three layers: the breed sets the limits, the individua
 - Traits then lean that way, with the breed's leanings from the sheet on top. A good horse can still have one flaw, and a bad horse one good trait.
 - Breed leanings shift the odds, they don't lock the result. A brave Morgan or a jumpy Ardennes is rare but possible.
 - Quirk odds are raised for the breed's likely quirks.
+- "Leaning that way" is measured against the breed: a good horse sits on the good side of its breed's leanings, with at most one trait noticeably on the bad side; a bad horse the reverse. A jumpy Thoroughbred is still a good Thoroughbred if it is less jumpy than most.
+- Every roll comes from a seed, so the same seed always gives the same horse. The seed is picked at random the first time a horse is rolled.
+- The spreads, shifts and odds the roller uses live in the sheet's Roller tab, not in code.
 
 ### How the player discovers it
 
@@ -82,6 +85,8 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 
 - Stats and skills never push a horse past its breed tier. A trained draft never handles like an Arabian.
 - The tier is the breed's Handling class from the sheet: Heavy, Standard, Race or Elite. There is no separate stats tier column.
+- Each tier caps how far a natural stat can move up and down from the breed baseline (the sheet's Tiers tab), and no stat ever moves more than `MaxStatVariance`. Lower tiers have small upward caps so they can't climb into the next tier; Elite has a small downward cap so the Arabian stays fastest. The caps are placeholders until Phase 5 reads real stats in game.
+- Breaking difficulty (wild horses only) comes from the horse's own Temper minus Bond affinity. Past the Hard score it breaks Hard. Past the Unbreakable score it is Unbreakable only if it also wins a `UnbreakableChance` roll, so the real share stays under that setting.
 - Spooks, bucks, kicks and quirks are off during story missions and cutscenes.
 - Every behavior has a cooldown so nothing spams.
 - Vanilla pat, brush and feed animations stay; reactions play after them.
@@ -156,8 +161,11 @@ Three files hold everything: `breeds.json` (read-only design data), `horses.json
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "multiClassPenalty": 0.10,
+  "roller": { "traitSpread": 0.6, "qualityShift": 0.5, "flawMargin": 0.25, "secondQuirkChance": 0.35, "likelyQuirkWeight": 4,
+              "statSpread": 0.5, "statQualityShift": 0.25, "hardBreakScore": 1.5, "unbreakableBreakScore": 2.5 },
+  "tiers": { "Heavy": { "statUpCap": 0.04, "statDownCap": 0.10 }, "Elite": { "statUpCap": 0.10, "statDownCap": 0.05 } },
   "classes": {
     "Race": { "physical": 1.3, "combat": 0.7 },
     "War":  { "physical": 0.8, "combat": 1.5 }
@@ -176,7 +184,7 @@ Three files hold everything: `breeds.json` (read-only design data), `horses.json
 }
 ```
 
-Model names in the example are placeholders; the real list comes from `peds_list.lua`.
+Model names in the example are placeholders; the real list comes from `peds_list.lua`. `roller` comes from the sheet's Roller tab and `tiers` from its Tiers tab (all four tiers; two shown).
 
 ### horses.json (one record per known horse)
 
@@ -452,6 +460,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 Work one phase at a time, keep logic testable outside the game, and ask Navod to test in game instead of guessing how the game behaves.
 
 1. Do the phases in order. Start the next only when its "Done when" passes and Navod confirms it in game.
+   Exception (Nov 24, 2026, Navod's call): Phase 3's Core work is built while Phase 1 waits for game time. Phase 3's in-game check (the overlay) still waits until Phase 1 passes.
 2. The Phase 1 results in the sheet's Quirks tab are the source of truth. Never build on a trigger marked Doesn't work.
 3. Put all logic in `HorsePersonalities.Core`, with no game references, and unit test it. The game script is a thin layer that reads the game and calls Core.
 4. Route every native call through one `IGameApi` adapter. It is the one place to fix after a game update, and it can be faked in tests.
