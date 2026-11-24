@@ -6,6 +6,13 @@
 - MIT license.
 - Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.
 
+### Phase 3: Personality roller (Core built ahead of Phase 1, by decision)
+- Rolls good or bad, four traits around the breed's leanings, 1 or 2 quirks (likely quirks weighted), natural stats within the tier caps, and breaking difficulty for wild horses.
+- Same seed, same horse: a SplitMix64 generator with a fixed number of draws per roll.
+- Tuning numbers come from two new sheet tabs, Roller and Tiers; breeds.json is now schema 2.
+- Debug overlay (F9, off by default) shows each mounted horse's breed, tier, sex, bond and a preview roll, plus the live tick time. Preview rolls are not saved yet (Phases 2 and 4).
+- 186 new unit tests, including 10,000 rolls per breed.
+
 ### Phase 0: Setup and hello world (passed in game, v0.1)
 - Fixed in game: the loading-screen native reads true all session, so the banner and mount reports never ran. Mount tracking no longer waits for the banner; the banner waits for the player to be playing and the screen faded in, with a 30 s fallback.
 - Solution with Core, Game, DevTools, Tests and the sheet-to-json tool.

@@ -4,7 +4,7 @@ A Red Dead Redemption 2 story-mode mod that gives every horse you own a hidden p
 
 The design is in [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md). Progress per phase is in [docs/phase-reports](docs/phase-reports).
 
-**Status:** Phase 0 (hello world) and Phase 1 (trigger spike) are written and compile against the hook's API, but have not been run in game yet. Nothing in the game changes yet: the mod only reports what it sees.
+**Status:** Phase 0 passed in game (v0.1). Phase 1 (trigger spike) is written and waits for in-game testing. Phase 3 (personality roller) is built in Core and unit tested; its overlay check waits for Phase 1. Nothing in the game changes yet: the mod only reports what it sees and shows preview rolls on the debug overlay (F9).
 
 ## Repository layout
 
@@ -71,7 +71,7 @@ dotnet test tests/HorsePersonalities.Tests
 ## Change breed data
 
 1. Edit the [breed sheet](https://claude.ai/artifact/37Yfwtn7EsEtr69NiM3kyp).
-2. Download its Breeds and Classes tabs as CSV into `data/sheet-export/` as `Breeds.csv` and `Classes.csv`.
+2. Download its Breeds, Classes, Roller and Tiers tabs as CSV into `data/sheet-export/` as `Breeds.csv`, `Classes.csv`, `Roller.csv` and `Tiers.csv`.
 3. If a model belongs to a different breed, edit `data/horse-models.csv`.
 4. Regenerate and check:
 
