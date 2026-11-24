@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using HorsePersonalities.Core.Breeds;
 using HorsePersonalities.Core.GameApi;
 using HorsePersonalities.Core.Logging;
+using HorsePersonalities.Core.Rolling;
 using HorsePersonalities.Core.Safety;
 using HorsePersonalities.Core.Timing;
 using HorsePersonalities.Core.Tracking;
@@ -16,6 +18,8 @@ namespace HorsePersonalities.Game
     ///
     /// Phase 0: shows "Horse Personalities loaded" once the game is playable, and on every mount shows the horse's
     /// breed, model name, sex and bond level. Nothing changes in the game yet.
+    /// Phase 3: each mounted horse with a breed gets a preview personality roll, shown on the debug overlay
+    /// (DebugKey, F9 by default) and written to the log. Not saved yet.
     /// </summary>
     public sealed class HorsePersonalitiesScript : Script
     {
@@ -33,6 +37,10 @@ namespace HorsePersonalities.Game
         private double _worstTickMs;
         private double _totalTickMs;
         private int _ticks;
+        private readonly DebugOverlay _overlay = new DebugOverlay();
+        private PreviewRolls _previews;
+        private Keys _debugKey = Keys.F9;
+        private double _lastTickMs;
 
         public HorsePersonalitiesScript()
         {
@@ -40,6 +48,13 @@ namespace HorsePersonalities.Game
             {
                 _boot = ModBootstrap.Start(BaseDirectory, Log);
                 _guard = new FeatureGuard(_boot.Log);
+                _overlay.Visible = _boot.Settings.DebugOverlay;
+                if (!Enum.TryParse(_boot.Settings.DebugKey, true, out _debugKey))
+                {
+                    _boot.Log.Warn("Settings", $"DebugKey = \"{_boot.Settings.DebugKey}\" is not a key name; using F9.");
+                    _debugKey = Keys.F9;
+                }
+                if (_boot.Breeds != null) _previews = new PreviewRolls(new PersonalityRoller(_boot.Breeds, _boot.Settings));
             }
             catch (Exception)
             {
@@ -48,6 +63,7 @@ namespace HorsePersonalities.Game
             }
             Interval = 0;
             Tick += OnTick;
+            KeyDown += OnKeyDown;
             Aborted += (s, e) => _boot?.Log.Info(Log, "Script stopped (reload or game exit).");
         }
 
@@ -59,9 +75,18 @@ namespace HorsePersonalities.Game
             // Mount tracking never waits for the startup banner: if a startup native misbehaves, mounts still report.
             if (!_announced) _guard.Run("Startup", Announce);
             _guard.Run("MountTracking", TrackMount);
+            _guard.Run("Overlay", () => _overlay.Draw(_game, _lastTickMs));
 
             _tickTimer.Stop();
-            RecordTickTime(_tickTimer.Elapsed.TotalMilliseconds);
+            _lastTickMs = _tickTimer.Elapsed.TotalMilliseconds;
+            RecordTickTime(_lastTickMs);
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (_boot == null || e.KeyCode != _debugKey) return;
+            _overlay.Visible = !_overlay.Visible;
+            _boot.Log.Debug(Log, "Debug overlay " + (_overlay.Visible ? "on" : "off"));
         }
 
         private void Announce()
@@ -100,6 +125,11 @@ namespace HorsePersonalities.Game
                 HorseDescription d = HorseDescriber.Describe(_game, _boot.Breeds, change.Current);
                 text = d.ToSubtitle();
                 _boot.Log.Info(Log, $"Mounted horse {change.Current}: {text} (bond points {d.BondPoints}, model hash 0x{d.ModelHash:X8})");
+                Personality p = null;
+                bool rolledNow = false;
+                _guard.Run("Roller", () => p = _previews?.For(change.Current, d.Breed, out rolledNow));
+                if (rolledNow) _boot.Log.Info("Roller", $"Preview roll for horse {change.Current}: {p}");
+                _overlay.SetLines(OverlayText.Build(d, p));
             }
             else
             {
