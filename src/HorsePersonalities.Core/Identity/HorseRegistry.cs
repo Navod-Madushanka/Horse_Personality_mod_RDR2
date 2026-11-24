@@ -1,0 +1,147 @@
+using System;
+using System.Collections.Generic;
+using HorsePersonalities.Core.Breeds;
+using HorsePersonalities.Core.Logging;
+using HorsePersonalities.Core.Rolling;
+
+namespace HorsePersonalities.Core.Identity
+{
+    public enum PersonalityStatus { Temporary, Permanent }
+
+    /// <summary>A horse the mod knows: its fingerprint, personality and whether it is kept.</summary>
+    public sealed class HorseRecord
+    {
+        public HorseFingerprint Id { get; }
+        public Personality Personality { get; }
+        public PersonalityStatus Status { get; }
+        public string FirstSeen { get; }
+        public string LastSeen { get; internal set; }
+
+        public HorseRecord(HorseFingerprint id, Personality personality, PersonalityStatus status, string firstSeen, string lastSeen)
+        {
+            Id = id ?? throw new ArgumentNullException(nameof(id));
+            Personality = personality ?? throw new ArgumentNullException(nameof(personality));
+            Status = status;
+            FirstSeen = firstSeen;
+            LastSeen = lastSeen;
+        }
+
+        internal HorseRecord AsPermanent(string today) => new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today);
+    }
+
+    /// <summary>
+    /// Who gets a personality (Build plan: Who gets a personality):
+    /// - A horse with no breed: none, ever (vanilla in v1).
+    /// - Mounting someone else's horse: a temporary personality for this session, kept by the horse's handle.
+    /// - The player's saddle on a horse: that same personality becomes permanent, kept by fingerprint.
+    /// - A saddle horse the mod has never seen (the starting horse, a new purchase): rolled once, permanent, origin Stable.
+    /// Permanent records come back from horses.json through <see cref="Load"/>; temporary ones are never saved.
+    /// </summary>
+    public sealed class HorseRegistry
+    {
+        private const string LogCategory = "Registry";
+
+        private readonly PersonalityRoller _roller;
+        private readonly ILog _log;
+        private readonly Func<ulong> _newSeed;
+        private readonly Func<DateTime> _clock;
+        private readonly Dictionary<string, HorseRecord> _permanent = new Dictionary<string, HorseRecord>(StringComparer.Ordinal);
+        private readonly Dictionary<int, HorseRecord> _temporary = new Dictionary<int, HorseRecord>();
+        private readonly Dictionary<string, int> _liveHandle = new Dictionary<string, int>(StringComparer.Ordinal);
+        private readonly HashSet<string> _collisionWarned = new HashSet<string>(StringComparer.Ordinal);
+
+        public HorseRegistry(PersonalityRoller roller, ILog log, Func<ulong> newSeed = null, Func<DateTime> clock = null)
+        {
+            _roller = roller ?? throw new ArgumentNullException(nameof(roller));
+            _log = log ?? NullLog.Instance;
+            _newSeed = newSeed ?? SeededRandom.NewSeed;
+            _clock = clock ?? (() => DateTime.Now);
+        }
+
+        /// <summary>True when permanent data changed since the last <see cref="MarkSaved"/>.</summary>
+        public bool Dirty { get; private set; }
+
+        public IReadOnlyCollection<HorseRecord> Permanent => _permanent.Values;
+        public int TemporaryCount => _temporary.Count;
+
+        public void MarkSaved() => Dirty = false;
+
+        /// <summary>Takes permanent records read from horses.json. Does not mark the registry dirty.</summary>
+        public void Load(IEnumerable<HorseRecord> records)
+        {
+            foreach (HorseRecord r in records)
+            {
+                if (r.Status != PersonalityStatus.Permanent) continue;
+                _permanent[r.Id.Key] = r;
+            }
+            _log.Info(LogCategory, $"{_permanent.Count} saved horses loaded.");
+        }
+
+        /// <summary>The personality for a horse the player is on or next to, if it has one. Rolls nothing.</summary>
+        public HorseRecord Find(int handle, HorseFingerprint id)
+        {
+            if (_permanent.TryGetValue(id.Key, out HorseRecord p)) return p;
+            return _temporary.TryGetValue(handle, out HorseRecord t) && t.Id.Equals(id) ? t : null;
+        }
+
+        /// <summary>The player mounted a horse. Returns its personality, rolling a temporary one if needed; null for no breed.</summary>
+        public HorseRecord OnMount(int handle, HorseFingerprint id, Breed breed, HorseOrigin origin, bool isSaddleHorse)
+        {
+            if (breed == null) return null;
+            if (isSaddleHorse) return OnSaddle(handle, id, breed);
+            if (_permanent.TryGetValue(id.Key, out HorseRecord kept)) return Touch(handle, kept);
+
+            if (_temporary.TryGetValue(handle, out HorseRecord temp) && temp.Id.Equals(id)) return temp;
+            string today = Today();
+            temp = new HorseRecord(id, _roller.Roll(breed, origin, _newSeed()), PersonalityStatus.Temporary, today, today);
+            _temporary[handle] = temp;
+            _log.Info(LogCategory, $"Temporary personality for horse {handle} ({id}, {origin}): {temp.Personality}");
+            return temp;
+        }
+
+        /// <summary>
+        /// The player's saddle went on this horse (or the mod first sees the saddle horse). Its temporary personality
+        /// becomes permanent; a horse with none is rolled now as a stable horse. Null for no breed.
+        /// </summary>
+        public HorseRecord OnSaddle(int handle, HorseFingerprint id, Breed breed)
+        {
+            if (breed == null) return null;
+            if (_permanent.TryGetValue(id.Key, out HorseRecord kept)) return Touch(handle, kept);
+
+            string today = Today();
+            HorseRecord record;
+            if (_temporary.TryGetValue(handle, out HorseRecord temp) && temp.Id.Equals(id))
+            {
+                record = temp.AsPermanent(today);
+                _temporary.Remove(handle);
+                _log.Info(LogCategory, $"Saddled horse {handle} ({id}): temporary personality is now permanent.");
+            }
+            else
+            {
+                record = new HorseRecord(id, _roller.Roll(breed, HorseOrigin.Stable, _newSeed()), PersonalityStatus.Permanent, today, today);
+                _log.Info(LogCategory, $"First sight of saddle horse {handle} ({id}): rolled {record.Personality}");
+            }
+            _permanent[id.Key] = record;
+            _liveHandle[id.Key] = handle;
+            Dirty = true;
+            return record;
+        }
+
+        private HorseRecord Touch(int handle, HorseRecord kept)
+        {
+            string key = kept.Id.Key;
+            if (_liveHandle.TryGetValue(key, out int other) && other != handle && _collisionWarned.Add(key))
+                _log.Warn(LogCategory, $"Horses {other} and {handle} share fingerprint {key}, so they share one personality. The game shows no way yet to tell them apart.");
+            _liveHandle[key] = handle;
+            string today = Today();
+            if (kept.LastSeen != today)
+            {
+                kept.LastSeen = today;
+                Dirty = true;
+            }
+            return kept;
+        }
+
+        private string Today() => _clock().ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    }
+}
