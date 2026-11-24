@@ -230,7 +230,12 @@ namespace HorsePersonalities.Game
             if (ms > _worstTickMs) _worstTickMs = ms;
             if (!_perfReport.Due(Environment.TickCount)) return;
             if (_ticks > 1)
-                _boot.Log.Debug("Perf", $"Tick time over the last minute: average {_totalTickMs / _ticks:0.000} ms, worst {_worstTickMs:0.000} ms over {_ticks} ticks (budget 1 ms).");
+            {
+                double average = _totalTickMs / _ticks;
+                // Over budget shows in a normal (Info) log; within budget only at the Debug level.
+                LogLevel level = average > 1.0 ? LogLevel.Warn : LogLevel.Debug;
+                _boot.Log.Write(level, "Perf", $"Tick time over the last minute: average {average:0.000} ms, worst {_worstTickMs:0.000} ms over {_ticks} ticks (budget 1 ms).");
+            }
             _ticks = 0;
             _totalTickMs = 0;
             _worstTickMs = 0;
