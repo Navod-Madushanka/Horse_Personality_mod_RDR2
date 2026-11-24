@@ -6,6 +6,18 @@
 - MIT license.
 - Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.
 
+### Phase 4: Save file (built ahead of Phase 1, by decision)
+- `horses.json` in the plan's format, written when a horse becomes permanent, when a kept horse is seen on a new day, and when the script stops. Full precision, so a reload gives back the exact horse.
+- Writes go through a temporary file; the previous file is kept as `horses.backup.json`.
+- A broken file is kept as `horses.broken-<time>.json` and the backup loads; both broken starts empty without crashing.
+- `ResetAllHorses` moves the save aside as `horses.reset-<time>.json` and turns itself back to false.
+
+### Phase 2: Horse tracking and identity (built ahead of Phase 1, by decision)
+- Fingerprint of model, sex and coat (coat is `default` until the game shows a way to read it).
+- Mounting someone else's horse gives a temporary personality; your saddle makes it permanent with the same values. A new saddle horse, including the starting horse, is rolled once.
+- The overlay shows the fingerprint and whether the personality is temporary or permanent; it replaces the Phase 3 preview.
+- DevTools trigger 35, *Read horse identity*, for checking what the game exposes.
+
 ### Phase 3: Personality roller (Core built ahead of Phase 1, by decision)
 - Rolls good or bad, four traits around the breed's leanings, 1 or 2 quirks (likely quirks weighted), natural stats within the tier caps, and breaking difficulty for wild horses.
 - Same seed, same horse: a SplitMix64 generator with a fixed number of draws per roll.
