@@ -97,6 +97,17 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void LoadsRollerTuningAndTierCaps()
+        {
+            var c = Shipped();
+            Assert.Equal(0.6, c.Roller.TraitSpread);
+            Assert.Equal(4, c.Roller.LikelyQuirkWeight);
+            Assert.Equal(4, c.TierCaps.Count);
+            Assert.Equal(0.04, c.TierCaps[StatTier.Heavy].Up);
+            Assert.Equal(0.05, c.TierCaps[StatTier.Elite].Down);
+        }
+
+        [Fact]
         public void TiersRunFromHeavyToElite() =>
             Assert.True(StatTier.Heavy < StatTier.Standard && StatTier.Standard < StatTier.Race && StatTier.Race < StatTier.Elite);
 
@@ -117,10 +128,14 @@ namespace HorsePersonalities.Tests
         }
 
         [Theory]
-        [InlineData("\"schemaVersion\": 1", "\"schemaVersion\": 2", "schemaVersion")]
+        [InlineData("\"schemaVersion\": 2", "\"schemaVersion\": 1", "schemaVersion")]
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]
+        [InlineData("\"traitSpread\": 0.6", "\"traitSpread\": 9", "roller.traitSpread")]
+        [InlineData("\"hardBreakScore\": 1.5", "\"hardBreakScore\": 3.5", "must not be below Hard break score")]
+        [InlineData(", \"Elite\": { \"statUpCap\": 0.1, \"statDownCap\": 0.05 }", "", "no caps for Elite")]
+        [InlineData("\"Heavy\": { \"statUpCap\": 0.04", "\"Heavy\": { \"statUpCap\": 0.9", "tiers.Heavy")]
         [InlineData("\"handling\": \"Standard\"", "\"handling\": \"Fast\"", "handling \"Fast\"")]
         [InlineData("\"handling\": \"Standard\", ", "", "handling \"\"")]
         [InlineData("\"a_c_horsemule_01\"", "\"a_c_horse_turkoman_gold\"", "both Turkoman and otherModels")]

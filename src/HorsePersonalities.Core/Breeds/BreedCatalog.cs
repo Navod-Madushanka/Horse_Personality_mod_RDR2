@@ -37,7 +37,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 1;
+        public const int CurrentSchemaVersion = 2;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -50,10 +50,14 @@ namespace HorsePersonalities.Core.Breeds
         public IReadOnlyDictionary<string, LearningRate> ClassRates { get; }
         public IReadOnlyList<Breed> Breeds { get; }
         public IReadOnlyList<OtherModel> OtherModels { get; }
+        public RollerTuning Roller { get; }
+        public IReadOnlyDictionary<StatTier, TierCap> TierCaps { get; }
 
         private BreedCatalog(int schemaVersion, double penalty, Dictionary<string, LearningRate> classRates,
-            List<Breed> breeds, List<OtherModel> otherModels)
+            List<Breed> breeds, List<OtherModel> otherModels, RollerTuning roller, Dictionary<StatTier, TierCap> tierCaps)
         {
+            Roller = roller;
+            TierCaps = tierCaps;
             SchemaVersion = schemaVersion;
             MultiClassPenalty = penalty;
             ClassRates = classRates;
@@ -176,11 +180,35 @@ namespace HorsePersonalities.Core.Breeds
                 }
             }
 
+            RollerTuning roller = RollerTuning.Read(root["roller"], problems);
+            var tierCaps = ReadTiers(root["tiers"], problems);
+
             if (problems.Count > 0) throw new BreedDataException(problems);
 
-            var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others);
+            var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others, roller, tierCaps);
             log.Info(Log, $"Loaded {breeds.Count} breeds and {catalog.ModelCount} horse models ({others.Count} not tied to a breed).");
             return catalog;
+        }
+
+        private static Dictionary<StatTier, TierCap> ReadTiers(JsonValue j, List<string> problems)
+        {
+            var caps = new Dictionary<StatTier, TierCap>();
+            if (j.Kind != JsonKind.Object)
+            {
+                problems.Add("\"tiers\" must be an object with one entry per tier (the Tiers tab).");
+                return caps;
+            }
+            foreach (var kv in j.Members)
+            {
+                if (!NameMatching.TryParseTier(kv.Key, out StatTier tier)) { problems.Add($"tiers: unknown tier \"{kv.Key}\"."); continue; }
+                double up = kv.Value.GetNumber("statUpCap", double.NaN), down = kv.Value.GetNumber("statDownCap", double.NaN);
+                if (double.IsNaN(up) || double.IsNaN(down) || up < 0 || down < 0 || up > TierCap.MaxCap || down > TierCap.MaxCap)
+                    problems.Add($"tiers.{kv.Key}: statUpCap and statDownCap must be fractions from 0 to {TierCap.MaxCap}.");
+                else caps[tier] = new TierCap(tier, up, down);
+            }
+            foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
+                if (!caps.ContainsKey(t) && j.Kind == JsonKind.Object && !problems.Exists(p => p.StartsWith("tiers." + t))) problems.Add($"tiers: no caps for {t}.");
+            return caps;
         }
 
         private static Breed ReadBreed(JsonValue j, int index, Dictionary<string, LearningRate> classRates, double penalty,

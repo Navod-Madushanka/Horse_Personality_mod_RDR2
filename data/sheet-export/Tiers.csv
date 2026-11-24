@@ -1,0 +1,5 @@
+Tier,Stat up cap,Stat down cap,Why
+Heavy,4%,10%,Drafts can't climb far toward Standard horses.
+Standard,6%,10%,Most breeds. A good one stays below Race horses.
+Race,8%,8%,"Fast breeds, kept between Standard and Elite."
+Elite,10%,5%,Arabians. A small downward cap keeps the Arabian the fastest breed.

@@ -17,13 +17,17 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   Breeds.csv   the sheet's Breeds tab (header row starts with "Breed")
     ///   Classes.csv  the sheet's Classes tab ("Multi-class penalty" row and a "Class" header row)
     ///   horse-models.csv  model,breed,note: every a_c_horse_ model, with the breed it belongs to (blank if none)
+    ///   Roller.csv   the sheet's Roller tab (Setting, Value): the roller's tuning numbers
+    ///   Tiers.csv    the sheet's Tiers tab (Tier, Stat up cap, Stat down cap)
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
     /// </summary>
     public static class SheetConverter
     {
-        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv)
+        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv)
         {
             var problems = new List<string>();
+            JsonValue roller = ReadRoller(rollerCsv, problems);
+            JsonValue tiers = ReadTiers(tiersCsv, problems);
 
             // ---- Classes ----
             var classRows = Csv.Parse(classesCsv);
@@ -192,8 +196,64 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("generatedBy", "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.")
                 .Set("multiClassPenalty", penalty)
                 .Set("classes", classesJson)
+                .Set("roller", roller)
+                .Set("tiers", tiers)
                 .Set("breeds", breeds)
                 .Set("otherModels", others);
+        }
+
+        private static JsonValue ReadRoller(string csv, List<string> problems)
+        {
+            var rows = Csv.Parse(csv);
+            var result = JsonValue.NewObject();
+            int header = rows.FindIndex(r => Cell(r, 0).Equals("Setting", StringComparison.OrdinalIgnoreCase));
+            if (header < 0) { problems.Add("Roller.csv: no header row starting with \"Setting\"."); return result; }
+            int vCol = Col(Header(rows[header]), "Value", problems, "Roller.csv");
+            var seen = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+            for (int i = header + 1; i < rows.Count; i++)
+            {
+                string label = Cell(rows[i], 0).Trim();
+                if (label.Length == 0) continue;
+                var field = RollerTuning.Fields.FirstOrDefault(f => f.Label.Equals(label, StringComparison.OrdinalIgnoreCase));
+                if (field.Key == null) { problems.Add($"Roller.csv: unknown setting \"{label}\". Known: {string.Join(", ", RollerTuning.Fields.Select(f => f.Label))}."); continue; }
+                string raw = Cell(rows[i], vCol);
+                double v = raw.Trim().EndsWith("%", StringComparison.Ordinal) ? ParseFraction(raw) : (TryNumber(raw, out double n) ? n : double.NaN);
+                if (double.IsNaN(v)) { problems.Add($"Roller.csv: {label} \"{raw}\" is not a number."); continue; }
+                seen[field.Key] = v;
+            }
+            // Written in the Fields order, so the JSON doesn't change when rows move in the sheet.
+            foreach (var f in RollerTuning.Fields)
+            {
+                if (seen.TryGetValue(f.Key, out double v)) result.Set(f.Key, Round(v));
+                else problems.Add($"Roller.csv: no \"{f.Label}\" row.");
+            }
+            return result;
+        }
+
+        private static JsonValue ReadTiers(string csv, List<string> problems)
+        {
+            var rows = Csv.Parse(csv);
+            var result = JsonValue.NewObject();
+            int header = rows.FindIndex(r => Cell(r, 0).Equals("Tier", StringComparison.OrdinalIgnoreCase));
+            if (header < 0) { problems.Add("Tiers.csv: no header row starting with \"Tier\"."); return result; }
+            var h = Header(rows[header]);
+            int upCol = Col(h, "Stat up cap", problems, "Tiers.csv"), downCol = Col(h, "Stat down cap", problems, "Tiers.csv");
+            var found = new Dictionary<StatTier, (double Up, double Down)>();
+            for (int i = header + 1; i < rows.Count; i++)
+            {
+                string name = Cell(rows[i], 0).Trim();
+                if (name.Length == 0) continue;
+                if (!NameMatching.TryParseTier(name, out StatTier tier)) { problems.Add($"Tiers.csv: unknown tier \"{name}\"."); continue; }
+                double up = ParseFraction(Cell(rows[i], upCol)), down = ParseFraction(Cell(rows[i], downCol));
+                if (double.IsNaN(up) || double.IsNaN(down)) { problems.Add($"Tiers.csv: {name} needs both caps, like 6%."); continue; }
+                found[tier] = (up, down);
+            }
+            foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
+            {
+                if (found.TryGetValue(t, out var c)) result.Set(t.ToString(), JsonValue.NewObject().Set("statUpCap", Round(c.Up)).Set("statDownCap", Round(c.Down)));
+                else problems.Add($"Tiers.csv: no row for {t}.");
+            }
+            return result;
         }
 
         private static double Round(double v) => Math.Round(v, 4);

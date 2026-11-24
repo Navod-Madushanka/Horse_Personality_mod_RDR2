@@ -1,3 +1,5 @@
+using System.Linq;
+using System;
 using HorsePersonalities.Tools.SheetToJson;
 using Xunit;
 
@@ -5,15 +7,19 @@ namespace HorsePersonalities.Tests
 {
     public class SheetToJsonTests
     {
+        private static string Export(string file) => TestData.Read("data", "sheet-export", file);
+
+        /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
+        private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null) =>
+            SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
+                roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"));
+
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()
         {
             // If this fails, someone edited the CSVs without regenerating (or edited breeds.json by hand).
             // Fix: dotnet run --project tools/sheet-to-json
-            var json = SheetConverter.Convert(
-                TestData.Read("data", "sheet-export", "Breeds.csv"),
-                TestData.Read("data", "sheet-export", "Classes.csv"),
-                TestData.Read("data", "horse-models.csv"));
+            var json = Convert();
             Assert.Equal(TestData.BreedsJson.Replace("\r\n", "\n").Trim(), json.ToJson().Trim());
         }
 
@@ -48,7 +54,7 @@ namespace HorsePersonalities.Tests
         public void TypedOverLearningRateBecomesAnOverride()
         {
             string breeds = TestData.Read("data", "sheet-export", "Breeds.csv").Replace("Turkoman,Race,War,1.17,", "Turkoman,Race,War,1.40,");
-            var json = SheetConverter.Convert(breeds, TestData.Read("data", "sheet-export", "Classes.csv"), TestData.Read("data", "horse-models.csv"));
+            var json = Convert(breeds: breeds);
             foreach (var b in json["breeds"].Items)
                 if (b["name"].AsString() == "Turkoman")
                 {
@@ -66,7 +72,7 @@ namespace HorsePersonalities.Tests
                 .Replace("Arabian,Superior,", "Arabian,Pony,")
                 .Replace("\"Shadow, Wanderer\"", "\"Shadow, Juggler\"");
             var ex = Assert.Throws<ConversionException>(() =>
-                SheetConverter.Convert(breeds, TestData.Read("data", "sheet-export", "Classes.csv"), TestData.Read("data", "horse-models.csv")));
+                Convert(breeds: breeds));
             Assert.Contains("class \"Pony\"", ex.Message);
             Assert.Contains("Juggler", ex.Message);
         }
@@ -76,8 +82,43 @@ namespace HorsePersonalities.Tests
         {
             string breeds = TestData.Read("data", "sheet-export", "Breeds.csv").Replace("\"Nosy, Chatterbox, Head-tosser\",Elite,", "\"Nosy, Chatterbox, Head-tosser\",Superfast,");
             var ex = Assert.Throws<ConversionException>(() =>
-                SheetConverter.Convert(breeds, TestData.Read("data", "sheet-export", "Classes.csv"), TestData.Read("data", "horse-models.csv")));
+                Convert(breeds: breeds));
             Assert.Contains("Handling \"Superfast\"", ex.Message);
+        }
+
+        [Fact]
+        public void RollerAndTierNumbersComeFromTheirTabs()
+        {
+            var json = Convert();
+            Assert.Equal(0.35, json["roller"]["secondQuirkChance"].AsNumber());
+            Assert.Equal(0.6, json["roller"]["traitSpread"].AsNumber());
+            Assert.Equal(0.06, json["tiers"]["Standard"]["statUpCap"].AsNumber());
+            Assert.Equal(0.05, json["tiers"]["Elite"]["statDownCap"].AsNumber());
+        }
+
+        [Theory]
+        [InlineData("Trait spread,0.6,", "Trait wobble,0.6,", "unknown setting \"Trait wobble\"")]
+        [InlineData("Stat spread,0.5,", "Stat spread,lots,", "Stat spread \"lots\"")]
+        [InlineData("Hard break score,1.5,", "", "no \"Hard break score\" row")]
+        public void BadRollerTabIsAnError(string find, string replace, string expected)
+        {
+            string roller = Export("Roller.csv");
+            if (replace.Length == 0) roller = string.Join("\n", roller.Split('\n').Where(l => !l.StartsWith(find)));
+            else roller = roller.Replace(find, replace);
+            var ex = Assert.Throws<ConversionException>(() => Convert(roller: roller));
+            Assert.Contains(expected, ex.Message);
+        }
+
+        [Theory]
+        [InlineData("Heavy,4%,10%,", "Lumbering,4%,10%,", "unknown tier \"Lumbering\"")]
+        [InlineData("Elite,10%,5%,", "Elite,10%,,", "Elite needs both caps")]
+        [InlineData("Race,8%,8%,", "Race,80%,8%,", "tiers.Race")]
+        public void BadTiersTabIsAnError(string find, string replace, string expected)
+        {
+            string tiers = Export("Tiers.csv").Replace(find, replace);
+            Exception ex = Record.Exception(() => HorsePersonalities.Core.Breeds.BreedCatalog.Load(Convert(tiers: tiers).ToJson(), new HorsePersonalities.Core.Logging.MemoryLog()));
+            Assert.NotNull(ex);
+            Assert.Contains(expected, ex.Message);
         }
 
         [Fact]
@@ -85,7 +126,7 @@ namespace HorsePersonalities.Tests
         {
             string models = TestData.Read("data", "horse-models.csv") + "a_c_horse_fake_01,Pegasus,,\n";
             var ex = Assert.Throws<ConversionException>(() =>
-                SheetConverter.Convert(TestData.Read("data", "sheet-export", "Breeds.csv"), TestData.Read("data", "sheet-export", "Classes.csv"), models));
+                Convert(models: models));
             Assert.Contains("Pegasus", ex.Message);
         }
     }

@@ -9,8 +9,8 @@ namespace HorsePersonalities.Tools.SheetToJson
     /// Usage (from the repo root):
     ///   dotnet run --project tools/sheet-to-json
     ///   dotnet run --project tools/sheet-to-json -- --check     (fails if data/breeds.json is out of date)
-    /// Options: --breeds PATH --classes PATH --models PATH --out PATH
-    /// Defaults: data/sheet-export/Breeds.csv, data/sheet-export/Classes.csv, data/horse-models.csv, data/breeds.json
+    /// Options: --breeds PATH --classes PATH --models PATH --roller PATH --tiers PATH --out PATH
+    /// Defaults: data/sheet-export/{Breeds,Classes,Roller,Tiers}.csv, data/horse-models.csv, data/breeds.json
     /// </summary>
     public static class Program
     {
@@ -20,6 +20,8 @@ namespace HorsePersonalities.Tools.SheetToJson
             string breeds = Path.Combine(root, "data", "sheet-export", "Breeds.csv");
             string classes = Path.Combine(root, "data", "sheet-export", "Classes.csv");
             string models = Path.Combine(root, "data", "horse-models.csv");
+            string roller = Path.Combine(root, "data", "sheet-export", "Roller.csv");
+            string tiers = Path.Combine(root, "data", "sheet-export", "Tiers.csv");
             string output = Path.Combine(root, "data", "breeds.json");
             bool check = false;
 
@@ -32,10 +34,12 @@ namespace HorsePersonalities.Tools.SheetToJson
                     case "--breeds": breeds = Next(); break;
                     case "--classes": classes = Next(); break;
                     case "--models": models = Next(); break;
+                    case "--roller": roller = Next(); break;
+                    case "--tiers": tiers = Next(); break;
                     case "--out": output = Next(); break;
                     case "--check": check = true; break;
                     case "-h": case "--help":
-                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--out breeds.json] [--check]");
+                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--out breeds.json] [--check]");
                         return 0;
                     default:
                         Console.Error.WriteLine($"Unknown option {a}. Try --help.");
@@ -45,7 +49,7 @@ namespace HorsePersonalities.Tools.SheetToJson
 
             try
             {
-                var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models));
+                var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models), File.ReadAllText(roller), File.ReadAllText(tiers));
                 string text = json.ToJson();
 
                 // Same validation the mod runs on load, so a file that passes here loads in game.

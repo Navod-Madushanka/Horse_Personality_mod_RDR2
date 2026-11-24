@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -26,6 +26,35 @@
     "Draft": {
       "physical": 0.6,
       "combat": 1.2
+    }
+  },
+  "roller": {
+    "traitSpread": 0.6,
+    "qualityShift": 0.5,
+    "flawMargin": 0.25,
+    "secondQuirkChance": 0.35,
+    "likelyQuirkWeight": 4,
+    "statSpread": 0.5,
+    "statQualityShift": 0.25,
+    "hardBreakScore": 1.5,
+    "unbreakableBreakScore": 2.5
+  },
+  "tiers": {
+    "Heavy": {
+      "statUpCap": 0.04,
+      "statDownCap": 0.1
+    },
+    "Standard": {
+      "statUpCap": 0.06,
+      "statDownCap": 0.1
+    },
+    "Race": {
+      "statUpCap": 0.08,
+      "statDownCap": 0.08
+    },
+    "Elite": {
+      "statUpCap": 0.1,
+      "statDownCap": 0.05
     }
   },
   "breeds": [

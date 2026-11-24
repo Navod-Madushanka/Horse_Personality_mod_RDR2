@@ -20,8 +20,12 @@ namespace HorsePersonalities.Tests
 
         /// <summary>A tiny valid breeds.json to edit in tests.</summary>
         public const string MinimalBreeds = @"{
-  ""schemaVersion"": 1,
+  ""schemaVersion"": 2,
   ""multiClassPenalty"": 0.10,
+  ""roller"": { ""traitSpread"": 0.6, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
+                ""statSpread"": 0.5, ""statQualityShift"": 0.25, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5 },
+  ""tiers"": { ""Heavy"": { ""statUpCap"": 0.04, ""statDownCap"": 0.1 }, ""Standard"": { ""statUpCap"": 0.06, ""statDownCap"": 0.1 },
+               ""Race"": { ""statUpCap"": 0.08, ""statDownCap"": 0.08 }, ""Elite"": { ""statUpCap"": 0.1, ""statDownCap"": 0.05 } },
   ""classes"": { ""Race"": { ""physical"": 1.3, ""combat"": 0.7 }, ""War"": { ""physical"": 0.8, ""combat"": 1.5 } },
   ""breeds"": [
     { ""name"": ""Turkoman"", ""models"": [""a_c_horse_turkoman_gold"", ""a_c_horse_turkoman_silver""], ""classes"": [""Race"", ""War""],
