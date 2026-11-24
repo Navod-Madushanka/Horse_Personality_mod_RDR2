@@ -76,3 +76,35 @@ namespace HorsePersonalities.Core.Settings
         }
     }
 }
+
+namespace HorsePersonalities.Core.Settings
+{
+    public static class IniEdit
+    {
+        /// <summary>
+        /// Sets one key's value in INI text, keeping every other line, comment and the key's own inline comment.
+        /// Used to turn ResetAllHorses back to false after a reset, so it doesn't wipe every load.
+        /// Returns the text unchanged if the key isn't there.
+        /// </summary>
+        public static string SetValue(string text, string key, string value)
+        {
+            if (text == null) return null;
+            string nl = text.Contains("\r\n") ? "\r\n" : "\n";
+            string[] lines = text.Replace("\r\n", "\n").Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string t = lines[i].TrimStart();
+                if (t.StartsWith(";") || t.StartsWith("#")) continue;
+                int eq = lines[i].IndexOf('=');
+                if (eq <= 0 || !lines[i].Substring(0, eq).Trim().Equals(key, StringComparison.OrdinalIgnoreCase)) continue;
+                string rest = lines[i].Substring(eq + 1);
+                int comment = -1;
+                for (int c = 1; c < rest.Length; c++)
+                    if ((rest[c] == ';' || rest[c] == '#') && char.IsWhiteSpace(rest[c - 1])) { comment = c; break; }
+                string tail = comment >= 0 ? " " + rest.Substring(comment) : "";
+                lines[i] = lines[i].Substring(0, eq).TrimEnd() + " = " + value + tail;
+            }
+            return string.Join(nl, lines);
+        }
+    }
+}
