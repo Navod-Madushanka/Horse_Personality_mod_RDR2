@@ -30,13 +30,16 @@ namespace HorsePersonalities.Tests
             var reg = Registry();
 
             var temp = OverlayText.Build(d, reg.OnMount(10, id, d.Breed, HorseOrigin.Unknown, false));
-            Assert.Contains("Turkoman (Standard tier) - a_c_horse_turkoman_gold - male - bond 3", temp);
-            Assert.Contains("Fingerprint a_c_horse_turkoman_gold|male|default - temporary (gone on reload; saddle it to keep it)", temp);
+            Assert.Contains("Turkoman (Standard tier) - male - bond 3", temp);
+            Assert.Contains("a_c_horse_turkoman_gold", temp);
+            Assert.Contains("Fingerprint a_c_horse_turkoman_gold|male|default", temp);
+            Assert.Contains("Temporary: gone on reload, saddle it to keep it", temp);
+            Assert.All(temp, l => Assert.True(l.Length <= 90, $"Overlay line too long for its column: {l}"));
             Assert.Contains(temp, l => l.StartsWith("Courage "));
             Assert.Contains(temp, l => l.StartsWith("Quirks: "));
 
             var kept = OverlayText.Build(d, reg.OnSaddle(10, id, d.Breed));
-            Assert.Contains("Fingerprint a_c_horse_turkoman_gold|male|default - permanent, first seen 2026-11-24", kept);
+            Assert.Contains("Permanent, first seen 2026-11-24", kept);
         }
 
         [Fact]

@@ -81,6 +81,8 @@ The Game and DevTools projects compile with no warnings against ScriptHookRDR2Do
 
 ## In-game test steps
 
+All the in-game tests for Phases 0 to 4 are in one ordered session: [Home test session: Phases 0 to 4](https://claude.ai/artifact/LHNYRDvz4rwgNyL2MNEVbF). The steps below are the Phase 0 and 1 parts of it.
+
 ### Before you start
 
 1. Finish the plan's *Before coding* checklist, including backing up your save folder.

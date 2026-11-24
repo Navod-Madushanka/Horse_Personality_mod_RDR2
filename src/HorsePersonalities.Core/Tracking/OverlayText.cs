@@ -12,16 +12,19 @@ namespace HorsePersonalities.Core.Tracking
             var lines = new List<string>
             {
                 "HORSE PERSONALITIES - debug overlay",
-                $"{horse.BreedLabel}{(horse.Breed != null ? " (" + horse.Breed.Tier + " tier)" : "")} - {horse.ModelName} - {(horse.IsMale ? "male" : "female")} - bond {horse.BondRank}",
+                // Short lines: the overlay shares the screen with the DevTools menu, so the model name gets its own line.
+                $"{horse.BreedLabel}{(horse.Breed != null ? " (" + horse.Breed.Tier + " tier)" : "")} - {(horse.IsMale ? "male" : "female")} - bond {horse.BondRank}",
+                horse.ModelName,
             };
             if (record == null)
             {
                 lines.Add("No personality: horses with no breed row stay vanilla in v1.");
                 return lines;
             }
-            lines.Add($"Fingerprint {record.Id.Key} - " + (record.Status == PersonalityStatus.Permanent
-                ? $"permanent, first seen {record.FirstSeen}"
-                : "temporary (gone on reload; saddle it to keep it)"));
+            lines.Add("Fingerprint " + record.Id.Key);
+            lines.Add(record.Status == PersonalityStatus.Permanent
+                ? $"Permanent, first seen {record.FirstSeen}"
+                : "Temporary: gone on reload, saddle it to keep it");
             lines.AddRange(record.Personality.Describe());
             return lines;
         }
