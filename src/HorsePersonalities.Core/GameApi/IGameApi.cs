@@ -84,6 +84,10 @@ namespace HorsePersonalities.Core.GameApi
         /// <summary>eTamingState from _GET_HORSE_TAMING_STATE (0 invalid .. fleeing).</summary>
         int GetTamingState(int horse);
         float DistanceBetween(int a, int b);
+        /// <summary>GET_NUM_META_PED_OUTFITS: how many outfits (coats) the horse's model has. Phase 2 checks if it helps tell coats apart.</summary>
+        int GetOutfitCount(int ped);
+        /// <summary>_GET_META_PED_TYPE. Phase 2 readout only.</summary>
+        int GetMetaPedType(int ped);
         int GetClosestHumanPed(int aroundEntity, float radius, int excludePed);
 
         // ---- Attributes (stats and bonding) ----

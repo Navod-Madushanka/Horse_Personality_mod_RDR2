@@ -180,6 +180,18 @@ namespace HorsePersonalities.DevTools
             t.Add(new Trigger("clear", "Clear the horse's tasks", "(utility)",
                 "Stops whatever a trigger started.",
                 ctx => { ctx.Game.ClearTasks(ctx.Horse); ctx.Game.ClearLookAt(ctx.Horse); return "CLEAR_PED_TASKS + TASK_CLEAR_LOOK_AT"; }));
+            // Added after the Phase 1 checklist was written: kept last so numbers 01-34 stay the same.
+            t.Add(new Trigger("read.identity", "Read horse identity (Phase 2)", "Fingerprint: which parts the game exposes",
+                "Ride or stand by the horse. Try two horses of the same breed and coat: do any numbers differ?",
+                ctx =>
+                {
+                    IGameApi g = ctx.Game;
+                    int h = ctx.Horse;
+                    string line = $"model 0x{g.GetModel(h):X8}, {(g.IsMale(h) ? "male" : "female")}, outfits {g.GetOutfitCount(h)}, meta ped type {g.GetMetaPedType(h)}, " +
+                        $"taming {Detectors.TamingName(g.GetTamingState(h))}; saddle {g.GetSaddleHorse()}, active {g.GetActiveHorse()}, temp {g.GetTempHorse()}, this {h}";
+                    ctx.Log("Identity: " + line);
+                    return line;
+                }));
             return t;
         }
 

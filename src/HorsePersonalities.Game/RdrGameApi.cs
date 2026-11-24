@@ -63,6 +63,9 @@ namespace HorsePersonalities.Game
             return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
+        public int GetOutfitCount(int ped) => Function.Call<int>(Natives.GET_NUM_META_PED_OUTFITS, ped);
+        public int GetMetaPedType(int ped) => Function.Call<int>(Natives.GET_META_PED_TYPE, ped);
+
         private static Vector3 Coords(int entity) => Function.Call<Vector3>(Natives.GET_ENTITY_COORDS, entity, true, true);
 
         public unsafe int GetClosestHumanPed(int aroundEntity, float radius, int excludePed)

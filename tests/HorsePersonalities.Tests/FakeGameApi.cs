@@ -43,6 +43,8 @@ namespace HorsePersonalities.Tests
         public bool IsMale(int ped) => Males.Contains(ped);
         public int GetTamingState(int horse) => 0;
         public float DistanceBetween(int a, int b) => 0;
+        public int GetOutfitCount(int ped) => 1;
+        public int GetMetaPedType(int ped) => 0;
         public int GetClosestHumanPed(int aroundEntity, float radius, int excludePed) => 0;
 
         public AttributeReading ReadAttribute(int ped, PedAttribute attribute) =>

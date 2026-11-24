@@ -6,6 +6,10 @@ namespace HorsePersonalities.Game
 {
     internal static class Natives
     {
+        /// <summary>PED::GET_NUM_META_PED_OUTFITS(int ped) -> int</summary>
+        public const ulong GET_NUM_META_PED_OUTFITS = 0x10C70A515BC03707;
+        /// <summary>PED::_GET_META_PED_TYPE(int ped) -> int</summary>
+        public const ulong GET_META_PED_TYPE = 0xEC9A1261BF0CE510;
         /// <summary>MISC::GET_GAME_TIMER() -> int</summary>
         public const ulong GET_GAME_TIMER = 0x4F67E8ECA7D3F667;
         /// <summary>DLC::GET_IS_LOADING_SCREEN_ACTIVE() -> bool</summary>
