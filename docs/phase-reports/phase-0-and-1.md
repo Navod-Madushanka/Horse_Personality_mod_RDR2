@@ -104,6 +104,7 @@ The Game and DevTools projects compile with no warnings against ScriptHookRDR2Do
 Use a test save away from towns and lawmen.
 
 1. Press **F10** to open the panel. Each row says what it's for and how to test it.
+   A checklist of every trigger and detector, numbered as on the panel, is in [`docs/phase1-results-template.csv`](../phase1-results-template.csv). Fill its `result` and `notes` columns as you go; the game also writes `phase1-results.csv` on its own when you press Home or Delete.
 2. For each trigger: set up as the *How* line says, press **End**, then **Home** if the behavior happened or **Delete** if not. Note anything odd: a different animation, a delay, or the effect not ending.
 3. For the stat triggers, check the horse's stat bars after the first press, press again to restore, then save and reload to see whether the change stuck.
 4. For the explorer, press **End** repeatedly and write down any id that does something new: a kick, a piaffe, head tossing.
