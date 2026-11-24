@@ -63,6 +63,9 @@ Every horse is built from three layers: the breed sets the limits, the individua
 - When the player mounts one: a temporary personality, gone on reload.
 - When the player puts their saddle on it: that same personality becomes permanent.
 - Horses the player already owns, including the starting horse, are rolled the first time the mod sees them.
+- "Owned" means the horse wearing the player's saddle (the game's saddle horse). The mod sees a stabled horse when the player takes it out.
+- A horse first seen as the saddle horse, with no temporary personality, counts as a stable horse. A temporary personality keeps its origin when it becomes permanent, so a broken wild horse stays wild.
+- A personality is matched to a horse by its fingerprint (model, sex, coat). Two owned horses with the same fingerprint share one personality; the log warns when that happens.
 
 &#91;embedded content: horse lifecycle · 5 states, 1 decision\]
 
@@ -213,6 +216,9 @@ Model names in the example are placeholders; the real list comes from `peds_list
 - Traits are numbers from -2 to +2, matching the sheet's scale. Natural stats are fractions of the breed baseline, capped by tier.
 - Skills run from 0 (untrained) to 1 (at the horse's ceiling).
 - Temporary personalities are never written to this file.
+- Each record also keeps the roll's `seed` and `rollerVersion`, so a horse can be checked against a fresh roll.
+- The file is written when a personality becomes permanent and when the script stops (reload or quit), never every frame. Each write first copies the last good file to `horses.backup.json`.
+- A broken `horses.json` is kept as `horses.broken-<time>.json` and the backup is loaded instead; nothing is deleted. `ResetAllHorses` moves the file aside as `horses.reset-<time>.json`, starts empty, and sets itself back to false.
 
 ### HorsePersonalities.ini (player settings)
 
@@ -460,7 +466,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 Work one phase at a time, keep logic testable outside the game, and ask Navod to test in game instead of guessing how the game behaves.
 
 1. Do the phases in order. Start the next only when its "Done when" passes and Navod confirms it in game.
-   Exception (Nov 24, 2026, Navod's call): Phase 3's Core work is built while Phase 1 waits for game time. Phase 3's in-game check (the overlay) still waits until Phase 1 passes.
+   Exception (Nov 24, 2026, Navod's call): Phases 2, 3 and 4 are built while Phase 1 waits for game time. Their in-game checks still wait until Phase 1 passes, and if Phase 1 shows a detector doesn't work (saddle swap, wild horse mount), the game wiring changes, not the Core rules.
 2. The Phase 1 results in the sheet's Quirks tab are the source of truth. Never build on a trigger marked Doesn't work.
 3. Put all logic in `HorsePersonalities.Core`, with no game references, and unit test it. The game script is a thin layer that reads the game and calls Core.
 4. Route every native call through one `IGameApi` adapter. It is the one place to fix after a game update, and it can be faked in tests.
