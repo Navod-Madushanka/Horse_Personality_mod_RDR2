@@ -24,22 +24,36 @@ namespace HorsePersonalities.Game
 
         // ---- Time and session ----
 
+        /// <summary>
+        /// Reads a native's yes/no result. In game every Function.Call&lt;bool&gt; read as true (loading screen, faded out, IS_PED_MALE on
+        /// a female horse, IS_ENTITY_DEAD on a live horse), so the result is read as a number and only its lowest byte is tested.
+        /// </summary>
+        private static bool CallBool(ulong hash, params InputArgument[] args) => (Function.Call<int>(hash, args) & 0xFF) != 0;
+
+        /// <summary>The raw 32-bit result of a native, for diagnostics.</summary>
+        public int RawResult(ulong hash, params InputArgument[] args) => Function.Call<int>(hash, args);
+
+
         public int GameTimeMs => Function.Call<int>(Natives.GET_GAME_TIMER);
-        public bool IsLoadingScreenActive => Function.Call<bool>(Natives.GET_IS_LOADING_SCREEN_ACTIVE);
-        public bool IsPlayerPlaying => Function.Call<bool>(Natives.IS_PLAYER_PLAYING, PlayerId);
+        public bool IsLoadingScreenActive => CallBool(Natives.GET_IS_LOADING_SCREEN_ACTIVE);
+        public bool IsPlayerPlaying => CallBool(Natives.IS_PLAYER_PLAYING, PlayerId);
         /// <summary>Cross-check using the hook's own wrappers, for when a native hash is wrong. Used only by Phase 0 diagnostics.</summary>
         public string StartupDiagnostics()
         {
             string native, hook;
-            try { native = $"native loading={IsLoadingScreenActive} playing={IsPlayerPlaying} fadedOut={IsScreenFadedOut}"; } catch (Exception ex) { native = "native threw " + ex.GetType().Name; }
+            try { native = $"native loading={IsLoadingScreenActive} (raw 0x{RawResult(Natives.GET_IS_LOADING_SCREEN_ACTIVE):X}) playing={IsPlayerPlaying} fadedOut={IsScreenFadedOut} (raw 0x{RawResult(Natives.IS_SCREEN_FADED_OUT):X})"; } catch (Exception ex) { native = "native threw " + ex.GetType().Name; }
             try { hook = $"hook loading={RDR2.Game.IsLoading} playing={RDR2.Game.Player.IsPlaying}"; } catch (Exception ex) { hook = "hook threw " + ex.GetType().Name; }
             return native + "; " + hook;
         }
 
         /// <summary>MISC::GET_MISSION_FLAG. Phase 1 checks it is true for the whole of a story mission.</summary>
-        public bool IsMissionActive => Function.Call<bool>(Natives.GET_MISSION_FLAG);
-        public bool IsScreenFadedOut => Function.Call<bool>(Natives.IS_SCREEN_FADED_OUT);
-        public bool IsPlayerControlOn => Function.Call<bool>(Natives.IS_PLAYER_CONTROL_ON, PlayerId);
+        public bool IsMissionActive => CallBool(Natives.GET_MISSION_FLAG);
+        public bool IsScreenFadedOut => CallBool(Natives.IS_SCREEN_FADED_OUT);
+        public bool IsPlayerControlOn => CallBool(Natives.IS_PLAYER_CONTROL_ON, PlayerId);
+        public bool HasLetterBox => CallBool(Natives.HAS_LETTER_BOX);
+        public bool IsGameplayCamRendering => CallBool(Natives.IS_GAMEPLAY_CAM_RENDERING);
+        public bool IsCinematicCamRendering => CallBool(Natives.IS_CINEMATIC_CAM_RENDERING);
+        public bool IsAnimSceneCamActive => CallBool(Natives.IS_ANIM_SCENE_CAM_ACTIVE);
 
         // ---- Player and horses ----
 
@@ -50,10 +64,10 @@ namespace HorsePersonalities.Game
         public int GetSaddleHorse() => Function.Call<int>(Natives.GET_SADDLE_HORSE_FOR_PLAYER, PlayerId);
         public int GetActiveHorse() => Function.Call<int>(Natives.GET_ACTIVE_HORSE_FOR_PLAYER, PlayerId);
         public int GetTempHorse() => Function.Call<int>(Natives.GET_TEMP_PLAYER_HORSE, PlayerId);
-        public bool Exists(int entity) => entity != 0 && Function.Call<bool>(Natives.DOES_ENTITY_EXIST, entity);
-        public bool IsDead(int entity) => Function.Call<bool>(Natives.IS_ENTITY_DEAD, entity);
+        public bool Exists(int entity) => entity != 0 && CallBool(Natives.DOES_ENTITY_EXIST, entity);
+        public bool IsDead(int entity) => CallBool(Natives.IS_ENTITY_DEAD, entity);
         public uint GetModel(int entity) => Function.Call<uint>(Natives.GET_ENTITY_MODEL, entity);
-        public bool IsMale(int ped) => Function.Call<bool>(Natives.IS_PED_MALE, ped);
+        public bool IsMale(int ped) => CallBool(Natives.IS_PED_MALE, ped);
         public int GetTamingState(int horse) => Function.Call<int>(Natives.GET_HORSE_TAMING_STATE, horse);
 
         public float DistanceBetween(int a, int b)
@@ -73,9 +87,9 @@ namespace HorsePersonalities.Game
             // PED::GET_CLOSEST_PED: p4/p5/p7-p9 unverified; pedType -1 = any.
             Vector3 p = Coords(aroundEntity);
             int found = 0;
-            bool ok = Function.Call<bool>(Natives.GET_CLOSEST_PED, p.X, p.Y, p.Z, radius, true, true, &found, false, false, false, -1);
+            bool ok = CallBool(Natives.GET_CLOSEST_PED, p.X, p.Y, p.Z, radius, true, true, &found, false, false, false, -1);
             if (!ok || found == 0 || found == excludePed || found == aroundEntity) return 0;
-            return Function.Call<bool>(Natives.IS_PED_HUMAN, found) ? found : 0;
+            return CallBool(Natives.IS_PED_HUMAN, found) ? found : 0;
         }
 
         // ---- Attributes ----
@@ -105,7 +119,7 @@ namespace HorsePersonalities.Game
         public void PlayVocalization(int ped, string vocalizationName) =>
             Function.Call(Natives.PLAY_ANIMAL_VOCALIZATION, ped, vocalizationName, true); // p2 unverified
 
-        public bool IsVocalizationPlaying(int ped) => Function.Call<bool>(Natives.IS_ANIMAL_VOCALIZATION_PLAYING, ped);
+        public bool IsVocalizationPlaying(int ped) => CallBool(Natives.IS_ANIMAL_VOCALIZATION_PLAYING, ped);
 
         public void LookAtEntity(int ped, int target, int durationMs) =>
             Function.Call(Natives.TASK_LOOK_AT_ENTITY, ped, target, durationMs, 2048, 3, 0); // flags/priority as in RedM scripts; unverified
@@ -148,7 +162,7 @@ namespace HorsePersonalities.Game
                 if (GameEvents.TryGet(hash, out GameEventType type) && type.DataSize > 0 && type.DataSize <= MaxEventData)
                 {
                     for (int k = 0; k < type.DataSize; k++) buffer[k] = 0;
-                    if (Function.Call<bool>(Natives.GET_EVENT_DATA, AiEventGroup, i, buffer, type.DataSize))
+                    if (CallBool(Natives.GET_EVENT_DATA, AiEventGroup, i, buffer, type.DataSize))
                     {
                         data = new long[type.DataSize];
                         // Each field sits in an 8-byte slot; handles and hashes use the low 32 bits.

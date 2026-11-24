@@ -187,7 +187,11 @@ namespace HorsePersonalities.DevTools
                 {
                     IGameApi g = ctx.Game;
                     int h = ctx.Horse;
-                    string line = $"model 0x{g.GetModel(h):X8}, {(g.IsMale(h) ? "male" : "female")}, outfits {g.GetOutfitCount(h)}, meta ped type {g.GetMetaPedType(h)}, " +
+                    // The mod's sex readout (IS_PED_MALE) reads "male" on a known female horse, so show the hook's own reading beside it.
+                    string hookGender;
+                    try { hookGender = (RDR2.Entity.FromHandle(h) as RDR2.Ped)?.Gender.ToString() ?? "n/a"; }
+                    catch (System.Exception ex) { hookGender = "threw " + ex.GetType().Name; }
+                    string line = $"model 0x{g.GetModel(h):X8}, IS_PED_MALE says {(g.IsMale(h) ? "male" : "female")}, hook Gender {hookGender}, outfits {g.GetOutfitCount(h)}, meta ped type {g.GetMetaPedType(h)}, " +
                         $"taming {Detectors.TamingName(g.GetTamingState(h))}; saddle {g.GetSaddleHorse()}, active {g.GetActiveHorse()}, temp {g.GetTempHorse()}, this {h}";
                     ctx.Log("Identity: " + line);
                     return line;

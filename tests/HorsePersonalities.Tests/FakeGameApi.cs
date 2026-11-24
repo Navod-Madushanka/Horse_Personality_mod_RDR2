@@ -12,6 +12,10 @@ namespace HorsePersonalities.Tests
         public bool IsMissionActive { get; set; }
         public bool IsScreenFadedOut { get; set; }
         public bool IsPlayerControlOn { get; set; } = true;
+        public bool HasLetterBox { get; set; }
+        public bool IsGameplayCamRendering { get; set; } = true;
+        public bool IsCinematicCamRendering { get; set; }
+        public bool IsAnimSceneCamActive { get; set; }
         public int PlayerPed { get; set; } = 1;
         public int Mount { get; set; }
         public int SaddleHorse { get; set; }

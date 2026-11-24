@@ -146,9 +146,10 @@ namespace HorsePersonalities.Game
 
         private void Announce()
         {
-            // GET_IS_LOADING_SCREEN_ACTIVE reads true for the whole session in game (the hook's IsLoading too), so it is
-            // not used. A playing player who is not faded out means the world is up.
-            bool ready = _game.IsPlayerPlaying && !_game.IsScreenFadedOut;
+            // In game, GET_IS_LOADING_SCREEN_ACTIVE (and the hook's IsLoading) and IS_SCREEN_FADED_OUT all read true for
+            // the whole session, so none of them is used. IS_PLAYER_PLAYING is correct from the first second; give the
+            // world a few seconds after the script starts so the banner is not shown over a loading screen.
+            bool ready = _game.IsPlayerPlaying && _sinceStart.ElapsedMilliseconds > 5_000;
             // Safety net: never leave the banner waiting forever. Log what the checks said so a bad native shows up.
             if (!ready && _sinceStart.ElapsedMilliseconds > 30_000) ready = true;
             if (!ready)

@@ -15,7 +15,7 @@ namespace HorsePersonalities.DevTools
         private readonly IntervalGate _slow = new IntervalGate(1000);
 
         private int _saddleHorse = -1;
-        private bool? _mission, _faded, _control;
+        private bool? _mission, _faded, _control, _letterBox, _gameplayCam, _cinematicCam, _animSceneCam;
         private int _watchedHorse;
         private int _tamingState = -1;
         private int _bondRank = -1, _bondPoints = -1;
@@ -72,6 +72,10 @@ namespace HorsePersonalities.DevTools
             Flag(ref _mission, game.IsMissionActive, "Mission flag (GET_MISSION_FLAG)");
             Flag(ref _faded, game.IsScreenFadedOut, "Screen faded out");
             Flag(ref _control, game.IsPlayerControlOn, "Player control on");
+            Flag(ref _letterBox, game.HasLetterBox, "Letterbox bars (HAS_LETTER_BOX)");
+            Flag(ref _gameplayCam, game.IsGameplayCamRendering, "Gameplay camera rendering");
+            Flag(ref _cinematicCam, game.IsCinematicCamRendering, "Cinematic camera rendering");
+            Flag(ref _animSceneCam, game.IsAnimSceneCamActive, "Anim scene camera active (_IS_ANIM_SCENE_CAM_ACTIVE)");
 
             if (horse != _watchedHorse)
             {

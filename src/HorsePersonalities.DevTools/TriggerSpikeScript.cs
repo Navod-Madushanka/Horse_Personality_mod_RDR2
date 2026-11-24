@@ -23,7 +23,8 @@ namespace HorsePersonalities.DevTools
         private const string Log = "DevTools";
         private const int VisibleRows = 9;
 
-        private readonly IGameApi _game = new RdrGameApi();
+        private readonly RdrGameApi _game = new RdrGameApi();
+        private bool _loggedDeadReading;
         private readonly List<(int Due, Action Action)> _scheduled = new List<(int, Action)>();
         private readonly List<string> _feed = new List<string>();
         private readonly Dictionary<string, string> _results = new Dictionary<string, string>();
@@ -84,7 +85,15 @@ namespace HorsePersonalities.DevTools
         {
             int player = _game.PlayerPed;
             foreach (int candidate in new[] { _game.GetMount(player), _game.GetLastMount(player), _game.GetSaddleHorse() })
-                if (candidate != 0 && _game.Exists(candidate) && !_game.IsDead(candidate)) return candidate;
+            {
+                if (candidate == 0 || !_game.Exists(candidate)) continue;
+                if (!_game.IsDead(candidate)) return candidate;
+                if (!_loggedDeadReading)
+                {
+                    _loggedDeadReading = true;
+                    _boot.Log.Info(Log, $"Horse {candidate} exists but IS_ENTITY_DEAD says dead (raw 0x{_game.RawResult(Natives.IS_ENTITY_DEAD, candidate):X}); skipping it.");
+                }
+            }
             return 0;
         }
 

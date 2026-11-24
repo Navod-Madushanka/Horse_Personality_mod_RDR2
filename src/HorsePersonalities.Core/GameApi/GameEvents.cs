@@ -63,14 +63,23 @@ namespace HorsePersonalities.Core.GameApi
         {
             "Interaction_Brush", "Interaction_Food", "Interaction_Idle", "Interaction_Injection_Quick", "Interaction_Ointment",
             "Interaction_LootSaddleBags", "Interaction_Dog_Patting", "Interaction_Dog_Idle",
-            // Guesses for the horse pat; Phase 1 confirms or replaces them.
+            // Confirmed in game (Phase 1): every interaction sends Begin first, then its own type, then Complete and Cancel together.
+            "Interaction_Begin", "Interaction_Complete", "Interaction_Cancel",
+            // Guesses for the horse pat; none of them matched (see PatHash).
             "Interaction_Patting", "Interaction_Horse_Patting", "Interaction_Pat", "Interaction_Calm",
         };
+
+        /// <summary>
+        /// The horse pat's type hash. Its name is not known: seen in game between Interaction_Begin and Interaction_Complete,
+        /// always with the horse's calm events, never for brush or feed.
+        /// </summary>
+        public const uint PatHash = 0x175897C0;
 
         public static string DescribeInteraction(uint hash)
         {
             foreach (string n in InteractionNames)
                 if (Joaat.Hash(n) == hash) return n;
+            if (hash == PatHash) return $"0x{hash:X8} (horse pat)";
             return $"0x{hash:X8}";
         }
     }

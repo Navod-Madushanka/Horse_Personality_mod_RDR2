@@ -61,13 +61,18 @@ namespace HorsePersonalities.Core.GameApi
         int GameTimeMs { get; }
         /// <summary>
         /// DLC::GET_IS_LOADING_SCREEN_ACTIVE. Do not use as a gate: in game (hook 2.2.0) it reads true for the whole
-        /// session, so anything waiting on it never runs (found in Phase 0). Use IsPlayerPlaying and !IsScreenFadedOut.
+        /// session when read as a bool, so anything waiting on it never runs (found in Phase 0). Use IsPlayerPlaying.
         /// </summary>
         bool IsLoadingScreenActive { get; }
         bool IsPlayerPlaying { get; }
         bool IsMissionActive { get; }
         bool IsScreenFadedOut { get; }
         bool IsPlayerControlOn { get; }
+        // Cutscene candidates (Phase 1 checks which of these flip in a cutscene or mission). Hashes taken from the hook's own wrappers.
+        bool HasLetterBox { get; }
+        bool IsGameplayCamRendering { get; }
+        bool IsCinematicCamRendering { get; }
+        bool IsAnimSceneCamActive { get; }
 
         // ---- Player and horses ----
         int PlayerPed { get; }

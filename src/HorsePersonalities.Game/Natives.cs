@@ -22,6 +22,14 @@ namespace HorsePersonalities.Game
         public const ulong IS_SCREEN_FADED_OUT = 0xF5472C80DF2FF847;
         /// <summary>PLAYER::IS_PLAYER_CONTROL_ON(int player) -> bool</summary>
         public const ulong IS_PLAYER_CONTROL_ON = 0x7964097FCE4C244B;
+        /// <summary>CAM::HAS_LETTER_BOX() -> bool (cinematic black bars; read from the hook's own wrapper)</summary>
+        public const ulong HAS_LETTER_BOX = 0x81DCFD13CF39920E;
+        /// <summary>CAM::IS_GAMEPLAY_CAM_RENDERING() -> bool</summary>
+        public const ulong IS_GAMEPLAY_CAM_RENDERING = 0x8660EA714834E412;
+        /// <summary>CAM::IS_CINEMATIC_CAM_RENDERING() -> bool</summary>
+        public const ulong IS_CINEMATIC_CAM_RENDERING = 0xBF7C780731AADBF8;
+        /// <summary>CAM::_IS_ANIM_SCENE_CAM_ACTIVE() -> bool</summary>
+        public const ulong IS_ANIM_SCENE_CAM_ACTIVE = 0x20389408F0E93B9A;
         /// <summary>PLAYER::PLAYER_ID() -> int</summary>
         public const ulong PLAYER_ID = 0x217E9DC48139933D;
         /// <summary>PLAYER::PLAYER_PED_ID() -> int</summary>
