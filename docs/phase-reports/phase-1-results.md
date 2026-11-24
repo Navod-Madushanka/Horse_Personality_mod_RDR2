@@ -49,7 +49,7 @@ Tested Nov 24, 2026 on hook 2.2.0 (ScriptHookRDR2DotNet V2), one Thoroughbred, i
 | Detector | Result |
 | --- | --- |
 | Pat, brush, feed | Works, all three told apart (see above) |
-| Calm | Works; calm types 0 to 5 seen. `fully calmed True` was seen once, in an earlier session. |
+| Calm | Works; calm types 0 to 5 seen. `fully calmed True` came 4 times in this log, always with calm type 1. Calm events also fire during every pat, so Phase 7 must not treat a pat as a calm. |
 | Saddle swap | Works |
 | Wild horse mounted, breaking, taming state | Works |
 | Bond XP and rank changes | Works; passive gain is about 2 XP per 5 seconds while riding |
@@ -63,8 +63,40 @@ Tested Nov 24, 2026 on hook 2.2.0 (ScriptHookRDR2DotNet V2), one Thoroughbred, i
 - Kick: use the combat-task method, behind a check that no lawman or civilian is close.
 - Piaffe (Show-off) and a direct kick action: not in `TASK_HORSE_ACTION` ids 0 to 20. Kick uses the combat task. Show-off needs another route (a scenario or `TASK_PLAY_ANIM`) or gets cut from v1.
 
+## The breed sheet's Quirks tab
+
+Marked from these results on Nov 24, 2026 (Claude), with a notes column saying which method worked:
+
+| Quirk | Result | How |
+| --- | --- | --- |
+| Chatterbox | Works | SNORT, AGITATED, CONTENT, CALL |
+| Kicker | Works | Combat task on the NPC behind, cleared after 4 s; needs a lawman and witness check |
+| Head-tosser | Works | `_HORSE_AGITATE`, keeping the rider |
+| Nosy | Works | Look-at |
+| Shadow | Works | Follow, 2 m behind |
+| Wanderer | Doesn't work | No grazing scenario; drinking and wallowing work instead |
+| Picky eater | Works | `Interaction_Food` event, then a sound |
+| Show-off | Doesn't work | No piaffe found |
+
+## What the same log shows for Phases 2, 3 and 4
+
+The main script ran beside DevTools all session, with no errors or warnings in 762 log lines.
+
+- **Temporary personalities reset on reload:** the same black Standardbred rolled seed `35CD...` at 19:06 and `E6E2...` after the 19:21 reload.
+- **Saddling keeps the values:** the Arabian's temporary roll at 20:26 (seed `65ADE...`) is the one written to `horses.json` at 20:27.
+- **Wild horses:** `EVENT_PLAYER_MOUNT_WILD_HORSE` marked the Kentucky Saddler wild (taming state 6). It kept Wild origin when saddled, and `horses.json` says `"origin": "Wild"`.
+- **Two coats, two ids:** Thoroughbred reversed dapple black and blood bay got different fingerprints.
+- **Saved horses survive reloads:** the Thoroughbred loaded with the same values in 5 sessions in a row (19:46 to 20:03).
+- **ResetAllHorses:** at 19:33 it moved the save to `horses.reset-20261124-193346.json`, started empty and set itself back to false.
+- **Sex in fingerprints:** before the yes/no fix, every horse was saved as male. The reset file has the same Thoroughbred twice (male and female) for that reason. The current `horses.json` is clean.
+
+Not checked yet: the Arabian and Kentucky Saddler across reloads (both were saddled after the last reload), a broken `horses.json` in game, and the tick time (only logged at the Debug level).
+
 ## Still to do before Phase 1 is closed
 
-1. Test the mission flag and cutscene detectors (start a story mission; watch "Mission flag", "Screen faded" and "Player control").
+1. Test the mission flag and cutscene detectors (start a story mission; watch "Mission flag", "Screen faded", "Player control", and the four camera lines added after this session).
+2. Decide what replaces Wanderer's grazing and Show-off's piaffe, or cut them from v1.
+
+And for Phases 2 to 4: reload 3 times and check all three saved horses, break `horses.json` once (home test doc, row 8.5), and watch the overlay's tick time for a few minutes.
 
 Done since the first draft: Health bonus restored; explorer ids 0 to 20 tried.
