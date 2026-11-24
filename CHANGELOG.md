@@ -6,7 +6,8 @@
 - MIT license.
 - Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.
 
-### Phase 0: Setup and hello world
+### Phase 0: Setup and hello world (passed in game, v0.1)
+- Fixed in game: the loading-screen native reads true all session, so the banner and mount reports never ran. Mount tracking no longer waits for the banner; the banner waits for the player to be playing and the screen faded in, with a 30 s fallback.
 - Solution with Core, Game, DevTools, Tests and the sheet-to-json tool.
 - The game script shows "Horse Personalities loaded" once the game is playable.
 - On every mount it shows the horse's breed, model name, sex and bond level, and logs them.

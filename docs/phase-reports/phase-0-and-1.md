@@ -2,6 +2,14 @@
 
 Written Nov 22, 2026, before any in-game testing. Both phases need you in game to be marked done.
 
+## Phase 0 result (Nov 23, 2026)
+
+**Phase 0 passes.** Tested in game by Navod on hook 2.2.0: a Tennessee Walker, an Arabian and a third breed each showed the right breed, model, sex and bond level.
+
+Found and fixed in game (commit f54ccfb): `GET_IS_LOADING_SCREEN_ACTIVE`, and the hook's `Game.IsLoading`, read true for the whole session. The banner waited on it and mount tracking waited on the banner, so nothing ran. Now mount tracking runs every tick, and the banner waits for "player playing and screen not faded out", with a 30 s fallback. `IGameApi` now warns against using the loading-screen check as a gate.
+
+Phase 1 is next and needs the game: the steps are under *In-game test steps* below.
+
 ## What was built
 
 **Phase 0: Setup and hello world**
@@ -52,8 +60,8 @@ The Game and DevTools projects compile with no warnings against ScriptHookRDR2Do
 ## Known issues and things only the game can answer
 
 1. **Not run in game.** Everything game-side is untested.
-2. **Hook version.** I compiled against the hook's current source (API 2.2.0.0). Build against the `ScriptHookRDRNetAPI.dll` from the release you install, so the two match. If that release is older and the build fails, tell me the error.
-3. **Bond level scale.** Bond comes from `GET_ATTRIBUTE_RANK(horse, PA_BONDING)`. I don't know yet whether a level 1 horse reads 0 or 1. Phase 0's subtitle shows the raw number; compare it with the game's bond level.
+2. **Hook version.** Answered in Phase 0: built and run on hook 2.2.0, no API mismatch.
+3. **Bond level scale.** Answered in Phase 0: `GET_ATTRIBUTE_RANK(horse, PA_BONDING)` matches the game's own bond level (a level 1 horse reads 1).
 4. **Sound names are guesses.** The native DB doesn't list horse sound names. Add names to `Vocalizations` in the DevTools ini to try more without rebuilding.
 5. **No known kick native.** The candidates are a combat task against an NPC and the horse-action explorer. A kick near people may count as a crime; test it away from towns.
 6. **No known piaffe trigger** (Show-off). The explorer may find one.
