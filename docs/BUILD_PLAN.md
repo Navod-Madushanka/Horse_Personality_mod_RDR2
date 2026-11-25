@@ -48,6 +48,21 @@ Every horse is built from three layers: the breed sets the limits, the individua
 - Every roll comes from a seed, so the same seed always gives the same horse. The seed is picked at random the first time a horse is rolled.
 - The spreads, shifts and odds the roller uses live in the sheet's Roller tab, not in code.
 
+### Prized horses
+
+Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or picks a community favorite should never be let down by its personality. These are **prized horses**, and they trade a better personality for a slower bond.
+
+- **Who is prized:**
+  - every horse bought from a stable (origin Stable, which also covers horses the player already owned when the mod first saw them);
+  - special and rare horses (for example the bonus and pre-order coats);
+  - community favorites.
+  Special, rare and favorite horses are a list of models in the breed sheet's Prized tab, never in code. A prized model is prized however the player got it: bought, broken in the wild, or taken.
+- **A better personality:** a prized horse always rolls good, and none of its traits sits on the bad side of its breed. The "one flaw" a normal good horse may have is not allowed.
+- **Its flaws are only fun ones:** quirks such as wandering off, calling out a lot, kicking people or following you when you walk away. Never a serious problem like bucking you off for no reason.
+- **The cost, slower bonding:** a prized horse earns bond XP more slowly (Roller tab: *Prized bond speed*).
+- **The cost, harder to break:** a prized wild horse's breaking score is raised (Roller tab: *Prized break score bonus*), so it breaks Hard more often. It is never Unbreakable: an unusable favorite would be the very disappointment this rule prevents.
+- Breed leanings still apply. A prized Arabian is still more alert than most breeds, just better than an average Arabian.
+
 ### How the player discovers it
 
 - There is no menu. A new horse looks exactly like a vanilla horse of its breed.
@@ -64,7 +79,7 @@ Every horse is built from three layers: the breed sets the limits, the individua
 - When the player puts their saddle on it: that same personality becomes permanent.
 - Horses the player already owns, including the starting horse, are rolled the first time the mod sees them.
 - "Owned" means the horse wearing the player's saddle (the game's saddle horse). The mod sees a stabled horse when the player takes it out.
-- A horse first seen as the saddle horse, with no temporary personality, counts as a stable horse. A temporary personality keeps its origin when it becomes permanent, so a broken wild horse stays wild.
+- A horse first seen as the saddle horse, with no temporary personality, counts as a stable horse, so it is prized. A temporary personality keeps its origin when it becomes permanent, so a broken wild horse stays wild.
 - A personality is matched to a horse by its fingerprint (model, sex, coat). Two owned horses with the same fingerprint share one personality; the log warns when that happens.
 
 &#91;embedded content: horse lifecycle · 5 states, 1 decision\]
@@ -76,6 +91,7 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 - **Stable horses** come broken at bond level 1, like vanilla. Only the time to reach levels 2 to 4 differs. No bond limit, ever.
 - **Wild horses** roll a breaking difficulty from Temper and Bond affinity: Normal (vanilla), Hard (longer break, slow bonding) or Unbreakable (never breaks, basically unusable).
 - Unbreakable exists only for wild horses, and `UnbreakableChance` (default 5%) keeps it rare.
+- Prized horses (see Prized horses) bond more slowly, and prized wild horses break Hard more often but are never Unbreakable.
 
 ### Skills and learning speed
 
@@ -162,6 +178,8 @@ Detectors turn game state into events, Core decides what happens, and the behavi
 Three files hold everything: `breeds.json` (read-only design data), `horses.json` (the save) and `HorsePersonalities.ini` (player settings). Every file carries a `schemaVersion` so old saves can be upgraded.
 
 ### breeds.json (generated from the sheet)
+
+It also carries `prizedModels`, the special, rare and community-favorite models from the sheet's Prized tab, each with its reason.
 
 ```json
 {
@@ -455,6 +473,9 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 | A game update renames or breaks natives | The mod stops working | All native calls in one adapter; the update regression check |
 
 ### Open questions
+
+- [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab.
+- [ ] Prized horses: how much slower they bond (proposed *Prized bond speed* 0.6, so 40% slower) and how much harder to break (proposed *Prized break score bonus* +1.0).
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
