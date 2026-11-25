@@ -59,7 +59,7 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
   Special, rare and favorite horses are a list of models in the breed sheet's Prized tab, never in code. A prized model is prized however the player got it: bought, broken in the wild, or taken.
 - **A better personality:** a prized horse always rolls good, and none of its traits sits on the bad side of its breed. The "one flaw" a normal good horse may have is not allowed.
 - **Its flaws are only fun ones:** quirks such as wandering off, calling out a lot, kicking people or following you when you walk away. Never a serious problem like bucking you off for no reason.
-- **The cost, slower bonding:** a prized horse earns bond XP more slowly (Roller tab: *Prized bond speed*).
+- **The cost, slower bonding:** a prized horse takes much longer to reach bond level 4 (see Bonding and breaking).
 - **The cost, harder to break:** a prized wild horse's breaking score is raised (Roller tab: *Prized break score bonus*), so it breaks Hard more often. It is never Unbreakable: an unusable favorite would be the very disappointment this rule prevents.
 - Breed leanings still apply. A prized Arabian is still more alert than most breeds, just better than an average Arabian.
 
@@ -91,7 +91,11 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 - **Stable horses** come broken at bond level 1, like vanilla. Only the time to reach levels 2 to 4 differs. No bond limit, ever.
 - **Wild horses** roll a breaking difficulty from Temper and Bond affinity: Normal (vanilla), Hard (longer break, slow bonding) or Unbreakable (never breaks, basically unusable).
 - Unbreakable exists only for wild horses, and `UnbreakableChance` (default 5%) keeps it rare.
-- Prized horses (see Prized horses) bond more slowly, and prized wild horses break Hard more often but are never Unbreakable.
+- **The climb to bond 4 is earned** (decided Nov 25, 2026). Levels 1 to 3 come at the normal pace, set by Bond affinity as before, so a new horse still feels rewarding. The climb from level 3 to 4 is slower for better horses:
+  - a bad horse: normal pace;
+  - a good horse: slower (Roller tab: *Good bond 4 speed*, proposed 0.75, so a third longer);
+  - a prized horse (stable-bought, special, rare, community favorite; always good): slowest (Roller tab: *Prized bond 4 speed*, proposed 0.5, so twice as long).
+- Prized wild horses also break Hard more often, but are never Unbreakable.
 
 ### Skills and learning speed
 
@@ -488,7 +492,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 
 - [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab. Community favorites also get the bigger long-use growth.
 - [ ] Long-use growth: the hours ridden and bond levels that unlock each rank (Phase 8).
-- [ ] Prized horses: how much slower they bond (proposed *Prized bond speed* 0.6, so 40% slower) and how much harder to break (proposed *Prized break score bonus* +1.0).
+- [ ] Bonding: how much slower the climb to bond 4 is (proposed 0.75 for good horses, 0.5 for prized), and how much harder prized wild horses are to break (proposed *Prized break score bonus* +1.0). Tune in Phase 6.
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
