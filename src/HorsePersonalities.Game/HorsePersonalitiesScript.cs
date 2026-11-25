@@ -120,8 +120,13 @@ namespace HorsePersonalities.Game
                 test ? "horses.test" : "horses");
             SaveLoadResult loaded = _store.Load(_boot.Settings.ResetAllHorses, DateTime.Now);
             _registry.Load(loaded.Records);
+            // Saves only happen on events, and the hook never tells the script when the game exits (no "Script stopped" line ever
+            // reached the log), so write straight away after an upgrade or a recovery from the backup: otherwise horses.json would
+            // stay missing until some later event.
             if (loaded.Upgraded && _store.Save(_registry.Permanent))
                 _boot.Log.Info("Save", "Wrote the upgraded horses.json.");
+            else if (loaded.Source == SaveSource.Backup && _store.Save(_registry.Permanent))
+                _boot.Log.Info("Save", "Wrote horses.json again after loading the backup.");
             _behavior = new BehaviorRunner(_game, _boot.Breeds, _boot.Settings, _registry, _boot.Log);
             if (_boot.Settings.ResetAllHorses) TurnOffReset();
         }

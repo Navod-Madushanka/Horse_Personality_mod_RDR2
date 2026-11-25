@@ -52,6 +52,9 @@
 - **Phase 1 passed.** Wanderer works as wander-then-graze; mission flag and every cutscene detector work; Show-off was cut.
 - **Phases 2, 3 and 4 passed in game:** stable ids and personalities across 3 reloads, the schema 1 save upgraded to ranks, a broken save recovered from the backup.
 
+### Phase 4 fix (Nov 25, 2026)
+- After a broken `horses.json` is replaced by the backup, `horses.json` is written again straight away. Before, it stayed missing until some later event, because the hook never reports the game closing (see the Phase 4 entry).
+
 ### Plan changes, not built yet (Nov 25, 2026)
 - **Prized horses:** stable-bought, special, rare and community-favorite horses always roll good, with flaws only as fun quirks. Prized wild horses break Hard more often but are never Unbreakable. The list of special, rare and favorite models lives in the breed sheet's new Prized tab.
 - **Long-use growth:** any horse ridden and bonded with for a long time grows speed and acceleration 1 rank past its natural ceiling (within its tier). Community favorites grow to 2 ranks above their breed, past the tier. Earned through bond levels and riding time (Phase 8).
@@ -71,7 +74,7 @@
 - Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.
 
 ### Phase 4: Save file (built ahead of Phase 1, by decision)
-- `horses.json` in the plan's format, written when a horse becomes permanent, when a kept horse is seen on a new day, and when the script stops. Full precision, so a reload gives back the exact horse.
+- `horses.json` in the plan's format, written when a horse becomes permanent, when a kept horse is seen on a new day, and straight after an upgrade or a recovery from the backup. Nothing is written on exit: the hook never reports the game closing. Full precision, so a reload gives back the exact horse.
 - Writes go through a temporary file; the previous file is kept as `horses.backup.json`.
 - A broken file is kept as `horses.broken-<time>.json` and the backup loads; both broken starts empty without crashing.
 - `ResetAllHorses` moves the save aside as `horses.reset-<time>.json` and turns itself back to false.
