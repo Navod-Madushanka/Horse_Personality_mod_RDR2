@@ -74,9 +74,9 @@ Marked from these results on Nov 24, 2026 (Claude), with a notes column saying w
 | Head-tosser | Works | `_HORSE_AGITATE`, keeping the rider |
 | Nosy | Works | Look-at |
 | Shadow | Works | Follow, 2 m behind |
-| Wanderer | Doesn't work | No grazing scenario; drinking and wallowing work instead |
+| Wanderer | Retest | No grazing scenario worked, and drinking plays on the spot with no water near (Navod, Nov 25), so it can't stand in for wandering. Retest with triggers 36-41 |
 | Picky eater | Works | `Interaction_Food` event, then a sound |
-| Show-off | Doesn't work | No piaffe found |
+| Show-off | Cut from v1 | No piaffe found (decided Nov 25) |
 
 ## What the same log shows for Phases 2, 3 and 4
 
@@ -95,7 +95,13 @@ Not checked yet: the Arabian and Kentucky Saddler across reloads (both were sadd
 ## Still to do before Phase 1 is closed
 
 1. Test the mission flag and cutscene detectors (start a story mission; watch "Mission flag", "Screen faded", "Player control", and the four camera lines added after this session).
-2. Decide what replaces Wanderer's grazing and Show-off's piaffe, or cut them from v1.
+2. Retest Wanderer with DevTools triggers 36-41 (added Nov 25):
+   - 36 and 37: grazing with its conditional animation named. femga's scenario notes say a scenario with no usable conditional animation can be ignored, and the first test passed none. Does the horse lower its head and eat?
+   - 38: resting, the same way.
+   - 39 and 40: wander nearby (15 m) and wander freely, each cleared after 20 s. Does the horse walk off on its own?
+   - 41: wander for 12 s, then graze. This is the whole Wanderer quirk; if it works, Wanderer ships.
+
+Decided Nov 25: Show-off is cut from v1; natural stats are whole ranks (see the changelog).
 
 And for Phases 2 to 4: reload 3 times and check all three saved horses, break `horses.json` once (home test doc, row 8.5), and watch the overlay's tick time for a few minutes.
 

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### After Phase 1 testing (Nov 25, 2026)
+- **Natural stats are whole ranks.** The game's stats are ranks 0-9, one stat-bar segment each, so a fraction of a rank would never show. Each stat now rolls a rank offset: mostly 0, about a third +1, about one in seven -1, under 1% -2. Every tier climbs at most 1 rank; Elite (Arabians) never drops.
+- `MaxStatVariance` (percent) is replaced by `MaxStatRankChange` (ranks, default 2; 0 turns natural stats off). An old INI key is ignored with a log warning.
+- The sheet's Tiers tab holds whole ranks; Roller tab *Stat spread* 0.6 and *Stat quality shift* 0.3 are in ranks. breeds.json is schema 3.
+- **Show-off is cut from v1**: the game has no piaffe a script can start. Removed from the quirk list and from the Andalusian, Kentucky Saddler and Turkoman likely quirks.
+- **horses.json schema 2.** A schema 1 file is upgraded on load: traits and quirks kept, natural stats re-rolled from each horse's seed as ranks, then written back. Tested on the Nov 24 in-game save.
+- Roller version 2: the same seed still gives the same traits; natural stats and quirk picks follow the new rules.
+- DevTools triggers 36-41 for retesting Wanderer: grazing and resting with their conditional animation named, wander nearby, wander freely, and wander-then-graze.
+
 - Handling is now each breed's stat tier (Heavy, Standard, Race, Elite); breeds.json and the sheet converter reject any other value.
 - MIT license.
 - Decided: horses with no breed row (gang and story-only models, mules, Online-only breeds) stay vanilla in v1.

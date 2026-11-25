@@ -1,5 +1,7 @@
 # Phase 3 report: personality roller
 
+> **Changed Nov 25, 2026, after Phase 1 testing:** natural stats are whole ranks (mostly 0, about a third +1, about 14% -1, under 1% -2), tier caps are in ranks, `MaxStatVariance` became `MaxStatRankChange`, and Show-off is cut. The percentages and fixed-seed values below describe the first version. See the changelog.
+
 Written Nov 24, 2026. Built before Phase 1 passed, by Navod's decision (recorded in the plan's rule 1). The Core work is done and unit tested; the in-game check (the overlay) waits until Phase 1 passes.
 
 ## What was built
