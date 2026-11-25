@@ -34,8 +34,8 @@ Every horse is built from three layers: the breed sets the limits, the individua
 1. **Breed** (vanilla, untouched): stats tier (its Handling class), and default demeanor. The Arabian stays fastest, drafts stay heavy.
 2. **Individual** (rolled once, hidden):
    - **Traits:** Courage (big threats), Nerves (small or random things), Temper (bucking, refusing), Bond affinity (how fast it bonds).
-   - **Natural stats:** small ups and downs in speed, acceleration, health and stamina. They set the horse's ceiling.
-   - **Quirks:** 1 to 2 habits from the list of 8 (Chatterbox, Kicker, Head-tosser, Nosy, Shadow, Wanderer, Picky eater, Show-off).
+   - **Natural stats:** whole-rank ups and downs in speed, acceleration, health and stamina (usually 0 or 1 rank, rarely 2). They set the horse's ceiling.
+   - **Quirks:** 1 to 2 habits from the list of 7 (Chatterbox, Kicker, Head-tosser, Nosy, Shadow, Wanderer, Picky eater). Show-off was cut on Nov 25, 2026: the game has no piaffe a script can trigger.
 3. **Experience** (learned, separate from personality): gunfire, predators, handling, speed and acceleration. Learning speed comes from the breed's class.
 
 ### How traits are rolled
@@ -88,7 +88,8 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 
 - Stats and skills never push a horse past its breed tier. A trained draft never handles like an Arabian.
 - The tier is the breed's Handling class from the sheet: Heavy, Standard, Race or Elite. There is no separate stats tier column.
-- Each tier caps how far a natural stat can move up and down from the breed baseline (the sheet's Tiers tab), and no stat ever moves more than `MaxStatVariance`. Lower tiers have small upward caps so they can't climb into the next tier; Elite has a small downward cap so the Arabian stays fastest. The caps are placeholders until Phase 5 reads real stats in game.
+- Natural stats are whole ranks, because the game's stats are ranks 0 to 9 (one stat-bar segment each) and a fraction of a rank wouldn't show (decided Nov 25, 2026, after Phase 1).
+- Each tier caps how many ranks a natural stat can move up and down from the breed baseline (the sheet's Tiers tab), and no stat ever moves more than `MaxStatRankChange`. Every tier moves up at most 1 rank so it can't climb into the next tier; Elite never moves down so the Arabian stays fastest. A stat also never leaves the game's own 0 to max range. The caps are placeholders until Phase 5 reads real stats in game.
 - Breaking difficulty (wild horses only) comes from the horse's own Temper minus Bond affinity. Past the Hard score it breaks Hard. Past the Unbreakable score it is Unbreakable only if it also wins a `UnbreakableChance` roll, so the real share stays under that setting.
 - Spooks, bucks, kicks and quirks are off during story missions and cutscenes.
 - Every behavior has a cooldown so nothing spams.
@@ -180,7 +181,7 @@ Three files hold everything: `breeds.json` (read-only design data), `horses.json
       "classes": ["Race", "War"],
       "handling": "Standard",
       "leans": { "courage": 1, "nerves": 0, "temper": 1, "bondAffinity": 0 },
-      "likelyQuirks": ["HeadTosser", "PickyEater", "ShowOff"],
+      "likelyQuirks": ["HeadTosser", "PickyEater"],
       "demeanor": "ProudImpatient"
     }
   ]
@@ -193,7 +194,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "horses": {
     "a_c_horse_turkoman_gold|male|coatHash": {
       "breed": "Turkoman",
@@ -201,8 +202,8 @@ Model names in the example are placeholders; the real list comes from `peds_list
       "status": "Permanent",
       "quality": "Good",
       "traits": { "courage": 0.8, "nerves": -0.2, "temper": 1.1, "bondAffinity": 0.3 },
-      "quirks": ["ShowOff"],
-      "naturalStats": { "speed": 0.04, "acceleration": -0.02, "health": 0.05, "stamina": 0.01 },
+      "quirks": ["PickyEater"],
+      "naturalStats": { "speed": 1, "acceleration": 0, "health": 1, "stamina": -1 },
       "breaking": "Normal",
       "skills": { "gunfire": 0.15, "predators": 0.0, "handling": 0.30, "speed": 0.10, "acceleration": 0.05 },
       "firstSeen": "2026-11-22",
@@ -213,9 +214,10 @@ Model names in the example are placeholders; the real list comes from `peds_list
 ```
 
 - The key is the horse's fingerprint: model, sex and coat. Phase 2 confirms which parts the game exposes.
-- Traits are numbers from -2 to +2, matching the sheet's scale. Natural stats are fractions of the breed baseline, capped by tier.
+- Traits are numbers from -2 to +2, matching the sheet's scale. Natural stats are whole ranks above or below the breed baseline, capped by tier.
 - Skills run from 0 (untrained) to 1 (at the horse's ceiling).
 - Temporary personalities are never written to this file.
+- Schema 2 (Nov 25, 2026) stores natural stats as whole ranks. A schema 1 file (natural stats as fractions) is upgraded on load: each horse keeps its traits and quirks, and its natural stats are re-rolled from its saved seed under the rank rules. A quirk that no longer exists (Show-off) is dropped.
 - Each record also keeps the roll's `seed` and `rollerVersion`, so a horse can be checked against a fresh roll.
 - The file is written when a personality becomes permanent and when the script stops (reload or quit), never every frame. Each write first copies the last good file to `horses.backup.json`.
 - A broken `horses.json` is kept as `horses.broken-<time>.json` and the backup is loaded instead; nothing is deleted. `ResetAllHorses` moves the file aside as `horses.reset-<time>.json`, starts empty, and sets itself back to false.
@@ -226,7 +228,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 | --- | --- | --- |
 | GoodHorseChance | 80 | Percent of horses that roll good |
 | UnbreakableChance | 5 | Percent cap on unbreakable wild horses |
-| MaxStatVariance | 10 | Largest natural stat change, in percent of the breed baseline |
+| MaxStatRankChange | 2 | Most ranks a natural stat can move (0 turns natural stats off). Replaced MaxStatVariance on Nov 25, 2026 |
 | RevealPerBondLevel | 25 | Percent of stat differences revealed per bond level |
 | SpookFrequency | 1.0 | Multiplier on random spook checks |
 | QuirkCooldownSeconds | 120 | Shortest gap between two quirk events on one horse |
@@ -258,9 +260,8 @@ Behavior is the mod's only interface: no menus, no popups, no new animations. Ev
 | Head-tosser | Constant head movement when standing | Restless state, agitation |
 | Nosy | Turns to watch people, wagons and animals going past | Look-at |
 | Shadow | Follows you a few steps when you walk away | Vanilla lead and follow |
-| Wanderer | Won't stay put when not hitched, drifts off to graze | Grazing |
+| Wanderer | Won't stay put when not hitched, drifts off to graze | A wander task, then grazing named with its conditional animation (both being retested after Phase 1) |
 | Picky eater | Loves one treat, doesn't care about another | Feed event plus a reaction |
-| Show-off | Piaffes on its own in towns, bond 4 only | Vanilla piaffe |
 
 ### Reactions to care
 
@@ -277,7 +278,7 @@ Reactions come from Bond affinity and Temper, soften as the bond grows, and play
 
 Each breed has a default body language, listed in the sheet's Demeanor column. Examples:
 
-- **Turkoman:** impatient when kept standing, hates being dirty, ears back at cheap horses, shows off in town at bond 4.
+- **Turkoman:** impatient when kept standing, hates being dirty, ears back at cheap horses.
 - **Ardennes:** stands like a rock and barely reacts to nearby gunfire.
 - **Arabian:** ears and head always moving, alert to everything.
 - **Drafts:** gentle giants, slow to react, lean into pats.
