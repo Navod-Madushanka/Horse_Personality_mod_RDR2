@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Plan changes, not built yet (Nov 25, 2026)
+- **Prized horses:** stable-bought, special, rare and community-favorite horses always roll good, with flaws only as fun quirks. Prized wild horses break Hard more often but are never Unbreakable. The list of special, rare and favorite models lives in the breed sheet's new Prized tab.
+- **Long-use growth:** any horse ridden and bonded with for a long time grows speed and acceleration 1 rank past its natural ceiling (within its tier). Community favorites grow to 2 ranks above their breed, past the tier. Earned through bond levels and riding time (Phase 8).
+- **Bond 4 is earned:** levels 1 to 3 at the normal pace; the climb from 3 to 4 is slower for good horses (0.75) and slowest for prized ones (0.5). Proposed numbers in the sheet's Roller tab.
+
 ### After Phase 1 testing (Nov 25, 2026)
 - **Natural stats are whole ranks.** The game's stats are ranks 0-9, one stat-bar segment each, so a fraction of a rank would never show. Each stat now rolls a rank offset: mostly 0, about a third +1, about one in seven -1, under 1% -2. Every tier climbs at most 1 rank; Elite (Arabians) never drops.
 - `MaxStatVariance` (percent) is replaced by `MaxStatRankChange` (ranks, default 2; 0 turns natural stats off). An old INI key is ignored with a log warning.
