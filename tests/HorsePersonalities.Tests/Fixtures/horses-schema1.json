@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "horses": {
+    "a_c_horse_arabian_rosegreybay|male|default": {
+      "breed": "Arabian",
+      "origin": "Unknown",
+      "status": "Permanent",
+      "quality": "Good",
+      "traits": {
+        "courage": -0.29081317992640388,
+        "nerves": 1.7275114540165188,
+        "temper": -0.13522827210669325,
+        "bondAffinity": 1.6969226588768427
+      },
+      "quirks": ["Nosy", "Chatterbox"],
+      "naturalStats": {
+        "speed": 0.091171064278888825,
+        "acceleration": -0.020759500868665862,
+        "health": 0.086672070515586577,
+        "stamina": 0.0555250124485007
+      },
+      "breaking": "Normal",
+      "seed": "65ADE231AC19861D",
+      "rollerVersion": 1,
+      "firstSeen": "2026-11-24",
+      "lastSeen": "2026-11-24"
+    },
+    "a_c_horse_kentuckysaddle_buttermilkbuckskin_pc|female|default": {
+      "breed": "Kentucky Saddler",
+      "origin": "Wild",
+      "status": "Permanent",
+      "quality": "Good",
+      "traits": {
+        "courage": -0.32570393267474163,
+        "nerves": 0.847624913225252,
+        "temper": -0.94446650415001443,
+        "bondAffinity": 1.1174069211889015
+      },
+      "quirks": ["Wanderer"],
+      "naturalStats": {
+        "speed": 0.0357159814544337,
+        "acceleration": 0.047448988521617205,
+        "health": 0.018785893786907662,
+        "stamina": 0.029291392165835657
+      },
+      "breaking": "Normal",
+      "seed": "785C5B16C14B6AC3",
+      "rollerVersion": 1,
+      "firstSeen": "2026-11-24",
+      "lastSeen": "2026-11-24"
+    },
+    "a_c_horse_thoroughbred_reversedappleblack|female|default": {
+      "breed": "Thoroughbred",
+      "origin": "Stable",
+      "status": "Permanent",
+      "quality": "Bad",
+      "traits": {
+        "courage": -1.5072409346206919,
+        "nerves": 1.8050974244202829,
+        "temper": 1.0916088881906472,
+        "bondAffinity": -1.13730343672722
+      },
+      "quirks": ["Chatterbox"],
+      "naturalStats": {
+        "speed": -0.0097448932447066518,
+        "acceleration": 0.033929801593323455,
+        "health": -0.058369026789944045,
+        "stamina": -0.06616394066108
+      },
+      "breaking": "Normal",
+      "seed": "C0A922C3FA7A6BA4",
+      "rollerVersion": 1,
+      "firstSeen": "2026-11-24",
+      "lastSeen": "2026-11-24"
+    }
+  }
+}

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace HorsePersonalities.Core.Breeds
 {
-    /// <summary>The 8 quirks from the build plan. A horse gets 1 or 2.</summary>
+    /// <summary>The 7 quirks from the build plan. A horse gets 1 or 2. Show-off was cut on Nov 25, 2026 (no scriptable piaffe).</summary>
     public enum Quirk
     {
         Chatterbox,
@@ -13,7 +13,6 @@ namespace HorsePersonalities.Core.Breeds
         Shadow,
         Wanderer,
         PickyEater,
-        ShowOff,
     }
 
     /// <summary>

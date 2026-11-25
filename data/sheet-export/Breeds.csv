@@ -4,14 +4,14 @@
 Breed,Class,Class 2,Physical learning,Combat learning,Courage,Nerves,Temper,Bond affinity,Break difficulty,Demeanor,Likely quirks,Handling,Basis
 American Paint,Work,,0.90,1.10,0,0,0,+1,-1,"Easygoing ranch horse. Calm around camp and cattle, curious about people.","Nosy, Shadow",Standard,"Game: Work class. Real world: calm, people-friendly stock horse."
 American Standardbred,Race,,1.30,0.70,0,0,-1,+1,-2,"Eager and forward. Fidgets when held back, sweet-natured in camp.","Head-tosser, Shadow",Race,"Game: one of the fastest breeds. Real world: calm, willing harness racer."
-Andalusian,War,,0.80,1.50,+1,0,0,+1,-1,"Proud and showy. Head held high, brave but sensitive, quick to learn tricks.","Show-off, Nosy",Standard,"Game: War class. Real world: classical dressage horse, eager to learn."
+Andalusian,War,,0.80,1.50,+1,0,0,+1,-1,"Proud and showy. Head held high, brave but sensitive, quick to learn tricks.",Nosy,Standard,"Game: War class. Real world: classical dressage horse, eager to learn."
 Appaloosa,Work,,0.90,1.10,+1,0,+1,0,+1,"Tough and a little stubborn. Sure-footed, likes to test new riders.","Kicker, Wanderer",Standard,"Game: Work class. Real world: hardy, known for a stubborn streak."
 Arabian,Superior,,1.50,0.80,-1,+2,0,+1,-1,"Hot-blooded. Ears and head always moving, alert to everything, tail carried high. Bonds deeply once it trusts you.","Nosy, Chatterbox, Head-tosser",Elite,"Game: Superior class, intelligent and easy to train, high tail carriage. Players report them as skittish."
 Ardennes,War,,0.80,1.50,+2,-1,-1,0,-1,Unflappable. Stands like a rock and barely reacts to nearby gunfire.,"Shadow, Wanderer",Standard,"Game: brave in combat, one of the heaviest breeds."
 Belgian Draft,Draft,,0.60,1.20,+1,-2,-1,0,-1,"Gentle giant. Slow to react, leans into pats.",Wanderer,Heavy,Game: strong draft horse. Real world: famously calm.
 Dutch Warmblood,Work,,0.90,1.10,+1,-1,-1,0,-1,Even-tempered and dependable. Brave without any fuss.,Shadow,Standard,Game catalogue: even temper and a courageous spirit.
 Hungarian Halfbred,War,,0.80,1.50,+2,-1,0,0,0,"Fearless in noise and chaos. Steady in a gunfight, a bit aloof in town.","Kicker, Nosy",Standard,"Game: known for fearlessness in loud, dangerous situations."
-Kentucky Saddler,Riding,,1.00,1.00,0,+1,0,+1,-1,"Showy and alert. High head, likes attention and company.","Chatterbox, Show-off",Standard,Game: Riding class. Real world: spirited show horse.
+Kentucky Saddler,Riding,,1.00,1.00,0,+1,0,+1,-1,"Showy and alert. High head, likes attention and company.",Chatterbox,Standard,Game: Riding class. Real world: spirited show horse.
 Missouri Fox Trotter,Race,Work,1.17,0.99,0,-1,-1,+1,-2,"Calm trail horse. Smooth, steady and friendly with people.","Shadow, Picky eater",Standard,Game: Race + Work multi-class. Real world: gentle and sure-footed.
 Morgan,Riding,,1.00,1.00,0,0,0,+1,-1,"Low-maintenance companion. Patient, happy to stand and wait.","Shadow, Wanderer",Standard,"Game: low maintenance, made for long journeys."
 Mustang,War,Work,0.81,1.35,+1,+1,+1,-1,+2,"Wild streak. Wary of strangers, scans the horizon, hard to win over but loyal once bonded.","Kicker, Nosy",Standard,Game: one of the harder breeds to break; loyal and bold in combat.
@@ -20,4 +20,4 @@ Shire,Draft,,0.60,1.20,+1,-2,-1,0,-1,"Gentle giant. Slow and patient, ignores mo
 Suffolk Punch,Draft,,0.60,1.20,+1,-1,0,0,0,"Stoic worker. Never seems tired, happy to graze.","Wanderer, Picky eater",Heavy,"Game: hardy, high endurance and strength."
 Tennessee Walker,Riding,,1.00,1.00,0,-1,-2,+1,-3,Gentle and easygoing. A beginner's horse that rarely fusses.,Shadow,Standard,Game: Riding class (one coat is listed as War). Real world: famously calm.
 Thoroughbred,Race,,1.30,0.70,-1,+2,+1,0,+1,"Highly strung. Fidgety at rest, spooks easily, always wants to run.","Head-tosser, Chatterbox",Race,"Game: fast and agile, but clumsy if pushed too far."
-Turkoman,Race,War,1.17,1.35,+1,0,+1,0,+1,"Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4.","Head-tosser, Picky eater, Show-off",Standard,Game: handles well but often impatient; Race + War multi-class.
+Turkoman,Race,War,1.17,1.35,+1,0,+1,0,+1,"Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4.","Head-tosser, Picky eater",Standard,Game: handles well but often impatient; Race + War multi-class.

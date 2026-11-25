@@ -13,6 +13,8 @@ namespace HorsePersonalities.Core.Saving
     {
         public List<HorseRecord> Records { get; } = new List<HorseRecord>();
         public SaveSource Source { get; internal set; }
+        /// <summary>The file was an older schema; save it now so the upgrade sticks.</summary>
+        public bool Upgraded { get; internal set; }
     }
 
     /// <summary>
@@ -28,11 +30,14 @@ namespace HorsePersonalities.Core.Saving
         private const string Log = "Save";
         private readonly string _dir;
         private readonly ILog _log;
+        private readonly StatsUpgrade _upgrade;
 
-        public HorseSaveStore(string dataDir, ILog log)
+        /// <param name="upgrade">Re-rolls natural stats for a schema 1 file. Without it, an old file's stats read as 0.</param>
+        public HorseSaveStore(string dataDir, ILog log, StatsUpgrade upgrade = null)
         {
             _dir = dataDir ?? throw new ArgumentNullException(nameof(dataDir));
             _log = log ?? NullLog.Instance;
+            _upgrade = upgrade;
         }
 
         public string MainFile => Path.Combine(_dir, "horses.json");
@@ -56,7 +61,7 @@ namespace HorsePersonalities.Core.Saving
                 return result;
             }
 
-            if (TryRead(MainFile, result.Records, out string error))
+            if (TryRead(MainFile, result, out string error))
             {
                 result.Source = SaveSource.Main;
                 return result;
@@ -81,7 +86,7 @@ namespace HorsePersonalities.Core.Saving
             }
 
             result.Records.Clear();
-            if (TryRead(BackupFile, result.Records, out string backupError))
+            if (TryRead(BackupFile, result, out string backupError))
             {
                 result.Source = SaveSource.Backup;
                 _log.Info(Log, $"Loaded {result.Records.Count} horses from horses.backup.json.");
@@ -117,13 +122,14 @@ namespace HorsePersonalities.Core.Saving
         }
 
         /// <summary>True when the file read cleanly. False with error null when it doesn't exist.</summary>
-        private bool TryRead(string path, List<HorseRecord> into, out string error)
+        private bool TryRead(string path, SaveLoadResult into, out string error)
         {
             error = null;
             if (!File.Exists(path)) return false;
             try
             {
-                into.AddRange(HorseSaveFormat.Read(File.ReadAllText(path), _log));
+                into.Records.AddRange(HorseSaveFormat.Read(File.ReadAllText(path), _log, _upgrade, out bool upgraded));
+                into.Upgraded = upgraded;
                 return true;
             }
             catch (SaveFormatException ex)

@@ -238,22 +238,34 @@ namespace HorsePersonalities.Tools.SheetToJson
             if (header < 0) { problems.Add("Tiers.csv: no header row starting with \"Tier\"."); return result; }
             var h = Header(rows[header]);
             int upCol = Col(h, "Stat up cap", problems, "Tiers.csv"), downCol = Col(h, "Stat down cap", problems, "Tiers.csv");
-            var found = new Dictionary<StatTier, (double Up, double Down)>();
+            var found = new Dictionary<StatTier, (int Up, int Down)>();
             for (int i = header + 1; i < rows.Count; i++)
             {
                 string name = Cell(rows[i], 0).Trim();
                 if (name.Length == 0) continue;
                 if (!NameMatching.TryParseTier(name, out StatTier tier)) { problems.Add($"Tiers.csv: unknown tier \"{name}\"."); continue; }
-                double up = ParseFraction(Cell(rows[i], upCol)), down = ParseFraction(Cell(rows[i], downCol));
-                if (double.IsNaN(up) || double.IsNaN(down)) { problems.Add($"Tiers.csv: {name} needs both caps, like 6%."); continue; }
+                // Caps are whole ranks on the game's 0-9 scale (decided Nov 25, 2026).
+                if (!TryRank(Cell(rows[i], upCol), out int up) || !TryRank(Cell(rows[i], downCol), out int down))
+                {
+                    problems.Add($"Tiers.csv: {name} needs both caps as whole ranks from 0 to {TierCap.MaxRank}, like 1.");
+                    continue;
+                }
                 found[tier] = (up, down);
             }
             foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
             {
-                if (found.TryGetValue(t, out var c)) result.Set(t.ToString(), JsonValue.NewObject().Set("statUpCap", Round(c.Up)).Set("statDownCap", Round(c.Down)));
+                if (found.TryGetValue(t, out var c)) result.Set(t.ToString(), JsonValue.NewObject().Set("statUpRanks", c.Up).Set("statDownRanks", c.Down));
                 else problems.Add($"Tiers.csv: no row for {t}.");
             }
             return result;
+        }
+
+        private static bool TryRank(string raw, out int rank)
+        {
+            rank = 0;
+            if (!TryNumber(raw, out double v) || v != Math.Floor(v) || v < 0 || v > TierCap.MaxRank) return false;
+            rank = (int)v;
+            return true;
         }
 
         private static double Round(double v) => Math.Round(v, 4);

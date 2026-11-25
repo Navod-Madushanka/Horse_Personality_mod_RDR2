@@ -15,8 +15,8 @@ namespace HorsePersonalities.Core.Rolling
     ///    (bad horse), plus a normal spread of TraitSpread. A good horse keeps at most one trait more than
     ///    FlawMargin on the bad side of its breed; any others are mirrored to the good side. A bad horse the reverse.
     /// 3. Quirks: 1, or 2 with SecondQuirkChance; the breed's likely quirks weigh LikelyQuirkWeight, others 1.
-    /// 4. Natural stats: a share of the tier cap (lean StatQualityShift, spread StatSpread), never past the cap
-    ///    or MaxStatVariance.
+    /// 4. Natural stats: whole ranks. Each stat leans StatQualityShift ranks toward the horse's quality with a normal
+    ///    spread of StatSpread ranks, is rounded to a whole rank, and is held inside the tier caps and MaxStatRankChange.
     /// 5. Breaking (wild horses only): Temper minus Bond affinity against the Hard and Unbreakable scores, and
     ///    Unbreakable also needs an UnbreakableChance roll.
     ///
@@ -31,7 +31,7 @@ namespace HorsePersonalities.Core.Rolling
         private readonly IReadOnlyDictionary<StatTier, TierCap> _caps;
         private readonly double _goodChance;
         private readonly double _unbreakableChance;
-        private readonly double _maxVariance;
+        private readonly int _maxRankChange;
 
         public PersonalityRoller(BreedCatalog catalog, ModSettings settings)
         {
@@ -41,14 +41,14 @@ namespace HorsePersonalities.Core.Rolling
             _caps = catalog.TierCaps;
             _goodChance = settings.GoodHorseChance / 100.0;
             _unbreakableChance = settings.UnbreakableChance / 100.0;
-            _maxVariance = settings.MaxStatVariance / 100.0;
+            _maxRankChange = settings.MaxStatRankChange;
         }
 
-        /// <summary>Largest rise and drop a natural stat may have for this tier: the tier cap, never past MaxStatVariance.</summary>
-        public (double Up, double Down) StatLimits(StatTier tier)
+        /// <summary>Most ranks a natural stat may rise and drop for this tier: the tier cap, never past MaxStatRankChange.</summary>
+        public (int Up, int Down) StatLimits(StatTier tier)
         {
             TierCap cap = _caps[tier];
-            return (Math.Min(cap.Up, _maxVariance), Math.Min(cap.Down, _maxVariance));
+            return (Math.Min(cap.Up, _maxRankChange), Math.Min(cap.Down, _maxRankChange));
         }
 
         public Personality Roll(Breed breed, HorseOrigin origin, ulong seed)
@@ -84,10 +84,11 @@ namespace HorsePersonalities.Core.Rolling
 
             // 4. Natural stats.
             var (up, down) = StatLimits(breed.Tier);
-            double Stat()
+            int Stat()
             {
-                double share = Clamp(q * _tuning.StatQualityShift + _tuning.StatSpread * rng.NextGaussian(), -1, 1);
-                return share >= 0 ? share * up : share * down;
+                double ranks = q * _tuning.StatQualityShift + _tuning.StatSpread * rng.NextGaussian();
+                int whole = (int)Math.Round(ranks, MidpointRounding.AwayFromZero);
+                return whole > up ? up : whole < -down ? -down : whole;
             }
             var stats = new NaturalStats(Stat(), Stat(), Stat(), Stat());
 

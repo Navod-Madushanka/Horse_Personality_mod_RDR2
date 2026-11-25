@@ -19,9 +19,9 @@ namespace HorsePersonalities.Core.Breeds
         public double SecondQuirkChance { get; }
         /// <summary>Pick weight of a breed's likely quirks against 1 for the others.</summary>
         public double LikelyQuirkWeight { get; }
-        /// <summary>Standard deviation of a natural stat, as a share of its tier cap.</summary>
+        /// <summary>Standard deviation of a natural stat, in ranks, before it is rounded to a whole rank.</summary>
         public double StatSpread { get; }
-        /// <summary>How far good horses' stats lean up (and bad horses' down), as a share of the tier cap.</summary>
+        /// <summary>How far good horses' stats lean up (and bad horses' down), in ranks.</summary>
         public double StatQualityShift { get; }
         /// <summary>Wild horses: Temper minus Bond affinity at or above this breaks Hard.</summary>
         public double HardBreakScore { get; }
@@ -50,8 +50,8 @@ namespace HorsePersonalities.Core.Breeds
             ("flawMargin", "Flaw margin", 0.0, 2.0),
             ("secondQuirkChance", "Second quirk chance", 0.0, 1.0),
             ("likelyQuirkWeight", "Likely quirk weight", 1.0, 100.0),
-            ("statSpread", "Stat spread", 0.01, 2.0),
-            ("statQualityShift", "Stat quality shift", 0.0, 1.0),
+            ("statSpread", "Stat spread", 0.01, 3.0),
+            ("statQualityShift", "Stat quality shift", 0.0, 2.0),
             ("hardBreakScore", "Hard break score", -4.0, 4.0),
             ("unbreakableBreakScore", "Unbreakable break score", -4.0, 4.0),
         };
@@ -78,22 +78,26 @@ namespace HorsePersonalities.Core.Breeds
         }
     }
 
-    /// <summary>How far a natural stat may move up and down from the breed baseline in one tier (sheet's Tiers tab).</summary>
+    /// <summary>
+    /// How many whole ranks a natural stat may move up and down from the breed baseline in one tier (sheet's Tiers
+    /// tab). Game stats are ranks 0 to 9, one stat-bar segment each.
+    /// </summary>
     public sealed class TierCap
     {
         public StatTier Tier { get; }
-        /// <summary>Largest rise, as a fraction of the breed baseline (0.06 = 6%).</summary>
-        public double Up { get; }
-        /// <summary>Largest drop, as a positive fraction of the breed baseline.</summary>
-        public double Down { get; }
+        /// <summary>Most ranks a stat may rise.</summary>
+        public int Up { get; }
+        /// <summary>Most ranks a stat may drop.</summary>
+        public int Down { get; }
 
-        public TierCap(StatTier tier, double up, double down)
+        public TierCap(StatTier tier, int up, int down)
         {
             Tier = tier;
             Up = up;
             Down = down;
         }
 
-        public const double MaxCap = 0.5;
+        /// <summary>The game's highest stat rank.</summary>
+        public const int MaxRank = 9;
     }
 }

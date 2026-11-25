@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -34,27 +34,27 @@
     "flawMargin": 0.25,
     "secondQuirkChance": 0.35,
     "likelyQuirkWeight": 4,
-    "statSpread": 0.5,
-    "statQualityShift": 0.25,
+    "statSpread": 0.6,
+    "statQualityShift": 0.3,
     "hardBreakScore": 1.5,
     "unbreakableBreakScore": 2.5
   },
   "tiers": {
     "Heavy": {
-      "statUpCap": 0.04,
-      "statDownCap": 0.1
+      "statUpRanks": 1,
+      "statDownRanks": 2
     },
     "Standard": {
-      "statUpCap": 0.06,
-      "statDownCap": 0.1
+      "statUpRanks": 1,
+      "statDownRanks": 2
     },
     "Race": {
-      "statUpCap": 0.08,
-      "statDownCap": 0.08
+      "statUpRanks": 1,
+      "statDownRanks": 1
     },
     "Elite": {
-      "statUpCap": 0.1,
-      "statDownCap": 0.05
+      "statUpRanks": 1,
+      "statDownRanks": 0
     }
   },
   "breeds": [
@@ -97,7 +97,7 @@
         "temper": 0,
         "bondAffinity": 1
       },
-      "likelyQuirks": ["ShowOff", "Nosy"],
+      "likelyQuirks": ["Nosy"],
       "demeanor": "Proud and showy. Head held high, brave but sensitive, quick to learn tricks."
     },
     {
@@ -195,7 +195,7 @@
         "temper": 0,
         "bondAffinity": 1
       },
-      "likelyQuirks": ["Chatterbox", "ShowOff"],
+      "likelyQuirks": ["Chatterbox"],
       "demeanor": "Showy and alert. High head, likes attention and company."
     },
     {
@@ -321,7 +321,7 @@
         "temper": 1,
         "bondAffinity": 0
       },
-      "likelyQuirks": ["HeadTosser", "PickyEater", "ShowOff"],
+      "likelyQuirks": ["HeadTosser", "PickyEater"],
       "demeanor": "Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4."
     }
   ],

@@ -103,8 +103,9 @@ namespace HorsePersonalities.Tests
             Assert.Equal(0.6, c.Roller.TraitSpread);
             Assert.Equal(4, c.Roller.LikelyQuirkWeight);
             Assert.Equal(4, c.TierCaps.Count);
-            Assert.Equal(0.04, c.TierCaps[StatTier.Heavy].Up);
-            Assert.Equal(0.05, c.TierCaps[StatTier.Elite].Down);
+            Assert.Equal(1, c.TierCaps[StatTier.Heavy].Up);
+            Assert.Equal(2, c.TierCaps[StatTier.Heavy].Down);
+            Assert.Equal(0, c.TierCaps[StatTier.Elite].Down); // the Arabian never drops below its breed
         }
 
         [Fact]
@@ -124,18 +125,19 @@ namespace HorsePersonalities.Tests
         public void QuirkNamesFromTheSheetNormalize()
         {
             var c = BreedCatalog.Load(TestData.MinimalBreeds, new MemoryLog());
-            Assert.Equal(new[] { Quirk.HeadTosser, Quirk.PickyEater, Quirk.ShowOff }, c.Breeds[0].LikelyQuirks);
+            Assert.Equal(new[] { Quirk.HeadTosser, Quirk.PickyEater, Quirk.Nosy }, c.Breeds[0].LikelyQuirks);
         }
 
         [Theory]
-        [InlineData("\"schemaVersion\": 2", "\"schemaVersion\": 1", "schemaVersion")]
+        [InlineData("\"schemaVersion\": 3", "\"schemaVersion\": 2", "schemaVersion")]
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]
         [InlineData("\"traitSpread\": 0.6", "\"traitSpread\": 9", "roller.traitSpread")]
         [InlineData("\"hardBreakScore\": 1.5", "\"hardBreakScore\": 3.5", "must not be below Hard break score")]
-        [InlineData(", \"Elite\": { \"statUpCap\": 0.1, \"statDownCap\": 0.05 }", "", "no caps for Elite")]
-        [InlineData("\"Heavy\": { \"statUpCap\": 0.04", "\"Heavy\": { \"statUpCap\": 0.9", "tiers.Heavy")]
+        [InlineData(", \"Elite\": { \"statUpRanks\": 1, \"statDownRanks\": 0 }", "", "no caps for Elite")]
+        [InlineData("\"Heavy\": { \"statUpRanks\": 1", "\"Heavy\": { \"statUpRanks\": 1.5", "tiers.Heavy")]
+        [InlineData("\"Race\": { \"statUpRanks\": 1", "\"Race\": { \"statUpRanks\": 10", "whole ranks")]
         [InlineData("\"handling\": \"Standard\"", "\"handling\": \"Fast\"", "handling \"Fast\"")]
         [InlineData("\"handling\": \"Standard\", ", "", "handling \"\"")]
         [InlineData("\"a_c_horsemule_01\"", "\"a_c_horse_turkoman_gold\"", "both Turkoman and otherModels")]
@@ -157,7 +159,7 @@ namespace HorsePersonalities.Tests
         public void UnknownQuirkIsSkippedWithAWarning()
         {
             var log = new MemoryLog();
-            var c = BreedCatalog.Load(TestData.MinimalBreeds.Replace("\"Show-off\"", "\"Juggler\""), log);
+            var c = BreedCatalog.Load(TestData.MinimalBreeds.Replace("\"nosy\"", "\"Juggler\""), log);
             Assert.Equal(2, c.Breeds[0].LikelyQuirks.Count);
             Assert.Contains(log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains("Juggler"));
         }

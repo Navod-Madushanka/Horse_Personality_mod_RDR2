@@ -160,17 +160,44 @@ namespace HorsePersonalities.Tests
             TierCap cap = Catalog.TierCaps[b.Tier];
             foreach (var p in RollMany(Default, b))
                 foreach (var (name, v) in p.NaturalStats.All())
-                    Assert.True(v <= cap.Up + 1e-12 && v >= -cap.Down - 1e-12, $"{breed} {name} {v} outside -{cap.Down}..+{cap.Up}");
+                    Assert.True(v <= cap.Up && v >= -cap.Down, $"{breed} {name} {v} outside -{cap.Down}..+{cap.Up}");
         }
 
         [Fact]
-        public void MaxStatVarianceCapsEvenAWideTierCap()
+        public void MaxStatRankChangeCapsEvenAWideTierCap()
         {
-            var roller = new PersonalityRoller(Catalog, With("MaxStatVariance = 3"));
-            Assert.Equal((0.03, 0.03), roller.StatLimits(StatTier.Elite));
-            foreach (var p in RollMany(roller, B("Arabian")))
+            var roller = new PersonalityRoller(Catalog, With("MaxStatRankChange = 1"));
+            Assert.Equal((1, 1), roller.StatLimits(StatTier.Standard)); // the tier allows 2 down
+            foreach (var p in RollMany(roller, B("Morgan")))
                 foreach (var (_, v) in p.NaturalStats.All())
-                    Assert.InRange(v, -0.03 - 1e-12, 0.03 + 1e-12);
+                    Assert.InRange(v, -1, 1);
+        }
+
+        [Fact]
+        public void MaxStatRankChangeZeroTurnsNaturalStatsOff()
+        {
+            var roller = new PersonalityRoller(Catalog, With("MaxStatRankChange = 0"));
+            Assert.All(RollMany(roller, B("Turkoman")), p => Assert.All(p.NaturalStats.All(), s => Assert.Equal(0, s.Value)));
+        }
+
+        [Fact]
+        public void NaturalStatsAreMostlyZeroOftenOneAndRarelyTwo()
+        {
+            // Standard tier: up to +1, down to -2.
+            var stats = RollMany(Default, B("Morgan")).SelectMany(p => p.NaturalStats.All().Select(s => s.Value)).ToList();
+            double zero = stats.Count(v => v == 0) / (double)stats.Count;
+            double one = stats.Count(v => Math.Abs(v) == 1) / (double)stats.Count;
+            double two = stats.Count(v => Math.Abs(v) == 2) / (double)stats.Count;
+            Assert.InRange(zero, 0.40, 0.75);
+            Assert.InRange(one, 0.20, 0.55);
+            Assert.InRange(two, 0.0005, 0.05);
+            Assert.DoesNotContain(stats, v => v > 1 || v < -2);
+        }
+
+        [Fact]
+        public void ArabiansNeverDropBelowTheirBreed()
+        {
+            Assert.All(RollMany(Default, B("Arabian")), p => Assert.All(p.NaturalStats.All(), s => Assert.True(s.Value >= 0)));
         }
 
         [Fact]
@@ -280,7 +307,7 @@ namespace HorsePersonalities.Tests
 
     internal static class Golden
     {
-        public const string Turkoman42 = "Turkoman - good horse - seed 000000000000002A | Courage +1.44  Nerves -1.04  Temper +0.26  Bond -0.08 | Quirks: HeadTosser | Natural stats: speed -3.5%, accel +2.8%, health +0.1%, stamina +1.0% | Breaking: Normal";
-        public const string ShireDeadBeef = "Shire - good horse - seed 00000000DEADBEEF | Courage +2.00  Nerves -2.00  Temper -0.97  Bond +1.40 | Quirks: PickyEater, ShowOff | Natural stats: speed +1.4%, accel +0.6%, health +0.3%, stamina +3.7% | Breaking: Normal (stable horse)";
+        public const string Turkoman42 = "Turkoman - good horse - seed 000000000000002A | Courage +1.44  Nerves -1.04  Temper +0.26  Bond -0.08 | Quirks: HeadTosser | Natural stats (ranks): speed 0, accel +1, health 0, stamina 0 | Breaking: Normal";
+        public const string ShireDeadBeef = "Shire - good horse - seed 00000000DEADBEEF | Courage +2.00  Nerves -2.00  Temper -0.97  Bond +1.40 | Quirks: Wanderer, PickyEater | Natural stats (ranks): speed 0, accel 0, health 0, stamina +1 | Breaking: Normal (stable horse)";
     }
 }

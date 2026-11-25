@@ -69,17 +69,18 @@ namespace HorsePersonalities.Core.Rolling
     }
 
     /// <summary>
-    /// Natural stat differences as fractions of the breed baseline (0.04 = 4% above). They set the horse's ceiling;
-    /// Phase 5 reveals health and stamina by bond level, Phase 8 grows speed and acceleration toward theirs.
+    /// Natural stat differences in whole ranks above or below the breed baseline (+1 = one more stat-bar segment).
+    /// They set the horse's ceiling; Phase 5 reveals health and stamina by bond level, Phase 8 grows speed and
+    /// acceleration toward theirs.
     /// </summary>
     public sealed class NaturalStats
     {
-        public double Speed { get; }
-        public double Acceleration { get; }
-        public double Health { get; }
-        public double Stamina { get; }
+        public int Speed { get; }
+        public int Acceleration { get; }
+        public int Health { get; }
+        public int Stamina { get; }
 
-        public NaturalStats(double speed, double acceleration, double health, double stamina)
+        public NaturalStats(int speed, int acceleration, int health, int stamina)
         {
             Speed = speed;
             Acceleration = acceleration;
@@ -87,7 +88,7 @@ namespace HorsePersonalities.Core.Rolling
             Stamina = stamina;
         }
 
-        public IEnumerable<(string Name, double Value)> All()
+        public IEnumerable<(string Name, int Value)> All()
         {
             yield return ("speed", Speed);
             yield return ("acceleration", Acceleration);
@@ -100,7 +101,7 @@ namespace HorsePersonalities.Core.Rolling
     public sealed class Personality
     {
         /// <summary>Bumped when the roll algorithm changes, so a saved seed can be told apart from a new one.</summary>
-        public const int RollerVersion = 1;
+        public const int RollerVersion = 2; // 2: natural stats in whole ranks, Show-off cut (Nov 25, 2026)
 
         public string Breed { get; }
         public HorseOrigin Origin { get; }
@@ -128,13 +129,13 @@ namespace HorsePersonalities.Core.Rolling
         public IReadOnlyList<string> Describe()
         {
             string T(double v) => v.ToString("+0.00;-0.00;0.00", CultureInfo.InvariantCulture);
-            string P(double v) => (v * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + "%";
+            string R(int v) => v.ToString("+0;-0;0", CultureInfo.InvariantCulture);
             return new[]
             {
                 $"{Breed} - {Quality.ToString().ToLowerInvariant()} horse - seed {Seed:X16}",
                 $"Courage {T(Traits.Courage)}  Nerves {T(Traits.Nerves)}  Temper {T(Traits.Temper)}  Bond {T(Traits.BondAffinity)}",
                 "Quirks: " + string.Join(", ", Quirks.Select(q => q.ToString())),
-                $"Natural stats: speed {P(NaturalStats.Speed)}, accel {P(NaturalStats.Acceleration)}, health {P(NaturalStats.Health)}, stamina {P(NaturalStats.Stamina)}",
+                $"Natural stats (ranks): speed {R(NaturalStats.Speed)}, accel {R(NaturalStats.Acceleration)}, health {R(NaturalStats.Health)}, stamina {R(NaturalStats.Stamina)}",
                 Origin == HorseOrigin.Wild ? $"Breaking: {Breaking}" : $"Breaking: {Breaking} ({Origin.ToString().ToLowerInvariant()} horse)",
             };
         }

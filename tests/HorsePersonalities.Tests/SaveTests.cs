@@ -71,7 +71,8 @@ namespace HorsePersonalities.Tests
         public void WritesThePlansFormat()
         {
             var json = HorsePersonalities.Core.Json.JsonValue.Parse(HorseSaveFormat.Write(RegistryWith(("a_c_horse_turkoman_gold", "Turkoman")).Permanent));
-            Assert.Equal(1, json["schemaVersion"].AsInt());
+            Assert.Equal(2, json["schemaVersion"].AsInt());
+            Assert.Equal(HorsePersonalities.Core.Json.JsonKind.Number, json["horses"]["a_c_horse_turkoman_gold|female|default"]["naturalStats"]["speed"].Kind);
             var h = json["horses"]["a_c_horse_turkoman_gold|female|default"];
             Assert.Equal("Turkoman", h["breed"].AsString());
             Assert.Equal("Wild", h["origin"].AsString());
@@ -191,6 +192,84 @@ namespace HorsePersonalities.Tests
         }
 
         private static void Assume(bool condition) { if (!condition) throw new Xunit.Sdk.XunitException("Test setup: text not found"); }
+
+        // ---- Schema 1 to 2 upgrade, on Navod's real horses.json from the Nov 24 in-game session ----
+
+        private static NaturalStats Restat(string breed, HorseOrigin origin, ulong seed)
+        {
+            Catalog.TryGetBreed(breed, out Breed b);
+            return new PersonalityRoller(Catalog, ModSettings.Defaults()).Roll(b, origin, seed).NaturalStats;
+        }
+
+        [Fact]
+        public void Schema1FileIsUpgradedKeepingTraitsAndQuirks()
+        {
+            string old = TestData.Read("tests", "HorsePersonalities.Tests", "Fixtures", "horses-schema1.json");
+            var records = HorseSaveFormat.Read(old, _log, Restat, out bool upgraded);
+            Assert.True(upgraded);
+            Assert.Equal(3, records.Count);
+
+            var arabian = records.Single(r => r.Id.Key == "a_c_horse_arabian_rosegreybay|male|default").Personality;
+            Assert.Equal(-0.29081317992640388, arabian.Traits.Courage); // traits kept exactly
+            Assert.Equal(new[] { Quirk.Nosy, Quirk.Chatterbox }, arabian.Quirks);
+            Assert.Equal(0x65ADE231AC19861DUL, arabian.Seed);
+            // Natural stats are re-rolled from the seed as whole ranks: the same as a fresh roll of that seed.
+            Assert.Equal(Restat("Arabian", HorseOrigin.Unknown, arabian.Seed).Speed, arabian.NaturalStats.Speed);
+            Assert.All(records, r => Assert.All(r.Personality.NaturalStats.All(), s => Assert.InRange(s.Value, -2, 1)));
+
+            var kentucky = records.Single(r => r.Id.Key.StartsWith("a_c_horse_kentuckysaddle")).Personality;
+            Assert.Equal(HorseOrigin.Wild, kentucky.Origin);
+            Assert.Contains(_log.Entries, e => e.Message.Contains("Upgraded horses.json from schema 1"));
+        }
+
+        [Fact]
+        public void UpgradedFileWritesBackAsSchema2AndReadsTheSame()
+        {
+            string old = TestData.Read("tests", "HorsePersonalities.Tests", "Fixtures", "horses-schema1.json");
+            var records = HorseSaveFormat.Read(old, _log, Restat, out _);
+            string written = HorseSaveFormat.Write(records);
+            var again = HorseSaveFormat.Read(written, _log, null, out bool upgraded);
+            Assert.False(upgraded);
+            Assert.Equal(written, HorseSaveFormat.Write(again));
+        }
+
+        [Fact]
+        public void StoreReportsAnUpgradeSoTheGameCanWriteItBack()
+        {
+            File.WriteAllText(P("horses.json"), TestData.Read("tests", "HorsePersonalities.Tests", "Fixtures", "horses-schema1.json"));
+            var r = new HorseSaveStore(_dir, _log, Restat).Load(false, Now);
+            Assert.Equal(SaveSource.Main, r.Source);
+            Assert.True(r.Upgraded);
+            Assert.Equal(3, r.Records.Count);
+        }
+
+        [Fact]
+        public void Schema1WithoutAnUpgraderZeroesStatsWithAWarning()
+        {
+            var records = HorseSaveFormat.Read(TestData.Read("tests", "HorsePersonalities.Tests", "Fixtures", "horses-schema1.json"), _log);
+            Assert.All(records, r => Assert.All(r.Personality.NaturalStats.All(), s => Assert.Equal(0, s.Value)));
+            Assert.Contains(_log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains("set to 0"));
+        }
+
+        [Fact]
+        public void ACutQuirkIsDroppedFromAnOldSave()
+        {
+            string old = TestData.Read("tests", "HorsePersonalities.Tests", "Fixtures", "horses-schema1.json")
+                .Replace("\"quirks\": [\"Wanderer\"]", "\"quirks\": [\"ShowOff\"]");
+            var kentucky = HorseSaveFormat.Read(old, _log, Restat).Single(r => r.Id.Key.StartsWith("a_c_horse_kentuckysaddle"));
+            Assert.Empty(kentucky.Personality.Quirks);
+            Assert.Contains(_log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains("ShowOff"));
+        }
+
+        [Fact]
+        public void NaturalStatsOutOfRangeSkipTheRecord()
+        {
+            string text = HorseSaveFormat.Write(RegistryWith(FiveHorses).Permanent);
+            int at = text.IndexOf("\"speed\": ", StringComparison.Ordinal);
+            int end = text.IndexOf(',', at);
+            text = text.Substring(0, at) + "\"speed\": 12" + text.Substring(end);
+            Assert.Equal(4, HorseSaveFormat.Read(text, _log).Count);
+        }
 
         [Fact]
         public void ResetMovesTheSaveAsideAndStartsEmpty()

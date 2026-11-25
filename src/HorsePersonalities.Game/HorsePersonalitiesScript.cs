@@ -87,10 +87,15 @@ namespace HorsePersonalities.Game
         /// <summary>Loads saved horses (or resets them for a new playthrough). Runs once, at script start.</summary>
         private void StartRegistry()
         {
-            _registry = new HorseRegistry(new PersonalityRoller(_boot.Breeds, _boot.Settings), _boot.Log);
-            _store = new HorseSaveStore(_boot.Paths.DataDir, _boot.Log);
+            var roller = new PersonalityRoller(_boot.Breeds, _boot.Settings);
+            _registry = new HorseRegistry(roller, _boot.Log);
+            // A schema 1 save (natural stats as fractions) gets its stats re-rolled from each horse's seed, as whole ranks.
+            _store = new HorseSaveStore(_boot.Paths.DataDir, _boot.Log, (breed, origin, seed) =>
+                _boot.Breeds.TryGetBreed(breed, out Breed b) ? roller.Roll(b, origin, seed).NaturalStats : new NaturalStats(0, 0, 0, 0));
             SaveLoadResult loaded = _store.Load(_boot.Settings.ResetAllHorses, DateTime.Now);
             _registry.Load(loaded.Records);
+            if (loaded.Upgraded && _store.Save(_registry.Permanent))
+                _boot.Log.Info("Save", "Wrote the upgraded horses.json.");
             if (_boot.Settings.ResetAllHorses) TurnOffReset();
         }
 

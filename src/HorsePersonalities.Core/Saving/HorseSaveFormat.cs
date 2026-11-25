@@ -14,13 +14,17 @@ namespace HorsePersonalities.Core.Saving
         public SaveFormatException(string message) : base(message) { }
     }
 
+    /// <summary>Natural stats for a horse saved before they were whole ranks: re-rolled from its saved seed.</summary>
+    public delegate NaturalStats StatsUpgrade(string breed, HorseOrigin origin, ulong seed);
+
     /// <summary>
     /// horses.json (Build plan: Data model): one record per permanent horse, keyed by fingerprint. Only permanent
     /// personalities are written. Skills join in Phase 8; a file without them reads fine.
+    /// Schema 1 (natural stats as fractions) is upgraded on read to schema 2 (whole ranks).
     /// </summary>
     public static class HorseSaveFormat
     {
-        public const int CurrentSchemaVersion = 1;
+        public const int CurrentSchemaVersion = 2;
         private const string Log = "Save";
 
         public static string Write(IEnumerable<HorseRecord> records)
@@ -44,8 +48,8 @@ namespace HorsePersonalities.Core.Saving
                         .Set("temper", Exact(p.Traits.Temper)).Set("bondAffinity", Exact(p.Traits.BondAffinity)))
                     .Set("quirks", quirks)
                     .Set("naturalStats", JsonValue.NewObject()
-                        .Set("speed", Exact(p.NaturalStats.Speed)).Set("acceleration", Exact(p.NaturalStats.Acceleration))
-                        .Set("health", Exact(p.NaturalStats.Health)).Set("stamina", Exact(p.NaturalStats.Stamina)))
+                        .Set("speed", p.NaturalStats.Speed).Set("acceleration", p.NaturalStats.Acceleration)
+                        .Set("health", p.NaturalStats.Health).Set("stamina", p.NaturalStats.Stamina))
                     .Set("breaking", p.Breaking.ToString())
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
                     .Set("seed", p.Seed.ToString("X16", CultureInfo.InvariantCulture))
@@ -60,16 +64,21 @@ namespace HorsePersonalities.Core.Saving
         /// Reads a whole file. Throws <see cref="SaveFormatException"/> if the file as a whole can't be trusted
         /// (not JSON, wrong schema). A single bad record is skipped with a log line, and the rest load.
         /// </summary>
-        public static List<HorseRecord> Read(string text, ILog log)
+        public static List<HorseRecord> Read(string text, ILog log, StatsUpgrade upgrade = null) => Read(text, log, upgrade, out _);
+
+        /// <param name="upgraded">True when the file was an older schema and was upgraded; write it back to keep the upgrade.</param>
+        public static List<HorseRecord> Read(string text, ILog log, StatsUpgrade upgrade, out bool upgraded)
         {
             log = log ?? NullLog.Instance;
+            upgraded = false;
             JsonValue root;
             try { root = JsonValue.Parse(text); }
             catch (JsonException ex) { throw new SaveFormatException("horses.json is not valid JSON: " + ex.Message); }
 
             int schema = root.GetInt("schemaVersion", -1);
-            if (schema != CurrentSchemaVersion)
-                throw new SaveFormatException($"horses.json has schemaVersion {schema}; this build reads {CurrentSchemaVersion}.");
+            if (schema != 1 && schema != CurrentSchemaVersion)
+                throw new SaveFormatException($"horses.json has schemaVersion {schema}; this build reads 1 and {CurrentSchemaVersion}.");
+            upgraded = schema == 1;
             JsonValue horses = root["horses"];
             if (horses.Kind != JsonKind.Object) throw new SaveFormatException("horses.json has no \"horses\" object.");
 
@@ -78,17 +87,18 @@ namespace HorsePersonalities.Core.Saving
             {
                 try
                 {
-                    records.Add(ReadRecord(kv.Key, kv.Value, log));
+                    records.Add(ReadRecord(kv.Key, kv.Value, log, schema, upgrade));
                 }
                 catch (Exception ex) when (ex is SaveFormatException || ex is JsonException || ex is ArgumentException)
                 {
                     log.Warn(Log, $"Skipping saved horse \"{kv.Key}\": {ex.Message}");
                 }
             }
+            if (upgraded) log.Info(Log, $"Upgraded horses.json from schema 1 to {CurrentSchemaVersion}: natural stats are whole ranks now, re-rolled from each horse's seed.");
             return records;
         }
 
-        private static HorseRecord ReadRecord(string key, JsonValue j, ILog log)
+        private static HorseRecord ReadRecord(string key, JsonValue j, ILog log, int schema, StatsUpgrade upgrade)
         {
             if (!HorseFingerprint.TryParse(key, out HorseFingerprint id)) throw new SaveFormatException("the key is not model|sex|coat.");
             string breed = j.GetString("breed", null);
@@ -104,15 +114,31 @@ namespace HorsePersonalities.Core.Saving
                 else log.Warn(Log, $"{key}: skipping unknown quirk {q}.");
             }
 
-            JsonValue s = j.Require("naturalStats");
-            var stats = new NaturalStats(Stat(s, "speed"), Stat(s, "acceleration"), Stat(s, "health"), Stat(s, "stamina"));
-
             ulong seed = 0;
             string seedText = j.GetString("seed", null);
             if (seedText != null && !ulong.TryParse(seedText, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out seed))
                 throw new SaveFormatException($"seed \"{seedText}\" is not hex.");
+            HorseOrigin origin = Enum<HorseOrigin>(j, "origin", HorseOrigin.Unknown);
 
-            var p = new Personality(breed, Enum<HorseOrigin>(j, "origin", HorseOrigin.Unknown), seed,
+            NaturalStats stats;
+            if (schema == 1)
+            {
+                // Fractions of the baseline can't be turned into ranks fairly, so roll them again from the horse's seed.
+                if (upgrade != null && seedText != null) stats = upgrade(breed, origin, seed);
+                else
+                {
+                    stats = new NaturalStats(0, 0, 0, 0);
+                    log.Warn(Log, $"{key}: saved before natural stats were ranks, with no way to re-roll them; set to 0.");
+                }
+            }
+            else
+            {
+                JsonValue s = j.Require("naturalStats");
+                stats = new NaturalStats(Stat(s, "speed"), Stat(s, "acceleration"), Stat(s, "health"), Stat(s, "stamina"));
+            }
+            if (quirks.Count == 0) log.Warn(Log, $"{key}: has no quirks left (Show-off was cut); it keeps its other traits.");
+
+            var p = new Personality(breed, origin, seed,
                 Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal));
             return new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", ""));
         }
@@ -124,12 +150,15 @@ namespace HorsePersonalities.Core.Saving
             return v;
         }
 
-        private static double Stat(JsonValue s, string name)
+        private static int Stat(JsonValue s, string name)
         {
-            double v = s.Require(name).AsNumber();
-            if (v < -TierCap.MaxCap || v > TierCap.MaxCap) throw new SaveFormatException($"natural stat {name} = {v} is out of range.");
+            int v = s.Require(name).AsInt();
+            if (v < -TierCap.MaxRank || v > TierCap.MaxRank) throw new SaveFormatException($"natural stat {name} = {v} ranks is out of range.");
             return v;
         }
+
+        /// <summary>Full precision: the writer uses the shortest text that reads back to the same number, so a reload is exact.</summary>
+        private static double Exact(double v) => v;
 
         private static T Enum<T>(JsonValue j, string key, T? fallback) where T : struct
         {
@@ -139,7 +168,6 @@ namespace HorsePersonalities.Core.Saving
             throw new SaveFormatException($"{key} \"{raw}\" is not one of {string.Join(", ", System.Enum.GetNames(typeof(T)))}.");
         }
 
-        /// <summary>Full precision: the writer uses the shortest text that reads back to the same number, so a reload is exact.</summary>
-        private static double Exact(double v) => v;
+
     }
 }

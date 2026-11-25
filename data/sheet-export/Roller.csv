@@ -4,7 +4,7 @@ Quality shift,0.5,"How far a good horse sits on the good side of its breed, and 
 Flaw margin,0.25,"A trait this far on the wrong side of the breed counts as a flaw. A good horse keeps at most one flaw, a bad horse at most one good trait."
 Second quirk chance,35%,Chance a horse gets 2 quirks instead of 1.
 Likely quirk weight,4,How many times more often a breed's likely quirks are picked than other quirks.
-Stat spread,0.5,"How far natural stats spread, as a share of the tier cap (standard deviation)."
-Stat quality shift,0.25,"How far good horses' natural stats lean up and bad horses' lean down, as a share of the tier cap."
+Stat spread,0.6,"How far natural stats spread, in ranks (standard deviation). Each stat rounds to a whole rank: 0.6 gives mostly 0, often 1, rarely 2."
+Stat quality shift,0.3,"How far good horses' natural stats lean up and bad horses' lean down, in ranks."
 Hard break score,1.5,Wild horses: Temper minus Bond affinity at or above this breaks Hard.
 Unbreakable break score,2.5,"Wild horses: at or above this, a horse is Unbreakable if it also wins the UnbreakableChance roll; otherwise Hard."

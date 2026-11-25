@@ -16,7 +16,8 @@ namespace HorsePersonalities.Core.Settings
 
         public int GoodHorseChance { get; private set; } = 80;
         public int UnbreakableChance { get; private set; } = 5;
-        public int MaxStatVariance { get; private set; } = 10;
+        /// <summary>Most ranks a natural stat may move, whatever its tier allows. 0 turns natural stats off.</summary>
+        public int MaxStatRankChange { get; private set; } = 2;
         public int RevealPerBondLevel { get; private set; } = 25;
         public double SpookFrequency { get; private set; } = 1.0;
         public int QuirkCooldownSeconds { get; private set; } = 120;
@@ -44,7 +45,9 @@ namespace HorsePersonalities.Core.Settings
 
             s.GoodHorseChance = ReadInt(ini, log, nameof(GoodHorseChance), s.GoodHorseChance, 0, 100);
             s.UnbreakableChance = ReadInt(ini, log, nameof(UnbreakableChance), s.UnbreakableChance, 0, 100);
-            s.MaxStatVariance = ReadInt(ini, log, nameof(MaxStatVariance), s.MaxStatVariance, 0, 50);
+            s.MaxStatRankChange = ReadInt(ini, log, nameof(MaxStatRankChange), s.MaxStatRankChange, 0, TierCapMaxRank);
+            if (ini.TryGetAnywhere(Section, "MaxStatVariance", out _))
+                log.Warn(LogCategory, "MaxStatVariance is no longer used: natural stats are whole ranks now. Use MaxStatRankChange (0-9, default 2).");
             s.RevealPerBondLevel = ReadInt(ini, log, nameof(RevealPerBondLevel), s.RevealPerBondLevel, 0, 100);
             s.SpookFrequency = ReadDouble(ini, log, nameof(SpookFrequency), s.SpookFrequency, 0, 10);
             s.QuirkCooldownSeconds = ReadInt(ini, log, nameof(QuirkCooldownSeconds), s.QuirkCooldownSeconds, 0, 3600);
@@ -67,8 +70,8 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"GoodHorseChance = {d.GoodHorseChance}");
             sb.AppendLine("; Percent cap on unbreakable wild horses (0-100).");
             sb.AppendLine($"UnbreakableChance = {d.UnbreakableChance}");
-            sb.AppendLine("; Largest natural stat change, in percent of the breed baseline (0-50).");
-            sb.AppendLine($"MaxStatVariance = {d.MaxStatVariance}");
+            sb.AppendLine("; Most ranks a natural stat can move from the breed's usual value (0-9). 0 turns natural stats off.");
+            sb.AppendLine($"MaxStatRankChange = {d.MaxStatRankChange}");
             sb.AppendLine("; Percent of stat differences revealed per bond level (0-100).");
             sb.AppendLine($"RevealPerBondLevel = {d.RevealPerBondLevel}");
             sb.AppendLine("; Multiplier on random spook checks (0-10). 0 turns random spooks off.");
@@ -87,6 +90,8 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"LogLevel = {d.LogLevel}");
             return sb.ToString();
         }
+
+        private const int TierCapMaxRank = Breeds.TierCap.MaxRank;
 
         private static string Bool(bool b) => b ? "true" : "false";
 

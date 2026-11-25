@@ -92,13 +92,14 @@ namespace HorsePersonalities.Tests
             var json = Convert();
             Assert.Equal(0.35, json["roller"]["secondQuirkChance"].AsNumber());
             Assert.Equal(0.6, json["roller"]["traitSpread"].AsNumber());
-            Assert.Equal(0.06, json["tiers"]["Standard"]["statUpCap"].AsNumber());
-            Assert.Equal(0.05, json["tiers"]["Elite"]["statDownCap"].AsNumber());
+            Assert.Equal(1, json["tiers"]["Standard"]["statUpRanks"].AsInt());
+            Assert.Equal(2, json["tiers"]["Standard"]["statDownRanks"].AsInt());
+            Assert.Equal(0, json["tiers"]["Elite"]["statDownRanks"].AsInt());
         }
 
         [Theory]
         [InlineData("Trait spread,0.6,", "Trait wobble,0.6,", "unknown setting \"Trait wobble\"")]
-        [InlineData("Stat spread,0.5,", "Stat spread,lots,", "Stat spread \"lots\"")]
+        [InlineData("Stat spread,0.6,", "Stat spread,lots,", "Stat spread \"lots\"")]
         [InlineData("Hard break score,1.5,", "", "no \"Hard break score\" row")]
         public void BadRollerTabIsAnError(string find, string replace, string expected)
         {
@@ -110,15 +111,23 @@ namespace HorsePersonalities.Tests
         }
 
         [Theory]
-        [InlineData("Heavy,4%,10%,", "Lumbering,4%,10%,", "unknown tier \"Lumbering\"")]
-        [InlineData("Elite,10%,5%,", "Elite,10%,,", "Elite needs both caps")]
-        [InlineData("Race,8%,8%,", "Race,80%,8%,", "tiers.Race")]
+        [InlineData("Heavy,1,2,", "Lumbering,1,2,", "unknown tier \"Lumbering\"")]
+        [InlineData("Elite,1,0,", "Elite,1,,", "Elite needs both caps")]
+        [InlineData("Race,1,1,", "Race,1.5,1,", "whole ranks")]
+        [InlineData("Race,1,1,", "Race,12,1,", "whole ranks")]
         public void BadTiersTabIsAnError(string find, string replace, string expected)
         {
             string tiers = Export("Tiers.csv").Replace(find, replace);
             Exception ex = Record.Exception(() => HorsePersonalities.Core.Breeds.BreedCatalog.Load(Convert(tiers: tiers).ToJson(), new HorsePersonalities.Core.Logging.MemoryLog()));
             Assert.NotNull(ex);
             Assert.Contains(expected, ex.Message);
+        }
+
+        [Fact]
+        public void ShowOffIsGoneFromEveryBreed()
+        {
+            foreach (var b in Convert()["breeds"].Items)
+                Assert.DoesNotContain(b["likelyQuirks"].Items, q => q.AsString() == "ShowOff");
         }
 
         [Fact]

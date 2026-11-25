@@ -37,7 +37,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 2;
+        public const int CurrentSchemaVersion = 3;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -201,15 +201,17 @@ namespace HorsePersonalities.Core.Breeds
             foreach (var kv in j.Members)
             {
                 if (!NameMatching.TryParseTier(kv.Key, out StatTier tier)) { problems.Add($"tiers: unknown tier \"{kv.Key}\"."); continue; }
-                double up = kv.Value.GetNumber("statUpCap", double.NaN), down = kv.Value.GetNumber("statDownCap", double.NaN);
-                if (double.IsNaN(up) || double.IsNaN(down) || up < 0 || down < 0 || up > TierCap.MaxCap || down > TierCap.MaxCap)
-                    problems.Add($"tiers.{kv.Key}: statUpCap and statDownCap must be fractions from 0 to {TierCap.MaxCap}.");
-                else caps[tier] = new TierCap(tier, up, down);
+                double up = kv.Value.GetNumber("statUpRanks", double.NaN), down = kv.Value.GetNumber("statDownRanks", double.NaN);
+                if (!IsRank(up) || !IsRank(down))
+                    problems.Add($"tiers.{kv.Key}: statUpRanks and statDownRanks must be whole ranks from 0 to {TierCap.MaxRank}.");
+                else caps[tier] = new TierCap(tier, (int)up, (int)down);
             }
             foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
                 if (!caps.ContainsKey(t) && j.Kind == JsonKind.Object && !problems.Exists(p => p.StartsWith("tiers." + t))) problems.Add($"tiers: no caps for {t}.");
             return caps;
         }
+
+        private static bool IsRank(double v) => !double.IsNaN(v) && v == Math.Floor(v) && v >= 0 && v <= TierCap.MaxRank;
 
         private static Breed ReadBreed(JsonValue j, int index, Dictionary<string, LearningRate> classRates, double penalty,
             List<string> problems, ILog log)

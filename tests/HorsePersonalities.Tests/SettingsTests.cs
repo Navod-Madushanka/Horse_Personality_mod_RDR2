@@ -12,7 +12,7 @@ namespace HorsePersonalities.Tests
             var s = ModSettings.Load(null, new MemoryLog());
             Assert.Equal(80, s.GoodHorseChance);
             Assert.Equal(5, s.UnbreakableChance);
-            Assert.Equal(10, s.MaxStatVariance);
+            Assert.Equal(2, s.MaxStatRankChange);
             Assert.Equal(25, s.RevealPerBondLevel);
             Assert.Equal(1.0, s.SpookFrequency);
             Assert.Equal(120, s.QuirkCooldownSeconds);
@@ -64,6 +64,15 @@ namespace HorsePersonalities.Tests
             Assert.Equal(d.LogLevel, s.LogLevel);
             Assert.Equal(d.DebugKey, s.DebugKey);
             Assert.Contains(log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains(expectedInLog));
+        }
+
+        [Fact]
+        public void TheOldPercentSettingIsIgnoredWithAWarning()
+        {
+            var log = new MemoryLog();
+            var s = ModSettings.Load("[HorsePersonalities]\nMaxStatVariance = 10\n", log);
+            Assert.Equal(2, s.MaxStatRankChange);
+            Assert.Contains(log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains("MaxStatRankChange"));
         }
 
         [Fact]
