@@ -68,7 +68,7 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
 - There is no menu. A new horse looks exactly like a vanilla horse of its breed.
 - Behavior traits show from day one: you learn a horse is nervous when it spooks.
 - Health and stamina differences appear as the bond grows (25% per bond level), on top of vanilla bonding.
-- Speed, acceleration and handling grow with training toward the horse's natural ceiling.
+- Speed, acceleration and handling grow with training toward the horse's natural ceiling, and with long use past it (see Long-use growth).
 - Bond affinity shows in how fast or slow bonding goes.
 
 ### Who gets a personality
@@ -100,9 +100,21 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 - A skill only makes up for personality in its own situation. A timid horse can learn to handle gunfire and stay timid about everything else.
 - Training design is open; v1 only grows skills from experience.
 
+### Long-use growth
+
+Decided Nov 25, 2026. A horse ridden from the start of the story to the end should be clearly better than anything the player could just pick up.
+
+- **Any horse** that is bonded and ridden for a long time grows its speed and acceleration 1 rank past its natural ceiling. It still stops at the top of its tier, so it gets better but stays in its class.
+- **Community favorites** grow to 2 ranks above their breed's usual value. They are the one exception to the tier rule: a long-kept favorite can become the fastest horse in the game.
+- No stat ever passes the game's own maximum rank (9).
+- **Earned two ways:** part unlocks with bond levels, the rest with time ridden and sprints (the Phase 8 experience tracking). A horse only gets the full growth if it is both well bonded and ridden a lot.
+- Only speed and acceleration grow this way; health and stamina keep their natural values (revealed by bond, Phase 5).
+- How many hours and which bond levels unlock each step are tuning numbers in the sheet, set in Phase 8.
+
 ### Hard rules
 
 - Stats and skills never push a horse past its breed tier. A trained draft never handles like an Arabian.
+- The one exception: community favorites' speed and acceleration can grow 2 ranks above the breed's usual value with long use, past the tier (see Long-use growth).
 - The tier is the breed's Handling class from the sheet: Heavy, Standard, Race or Elite. There is no separate stats tier column.
 - Natural stats are whole ranks, because the game's stats are ranks 0 to 9 (one stat-bar segment each) and a fraction of a rank wouldn't show (decided Nov 25, 2026, after Phase 1).
 - Each tier caps how many ranks a natural stat can move up and down from the breed baseline (the sheet's Tiers tab), and no stat ever moves more than `MaxStatRankChange`. Every tier moves up at most 1 rank so it can't climb into the next tier; Elite never moves down so the Arabian stays fastest. A stat also never leaves the game's own 0 to max range. The caps are placeholders until Phase 5 reads real stats in game.
@@ -402,9 +414,9 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 ### Phase 8: Skills and experience
 
-- **Agent builds:** exposure tracking (gunfire near the horse, predator encounters survived, time and distance ridden, sprints) turned into skill growth at the class learning rate; skills reduce panic in their own situation and raise speed, acceleration and handling toward the ceiling. Handling growth is experimental.
+- **Agent builds:** exposure tracking (gunfire near the horse, predator encounters survived, time and distance ridden, sprints) turned into skill growth at the class learning rate; skills reduce panic in their own situation and raise speed, acceleration and handling toward the ceiling. Long-use growth on top: +1 rank past the natural ceiling for any horse (within its tier), up to +2 over the breed's usual value for community favorites, unlocked by bond level and riding time. Handling growth is experimental.
 - **Test (unit):** growth curves and caps. In game: about 10 gunfights make a timid horse visibly calmer under fire but not around bears.
-- **Done when:** a trained horse behaves differently from the same horse untrained.
+- **Done when:** a trained horse behaves differently from the same horse untrained, and a long-kept community favorite out-runs a fresh horse of a higher tier.
 
 ### Phase 9: Polish and release
 
@@ -474,7 +486,8 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 
 ### Open questions
 
-- [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab.
+- [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab. Community favorites also get the bigger long-use growth.
+- [ ] Long-use growth: the hours ridden and bond levels that unlock each rank (Phase 8).
 - [ ] Prized horses: how much slower they bond (proposed *Prized bond speed* 0.6, so 40% slower) and how much harder to break (proposed *Prized break score bonus* +1.0).
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
