@@ -69,7 +69,9 @@ namespace HorsePersonalities.Tests
         public void HorseAction(int horse, int actionId) { }
         public void HorseAgitate(int horse, bool kickOffRider) { }
         public void DismountPlayer() { Mount = 0; }
-        public void StartScenario(int ped, string scenarioName, int durationMs) { }
+        public void StartScenario(int ped, string scenarioName, int durationMs, string conditionalAnim = null) { }
+        public void WanderNearby(int ped, float radius) { }
+        public void WanderFreely(int ped) { }
         public void FollowEntity(int ped, int target, float offsetBehind, int timeoutMs) { }
         public void FleeFrom(int ped, int threat, float distance, int timeMs) { }
         public void Combat(int ped, int target) { }

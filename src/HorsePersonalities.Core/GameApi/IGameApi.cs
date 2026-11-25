@@ -109,7 +109,12 @@ namespace HorsePersonalities.Core.GameApi
         void HorseAction(int horse, int actionId);
         void HorseAgitate(int horse, bool kickOffRider);
         void DismountPlayer();
-        void StartScenario(int ped, string scenarioName, int durationMs);
+        /// <param name="conditionalAnim">The scenario's conditional animation (femga: scenario_types_with_conditional_anims). Without one the game may ignore the scenario; Phase 1 grazing did nothing with none.</param>
+        void StartScenario(int ped, string scenarioName, int durationMs, string conditionalAnim = null);
+        /// <summary>TASK_WANDER_IN_AREA around the ped's own position. Candidate for the Wanderer quirk.</summary>
+        void WanderNearby(int ped, float radius);
+        /// <summary>TASK_WANDER_STANDARD. Candidate for the Wanderer quirk.</summary>
+        void WanderFreely(int ped);
         void FollowEntity(int ped, int target, float offsetBehind, int timeoutMs);
         void FleeFrom(int ped, int threat, float distance, int timeMs);
         void Combat(int ped, int target);

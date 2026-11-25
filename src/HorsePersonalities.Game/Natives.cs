@@ -6,6 +6,10 @@ namespace HorsePersonalities.Game
 {
     internal static class Natives
     {
+        /// <summary>TASK::TASK_WANDER_IN_AREA(int ped, float x, float y, float z, float radius, float p5, float p6, int p7)</summary>
+        public const ulong TASK_WANDER_IN_AREA = 0xE054346CA3A0F315;
+        /// <summary>TASK::TASK_WANDER_STANDARD(int ped, float p1, int p2): the DB says 10.0 and 10 wander with no time limit.</summary>
+        public const ulong TASK_WANDER_STANDARD = 0xBB9CE077274F6A1B;
         /// <summary>PED::GET_NUM_META_PED_OUTFITS(int ped) -> int</summary>
         public const ulong GET_NUM_META_PED_OUTFITS = 0x10C70A515BC03707;
         /// <summary>PED::_GET_META_PED_TYPE(int ped) -> int</summary>

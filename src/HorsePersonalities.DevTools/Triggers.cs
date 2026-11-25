@@ -196,6 +196,42 @@ namespace HorsePersonalities.DevTools
                     ctx.Log("Identity: " + line);
                     return line;
                 }));
+            // Phase 1 retest for Wanderer (Nov 25, 2026): grazing did nothing without its conditional animation, and the drink
+            // scenario played on the spot. Numbers 36-41, after the existing ones so the checklist numbers don't move.
+            t.Add(new Trigger("graze.anim", "Graze, animation named (20 s)", "Wanderer (grazing)",
+                "Get off; don't hitch the horse. Does it lower its head and eat?",
+                ctx => { ctx.Game.StartScenario(ctx.Horse, "WORLD_ANIMAL_HORSE_GRAZING", 20000, "WORLD_ANIMAL_HORSE_GRAZING"); return "Scenario WORLD_ANIMAL_HORSE_GRAZING + conditional anim WORLD_ANIMAL_HORSE_GRAZING"; }));
+            t.Add(new Trigger("graze.domestic.anim", "Graze, domestic, animation named (20 s)", "Wanderer (grazing)",
+                "Get off; don't hitch the horse. Does it lower its head and eat?",
+                ctx => { ctx.Game.StartScenario(ctx.Horse, "WORLD_ANIMAL_HORSE_GRAZING_DOMESTIC", 20000, "WORLD_ANIMAL_HORSE_GRAZING"); return "Scenario WORLD_ANIMAL_HORSE_GRAZING_DOMESTIC + conditional anim WORLD_ANIMAL_HORSE_GRAZING"; }));
+            t.Add(new Trigger("rest.anim", "Rest, animation named (20 s)", "Idle demeanor",
+                "Get off. Does it settle and rest?",
+                ctx => { ctx.Game.StartScenario(ctx.Horse, "WORLD_ANIMAL_HORSE_RESTING_DOMESTIC", 20000, "WORLD_ANIMAL_HORSE_RESTING"); return "Scenario WORLD_ANIMAL_HORSE_RESTING_DOMESTIC + conditional anim WORLD_ANIMAL_HORSE_RESTING"; }));
+            t.Add(new Trigger("wander.nearby", "Wander nearby (20 s)", "Wanderer (drifting off)",
+                "Get off and stand still. Does it walk around within about 15 m, then stop when cleared?",
+                ctx =>
+                {
+                    ctx.Game.WanderNearby(ctx.Horse, 15f);
+                    ctx.After(20000, () => ctx.Game.ClearTasks(ctx.Horse));
+                    return "TASK_WANDER_IN_AREA radius 15 m, cleared after 20 s";
+                }));
+            t.Add(new Trigger("wander.freely", "Wander freely (20 s)", "Wanderer (drifting off)",
+                "Get off and stand still. Does it walk off on its own? Whistle it back afterwards.",
+                ctx =>
+                {
+                    ctx.Game.WanderFreely(ctx.Horse);
+                    ctx.After(20000, () => ctx.Game.ClearTasks(ctx.Horse));
+                    return "TASK_WANDER_STANDARD, cleared after 20 s";
+                }));
+            t.Add(new Trigger("wander.graze", "Wander, then graze (30 s)", "Wanderer (the whole quirk)",
+                "Get off and stand still. It should drift off for about 12 s, then stop and graze.",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    ctx.Game.WanderNearby(h, 15f);
+                    ctx.After(12000, () => { ctx.Game.ClearTasks(h); ctx.Game.StartScenario(h, "WORLD_ANIMAL_HORSE_GRAZING", 18000, "WORLD_ANIMAL_HORSE_GRAZING"); });
+                    return "TASK_WANDER_IN_AREA 12 s, then grazing with its animation named";
+                }));
             return t;
         }
 

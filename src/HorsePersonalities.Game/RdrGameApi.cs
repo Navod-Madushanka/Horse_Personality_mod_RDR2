@@ -133,9 +133,19 @@ namespace HorsePersonalities.Game
 
         public void DismountPlayer() => Function.Call(Natives.TASK_DISMOUNT_ANIMAL, PlayerPed, 0, 0, 0, 0, 0);
 
-        public void StartScenario(int ped, string scenarioName, int durationMs) =>
-            // heading -1 is meant to keep the current heading; unverified
-            Function.Call(Natives.TASK_START_SCENARIO_IN_PLACE_HASH, ped, Joaat.Hash(scenarioName), durationMs, true, 0u, -1.0f, false);
+        public void StartScenario(int ped, string scenarioName, int durationMs, string conditionalAnim = null) =>
+            // heading -1 is meant to keep the current heading; unverified. conditionalAnim 0 lets the game pick one.
+            Function.Call(Natives.TASK_START_SCENARIO_IN_PLACE_HASH, ped, Joaat.Hash(scenarioName), durationMs, true,
+                conditionalAnim == null ? 0u : Joaat.Hash(conditionalAnim), -1.0f, false);
+
+        public void WanderNearby(int ped, float radius)
+        {
+            Vector3 p = Coords(ped);
+            // p5/p6 (minimum walk length, pause between walks) and p7 are unverified; values as in RedM scripts.
+            Function.Call(Natives.TASK_WANDER_IN_AREA, ped, p.X, p.Y, p.Z, radius, 2.0f, 5.0f, 0);
+        }
+
+        public void WanderFreely(int ped) => Function.Call(Natives.TASK_WANDER_STANDARD, ped, 10.0f, 10);
 
         public void FollowEntity(int ped, int target, float offsetBehind, int timeoutMs) =>
             Function.Call(Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY, ped, target, 0.0f, -offsetBehind, 0.0f,
