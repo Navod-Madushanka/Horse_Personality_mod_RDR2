@@ -269,6 +269,8 @@ Model names in the example are placeholders; the real list comes from `peds_list
 | DisableDuringMissions | true | Turns behaviors off in missions and cutscenes |
 | DebugOverlay | false | Shows hidden values on screen |
 | DebugKey | F9 | Toggles the overlay |
+| TestPersonalities | false | Test mode: no random rolls; every horse gets a preset from `HorsePersonalities/test-personalities.json`, kept in `horses.test.json` so the real save is untouched |
+| TestPresetKey | F11 | In test mode, gives the horse you ride (or your last horse nearby) the next preset |
 | ResetAllHorses | false | Wipes saved personalities on next load, for a new playthrough |
 | LogLevel | Info | Lowest level written to log.txt: Debug, Info, Warn or Error |
 
@@ -320,6 +322,15 @@ Each breed has a default body language, listed in the sheet's Demeanor column. E
 ### The game's own stat bars
 
 Health and stamina bars drift above or below the breed's usual values as the bond grows. Speed, acceleration and handling bars climb with training. Nothing else on screen changes.
+
+### Test mode (development only)
+
+Decided Nov 26, 2026, so each behavior can be tested on a horse whose personality is known, without guessing.
+
+- `TestPersonalities = true` turns the randomizer off. A new horse gets the preset named for its model in `test-personalities.json` (its `assign` list), or the *Average* preset.
+- `TestPresetKey` (F11) gives the horse you ride the next preset. Its old personality is replaced on the spot, and the overlay shows the preset's name and what it is for.
+- Presets cover every trait extreme, every quirk, Hard and Unbreakable wild horses, a prized horse and a Phase 5 stat test. They are data, edited without rebuilding.
+- Test mode saves to `horses.test.json` and never touches `horses.json`.
 
 ### Debug overlay (development only)
 
@@ -427,6 +438,28 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 ### Phase 7: Quirks, reactions and demeanor
 
 - **Agent builds:** the quirks that passed Phase 1, care reactions (pat, brush, feed, calm), and breed demeanor.
+  Decided Nov 26, 2026:
+  - **Quirks, built from what Phase 1 proved:**
+    - Chatterbox: calls out and snorts now and then, more when other horses are near.
+    - Kicker: kicks an NPC standing right behind it, only with no other people within 25 m (no witnesses, so no crime).
+    - Head-tosser: restless head tossing while standing still.
+    - Nosy: turns to watch people and animals passing within 12 m.
+    - Shadow: follows you a few steps when you walk away.
+    - Wanderer: wanders off, then grazes (Phase 1 trigger 41), when left standing with you a few metres off. The game has no "is hitched" check, so it relies on the game keeping a hitched horse tied.
+    - Picky eater: loves some treats and ignores others. The game names the item fed (`EVENT_INVENTORY_ITEM_REMOVED`), and each horse's taste for each item comes from its seed, so it is the same treat every time.
+    - Each quirk waits `QuirkCooldownSeconds` (default 120) between two showings, and shares the 20 s gap with Phase 6 behaviors.
+  - **Care reactions** play just after the vanilla animation (`Interaction_Complete`). The horse's reaction style comes from its traits:
+    - Affectionate: Bond affinity +0.75 or more, Temper under +0.75.
+    - Grumpy: Temper +0.75 or more.
+    - Aloof: Bond affinity -0.75 or less.
+    - Anything else: vanilla only.
+    Each reaction is less likely as the bond grows.
+  - **Breed demeanor** is four numbers per breed in the sheet's new Demeanor tab, from each breed's demeanor text:
+    - Impatient: fidgets when kept standing.
+    - Alert: watches its surroundings.
+    - Affectionate: leans toward affectionate care reactions.
+    - Fussy: unhappy when dirty, if the game's dirtiness attribute can be read.
+  - All rates are in the Behavior tab. Quirks and demeanor are held in missions and cutscenes like every behavior.
 - **Test:** each quirk shows at least once in 15 minutes with its horse; cooldowns hold; each reaction matches the table; none fire in missions.
 - **Done when:** you can name a horse's quirk by watching it.
 
