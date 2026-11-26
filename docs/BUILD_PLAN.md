@@ -281,7 +281,7 @@ Behavior is the mod's only interface: no menus, no popups, no new animations. Ev
 | Trait | Low | High |
 | --- | --- | --- |
 | Courage | Ears and head snap toward threats early, snorts, jostles, rears or bolts near predators and gunfire | Stays loose and holds position under fire |
-| Nerves | Calm idle, ears up, ignores small things | Restless idle, random snorts and side-steps, spooks at nothing at night, in forests or at a gallop |
+| Nerves | Calm idle, ears up, ignores small things | Restless idle, random snorts and side-steps, spooks at nothing at night or at a gallop |
 | Temper | Relaxed and tolerant when pushed | Ears back a lot, bucks when pushed or scared, kicks if you linger behind it, fights calming |
 | Bond affinity | Looks away, slow to bond; wild horses can be hard or impossible to break | Perks up when you approach, bonds fast |
 
@@ -411,8 +411,17 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 ### Phase 6: Core behaviors
 
-- **Agent builds:** threat spooks from Courage (predators, gunfire, explosions nearby); random spooks from Nerves (weighted by night, forest, gallop and weak bond); bucks, refusals and kicks from Temper; the bond XP multiplier from Bond affinity; Hard and Unbreakable breaking for wild horses; the mission guard and cooldowns.
-- **Test:** with Rampage, spawn wolves beside a low-courage and a high-courage horse; ride a high-nerves horse through a forest at night; push a high-temper horse until it bucks; try to break an Unbreakable wild horse 5 times; start a mission and confirm nothing fires.
+- **Agent builds:** threat spooks from Courage (predators, gunfire, explosions nearby); random spooks from Nerves (weighted by night, gallop and weak bond); bucks, refusals and kicks from Temper; the bond XP multiplier from Bond affinity; Hard and Unbreakable breaking for wild horses; the mission guard and cooldowns.
+  Decided Nov 26, 2026:
+  - **Forests are dropped for v1:** no native says "in a forest". Night, gallop and bond weight random spooks.
+  - **"Pushed" means any of:** spurring at low stamina, a long sprint, a hard stop or sharp turn at speed, and being scared (a high-Temper horse may buck instead of rearing).
+  - **Strength, noticeable but rare:** a very nervous horse spooks at nothing about once every 10-15 minutes of riding at night; a cowardly one reacts to most nearby gunfire and predators; an average horse rarely does either.
+  - Every rate, chance and threshold is in the breed sheet's Behavior tab, multiplied by the player's `SpookFrequency` for random spooks.
+  - **Reactions use only behaviors that passed Phase 1:** rear, throw rider, agitate, quick stop, skid, bolt, look at the threat, snort, and kick (combat task, cleared after a moment).
+  - **Bond speed:** the mod scales each bond XP gain the game gives a permanent horse (Bond affinity, the slower climb to bond 4 for good and prized horses, and slower for Hard wild horses) by adding or removing bond points.
+  - **Breaking:** a Hard wild horse throws you a few extra times before it can break; an Unbreakable one always throws you before the break finishes.
+  - **The mission guard** holds every behavior while `GET_MISSION_FLAG` is on or a cutscene shows (letterbox bars, anim scene camera, gameplay camera off, or player control off), when `DisableDuringMissions` is true.
+- **Test:** with Rampage, spawn wolves beside a low-courage and a high-courage horse; ride a high-nerves horse at night; push a high-temper horse until it bucks; try to break an Unbreakable wild horse 5 times; start a mission and confirm nothing fires.
 - **Done when:** you can tell a brave horse from a nervous one without the overlay.
 
 ### Phase 7: Quirks, reactions and demeanor
@@ -500,7 +509,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 - [ ] Bonding: how much slower the climb to bond 4 is (proposed 0.75 for good horses, 0.5 for prized), and how much harder prized wild horses are to break (proposed *Prized break score bonus* +1.0). Tune in Phase 6.
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
-- [ ] What counts as "pushed" for a Temper buck: spurring at low stamina, a long sprint, or both?
+- [x] What counts as "pushed" for a Temper buck: decided Nov 26, all of spurring at low stamina, a long sprint, hard stops and turns, and being scared.
 - [ ] Should story mission horses that use a normal breed model be treated as NPC horses? (Gang and other story-only models are decided: vanilla in v1.)
 - [x] Stat tier: decided, the breed's Handling class is its tier (see Hard rules).
 - [x] Online-only breeds: decided, vanilla in v1 (see Who gets a personality).
