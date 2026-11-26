@@ -10,12 +10,15 @@ namespace HorsePersonalities.Core.Behavior
     public sealed class CooldownBook
     {
         private readonly BehaviorTuning _t;
+        private readonly double _quirkCooldown;
         private readonly Dictionary<(int, BehaviorGroup), double> _readyAt = new Dictionary<(int, BehaviorGroup), double>();
         private readonly Dictionary<int, double> _gapEnds = new Dictionary<int, double>();
 
-        public CooldownBook(BehaviorTuning tuning)
+        /// <param name="quirkCooldownSeconds">The player's QuirkCooldownSeconds: shortest gap between two quirk events on one horse.</param>
+        public CooldownBook(BehaviorTuning tuning, double quirkCooldownSeconds = 120)
         {
             _t = tuning ?? throw new ArgumentNullException(nameof(tuning));
+            _quirkCooldown = quirkCooldownSeconds;
         }
 
         public bool Ready(int horse, BehaviorGroup group, double now)
@@ -44,6 +47,7 @@ namespace HorsePersonalities.Core.Behavior
                 case BehaviorGroup.Spook: return _t.SpookCooldown;
                 case BehaviorGroup.Buck: return _t.BuckCooldown;
                 case BehaviorGroup.Kick: return _t.KickCooldown;
+                case BehaviorGroup.Quirk: return _quirkCooldown;
                 default: return _t.TellCooldown;
             }
         }

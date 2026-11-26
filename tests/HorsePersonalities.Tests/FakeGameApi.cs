@@ -57,6 +57,7 @@ namespace HorsePersonalities.Tests
         public Vec3 GetPosition(int entity) => Positions.TryGetValue(entity, out Vec3 v) ? v : default;
         public Vec3 GetForward(int entity) => new Vec3(0, 1, 0);
         public IReadOnlyList<int> PedsNear(int around, float radius) => new List<int>();
+        public bool IsHuman(int ped) => false;
         public void SetAttributePoints(int ped, PedAttribute attribute, int points)
         {
             var r = ReadAttribute(ped, attribute);

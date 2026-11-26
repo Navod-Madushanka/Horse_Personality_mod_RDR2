@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "note": "Test mode presets (TestPersonalities = true). F11 gives the horse you ride the next preset. 'assign' gives a model a preset when it is first seen.",
+  "presets": [
+    {
+      "name": "Average",
+      "purpose": "Baseline: every trait 0. Anything that happens here happens to every horse.",
+      "quality": "Good",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Nosy"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Coward",
+      "purpose": "Courage -2: rears or bolts at most wolves and gunshots; looks at threats.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": -2,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Nosy"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Brave",
+      "purpose": "Courage +2: holds its nerve under fire and near wolves.",
+      "quality": "Good",
+      "prized": false,
+      "traits": {
+        "courage": 2,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Shadow"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Nervous",
+      "purpose": "Nerves +2 (and Courage -1): spooks at nothing about every 13 min at night; rears when it does.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Chatterbox"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Steady",
+      "purpose": "Nerves -2, Courage +1: almost never spooks at nothing.",
+      "quality": "Good",
+      "prized": false,
+      "traits": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Wanderer"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Hothead",
+      "purpose": "Temper +2, Courage -1: throws you when scared or pushed; kicks if you linger behind.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": -1,
+        "nerves": 0,
+        "temper": 2,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Kicker"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Gentle",
+      "purpose": "Temper -2, Bond affinity +2: affectionate care reactions; bonds fast.",
+      "quality": "Good",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "quirks": [
+        "PickyEater"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Grumpy",
+      "purpose": "Temper +1.5, Bond affinity -1: grumpy care reactions; fights calming.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 1.5,
+        "bondAffinity": -1
+      },
+      "quirks": [
+        "HeadTosser"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Aloof",
+      "purpose": "Bond affinity -2: aloof care reactions; bonds slowly.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": -2
+      },
+      "quirks": [
+        "Wanderer",
+        "Chatterbox"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
+    },
+    {
+      "name": "Wild Hard",
+      "purpose": "Wild horse that breaks Hard: throws you 2 extra times while breaking.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": -0.5
+      },
+      "quirks": [
+        "Kicker"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Hard",
+      "origin": "Wild"
+    },
+    {
+      "name": "Wild Unbreakable",
+      "purpose": "Wild horse that never breaks: throws you every attempt.",
+      "quality": "Bad",
+      "prized": false,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 2,
+        "bondAffinity": -2
+      },
+      "quirks": [
+        "HeadTosser"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Unbreakable",
+      "origin": "Wild"
+    },
+    {
+      "name": "Prized stats",
+      "purpose": "Prized, good: Phase 5 test, health +1 and stamina -2 (one rank at bond 2, the second stamina rank at bond 3); slowest climb to bond 4.",
+      "quality": "Good",
+      "prized": true,
+      "traits": {
+        "courage": 0.5,
+        "nerves": -0.5,
+        "temper": -0.5,
+        "bondAffinity": 0.5
+      },
+      "quirks": [
+        "Shadow",
+        "PickyEater"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 1,
+        "stamina": -2
+      },
+      "breaking": "Normal"
+    }
+  ],
+  "assign": {}
+}

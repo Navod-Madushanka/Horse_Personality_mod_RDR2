@@ -38,7 +38,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 5;
+        public const int CurrentSchemaVersion = 6;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -323,8 +323,22 @@ namespace HorsePersonalities.Core.Breeds
                 if (learning.Physical <= 0 || learning.Combat <= 0) problems.Add($"{name}: learning rates must be positive.");
             }
 
+            JsonValue dt = j["demeanorTraits"];
+            var demeanor = DemeanorTraits.None;
+            if (dt.Kind != JsonKind.Object) problems.Add($"{name}: no demeanorTraits (the Demeanor tab).");
+            else
+            {
+                double D(string k)
+                {
+                    double v = dt.GetNumber(k, double.NaN);
+                    if (double.IsNaN(v) || v < 0 || v > DemeanorTraits.Max) { problems.Add($"{name}: demeanorTraits.{k} must be 0 to {DemeanorTraits.Max}."); return 0; }
+                    return v;
+                }
+                demeanor = new DemeanorTraits(D("impatient"), D("alert"), D("affectionate"), D("fussy"));
+            }
+
             return new Breed(name.Trim(), classes, tier, leans, quirks,
-                j.GetString("demeanor", ""), models, learning, overridden);
+                j.GetString("demeanor", ""), models, learning, overridden, demeanor);
         }
     }
 }

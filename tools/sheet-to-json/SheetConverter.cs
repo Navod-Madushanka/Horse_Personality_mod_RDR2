@@ -20,16 +20,18 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   Roller.csv   the sheet's Roller tab (Setting, Value): the roller's tuning numbers
     ///   Tiers.csv    the sheet's Tiers tab (Tier, Stat up cap, Stat down cap)
     ///   Prized.csv   the sheet's Prized tab (Model, Why, Notes): special, rare and community-favorite models
-    ///   Behavior.csv the sheet's Behavior tab (Setting, Value): Phase 6 rates, chances and timings
+    ///   Behavior.csv the sheet's Behavior tab (Setting, Value): Phase 6 and 7 rates, chances and timings
+    ///   Demeanor.csv the sheet's Demeanor tab (Breed, Impatient, Alert, Affectionate, Fussy): body language, 0-2
     ///   predator-models.csv  model,note: animals a horse may spook at (game data, kept in the repo)
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
     /// </summary>
     public static class SheetConverter
     {
         public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv,
-            string behaviorCsv, string predatorsCsv)
+            string behaviorCsv, string predatorsCsv, string demeanorCsv)
         {
             var problems = new List<string>();
+            var demeanor = ReadDemeanor(demeanorCsv, problems);
             JsonValue roller = ReadSettings(rollerCsv, RollerTuning.Fields, "Roller.csv", problems);
             JsonValue behavior = ReadSettings(behaviorCsv, HorsePersonalities.Core.Behavior.BehaviorTuning.Fields, "Behavior.csv", problems);
             JsonValue predators = ReadPredators(predatorsCsv, problems);
@@ -162,6 +164,8 @@ namespace HorsePersonalities.Tools.SheetToJson
                         .Set("leans", leans)
                         .Set("likelyQuirks", quirks)
                         .Set("demeanor", Cell(r, cDem).Trim());
+                    if (demeanor.TryGetValue(name, out JsonValue dTraits)) breed.Set("demeanorTraits", dTraits);
+                    else problems.Add($"{where}: no row in Demeanor.csv.");
 
                     // The sheet computes learning rates from the Classes tab but lets a breed type over them.
                     // Only a real override goes into the JSON; Core computes the rest from the same formula.
@@ -210,6 +214,36 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("breeds", breeds)
                 .Set("otherModels", others)
                 .Set("prizedModels", prizedModels);
+        }
+
+        private static Dictionary<string, JsonValue> ReadDemeanor(string csv, List<string> problems)
+        {
+            var result = new Dictionary<string, JsonValue>(StringComparer.OrdinalIgnoreCase);
+            var rows = Csv.Parse(csv ?? "");
+            int header = rows.FindIndex(r => Cell(r, 0).Equals("Breed", StringComparison.OrdinalIgnoreCase));
+            if (header < 0) { problems.Add("Demeanor.csv: no header row starting with \"Breed\"."); return result; }
+            var h = Header(rows[header]);
+            var cols = new[] { ("impatient", "Impatient"), ("alert", "Alert"), ("affectionate", "Affectionate"), ("fussy", "Fussy") }
+                .Select(c => (c.Item1, c.Item2, Col(h, c.Item2, problems, "Demeanor.csv"))).ToList();
+            for (int i = header + 1; i < rows.Count; i++)
+            {
+                string name = Cell(rows[i], 0).Trim();
+                if (name.Length == 0) continue;
+                var o = JsonValue.NewObject();
+                foreach (var (key, label, col) in cols)
+                {
+                    string raw = Cell(rows[i], col);
+                    if (!TryNumber(raw, out double v) || v < 0 || v > DemeanorTraits.Max)
+                    {
+                        problems.Add($"Demeanor.csv row {i + 1} ({name}): {label} \"{raw}\" must be a number from 0 to {DemeanorTraits.Max}.");
+                        v = 0;
+                    }
+                    o.Set(key, v);
+                }
+                if (result.ContainsKey(name)) problems.Add($"Demeanor.csv: {name} is listed twice.");
+                result[name] = o;
+            }
+            return result;
         }
 
         private static JsonValue ReadPredators(string csv, List<string> problems)

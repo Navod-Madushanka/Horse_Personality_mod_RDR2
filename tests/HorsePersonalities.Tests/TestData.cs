@@ -22,7 +22,7 @@ namespace HorsePersonalities.Tests
         public static string MinimalBreeds => MinimalTemplate.Replace("\"BEHAVIOR\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["behavior"].ToJson(false));
 
         private const string MinimalTemplate = @"{
-  ""schemaVersion"": 5,
+  ""schemaVersion"": 6,
   ""multiClassPenalty"": 0.10,
   ""roller"": { ""traitSpread"": 0.6, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
                 ""statSpread"": 0.6, ""statQualityShift"": 0.3, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5,
@@ -33,7 +33,8 @@ namespace HorsePersonalities.Tests
   ""breeds"": [
     { ""name"": ""Turkoman"", ""models"": [""a_c_horse_turkoman_gold"", ""a_c_horse_turkoman_silver""], ""classes"": [""Race"", ""War""],
       ""handling"": ""Standard"", ""leans"": { ""courage"": 1, ""nerves"": 0, ""temper"": 1, ""bondAffinity"": 0 },
-      ""likelyQuirks"": [""Head-tosser"", ""Picky eater"", ""nosy""], ""demeanor"": ""Proud and impatient."" }
+      ""likelyQuirks"": [""Head-tosser"", ""Picky eater"", ""nosy""], ""demeanor"": ""Proud and impatient."",
+      ""demeanorTraits"": { ""impatient"": 2, ""alert"": 0, ""affectionate"": 0, ""fussy"": 2 } }
   ],
   ""otherModels"": [ { ""model"": ""a_c_horsemule_01"", ""note"": ""Mule"" } ],
   ""behavior"": ""BEHAVIOR"",

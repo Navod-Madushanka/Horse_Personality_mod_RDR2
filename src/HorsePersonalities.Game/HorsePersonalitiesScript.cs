@@ -12,6 +12,7 @@ using HorsePersonalities.Core.Safety;
 using HorsePersonalities.Core.Saving;
 using HorsePersonalities.Core.Settings;
 using HorsePersonalities.Core.Stats;
+using HorsePersonalities.Core.Testing;
 using HorsePersonalities.Core.Timing;
 using HorsePersonalities.Core.Tracking;
 using RDR2;
@@ -58,6 +59,8 @@ namespace HorsePersonalities.Game
         private readonly IntervalGate _statCheck = new IntervalGate(1000);
         private readonly IntervalGate _behaviorCheck = new IntervalGate(250);
         private BehaviorRunner _behavior;
+        private TestPresets _presets;
+        private Keys _presetKey = Keys.F11;
         private readonly HashSet<int> _wildMounted = new HashSet<int>();
         private int _saddleHorse = -1;
         private Keys _debugKey = Keys.F9;
@@ -98,15 +101,66 @@ namespace HorsePersonalities.Game
         {
             var roller = new PersonalityRoller(_boot.Breeds, _boot.Settings);
             _registry = new HorseRegistry(roller, _boot.Log, isPrizedModel: id => _boot.Breeds.TryGetPrized(id.Model, out _));
+            bool test = _boot.Settings.TestPersonalities && LoadPresets();
+            if (test)
+            {
+                // Test mode (Build plan: Test mode): no random rolls; each new horse gets its model's preset, or Average.
+                _registry.UseInsteadOfRoller((id, breed, origin, seed) =>
+                {
+                    TestPreset preset = _presets.ForModel(id.Model);
+                    return (preset.For(breed, origin, seed), preset.Name);
+                });
+                if (!Enum.TryParse(_boot.Settings.TestPresetKey, true, out _presetKey)) _presetKey = Keys.F11;
+                _boot.Log.Info("TestMode", $"Test mode on: presets instead of rolls, saved to horses.test.json. {_presetKey} gives your horse the next preset.");
+            }
             // A schema 1 save (natural stats as fractions) gets its stats re-rolled from each horse's seed, as whole ranks.
             _store = new HorseSaveStore(_boot.Paths.DataDir, _boot.Log, (breed, origin, seed) =>
-                _boot.Breeds.TryGetBreed(breed, out Breed b) ? roller.Roll(b, origin, seed, origin == HorseOrigin.Stable).NaturalStats : new NaturalStats(0, 0, 0, 0));
+                _boot.Breeds.TryGetBreed(breed, out Breed b) ? roller.Roll(b, origin, seed, origin == HorseOrigin.Stable).NaturalStats : new NaturalStats(0, 0, 0, 0),
+                test ? "horses.test" : "horses");
             SaveLoadResult loaded = _store.Load(_boot.Settings.ResetAllHorses, DateTime.Now);
             _registry.Load(loaded.Records);
             if (loaded.Upgraded && _store.Save(_registry.Permanent))
                 _boot.Log.Info("Save", "Wrote the upgraded horses.json.");
             _behavior = new BehaviorRunner(_game, _boot.Breeds, _boot.Settings, _registry, _boot.Log);
             if (_boot.Settings.ResetAllHorses) TurnOffReset();
+        }
+
+        private bool LoadPresets()
+        {
+            string path = Path.Combine(_boot.Paths.DataDir, "test-personalities.json");
+            try
+            {
+                _presets = TestPresets.Load(File.ReadAllText(path), _boot.Log);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _boot.Log.Error("TestMode", $"TestPersonalities is on, but {path} could not be used; rolling normally", ex);
+                _game.ShowSubtitle("Horse Personalities: test-personalities.json is missing or broken; see log.txt");
+                return false;
+            }
+        }
+
+        /// <summary>Test mode: the horse you ride (or your last horse within 15 m) gets the next preset.</summary>
+        private void NextPreset()
+        {
+            int player = _game.PlayerPed;
+            int horse = _mounts.CurrentMount != 0 ? _mounts.CurrentMount : _game.GetLastMount(player);
+            if (horse == 0 || !_game.Exists(horse) || (_mounts.CurrentMount == 0 && _game.DistanceBetween(horse, player) > 15f))
+            {
+                _game.ShowSubtitle("Test mode: ride a horse (or stand next to it) first.");
+                return;
+            }
+            HorseDescription d = HorseDescriber.Describe(_game, _boot.Breeds, horse);
+            if (d.Breed == null) { _game.ShowSubtitle("Test mode: this horse has no breed, so it stays vanilla."); return; }
+            HorseFingerprint id = Fingerprint(d);
+            HorseRecord current = _registry.Find(horse, id)
+                ?? _registry.OnMount(horse, id, d.Breed, HorseOrigin.Unknown, horse == _game.GetSaddleHorse());
+            TestPreset next = _presets.Next(current?.Preset);
+            HorseRecord replaced = _registry.Replace(horse, id, next.For(d.Breed, current.Personality.Origin, current.Personality.Seed), next.Name);
+            _overlay.SetLines(OverlayText.Build(d, replaced));
+            _game.ShowSubtitle($"Test preset: {next.Name}. {next.Purpose}");
+            SaveIfChanged("test preset changed");
         }
 
         /// <summary>ResetAllHorses wipes once, not on every load: put the INI line back to false.</summary>
@@ -161,7 +215,13 @@ namespace HorsePersonalities.Game
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (_boot == null || e.KeyCode != _debugKey) return;
+            if (_boot == null) return;
+            if (_presets != null && e.KeyCode == _presetKey)
+            {
+                _guard.Run("TestMode", NextPreset);
+                return;
+            }
+            if (e.KeyCode != _debugKey) return;
             _overlay.Visible = !_overlay.Visible;
             _boot.Log.Debug(Log, "Debug overlay " + (_overlay.Visible ? "on" : "off"));
         }

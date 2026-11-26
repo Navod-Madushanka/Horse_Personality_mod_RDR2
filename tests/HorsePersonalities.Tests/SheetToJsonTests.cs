@@ -11,10 +11,10 @@ namespace HorsePersonalities.Tests
 
         /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
         private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null,
-            string behavior = null, string predators = null) =>
+            string behavior = null, string predators = null, string demeanor = null) =>
             SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
                 roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"),
-                behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"));
+                behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"), demeanor ?? Export("Demeanor.csv"));
 
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()
@@ -175,6 +175,22 @@ namespace HorsePersonalities.Tests
         {
             var ex = Assert.Throws<ConversionException>(() => Convert(predators: TestData.Read("data", "predator-models.csv") + "a_c_horse_arabian_white,horse?\nmp_male,person\n"));
             Assert.Contains("mp_male is not an animal model", ex.Message);
+        }
+
+        [Fact]
+        public void DemeanorTabBecomesEachBreedsDemeanorTraits()
+        {
+            var turkoman = Convert()["breeds"].Items.Single(b => b["name"].AsString() == "Turkoman");
+            Assert.Equal(2, turkoman["demeanorTraits"]["impatient"].AsInt());
+            Assert.Equal(2, turkoman["demeanorTraits"]["fussy"].AsInt());
+        }
+
+        [Fact]
+        public void EveryBreedNeedsADemeanorRow()
+        {
+            string tab = string.Join("\n", Export("Demeanor.csv").Split('\n').Where(l => !l.StartsWith("Morgan,")));
+            Assert.Contains("Morgan", Assert.Throws<ConversionException>(() => Convert(demeanor: tab)).Message);
+            Assert.Contains("from 0 to 2", Assert.Throws<ConversionException>(() => Convert(demeanor: Export("Demeanor.csv").Replace("Turkoman,2,", "Turkoman,5,"))).Message);
         }
 
         [Fact]

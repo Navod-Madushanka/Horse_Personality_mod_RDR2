@@ -27,6 +27,10 @@ namespace HorsePersonalities.Core.Settings
         /// <summary>A System.Windows.Forms.Keys name such as F9. The game layer turns it into a key.</summary>
         public string DebugKey { get; private set; } = "F9";
         public bool ResetAllHorses { get; private set; } = false;
+        /// <summary>Test mode: no random rolls; personalities come from test-personalities.json, saved to horses.test.json.</summary>
+        public bool TestPersonalities { get; private set; } = false;
+        /// <summary>In test mode, gives the horse you ride the next preset.</summary>
+        public string TestPresetKey { get; private set; } = "F11";
         /// <summary>Lowest level written to log.txt: Debug, Info, Warn or Error.</summary>
         public LogLevel LogLevel { get; private set; } = LogLevel.Info;
 
@@ -58,6 +62,8 @@ namespace HorsePersonalities.Core.Settings
             s.DebugOverlay = ReadBool(ini, log, nameof(DebugOverlay), s.DebugOverlay);
             s.DebugKey = ReadKeyName(ini, log, nameof(DebugKey), s.DebugKey);
             s.ResetAllHorses = ReadBool(ini, log, nameof(ResetAllHorses), s.ResetAllHorses);
+            s.TestPersonalities = ReadBool(ini, log, nameof(TestPersonalities), s.TestPersonalities);
+            s.TestPresetKey = ReadKeyName(ini, log, nameof(TestPresetKey), s.TestPresetKey);
             s.LogLevel = ReadEnum(ini, log, nameof(LogLevel), s.LogLevel);
             return s;
         }
@@ -89,6 +95,11 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"DebugKey = {d.DebugKey}");
             sb.AppendLine("; Wipes saved personalities on next load, for a new playthrough (true/false).");
             sb.AppendLine($"ResetAllHorses = {Bool(d.ResetAllHorses)}");
+            sb.AppendLine("; Test mode (true/false): no random rolls; each horse gets a preset from HorsePersonalities/test-personalities.json,");
+            sb.AppendLine("; kept in horses.test.json so your real horses.json is untouched.");
+            sb.AppendLine($"TestPersonalities = {Bool(d.TestPersonalities)}");
+            sb.AppendLine("; In test mode, gives the horse you ride the next preset.");
+            sb.AppendLine($"TestPresetKey = {d.TestPresetKey}");
             sb.AppendLine("; How much goes in log.txt: Debug, Info, Warn or Error.");
             sb.AppendLine($"LogLevel = {d.LogLevel}");
             return sb.ToString();

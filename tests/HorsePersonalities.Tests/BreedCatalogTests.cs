@@ -149,7 +149,7 @@ namespace HorsePersonalities.Tests
         }
 
         [Theory]
-        [InlineData("\"schemaVersion\": 5", "\"schemaVersion\": 4", "schemaVersion")]
+        [InlineData("\"schemaVersion\": 6", "\"schemaVersion\": 5", "schemaVersion")]
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]
@@ -162,6 +162,7 @@ namespace HorsePersonalities.Tests
         [InlineData("\"revealFirstRankBond\": 2", "\"revealFirstRankBond\": 2.5", "must be a whole number")]
         [InlineData("\"why\": \"CommunityFavorite\"", "\"why\": \"Legendary\"", "\"why\" must be one of")]
         [InlineData("\"model\": \"a_c_horse_turkoman_silver\", \"why\"", "\"model\": \"a_c_horsemule_01\", \"why\"", "stay vanilla anyway")]
+        [InlineData("\"impatient\": 2", "\"impatient\": 3", "demeanorTraits.impatient")]
         [InlineData("\"handling\": \"Standard\"", "\"handling\": \"Fast\"", "handling \"Fast\"")]
         [InlineData("\"handling\": \"Standard\", ", "", "handling \"\"")]
         [InlineData("\"a_c_horsemule_01\"", "\"a_c_horse_turkoman_gold\"", "both Turkoman and otherModels")]

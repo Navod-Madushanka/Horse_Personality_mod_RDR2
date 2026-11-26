@@ -15,6 +15,8 @@ namespace HorsePersonalities.Core.GameApi
         Speed = 5,
         Acceleration = 6,
         Bonding = 7,
+        /// <summary>SA_DIRTINESS: how dirty the horse is (Phase 7 Fussy demeanor; scale unverified).</summary>
+        Dirtiness = 16,
         Unruliness = 21,
     }
 
@@ -108,6 +110,8 @@ namespace HorsePersonalities.Core.GameApi
         Vec3 GetForward(int entity);
         /// <summary>Peds within <paramref name="radius"/> of an entity, from the hook's ped pool. May come back empty if the pool read fails.</summary>
         IReadOnlyList<int> PedsNear(int around, float radius);
+        /// <summary>PED::IS_PED_HUMAN.</summary>
+        bool IsHuman(int ped);
 
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);

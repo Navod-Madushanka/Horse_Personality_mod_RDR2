@@ -53,6 +53,7 @@ namespace HorsePersonalities.Core.Saving
                     .Set("breaking", p.Breaking.ToString())
                     .Set("prized", p.Prized)
                     .Set("vanillaBase", VanillaJson(r))
+                    .Set("preset", JsonValue.From(r.Preset))
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
                     .Set("seed", p.Seed.ToString("X16", CultureInfo.InvariantCulture))
                     .Set("rollerVersion", Personality.RollerVersion)
@@ -142,7 +143,7 @@ namespace HorsePersonalities.Core.Saving
 
             var p = new Personality(breed, origin, seed,
                 Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal), j.GetBool("prized", false));
-            var record = new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", ""));
+            var record = new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", "")) { Preset = j.GetString("preset", null) };
             JsonValue vb = j["vanillaBase"];
             if (vb.Kind == JsonKind.Object)
                 foreach (var kv in vb.Members)

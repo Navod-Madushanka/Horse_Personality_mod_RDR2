@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -99,7 +99,33 @@
     "kickCooldown": 60,
     "tellCooldown": 30,
     "behaviorGap": 20,
-    "threatQuietSeconds": 20
+    "threatQuietSeconds": 20,
+    "standingStillSpeed": 0.3,
+    "chatterboxRate": 0.6,
+    "chatterboxHorseNearMultiplier": 2,
+    "headTosserRate": 0.8,
+    "nosyRate": 1,
+    "nosyRange": 12,
+    "shadowTriggerDistance": 4,
+    "shadowFollowSeconds": 6,
+    "wandererDelaySeconds": 25,
+    "wandererPlayerDistance": 6,
+    "wanderSeconds": 12,
+    "grazeSeconds": 18,
+    "kickerChance": 0.25,
+    "kickerWitnessRange": 25,
+    "reactionDelaySeconds": 0.6,
+    "reactionTraitThreshold": 0.75,
+    "reactionChance": 0.9,
+    "reactionBondSoften": 0.2,
+    "pickyLoveShare": 0.34,
+    "pickyDislikeShare": 0.33,
+    "impatientAfterSeconds": 45,
+    "impatientRate": 0.5,
+    "alertRate": 0.4,
+    "fussyDirtRank": 2,
+    "fussyRate": 0.5,
+    "affectionateDemeanorBonus": 0.4
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snakeblacktailrattle_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -115,7 +141,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Nosy", "Shadow"],
-      "demeanor": "Easygoing ranch horse. Calm around camp and cattle, curious about people."
+      "demeanor": "Easygoing ranch horse. Calm around camp and cattle, curious about people.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "American Standardbred",
@@ -129,7 +161,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["HeadTosser", "Shadow"],
-      "demeanor": "Eager and forward. Fidgets when held back, sweet-natured in camp."
+      "demeanor": "Eager and forward. Fidgets when held back, sweet-natured in camp.",
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Andalusian",
@@ -143,7 +181,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Nosy"],
-      "demeanor": "Proud and showy. Head held high, brave but sensitive, quick to learn tricks."
+      "demeanor": "Proud and showy. Head held high, brave but sensitive, quick to learn tricks.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Appaloosa",
@@ -157,7 +201,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Kicker", "Wanderer"],
-      "demeanor": "Tough and a little stubborn. Sure-footed, likes to test new riders."
+      "demeanor": "Tough and a little stubborn. Sure-footed, likes to test new riders.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Arabian",
@@ -171,7 +221,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Nosy", "Chatterbox", "HeadTosser"],
-      "demeanor": "Hot-blooded. Ears and head always moving, alert to everything, tail carried high. Bonds deeply once it trusts you."
+      "demeanor": "Hot-blooded. Ears and head always moving, alert to everything, tail carried high. Bonds deeply once it trusts you.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Ardennes",
@@ -185,7 +241,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Shadow", "Wanderer"],
-      "demeanor": "Unflappable. Stands like a rock and barely reacts to nearby gunfire."
+      "demeanor": "Unflappable. Stands like a rock and barely reacts to nearby gunfire.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Belgian Draft",
@@ -199,7 +261,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Wanderer"],
-      "demeanor": "Gentle giant. Slow to react, leans into pats."
+      "demeanor": "Gentle giant. Slow to react, leans into pats.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 0
+      }
     },
     {
       "name": "Dutch Warmblood",
@@ -213,7 +281,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Shadow"],
-      "demeanor": "Even-tempered and dependable. Brave without any fuss."
+      "demeanor": "Even-tempered and dependable. Brave without any fuss.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Hungarian Halfbred",
@@ -227,7 +301,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Kicker", "Nosy"],
-      "demeanor": "Fearless in noise and chaos. Steady in a gunfight, a bit aloof in town."
+      "demeanor": "Fearless in noise and chaos. Steady in a gunfight, a bit aloof in town.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Kentucky Saddler",
@@ -241,7 +321,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Chatterbox"],
-      "demeanor": "Showy and alert. High head, likes attention and company."
+      "demeanor": "Showy and alert. High head, likes attention and company.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Missouri Fox Trotter",
@@ -255,7 +341,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Shadow", "PickyEater"],
-      "demeanor": "Calm trail horse. Smooth, steady and friendly with people."
+      "demeanor": "Calm trail horse. Smooth, steady and friendly with people.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Morgan",
@@ -269,7 +361,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Shadow", "Wanderer"],
-      "demeanor": "Low-maintenance companion. Patient, happy to stand and wait."
+      "demeanor": "Low-maintenance companion. Patient, happy to stand and wait.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Mustang",
@@ -283,7 +381,13 @@
         "bondAffinity": -1
       },
       "likelyQuirks": ["Kicker", "Nosy"],
-      "demeanor": "Wild streak. Wary of strangers, scans the horizon, hard to win over but loyal once bonded."
+      "demeanor": "Wild streak. Wary of strangers, scans the horizon, hard to win over but loyal once bonded.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Nokota",
@@ -297,7 +401,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Nosy", "HeadTosser"],
-      "demeanor": "Quick and sure-footed. Alert but sensible on normal rides."
+      "demeanor": "Quick and sure-footed. Alert but sensible on normal rides.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Shire",
@@ -311,7 +421,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Wanderer"],
-      "demeanor": "Gentle giant. Slow and patient, ignores most fuss."
+      "demeanor": "Gentle giant. Slow and patient, ignores most fuss.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Suffolk Punch",
@@ -325,7 +441,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["Wanderer", "PickyEater"],
-      "demeanor": "Stoic worker. Never seems tired, happy to graze."
+      "demeanor": "Stoic worker. Never seems tired, happy to graze.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Tennessee Walker",
@@ -339,7 +461,13 @@
         "bondAffinity": 1
       },
       "likelyQuirks": ["Shadow"],
-      "demeanor": "Gentle and easygoing. A beginner's horse that rarely fusses."
+      "demeanor": "Gentle and easygoing. A beginner's horse that rarely fusses.",
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     },
     {
       "name": "Thoroughbred",
@@ -353,7 +481,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["HeadTosser", "Chatterbox"],
-      "demeanor": "Highly strung. Fidgety at rest, spooks easily, always wants to run."
+      "demeanor": "Highly strung. Fidgety at rest, spooks easily, always wants to run.",
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
     },
     {
       "name": "Turkoman",
@@ -367,7 +501,13 @@
         "bondAffinity": 0
       },
       "likelyQuirks": ["HeadTosser", "PickyEater"],
-      "demeanor": "Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4."
+      "demeanor": "Proud and impatient. Fidgets when kept waiting, hates being dirty, ears back at cheap horses, shows off in town at bond 4.",
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 2
+      }
     }
   ],
   "otherModels": [

@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <None Include="..\..\data\breeds.json" Link="HorsePersonalities\breeds.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\data\test-personalities.json" Link="HorsePersonalities\test-personalities.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <Target Name="CheckShdnApi" BeforeTargets="ResolveAssemblyReferences" Condition="!Exists('$(ShdnApiPath)')">
@@ -39,7 +40,7 @@
   <!-- With RDR2_SCRIPTS_DIR set, every build drops the mod straight into the game. -->
   <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(RDR2ScriptsDir)' != ''">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RDR2ScriptsDir)" />
-    <Copy SourceFiles="$(OutDir)HorsePersonalities\breeds.json" DestinationFolder="$(RDR2ScriptsDir)\HorsePersonalities" />
+    <Copy SourceFiles="$(OutDir)HorsePersonalities\breeds.json;$(OutDir)HorsePersonalities\test-personalities.json" DestinationFolder="$(RDR2ScriptsDir)\HorsePersonalities" />
     <Message Importance="high" Text="Deployed $(TargetFileName) to $(RDR2ScriptsDir). Press Insert in game to reload scripts." />
   </Target>
 </Project>

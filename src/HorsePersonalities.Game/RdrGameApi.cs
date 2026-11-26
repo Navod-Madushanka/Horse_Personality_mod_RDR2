@@ -148,6 +148,8 @@ namespace HorsePersonalities.Game
             return _near;
         }
 
+        public bool IsHuman(int ped) => CallBool(Natives.IS_PED_HUMAN, ped);
+
         public void SetAttributePoints(int ped, PedAttribute attribute, int points) =>
             Function.Call(Natives.SET_ATTRIBUTE_POINTS, ped, (int)attribute, points);
 

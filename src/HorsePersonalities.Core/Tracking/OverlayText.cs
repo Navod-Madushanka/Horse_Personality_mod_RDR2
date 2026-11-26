@@ -25,6 +25,7 @@ namespace HorsePersonalities.Core.Tracking
             lines.Add(record.Status == PersonalityStatus.Permanent
                 ? $"Permanent, first seen {record.FirstSeen}"
                 : "Temporary: gone on reload, saddle it to keep it");
+            if (record.Preset != null) lines.Add("Test preset: " + record.Preset);
             lines.AddRange(record.Personality.Describe());
             return lines;
         }

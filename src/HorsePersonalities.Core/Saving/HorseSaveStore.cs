@@ -31,18 +31,21 @@ namespace HorsePersonalities.Core.Saving
         private readonly string _dir;
         private readonly ILog _log;
         private readonly StatsUpgrade _upgrade;
+        private readonly string _name;
 
         /// <param name="upgrade">Re-rolls natural stats for a schema 1 file. Without it, an old file's stats read as 0.</param>
-        public HorseSaveStore(string dataDir, ILog log, StatsUpgrade upgrade = null)
+        /// <param name="name">File name without ".json": "horses", or "horses.test" in test mode so the real save is untouched.</param>
+        public HorseSaveStore(string dataDir, ILog log, StatsUpgrade upgrade = null, string name = "horses")
         {
+            _name = name;
             _dir = dataDir ?? throw new ArgumentNullException(nameof(dataDir));
             _log = log ?? NullLog.Instance;
             _upgrade = upgrade;
         }
 
-        public string MainFile => Path.Combine(_dir, "horses.json");
-        public string BackupFile => Path.Combine(_dir, "horses.backup.json");
-        private string TempFile => Path.Combine(_dir, "horses.json.tmp");
+        public string MainFile => Path.Combine(_dir, _name + ".json");
+        public string BackupFile => Path.Combine(_dir, _name + ".backup.json");
+        private string TempFile => Path.Combine(_dir, _name + ".json.tmp");
 
         /// <param name="reset">ResetAllHorses: move the save aside and start empty, for a new playthrough.</param>
         public SaveLoadResult Load(bool reset, DateTime now)
@@ -147,8 +150,8 @@ namespace HorsePersonalities.Core.Saving
         private string Aside(string why, DateTime now)
         {
             string stamp = now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
-            string path = Path.Combine(_dir, $"horses.{why}-{stamp}.json");
-            for (int i = 2; File.Exists(path); i++) path = Path.Combine(_dir, $"horses.{why}-{stamp}-{i}.json");
+            string path = Path.Combine(_dir, $"{_name}.{why}-{stamp}.json");
+            for (int i = 2; File.Exists(path); i++) path = Path.Combine(_dir, $"{_name}.{why}-{stamp}-{i}.json");
             return path;
         }
     }

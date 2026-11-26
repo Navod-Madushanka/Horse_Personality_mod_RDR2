@@ -53,6 +53,33 @@ namespace HorsePersonalities.Core.Behavior
         public double TellCooldown => _v["tellCooldown"];
         public double BehaviorGap => _v["behaviorGap"];
         public double ThreatQuietSeconds => _v["threatQuietSeconds"];
+        // Phase 7: quirks, care reactions, demeanor.
+        public double StandingStillSpeed => _v["standingStillSpeed"];
+        public double ChatterboxRate => _v["chatterboxRate"];
+        public double ChatterboxHorseNearMultiplier => _v["chatterboxHorseNearMultiplier"];
+        public double HeadTosserRate => _v["headTosserRate"];
+        public double NosyRate => _v["nosyRate"];
+        public double NosyRange => _v["nosyRange"];
+        public double ShadowTriggerDistance => _v["shadowTriggerDistance"];
+        public double ShadowFollowSeconds => _v["shadowFollowSeconds"];
+        public double WandererDelaySeconds => _v["wandererDelaySeconds"];
+        public double WandererPlayerDistance => _v["wandererPlayerDistance"];
+        public double WanderSeconds => _v["wanderSeconds"];
+        public double GrazeSeconds => _v["grazeSeconds"];
+        public double KickerChance => _v["kickerChance"];
+        public double KickerWitnessRange => _v["kickerWitnessRange"];
+        public double ReactionDelaySeconds => _v["reactionDelaySeconds"];
+        public double ReactionTraitThreshold => _v["reactionTraitThreshold"];
+        public double ReactionChance => _v["reactionChance"];
+        public double ReactionBondSoften => _v["reactionBondSoften"];
+        public double PickyLoveShare => _v["pickyLoveShare"];
+        public double PickyDislikeShare => _v["pickyDislikeShare"];
+        public double ImpatientAfterSeconds => _v["impatientAfterSeconds"];
+        public double ImpatientRate => _v["impatientRate"];
+        public double AlertRate => _v["alertRate"];
+        public double FussyDirtRank => _v["fussyDirtRank"];
+        public double FussyRate => _v["fussyRate"];
+        public double AffectionateDemeanorBonus => _v["affectionateDemeanorBonus"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -93,6 +120,32 @@ namespace HorsePersonalities.Core.Behavior
             ("tellCooldown", "Tell cooldown", 0.0, 3600.0, false),
             ("behaviorGap", "Behavior gap", 0.0, 3600.0, false),
             ("threatQuietSeconds", "Threat quiet seconds", 1.0, 600.0, false),
+            ("standingStillSpeed", "Standing still speed", 0.0, 5.0, false),
+            ("chatterboxRate", "Chatterbox rate", 0.0, 20.0, false),
+            ("chatterboxHorseNearMultiplier", "Chatterbox horse near multiplier", 0.0, 10.0, false),
+            ("headTosserRate", "Head-tosser rate", 0.0, 20.0, false),
+            ("nosyRate", "Nosy rate", 0.0, 20.0, false),
+            ("nosyRange", "Nosy range", 1.0, 100.0, false),
+            ("shadowTriggerDistance", "Shadow trigger distance", 0.5, 50.0, false),
+            ("shadowFollowSeconds", "Shadow follow seconds", 0.5, 60.0, false),
+            ("wandererDelaySeconds", "Wanderer delay seconds", 1.0, 600.0, false),
+            ("wandererPlayerDistance", "Wanderer player distance", 0.0, 100.0, false),
+            ("wanderSeconds", "Wander seconds", 1.0, 120.0, false),
+            ("grazeSeconds", "Graze seconds", 1.0, 120.0, false),
+            ("kickerChance", "Kicker chance", 0.0, 1.0, false),
+            ("kickerWitnessRange", "Kicker witness range", 1.0, 200.0, false),
+            ("reactionDelaySeconds", "Reaction delay seconds", 0.0, 10.0, false),
+            ("reactionTraitThreshold", "Reaction trait threshold", 0.0, 2.0, false),
+            ("reactionChance", "Reaction chance", 0.0, 1.0, false),
+            ("reactionBondSoften", "Reaction bond soften", 0.0, 0.33, false),
+            ("pickyLoveShare", "Picky love share", 0.0, 1.0, false),
+            ("pickyDislikeShare", "Picky dislike share", 0.0, 1.0, false),
+            ("impatientAfterSeconds", "Impatient after seconds", 1.0, 600.0, false),
+            ("impatientRate", "Impatient rate", 0.0, 20.0, false),
+            ("alertRate", "Alert rate", 0.0, 20.0, false),
+            ("fussyDirtRank", "Fussy dirt rank", 0.0, 100.0, false),
+            ("fussyRate", "Fussy rate", 0.0, 20.0, false),
+            ("affectionateDemeanorBonus", "Affectionate demeanor bonus", 0.0, 2.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

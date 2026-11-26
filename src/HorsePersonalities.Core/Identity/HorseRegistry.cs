@@ -23,6 +23,9 @@ namespace HorsePersonalities.Core.Identity
         /// </summary>
         public Dictionary<string, int> VanillaBase { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
 
+        /// <summary>Test mode: the preset this personality came from; null for a rolled one.</summary>
+        public string Preset { get; internal set; }
+
         public HorseRecord(HorseFingerprint id, Personality personality, PersonalityStatus status, string firstSeen, string lastSeen)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -34,7 +37,7 @@ namespace HorsePersonalities.Core.Identity
 
         internal HorseRecord AsPermanent(string today)
         {
-            var r = new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today);
+            var r = new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today) { Preset = Preset };
             foreach (var kv in VanillaBase) r.VanillaBase[kv.Key] = kv.Value;
             return r;
         }
@@ -58,6 +61,13 @@ namespace HorsePersonalities.Core.Identity
         private readonly Func<ulong> _newSeed;
         private readonly Func<DateTime> _clock;
         private readonly Func<HorseFingerprint, bool> _isPrizedModel;
+        private Func<HorseFingerprint, Breed, HorseOrigin, ulong, (Personality, string)> _override;
+
+        /// <summary>
+        /// Test mode: every new personality comes from this instead of the roller (Build plan: Test mode). It returns the
+        /// personality and the preset's name.
+        /// </summary>
+        public void UseInsteadOfRoller(Func<HorseFingerprint, Breed, HorseOrigin, ulong, (Personality, string)> source) => _override = source;
         private readonly Dictionary<string, HorseRecord> _permanent = new Dictionary<string, HorseRecord>(StringComparer.Ordinal);
         private readonly Dictionary<int, HorseRecord> _temporary = new Dictionary<int, HorseRecord>();
         private readonly Dictionary<string, int> _liveHandle = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -118,7 +128,7 @@ namespace HorsePersonalities.Core.Identity
 
             if (_temporary.TryGetValue(handle, out HorseRecord temp) && temp.Id.Equals(id)) return temp;
             string today = Today();
-            temp = new HorseRecord(id, _roller.Roll(breed, origin, _newSeed(), Prized(id, origin)), PersonalityStatus.Temporary, today, today);
+            temp = New(id, breed, origin, PersonalityStatus.Temporary, today);
             _temporary[handle] = temp;
             _log.Info(LogCategory, $"Temporary personality for horse {handle} ({id}, {origin}): {temp.Personality}");
             return temp;
@@ -143,7 +153,7 @@ namespace HorsePersonalities.Core.Identity
             }
             else
             {
-                record = new HorseRecord(id, _roller.Roll(breed, HorseOrigin.Stable, _newSeed(), Prized(id, HorseOrigin.Stable)), PersonalityStatus.Permanent, today, today);
+                record = New(id, breed, HorseOrigin.Stable, PersonalityStatus.Permanent, today);
                 _log.Info(LogCategory, $"First sight of saddle horse {handle} ({id}): rolled {record.Personality}");
             }
             _permanent[id.Key] = record;
@@ -153,6 +163,37 @@ namespace HorsePersonalities.Core.Identity
         }
 
         private bool Prized(HorseFingerprint id, HorseOrigin origin) => origin == HorseOrigin.Stable || _isPrizedModel(id);
+
+        private HorseRecord New(HorseFingerprint id, Breed breed, HorseOrigin origin, PersonalityStatus status, string today)
+        {
+            ulong seed = _newSeed();
+            if (_override != null)
+            {
+                var (p, preset) = _override(id, breed, origin, seed);
+                return new HorseRecord(id, p, status, today, today) { Preset = preset };
+            }
+            return new HorseRecord(id, _roller.Roll(breed, origin, seed, Prized(id, origin)), status, today, today);
+        }
+
+        /// <summary>
+        /// Test mode: replaces a horse's personality on the spot (TestPresetKey). Keeps its status, dates and stored
+        /// original stat ranks. Returns the new record, or null if the mod doesn't know the horse yet.
+        /// </summary>
+        public HorseRecord Replace(int handle, HorseFingerprint id, Personality personality, string preset)
+        {
+            HorseRecord old = Find(handle, id);
+            if (old == null) return null;
+            var r = new HorseRecord(id, personality, old.Status, old.FirstSeen, old.LastSeen) { Preset = preset };
+            foreach (var kv in old.VanillaBase) r.VanillaBase[kv.Key] = kv.Value;
+            if (old.Status == PersonalityStatus.Permanent)
+            {
+                _permanent[id.Key] = r;
+                Dirty = true;
+            }
+            else _temporary[handle] = r;
+            _log.Info(LogCategory, $"Test mode: horse {handle} ({id}) is now preset {preset}: {personality}");
+            return r;
+        }
 
         private HorseRecord Touch(int handle, HorseRecord kept)
         {

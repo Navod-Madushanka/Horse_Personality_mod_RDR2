@@ -25,6 +25,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             string prized = Path.Combine(root, "data", "sheet-export", "Prized.csv");
             string behavior = Path.Combine(root, "data", "sheet-export", "Behavior.csv");
             string predators = Path.Combine(root, "data", "predator-models.csv");
+            string demeanor = Path.Combine(root, "data", "sheet-export", "Demeanor.csv");
             string output = Path.Combine(root, "data", "breeds.json");
             bool check = false;
 
@@ -42,10 +43,11 @@ namespace HorsePersonalities.Tools.SheetToJson
                     case "--prized": prized = Next(); break;
                     case "--behavior": behavior = Next(); break;
                     case "--predators": predators = Next(); break;
+                    case "--demeanor": demeanor = Next(); break;
                     case "--out": output = Next(); break;
                     case "--check": check = true; break;
                     case "-h": case "--help":
-                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--out breeds.json] [--check]");
+                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--demeanor Demeanor.csv] [--out breeds.json] [--check]");
                         return 0;
                     default:
                         Console.Error.WriteLine($"Unknown option {a}. Try --help.");
@@ -56,7 +58,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             try
             {
                 var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models), File.ReadAllText(roller), File.ReadAllText(tiers), File.ReadAllText(prized),
-                    File.ReadAllText(behavior), File.ReadAllText(predators));
+                    File.ReadAllText(behavior), File.ReadAllText(predators), File.ReadAllText(demeanor));
                 string text = json.ToJson();
 
                 // Same validation the mod runs on load, so a file that passes here loads in game.

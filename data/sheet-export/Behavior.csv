@@ -36,3 +36,29 @@ Kick cooldown,60,Seconds between two kicks.
 Tell cooldown,30,"Seconds between small tells (a snort, a look at a threat)."
 Behavior gap,20,Shortest gap between any two behaviors of one horse.
 Threat quiet seconds,20,"A horse judges a threat once: each predator when it comes in range, gunfire once per gunfight. The gunfight is over after this many quiet seconds."
+Standing still speed,0.3,"Below this speed (m/s) a horse counts as standing still (Head-tosser, Kicker, Wanderer, impatience)."
+Chatterbox rate,0.6,Chatterbox: calls or snorts per minute.
+Chatterbox horse near multiplier,2,Chatterbox: rate multiplier when another horse is within the Nosy range.
+Head-tosser rate,0.8,Head-tosser: restless head tosses per minute while standing still.
+Nosy rate,1,Nosy: looks per minute while people or animals are within range.
+Nosy range,12,Nosy: metres within which it turns to watch people and animals.
+Shadow trigger distance,4,Shadow: follows when you walk this many metres away from it.
+Shadow follow seconds,6,Shadow: how long it follows you.
+Wanderer delay seconds,25,Wanderer: seconds standing with you away before it wanders off.
+Wanderer player distance,6,Wanderer: you must be at least this far away (m).
+Wander seconds,12,Wanderer: how long it wanders before grazing.
+Graze seconds,18,Wanderer: how long it grazes.
+Kicker chance,0.25,Kicker: chance per check to kick an NPC standing right behind it (Kick behind distance).
+Kicker witness range,25,"Kicker: kicks only with no other people within this range (m), so no crime is seen."
+Reaction delay seconds,0.6,"Care reactions start this long after the vanilla pat, brush or feed animation ends."
+Reaction trait threshold,0.75,Bond affinity at or above this (and Temper below it): affectionate. Temper at or above: grumpy. Bond affinity at or below minus this: aloof.
+Reaction chance,0.9,Chance of a care reaction at bond 1.
+Reaction bond soften,0.2,Each bond level above 1 lowers the reaction chance by this share (bond 4: 40% less).
+Picky love share,0.34,Picky eater: share of treats it loves (by its seed and the item).
+Picky dislike share,0.33,Picky eater: share of treats it ignores; the rest are ordinary.
+Impatient after seconds,45,Demeanor Impatient: starts fidgeting after standing this long with you nearby.
+Impatient rate,0.5,Demeanor Impatient: fidgets per minute per point of Impatient.
+Alert rate,0.4,Demeanor Alert: looks around per minute per point of Alert.
+Fussy dirt rank,2,Demeanor Fussy: dirtiness rank at or above which it is unhappy (guess: Phase 7 checks the scale).
+Fussy rate,0.5,Demeanor Fussy: unhappy snorts per minute per point of Fussy while dirty.
+Affectionate demeanor bonus,0.4,Each point of a breed's Affectionate demeanor adds this to Bond affinity when choosing its care reaction style (drafts lean into pats).
