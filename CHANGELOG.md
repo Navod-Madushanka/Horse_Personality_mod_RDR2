@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### In-game results (Nov 26, 2026)
+- **Phase 1 passed.** Wanderer works as wander-then-graze; mission flag and every cutscene detector work; Show-off was cut.
+- **Phases 2, 3 and 4 passed in game:** stable ids and personalities across 3 reloads, the schema 1 save upgraded to ranks, a broken save recovered from the backup.
+
 ### Plan changes, not built yet (Nov 25, 2026)
 - **Prized horses:** stable-bought, special, rare and community-favorite horses always roll good, with flaws only as fun quirks. Prized wild horses break Hard more often but are never Unbreakable. The list of special, rare and favorite models lives in the breed sheet's new Prized tab.
 - **Long-use growth:** any horse ridden and bonded with for a long time grows speed and acceleration 1 rank past its natural ceiling (within its tier). Community favorites grow to 2 ranks above their breed, past the tier. Earned through bond levels and riding time (Phase 8).

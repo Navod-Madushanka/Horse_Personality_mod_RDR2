@@ -1,5 +1,7 @@
 # Phase 1 results: trigger spike, tested in game
 
+> **Phase 1 passed on Nov 26, 2026.** Every trigger and detector has a result. The second session (Nov 26) tested the Wanderer retest, the mission and cutscene detectors, reloads and a broken save; see *Second session* below.
+
 Tested Nov 24, 2026 on hook 2.2.0 (ScriptHookRDR2DotNet V2), one Thoroughbred, in open country. Source: `phase1-results.csv` and `log.txt` from the game's `scripts/HorsePersonalities` folder, plus Navod's notes where the CSV was ambiguous. All 35 triggers have a result. Mission and cutscene detectors are not tested yet.
 
 ## Findings that change the code
@@ -54,7 +56,7 @@ Tested Nov 24, 2026 on hook 2.2.0 (ScriptHookRDR2DotNet V2), one Thoroughbred, i
 | Wild horse mounted, breaking, taming state | Works |
 | Bond XP and rank changes | Works; passive gain is about 2 XP per 5 seconds while riding |
 | Screen fade, player control | Fired once at 20:28:53 (a quick fade and back); cause not identified |
-| Mission flag, cutscenes | **Not tested** |
+| Mission flag, cutscenes | Works (Nov 26); see *Second session* |
 
 ## Proposed replacements for failures
 
@@ -74,7 +76,7 @@ Marked from these results on Nov 24, 2026 (Claude), with a notes column saying w
 | Head-tosser | Works | `_HORSE_AGITATE`, keeping the rider |
 | Nosy | Works | Look-at |
 | Shadow | Works | Follow, 2 m behind |
-| Wanderer | Retest | No grazing scenario worked, and drinking plays on the spot with no water near (Navod, Nov 25), so it can't stand in for wandering. Retest with triggers 36-41 |
+| Wanderer | Works | Wander, then graze (trigger 41). Grazing alone does nothing; see *Second session* |
 | Picky eater | Works | `Interaction_Food` event, then a sound |
 | Show-off | Cut from v1 | No piaffe found (decided Nov 25) |
 
@@ -92,10 +94,40 @@ The main script ran beside DevTools all session, with no errors or warnings in 7
 
 Not checked yet: the Arabian and Kentucky Saddler across reloads (both were saddled after the last reload), a broken `horses.json` in game, and the tick time (only logged at the Debug level).
 
-## Still to do before Phase 1 is closed
+## Second session (Nov 26, 2026)
+
+Navod's answers after testing:
+
+| Test | Result |
+| --- | --- |
+| 36, 37 Graze with its animation named | Doesn't work: nothing happens |
+| 38 Rest with its animation named | Doesn't work |
+| 39, 40 Wander nearby, wander freely | Works: the horse walks off on its own and stops after 20 s |
+| 41 Wander, then graze | **Works:** it drifts off for about 12 s, then really grazes (head down, eating) |
+| Mission flag | Works: True when the mission starts, False when it ends |
+| Cutscene detectors | All flip at the start of a cutscene and back at the end: letterbox bars, gameplay and cinematic camera, anim scene camera, player control and screen fade |
+| Saved horses across 3 reloads | Thoroughbred, Arabian and Kentucky Saddler keep the same traits and quirks; the overlay shows natural stats as ranks, so the schema 1 save upgraded |
+| Broken `horses.json` | Recovered from the backup with no crash; a `horses.broken-...json` file appeared |
+| Tick time | Not checked; left for the Phase 9 performance pass (the log now warns if it goes over 1 ms) |
+| Anything odd | Nothing |
+
+What this means for later phases:
+
+- **Wanderer** ships as exactly what trigger 41 does: wander within 15 m, then the grazing scenario with `WORLD_ANIMAL_HORSE_GRAZING` named. Grazing on its own does nothing, so it needs the wander first. Why isn't known; keep the two together.
+- **The mission guard** (Phase 6) can use `GET_MISSION_FLAG` for missions. For cutscenes, any one of letterbox bars, the anim scene camera, the gameplay camera being off, or player control being off should hold behaviors. Using several gives some margin if one misses a cutscene.
+
+## Phase 2, 3 and 4 checks
+
+With this session, the in-game checks for Phases 2, 3 and 4 pass:
+
+- **Phase 2:** stable fingerprints for every owned horse across 3 reloads; temporary personalities gone on reload; saddling keeps the values; two coats get different ids. (The plan asks for every owned horse; that was 3 horses.)
+- **Phase 3:** the overlay showed rolled values in game.
+- **Phase 4:** the owned horses kept their personalities across 3 sessions (3 horses, not the 5 the plan names), a broken file recovered from the backup, and `ResetAllHorses` reset once and turned itself off.
+
+## Earlier to-do list (all done)
 
 1. Test the mission flag and cutscene detectors (start a story mission; watch "Mission flag", "Screen faded", "Player control", and the four camera lines added after this session).
-2. Retest Wanderer with DevTools triggers 36-41 (added Nov 25):
+2. Retest Wanderer with DevTools triggers 36-41 (added Nov 25; done Nov 26, trigger 41 works):
    - 36 and 37: grazing with its conditional animation named. femga's scenario notes say a scenario with no usable conditional animation can be ignored, and the first test passed none. Does the horse lower its head and eat?
    - 38: resting, the same way.
    - 39 and 40: wander nearby (15 m) and wander freely, each cleared after 20 s. Does the horse walk off on its own?

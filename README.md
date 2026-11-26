@@ -4,7 +4,7 @@ A Red Dead Redemption 2 story-mode mod that gives every horse you own a hidden p
 
 The design is in [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md). Progress per phase is in [docs/phase-reports](docs/phase-reports).
 
-**Status:** Phase 0 passed in game (v0.1). Phase 1 (trigger spike) is written and waits for in-game testing. Phases 2, 3 and 4 (horse identity, personality roller, save file) are built and unit tested; their in-game checks wait for Phase 1. Nothing in the game changes yet: the mod rolls and saves personalities and shows them on the debug overlay (F9), but no behavior uses them until Phase 5.
+**Status:** Phases 0 to 4 have passed in game: horses get a hidden personality, keep it in `horses.json`, and show it on the debug overlay (F9). No behavior uses the personality yet; that starts in Phase 5. Phase 1 decided which game behaviors later phases can use.
 
 ## Repository layout
 
