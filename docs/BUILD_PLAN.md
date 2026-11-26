@@ -67,7 +67,7 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
 
 - There is no menu. A new horse looks exactly like a vanilla horse of its breed.
 - Behavior traits show from day one: you learn a horse is nervous when it spooks.
-- Health and stamina differences appear as the bond grows (25% per bond level), on top of vanilla bonding.
+- Health and stamina differences appear as the bond grows, on top of vanilla bonding: the first rank of difference at bond level 2, a second rank (only a -2 horse has one) at bond level 3 (decided Nov 26, 2026). By bond 3 everything shows, before the slow climb to bond 4.
 - Speed, acceleration and handling grow with training toward the horse's natural ceiling, and with long use past it (see Long-use growth).
 - Bond affinity shows in how fast or slow bonding goes.
 
@@ -263,7 +263,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 | GoodHorseChance | 80 | Percent of horses that roll good |
 | UnbreakableChance | 5 | Percent cap on unbreakable wild horses |
 | MaxStatRankChange | 2 | Most ranks a natural stat can move (0 turns natural stats off). Replaced MaxStatVariance on Nov 25, 2026 |
-| RevealPerBondLevel | 25 | Percent of stat differences revealed per bond level |
+| RestoreVanillaStats | false | Puts each horse's stats back to the game's own values as you ride it, and stops applying natural stats. Turn on before uninstalling |
 | SpookFrequency | 1.0 | Multiplier on random spook checks |
 | QuirkCooldownSeconds | 120 | Shortest gap between two quirk events on one horse |
 | DisableDuringMissions | true | Turns behaviors off in missions and cutscenes |
@@ -401,6 +401,11 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 ### Phase 5: Stats and the bond reveal
 
 - **Agent builds:** natural stat differences applied in steps per bond level (health and stamina), tier caps, and re-applying after load or a stable visit if the game resets them.
+  - The mod changes the stat's **base rank**, never its bonus rank: the bonus (the yellow segments) is the game's own, from tack, and changes when the saddle does.
+  - The first time the mod sees a permanent horse it stores the horse's original base rank for each stat in `horses.json`. From then on it keeps base = original + the revealed difference, inside 0 and the game's max rank.
+  - Applied to the horse you ride and to your saddle horse, checked every second. Temporary personalities get no stat changes.
+  - `RestoreVanillaStats` puts every horse it sees back to its stored original, for a clean uninstall.
+  - Speed and acceleration differences wait for Phase 8, where they grow with use.
 - **Test:** a bond 1 horse shows vanilla bars; each level moves them; nothing passes its tier; check what happens to stats if the mod is removed and note it in the README.
 - **Done when:** two horses of one breed show different bars by bond level 3.
 
@@ -481,7 +486,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 | No permanent horse ID | Personalities attach to the wrong horse | Fingerprint of model, sex and coat; add parts if the game exposes more; document rare collisions |
 | Can't tell playthroughs apart | Old personalities carry into a new game | `ResetAllHorses` for now; look for a save-slot signal later |
 | The game resets stats on load or at stables | Natural stats vanish | Re-apply on mount and after load |
-| Stat changes get written into the game save | Removing the mod may leave changed horses | Test in Phase 5, warn in the README, back up saves |
+| Stat changes get written into the game save | Removing the mod may leave changed horses | Test in Phase 5; `RestoreVanillaStats` puts them back before uninstalling; warn in the README; back up saves |
 | Handling can't change per horse | Handling skill does nothing | Keep it experimental; drop it if Phase 1 says so |
 | The breaking minigame can't be controlled | Hard and Unbreakable can't work as planned | Unbreakable forces a buck-off at the end; Hard adds extra buck attempts |
 | A kick in town counts as a crime | Players get a wanted level from a quirk | Test it; turn Kicker off in towns or near lawmen |
