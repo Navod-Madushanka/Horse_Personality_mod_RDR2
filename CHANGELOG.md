@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
+- All 7 quirks: Chatterbox, Kicker (no witnesses), Head-tosser, Nosy, Shadow, Wanderer (wander, then graze), Picky eater (by the treat fed, fixed per horse).
+- Care reactions after pat, brush, feed and calm, affectionate, aloof or grumpy by traits, softening with the bond.
+- Breed demeanor (sheet's new Demeanor tab): impatient, alert, affectionate, fussy.
+- **Test mode** (`TestPersonalities = true`): no random rolls, 12 presets in `test-personalities.json`, F11 cycles the horse you ride through them, saved to `horses.test.json` so the real save is untouched.
+- 26 new Behavior tab settings. breeds.json schema 6.
+
 ### Phase 6: core behaviors (built Nov 26, 2026)
 - Threat spooks from Courage (predators, gunfire, explosions), each threat judged once; rearing, throwing the rider, bolting or watching, by Courage and Temper.
 - Random spooks from Nerves, weighted by night, gallop and bond, times `SpookFrequency`: noticeable but rare.
