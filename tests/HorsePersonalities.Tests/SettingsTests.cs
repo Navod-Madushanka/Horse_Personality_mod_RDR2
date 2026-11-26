@@ -13,7 +13,7 @@ namespace HorsePersonalities.Tests
             Assert.Equal(80, s.GoodHorseChance);
             Assert.Equal(5, s.UnbreakableChance);
             Assert.Equal(2, s.MaxStatRankChange);
-            Assert.Equal(25, s.RevealPerBondLevel);
+            Assert.False(s.RestoreVanillaStats);
             Assert.Equal(1.0, s.SpookFrequency);
             Assert.Equal(120, s.QuirkCooldownSeconds);
             Assert.True(s.DisableDuringMissions);

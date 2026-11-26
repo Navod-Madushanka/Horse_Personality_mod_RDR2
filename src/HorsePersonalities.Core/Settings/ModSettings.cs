@@ -18,7 +18,8 @@ namespace HorsePersonalities.Core.Settings
         public int UnbreakableChance { get; private set; } = 5;
         /// <summary>Most ranks a natural stat may move, whatever its tier allows. 0 turns natural stats off.</summary>
         public int MaxStatRankChange { get; private set; } = 2;
-        public int RevealPerBondLevel { get; private set; } = 25;
+        /// <summary>Puts every horse's stats back to the game's own values as the mod sees it, and stops applying natural stats.</summary>
+        public bool RestoreVanillaStats { get; private set; } = false;
         public double SpookFrequency { get; private set; } = 1.0;
         public int QuirkCooldownSeconds { get; private set; } = 120;
         public bool DisableDuringMissions { get; private set; } = true;
@@ -48,7 +49,9 @@ namespace HorsePersonalities.Core.Settings
             s.MaxStatRankChange = ReadInt(ini, log, nameof(MaxStatRankChange), s.MaxStatRankChange, 0, TierCapMaxRank);
             if (ini.TryGetAnywhere(Section, "MaxStatVariance", out _))
                 log.Warn(LogCategory, "MaxStatVariance is no longer used: natural stats are whole ranks now. Use MaxStatRankChange (0-9, default 2).");
-            s.RevealPerBondLevel = ReadInt(ini, log, nameof(RevealPerBondLevel), s.RevealPerBondLevel, 0, 100);
+            s.RestoreVanillaStats = ReadBool(ini, log, nameof(RestoreVanillaStats), s.RestoreVanillaStats);
+            if (ini.TryGetAnywhere(Section, "RevealPerBondLevel", out _))
+                log.Warn(LogCategory, "RevealPerBondLevel is no longer used: stat differences show at bond 2 and 3 (the sheet's Roller tab).");
             s.SpookFrequency = ReadDouble(ini, log, nameof(SpookFrequency), s.SpookFrequency, 0, 10);
             s.QuirkCooldownSeconds = ReadInt(ini, log, nameof(QuirkCooldownSeconds), s.QuirkCooldownSeconds, 0, 3600);
             s.DisableDuringMissions = ReadBool(ini, log, nameof(DisableDuringMissions), s.DisableDuringMissions);
@@ -72,8 +75,8 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"UnbreakableChance = {d.UnbreakableChance}");
             sb.AppendLine("; Most ranks a natural stat can move from the breed's usual value (0-9). 0 turns natural stats off.");
             sb.AppendLine($"MaxStatRankChange = {d.MaxStatRankChange}");
-            sb.AppendLine("; Percent of stat differences revealed per bond level (0-100).");
-            sb.AppendLine($"RevealPerBondLevel = {d.RevealPerBondLevel}");
+            sb.AppendLine("; Puts each horse's stats back to the game's own values as you ride it (true/false). Turn on before uninstalling.");
+            sb.AppendLine($"RestoreVanillaStats = {Bool(d.RestoreVanillaStats)}");
             sb.AppendLine("; Multiplier on random spook checks (0-10). 0 turns random spooks off.");
             sb.AppendLine($"SpookFrequency = {d.SpookFrequency.ToString("0.0#", CultureInfo.InvariantCulture)}");
             sb.AppendLine("; Shortest gap between two quirk events on one horse, in seconds (0-3600).");

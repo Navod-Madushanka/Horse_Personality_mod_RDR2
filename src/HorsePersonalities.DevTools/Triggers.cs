@@ -232,6 +232,17 @@ namespace HorsePersonalities.DevTools
                     ctx.After(12000, () => { ctx.Game.ClearTasks(h); ctx.Game.StartScenario(h, "WORLD_ANIMAL_HORSE_GRAZING", 18000, "WORLD_ANIMAL_HORSE_GRAZING"); });
                     return "TASK_WANDER_IN_AREA 12 s, then grazing with its animation named";
                 }));
+            // Phase 5 testing (Nov 26, 2026), number 42: step the bond level to see the stat reveal without hours of bonding.
+            t.Add(new Trigger("bond.next", "Bond level: next (1-4, wraps)", "Phase 5 bond reveal",
+                "Use a test save: the game may keep the new level. Ride or stand by the horse, press, wait 1-2 s, check its health and stamina bars.",
+                ctx =>
+                {
+                    int before = ctx.Game.ReadAttribute(ctx.Horse, PedAttribute.Bonding).Rank;
+                    int next = before >= 4 ? 1 : before + 1;
+                    ctx.Game.SetBondLevel(ctx.Horse, next);
+                    ctx.After(500, () => ctx.Log($"Bond after _SET_MOUNT_BONDING_LEVEL {next}: rank {ctx.Game.ReadAttribute(ctx.Horse, PedAttribute.Bonding).Rank}"));
+                    return $"_SET_MOUNT_BONDING_LEVEL {before} -> {next}";
+                }));
             return t;
         }
 

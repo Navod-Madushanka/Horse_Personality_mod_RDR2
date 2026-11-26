@@ -19,11 +19,12 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   horse-models.csv  model,breed,note: every a_c_horse_ model, with the breed it belongs to (blank if none)
     ///   Roller.csv   the sheet's Roller tab (Setting, Value): the roller's tuning numbers
     ///   Tiers.csv    the sheet's Tiers tab (Tier, Stat up cap, Stat down cap)
+    ///   Prized.csv   the sheet's Prized tab (Model, Why, Notes): special, rare and community-favorite models
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
     /// </summary>
     public static class SheetConverter
     {
-        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv)
+        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv)
         {
             var problems = new List<string>();
             JsonValue roller = ReadRoller(rollerCsv, problems);
@@ -181,6 +182,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             foreach (string b in breedNames)
                 if (!modelsByBreed.ContainsKey(b)) problems.Add($"Breeds.csv: {b} has no models in horse-models.csv, so the mod could never recognize it.");
 
+            JsonValue prizedModels = ReadPrized(prizedCsv, modelsByBreed, problems);
             if (problems.Count > 0) throw new ConversionException(problems);
 
             var classesJson = JsonValue.NewObject();
@@ -199,7 +201,8 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("roller", roller)
                 .Set("tiers", tiers)
                 .Set("breeds", breeds)
-                .Set("otherModels", others);
+                .Set("otherModels", others)
+                .Set("prizedModels", prizedModels);
         }
 
         private static JsonValue ReadRoller(string csv, List<string> problems)
@@ -227,6 +230,37 @@ namespace HorsePersonalities.Tools.SheetToJson
                 if (seen.TryGetValue(f.Key, out double v)) result.Set(f.Key, Round(v));
                 else problems.Add($"Roller.csv: no \"{f.Label}\" row.");
             }
+            return result;
+        }
+
+        private static JsonValue ReadPrized(string csv, Dictionary<string, List<string>> modelsByBreed, List<string> problems)
+        {
+            var result = JsonValue.NewArray();
+            var rows = Csv.Parse(csv ?? "");
+            int header = rows.FindIndex(r => Cell(r, 0).Equals("Model", StringComparison.OrdinalIgnoreCase));
+            if (header < 0) { problems.Add("Prized.csv: no header row starting with \"Model\"."); return result; }
+            var h = Header(rows[header]);
+            int whyCol = Col(h, "Why", problems, "Prized.csv");
+            h.TryGetValue("Notes", out int noteCol);
+            var breedModels = new HashSet<string>(modelsByBreed.Values.SelectMany(m => m), StringComparer.OrdinalIgnoreCase);
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var entries = new List<(string Model, string Why, string Note)>();
+            for (int i = header + 1; i < rows.Count; i++)
+            {
+                string model = Cell(rows[i], 0).Trim().ToLowerInvariant();
+                if (model.Length == 0) continue;
+                string where = $"Prized.csv row {i + 1} ({model})";
+                if (!breedModels.Contains(model)) { problems.Add($"{where}: not a breed's model in horse-models.csv, so it would stay vanilla anyway."); continue; }
+                if (!seen.Add(model)) { problems.Add($"{where}: listed twice."); continue; }
+                if (!NameMatching.TryParsePrizedReason(Cell(rows[i], whyCol), out PrizedReason why))
+                {
+                    problems.Add($"{where}: Why \"{Cell(rows[i], whyCol)}\" must be Special, Rare or Community favorite.");
+                    continue;
+                }
+                entries.Add((model, why.ToString(), h.ContainsKey("Notes") ? Cell(rows[i], noteCol).Trim() : ""));
+            }
+            foreach (var e in entries.OrderBy(e => e.Model, StringComparer.Ordinal))
+                result.Add(JsonValue.NewObject().Set("model", e.Model).Set("why", e.Why).Set("note", e.Note));
             return result;
         }
 

@@ -17,6 +17,12 @@ namespace HorsePersonalities.Core.Identity
         public string FirstSeen { get; }
         public string LastSeen { get; internal set; }
 
+        /// <summary>
+        /// The game's own base rank for each stat the mod changes ("health", "stamina"), stored the first time the mod saw
+        /// the horse (Phase 5). Lets the mod re-apply after a reset and restore the original for an uninstall.
+        /// </summary>
+        public Dictionary<string, int> VanillaBase { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
+
         public HorseRecord(HorseFingerprint id, Personality personality, PersonalityStatus status, string firstSeen, string lastSeen)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -26,7 +32,12 @@ namespace HorsePersonalities.Core.Identity
             LastSeen = lastSeen;
         }
 
-        internal HorseRecord AsPermanent(string today) => new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today);
+        internal HorseRecord AsPermanent(string today)
+        {
+            var r = new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today);
+            foreach (var kv in VanillaBase) r.VanillaBase[kv.Key] = kv.Value;
+            return r;
+        }
     }
 
     /// <summary>
@@ -35,6 +46,7 @@ namespace HorsePersonalities.Core.Identity
     /// - Mounting someone else's horse: a temporary personality for this session, kept by the horse's handle.
     /// - The player's saddle on a horse: that same personality becomes permanent, kept by fingerprint.
     /// - A saddle horse the mod has never seen (the starting horse, a new purchase): rolled once, permanent, origin Stable.
+    /// - Prized (Build plan: Prized horses): a stable horse, or a model on the sheet's Prized tab however it was found.
     /// Permanent records come back from horses.json through <see cref="Load"/>; temporary ones are never saved.
     /// </summary>
     public sealed class HorseRegistry
@@ -45,13 +57,17 @@ namespace HorsePersonalities.Core.Identity
         private readonly ILog _log;
         private readonly Func<ulong> _newSeed;
         private readonly Func<DateTime> _clock;
+        private readonly Func<HorseFingerprint, bool> _isPrizedModel;
         private readonly Dictionary<string, HorseRecord> _permanent = new Dictionary<string, HorseRecord>(StringComparer.Ordinal);
         private readonly Dictionary<int, HorseRecord> _temporary = new Dictionary<int, HorseRecord>();
         private readonly Dictionary<string, int> _liveHandle = new Dictionary<string, int>(StringComparer.Ordinal);
         private readonly HashSet<string> _collisionWarned = new HashSet<string>(StringComparer.Ordinal);
 
-        public HorseRegistry(PersonalityRoller roller, ILog log, Func<ulong> newSeed = null, Func<DateTime> clock = null)
+        /// <param name="isPrizedModel">True for models on the sheet's Prized tab. Null: none.</param>
+        public HorseRegistry(PersonalityRoller roller, ILog log, Func<ulong> newSeed = null, Func<DateTime> clock = null,
+            Func<HorseFingerprint, bool> isPrizedModel = null)
         {
+            _isPrizedModel = isPrizedModel ?? (_ => false);
             _roller = roller ?? throw new ArgumentNullException(nameof(roller));
             _log = log ?? NullLog.Instance;
             _newSeed = newSeed ?? SeededRandom.NewSeed;
@@ -65,6 +81,15 @@ namespace HorsePersonalities.Core.Identity
         public int TemporaryCount => _temporary.Count;
 
         public void MarkSaved() => Dirty = false;
+
+        /// <summary>Stores a stat's original base rank on a permanent horse (Phase 5) and marks the save as changed.</summary>
+        public void RememberVanillaBase(HorseRecord record, string stat, int baseRank)
+        {
+            if (record.Status != PersonalityStatus.Permanent) return;
+            if (record.VanillaBase.TryGetValue(stat, out int old) && old == baseRank) return;
+            record.VanillaBase[stat] = baseRank;
+            Dirty = true;
+        }
 
         /// <summary>Takes permanent records read from horses.json. Does not mark the registry dirty.</summary>
         public void Load(IEnumerable<HorseRecord> records)
@@ -93,7 +118,7 @@ namespace HorsePersonalities.Core.Identity
 
             if (_temporary.TryGetValue(handle, out HorseRecord temp) && temp.Id.Equals(id)) return temp;
             string today = Today();
-            temp = new HorseRecord(id, _roller.Roll(breed, origin, _newSeed()), PersonalityStatus.Temporary, today, today);
+            temp = new HorseRecord(id, _roller.Roll(breed, origin, _newSeed(), Prized(id, origin)), PersonalityStatus.Temporary, today, today);
             _temporary[handle] = temp;
             _log.Info(LogCategory, $"Temporary personality for horse {handle} ({id}, {origin}): {temp.Personality}");
             return temp;
@@ -118,7 +143,7 @@ namespace HorsePersonalities.Core.Identity
             }
             else
             {
-                record = new HorseRecord(id, _roller.Roll(breed, HorseOrigin.Stable, _newSeed()), PersonalityStatus.Permanent, today, today);
+                record = new HorseRecord(id, _roller.Roll(breed, HorseOrigin.Stable, _newSeed(), Prized(id, HorseOrigin.Stable)), PersonalityStatus.Permanent, today, today);
                 _log.Info(LogCategory, $"First sight of saddle horse {handle} ({id}): rolled {record.Personality}");
             }
             _permanent[id.Key] = record;
@@ -126,6 +151,8 @@ namespace HorsePersonalities.Core.Identity
             Dirty = true;
             return record;
         }
+
+        private bool Prized(HorseFingerprint id, HorseOrigin origin) => origin == HorseOrigin.Stable || _isPrizedModel(id);
 
         private HorseRecord Touch(int handle, HorseRecord kept)
         {

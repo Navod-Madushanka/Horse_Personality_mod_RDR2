@@ -51,6 +51,8 @@ namespace HorsePersonalities.Core.Saving
                         .Set("speed", p.NaturalStats.Speed).Set("acceleration", p.NaturalStats.Acceleration)
                         .Set("health", p.NaturalStats.Health).Set("stamina", p.NaturalStats.Stamina))
                     .Set("breaking", p.Breaking.ToString())
+                    .Set("prized", p.Prized)
+                    .Set("vanillaBase", VanillaJson(r))
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
                     .Set("seed", p.Seed.ToString("X16", CultureInfo.InvariantCulture))
                     .Set("rollerVersion", Personality.RollerVersion)
@@ -139,8 +141,26 @@ namespace HorsePersonalities.Core.Saving
             if (quirks.Count == 0) log.Warn(Log, $"{key}: has no quirks left (Show-off was cut); it keeps its other traits.");
 
             var p = new Personality(breed, origin, seed,
-                Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal));
-            return new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", ""));
+                Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal), j.GetBool("prized", false));
+            var record = new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", ""));
+            JsonValue vb = j["vanillaBase"];
+            if (vb.Kind == JsonKind.Object)
+                foreach (var kv in vb.Members)
+                {
+                    int v = kv.Value.AsInt();
+                    if (v < 0 || v > TierCap.MaxRank) throw new SaveFormatException($"vanillaBase.{kv.Key} = {v} is not a rank.");
+                    record.VanillaBase[kv.Key] = v;
+                }
+            return record;
+        }
+
+        private static JsonValue VanillaJson(HorseRecord r)
+        {
+            var o = JsonValue.NewObject();
+            var keys = new List<string>(r.VanillaBase.Keys);
+            keys.Sort(StringComparer.Ordinal);
+            foreach (string k in keys) o.Set(k, r.VanillaBase[k]);
+            return o;
         }
 
         private static double Trait(JsonValue t, string name)

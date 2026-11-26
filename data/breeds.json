@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -37,7 +37,12 @@
     "statSpread": 0.6,
     "statQualityShift": 0.3,
     "hardBreakScore": 1.5,
-    "unbreakableBreakScore": 2.5
+    "unbreakableBreakScore": 2.5,
+    "goodBond4Speed": 0.75,
+    "prizedBond4Speed": 0.5,
+    "prizedBreakScoreBonus": 1,
+    "revealFirstRankBond": 2,
+    "revealSecondRankBond": 3
   },
   "tiers": {
     "Heavy": {
@@ -553,6 +558,38 @@
     {
       "model": "a_c_horsemulepainted_01",
       "note": "Mule"
+    }
+  ],
+  "prizedModels": [
+    {
+      "model": "a_c_horse_appaloosa_fewspotted_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
+    },
+    {
+      "model": "a_c_horse_arabian_redchestnut_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
+    },
+    {
+      "model": "a_c_horse_arabian_warpedbrindle_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_buttermilkbuckskin_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
+    },
+    {
+      "model": "a_c_horse_morgan_liverchestnut_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_goldpalomino_pc",
+      "why": "Special",
+      "note": "PC bonus coat"
     }
   ]
 }

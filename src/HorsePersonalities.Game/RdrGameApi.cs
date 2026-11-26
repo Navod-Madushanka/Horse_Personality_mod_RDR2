@@ -112,6 +112,11 @@ namespace HorsePersonalities.Game
         public void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank) =>
             Function.Call(Natives.SET_ATTRIBUTE_BONUS_RANK, ped, (int)attribute, rank);
 
+        public void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank) =>
+            Function.Call(Natives.SET_ATTRIBUTE_BASE_RANK, ped, (int)attribute, rank);
+
+        public void SetBondLevel(int horse, int level) => Function.Call(Natives.SET_MOUNT_BONDING_LEVEL, horse, level);
+
         public int GetCoreValue(int ped, AttributeCore core) => Function.Call<int>(Natives.GET_ATTRIBUTE_CORE_VALUE, ped, (int)core);
 
         // ---- Behaviors ----

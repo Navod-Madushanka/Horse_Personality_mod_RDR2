@@ -22,6 +22,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             string models = Path.Combine(root, "data", "horse-models.csv");
             string roller = Path.Combine(root, "data", "sheet-export", "Roller.csv");
             string tiers = Path.Combine(root, "data", "sheet-export", "Tiers.csv");
+            string prized = Path.Combine(root, "data", "sheet-export", "Prized.csv");
             string output = Path.Combine(root, "data", "breeds.json");
             bool check = false;
 
@@ -36,10 +37,11 @@ namespace HorsePersonalities.Tools.SheetToJson
                     case "--models": models = Next(); break;
                     case "--roller": roller = Next(); break;
                     case "--tiers": tiers = Next(); break;
+                    case "--prized": prized = Next(); break;
                     case "--out": output = Next(); break;
                     case "--check": check = true; break;
                     case "-h": case "--help":
-                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--out breeds.json] [--check]");
+                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--out breeds.json] [--check]");
                         return 0;
                     default:
                         Console.Error.WriteLine($"Unknown option {a}. Try --help.");
@@ -49,7 +51,7 @@ namespace HorsePersonalities.Tools.SheetToJson
 
             try
             {
-                var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models), File.ReadAllText(roller), File.ReadAllText(tiers));
+                var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models), File.ReadAllText(roller), File.ReadAllText(tiers), File.ReadAllText(prized));
                 string text = json.ToJson();
 
                 // Same validation the mod runs on load, so a file that passes here loads in game.

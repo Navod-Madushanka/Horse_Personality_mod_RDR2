@@ -10,9 +10,9 @@ namespace HorsePersonalities.Tests
         private static string Export(string file) => TestData.Read("data", "sheet-export", file);
 
         /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
-        private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null) =>
+        private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null) =>
             SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
-                roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"));
+                roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"));
 
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()
@@ -121,6 +121,31 @@ namespace HorsePersonalities.Tests
             Exception ex = Record.Exception(() => HorsePersonalities.Core.Breeds.BreedCatalog.Load(Convert(tiers: tiers).ToJson(), new HorsePersonalities.Core.Logging.MemoryLog()));
             Assert.NotNull(ex);
             Assert.Contains(expected, ex.Message);
+        }
+
+        [Fact]
+        public void PrizedTabBecomesPrizedModels()
+        {
+            var p = Convert()["prizedModels"];
+            Assert.Equal(6, p.Count);
+            Assert.Contains(p.Items, m => m["model"].AsString() == "a_c_horse_arabian_redchestnut_pc" && m["why"].AsString() == "Special");
+        }
+
+        [Theory]
+        [InlineData("a_c_horse_arabian_redchestnut_pc,Arabian,Special", "a_c_horse_gang_dutch,Arabian,Special", "stay vanilla anyway")]
+        [InlineData("a_c_horse_arabian_redchestnut_pc,Arabian,Special", "a_c_horse_arabian_redchestnut_pc,Arabian,Legendary", "Special, Rare or Community favorite")]
+        [InlineData("a_c_horse_morgan_liverchestnut_pc,Morgan,Special", "a_c_horse_appaloosa_fewspotted_pc,Appaloosa,Rare", "listed twice")]
+        public void BadPrizedTabIsAnError(string find, string replace, string expected)
+        {
+            var ex = Assert.Throws<ConversionException>(() => Convert(prized: Export("Prized.csv").Replace(find, replace)));
+            Assert.Contains(expected, ex.Message);
+        }
+
+        [Fact]
+        public void CommunityFavoriteIsReadFromTheSheetsWording()
+        {
+            string prized = Export("Prized.csv") + "a_c_horse_turkoman_gold,Turkoman,Community favorite,\n";
+            Assert.Contains(Convert(prized: prized)["prizedModels"].Items, m => m["why"].AsString() == "CommunityFavorite");
         }
 
         [Fact]

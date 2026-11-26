@@ -8,3 +8,8 @@ Stat spread,0.6,"How far natural stats spread, in ranks (standard deviation). Ea
 Stat quality shift,0.3,"How far good horses' natural stats lean up and bad horses' lean down, in ranks."
 Hard break score,1.5,Wild horses: Temper minus Bond affinity at or above this breaks Hard.
 Unbreakable break score,2.5,"Wild horses: at or above this, a horse is Unbreakable if it also wins the UnbreakableChance roll; otherwise Hard."
+Good bond 4 speed,0.75,Bond XP rate for a good (not prized) horse on the climb from bond level 3 to 4. 0.75 = takes a third longer. Levels 1-3 are normal. Proposed; tune in Phase 6.
+Prized bond 4 speed,0.5,"Bond XP rate for a prized horse (stable-bought, special, rare, community favorite) from bond 3 to 4. 0.5 = takes twice as long. Levels 1-3 are normal. Proposed."
+Prized break score bonus,1,"Added to a prized wild horse's Temper minus Bond affinity, so it breaks Hard more often. Prized horses are never Unbreakable. Proposed."
+Reveal first rank bond,2,Bond level at which the first rank of a health or stamina difference shows on the stat bars.
+Reveal second rank bond,3,Bond level at which a second rank of difference shows (only a -2 horse has one).

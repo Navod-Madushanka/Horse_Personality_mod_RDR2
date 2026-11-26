@@ -27,6 +27,17 @@ namespace HorsePersonalities.Core.Breeds
         Elite = 3,
     }
 
+    /// <summary>
+    /// Why a model is on the sheet's Prized tab (Build plan: Prized horses). Stable-bought horses are prized by their
+    /// origin instead, so they need no entry.
+    /// </summary>
+    public enum PrizedReason
+    {
+        Special,
+        Rare,
+        CommunityFavorite,
+    }
+
     public static class NameMatching
     {
         /// <summary>
@@ -54,6 +65,21 @@ namespace HorsePersonalities.Core.Breeds
                 }
             }
             tier = default;
+            return false;
+        }
+
+        public static bool TryParsePrizedReason(string text, out PrizedReason reason)
+        {
+            string n = Normalize(text);
+            foreach (PrizedReason r in Enum.GetValues(typeof(PrizedReason)))
+            {
+                if (Normalize(r.ToString()) == n)
+                {
+                    reason = r;
+                    return true;
+                }
+            }
+            reason = default;
             return false;
         }
 

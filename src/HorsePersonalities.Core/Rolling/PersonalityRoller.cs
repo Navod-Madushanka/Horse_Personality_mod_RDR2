@@ -20,6 +20,9 @@ namespace HorsePersonalities.Core.Rolling
     /// 5. Breaking (wild horses only): Temper minus Bond affinity against the Hard and Unbreakable scores, and
     ///    Unbreakable also needs an UnbreakableChance roll.
     ///
+    /// Prized horses (Build plan: Prized horses): always good, every trait on the good side of the breed (no flaw at
+    /// all), and a wild one adds PrizedBreakScoreBonus to its breaking score but is never Unbreakable.
+    ///
     /// Every roll makes the same number of draws whatever it rolls, so changing one setting never reshuffles
     /// the parts of a horse it doesn't touch.
     /// </summary>
@@ -51,20 +54,21 @@ namespace HorsePersonalities.Core.Rolling
             return (Math.Min(cap.Up, _maxRankChange), Math.Min(cap.Down, _maxRankChange));
         }
 
-        public Personality Roll(Breed breed, HorseOrigin origin, ulong seed)
+        public Personality Roll(Breed breed, HorseOrigin origin, ulong seed, bool prized = false)
         {
             if (breed == null) throw new ArgumentNullException(nameof(breed));
             var rng = new SeededRandom(seed);
 
             // 1. Good or bad.
-            bool good = rng.NextDouble() < _goodChance;
+            bool good = rng.NextDouble() < _goodChance || prized; // the draw is made either way: fixed draw count
             int q = good ? 1 : -1;
 
             // 2. Traits. d = how far each trait sits on the good side of the breed (negative = bad side).
             var d = new double[TraitInfo.All.Length];
             for (int i = 0; i < d.Length; i++)
                 d[i] = q * _tuning.QualityShift + _tuning.TraitSpread * rng.NextGaussian();
-            LimitWrongSide(d, q, _tuning.FlawMargin);
+            if (prized) NoFlaws(d);
+            else LimitWrongSide(d, q, _tuning.FlawMargin);
 
             var values = new double[d.Length];
             for (int i = 0; i < d.Length; i++)
@@ -97,12 +101,12 @@ namespace HorsePersonalities.Core.Rolling
             var breaking = BreakingDifficulty.Normal;
             if (origin == HorseOrigin.Wild)
             {
-                double score = traits.Temper - traits.BondAffinity;
-                if (score >= _tuning.UnbreakableBreakScore && breakRoll < _unbreakableChance) breaking = BreakingDifficulty.Unbreakable;
+                double score = traits.Temper - traits.BondAffinity + (prized ? _tuning.PrizedBreakScoreBonus : 0);
+                if (!prized && score >= _tuning.UnbreakableBreakScore && breakRoll < _unbreakableChance) breaking = BreakingDifficulty.Unbreakable;
                 else if (score >= _tuning.HardBreakScore) breaking = BreakingDifficulty.Hard;
             }
 
-            return new Personality(breed.Name, origin, seed, good ? HorseQuality.Good : HorseQuality.Bad, traits, quirks, stats, breaking);
+            return new Personality(breed.Name, origin, seed, good ? HorseQuality.Good : HorseQuality.Bad, traits, quirks, stats, breaking, prized);
         }
 
         /// <summary>
@@ -116,6 +120,13 @@ namespace HorsePersonalities.Core.Rolling
                 if (q * d[i] < -margin && (keep < 0 || Math.Abs(d[i]) > Math.Abs(d[keep]))) keep = i;
             for (int i = 0; i < d.Length; i++)
                 if (i != keep && q * d[i] < -margin) d[i] = -d[i];
+        }
+
+        /// <summary>A prized horse has no trait on the bad side of its breed: every bad-side trait is mirrored to the good side.</summary>
+        internal static void NoFlaws(double[] d)
+        {
+            for (int i = 0; i < d.Length; i++)
+                if (d[i] < 0) d[i] = -d[i];
         }
 
         private Quirk PickQuirk(SeededRandom rng, Breed breed, List<Quirk> exclude)

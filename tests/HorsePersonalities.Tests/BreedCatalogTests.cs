@@ -109,6 +109,16 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void PrizedModelsAreLookedUpByModel()
+        {
+            var c = BreedCatalog.Load(TestData.MinimalBreeds, new MemoryLog());
+            Assert.True(c.TryGetPrized("a_c_horse_turkoman_silver", out PrizedReason why));
+            Assert.Equal(PrizedReason.CommunityFavorite, why);
+            Assert.False(c.TryGetPrized("a_c_horse_turkoman_gold", out _));
+            Assert.Equal(6, Shipped().PrizedModelCount);
+        }
+
+        [Fact]
         public void TiersRunFromHeavyToElite() =>
             Assert.True(StatTier.Heavy < StatTier.Standard && StatTier.Standard < StatTier.Race && StatTier.Race < StatTier.Elite);
 
@@ -129,7 +139,7 @@ namespace HorsePersonalities.Tests
         }
 
         [Theory]
-        [InlineData("\"schemaVersion\": 3", "\"schemaVersion\": 2", "schemaVersion")]
+        [InlineData("\"schemaVersion\": 4", "\"schemaVersion\": 3", "schemaVersion")]
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]
@@ -138,6 +148,10 @@ namespace HorsePersonalities.Tests
         [InlineData(", \"Elite\": { \"statUpRanks\": 1, \"statDownRanks\": 0 }", "", "no caps for Elite")]
         [InlineData("\"Heavy\": { \"statUpRanks\": 1", "\"Heavy\": { \"statUpRanks\": 1.5", "tiers.Heavy")]
         [InlineData("\"Race\": { \"statUpRanks\": 1", "\"Race\": { \"statUpRanks\": 10", "whole ranks")]
+        [InlineData("\"revealSecondRankBond\": 3", "\"revealSecondRankBond\": 1", "must not be below Reveal first rank bond")]
+        [InlineData("\"revealFirstRankBond\": 2", "\"revealFirstRankBond\": 2.5", "must be a whole number")]
+        [InlineData("\"why\": \"CommunityFavorite\"", "\"why\": \"Legendary\"", "\"why\" must be one of")]
+        [InlineData("\"model\": \"a_c_horse_turkoman_silver\", \"why\"", "\"model\": \"a_c_horsemule_01\", \"why\"", "stay vanilla anyway")]
         [InlineData("\"handling\": \"Standard\"", "\"handling\": \"Fast\"", "handling \"Fast\"")]
         [InlineData("\"handling\": \"Standard\", ", "", "handling \"\"")]
         [InlineData("\"a_c_horsemule_01\"", "\"a_c_horse_turkoman_gold\"", "both Turkoman and otherModels")]

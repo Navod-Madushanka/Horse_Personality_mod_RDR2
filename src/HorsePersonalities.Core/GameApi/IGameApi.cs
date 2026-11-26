@@ -98,6 +98,10 @@ namespace HorsePersonalities.Core.GameApi
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);
         void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank);
+        /// <summary>SET_ATTRIBUTE_BASE_RANK. Phase 5 changes only the base rank; the bonus is the game's (tack).</summary>
+        void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank);
+        /// <summary>_SET_MOUNT_BONDING_LEVEL (1-4). DevTools only, for testing the bond reveal; the game may save it.</summary>
+        void SetBondLevel(int horse, int level);
         int GetCoreValue(int ped, AttributeCore core);
 
         // ---- Behaviors (Phase 1 trigger candidates) ----

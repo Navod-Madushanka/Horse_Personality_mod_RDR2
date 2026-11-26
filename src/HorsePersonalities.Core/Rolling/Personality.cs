@@ -101,7 +101,7 @@ namespace HorsePersonalities.Core.Rolling
     public sealed class Personality
     {
         /// <summary>Bumped when the roll algorithm changes, so a saved seed can be told apart from a new one.</summary>
-        public const int RollerVersion = 2; // 2: natural stats in whole ranks, Show-off cut (Nov 25, 2026)
+        public const int RollerVersion = 3; // 2: natural stats in whole ranks, Show-off cut (Nov 25). 3: prized horses (Nov 26).
 
         public string Breed { get; }
         public HorseOrigin Origin { get; }
@@ -111,10 +111,13 @@ namespace HorsePersonalities.Core.Rolling
         public IReadOnlyList<Quirk> Quirks { get; }
         public NaturalStats NaturalStats { get; }
         public BreakingDifficulty Breaking { get; }
+        /// <summary>Rolled as a prized horse (Build plan: Prized horses): always good, no trait flaws, slower to bond 4.</summary>
+        public bool Prized { get; }
 
         public Personality(string breed, HorseOrigin origin, ulong seed, HorseQuality quality, Traits traits,
-            IReadOnlyList<Quirk> quirks, NaturalStats naturalStats, BreakingDifficulty breaking)
+            IReadOnlyList<Quirk> quirks, NaturalStats naturalStats, BreakingDifficulty breaking, bool prized = false)
         {
+            Prized = prized;
             Breed = breed;
             Origin = origin;
             Seed = seed;
@@ -132,7 +135,7 @@ namespace HorsePersonalities.Core.Rolling
             string R(int v) => v.ToString("+0;-0;0", CultureInfo.InvariantCulture);
             return new[]
             {
-                $"{Breed} - {Quality.ToString().ToLowerInvariant()} horse - seed {Seed:X16}",
+                $"{Breed} - {Quality.ToString().ToLowerInvariant()} horse{(Prized ? " (prized)" : "")} - seed {Seed:X16}",
                 $"Courage {T(Traits.Courage)}  Nerves {T(Traits.Nerves)}  Temper {T(Traits.Temper)}  Bond {T(Traits.BondAffinity)}",
                 "Quirks: " + string.Join(", ", Quirks.Select(q => q.ToString())),
                 $"Natural stats (ranks): speed {R(NaturalStats.Speed)}, accel {R(NaturalStats.Acceleration)}, health {R(NaturalStats.Health)}, stamina {R(NaturalStats.Stamina)}",

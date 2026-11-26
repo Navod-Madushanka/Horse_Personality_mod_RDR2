@@ -37,7 +37,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 3;
+        public const int CurrentSchemaVersion = 4;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -51,6 +51,7 @@ namespace HorsePersonalities.Core.Breeds
         public IReadOnlyList<Breed> Breeds { get; }
         public IReadOnlyList<OtherModel> OtherModels { get; }
         public RollerTuning Roller { get; }
+        private readonly Dictionary<uint, PrizedReason> _prized = new Dictionary<uint, PrizedReason>();
         public IReadOnlyDictionary<StatTier, TierCap> TierCaps { get; }
 
         private BreedCatalog(int schemaVersion, double penalty, Dictionary<string, LearningRate> classRates,
@@ -85,6 +86,13 @@ namespace HorsePersonalities.Core.Breeds
         }
 
         public bool TryGetBreed(string name, out Breed breed) => _byName.TryGetValue(NameMatching.Normalize(name), out breed);
+
+        /// <summary>True when the model is on the sheet's Prized tab (special, rare or community favorite).</summary>
+        public bool TryGetPrized(uint modelHash, out PrizedReason reason) => _prized.TryGetValue(modelHash, out reason);
+
+        public bool TryGetPrized(string modelName, out PrizedReason reason) => _prized.TryGetValue(Joaat.Hash(modelName), out reason);
+
+        public int PrizedModelCount => _prized.Count;
 
         /// <summary>Breed for a model hash as returned by GET_ENTITY_MODEL.</summary>
         public bool TryGetBreedByModel(uint modelHash, out Breed breed) => _byModelHash.TryGetValue(modelHash, out breed);
@@ -183,10 +191,35 @@ namespace HorsePersonalities.Core.Breeds
             RollerTuning roller = RollerTuning.Read(root["roller"], problems);
             var tierCaps = ReadTiers(root["tiers"], problems);
 
+            var prized = new Dictionary<uint, PrizedReason>();
+            JsonValue prizedArray = root["prizedModels"];
+            if (prizedArray.Kind == JsonKind.Array)
+            {
+                foreach (JsonValue pm in prizedArray.Items)
+                {
+                    string model = pm.GetString("model", null);
+                    if (string.IsNullOrWhiteSpace(model)) { problems.Add("A prizedModels entry has no \"model\"."); continue; }
+                    if (!modelOwner.TryGetValue(model, out string owner) || owner == "otherModels")
+                    {
+                        problems.Add($"Prized model {model} is not a breed's model, so it would stay vanilla anyway.");
+                        continue;
+                    }
+                    if (!NameMatching.TryParsePrizedReason(pm.GetString("why", ""), out PrizedReason reason))
+                    {
+                        problems.Add($"Prized model {model}: \"why\" must be one of {string.Join(", ", Enum.GetNames(typeof(PrizedReason)))}.");
+                        continue;
+                    }
+                    uint h = Joaat.Hash(model.Trim().ToLowerInvariant());
+                    if (prized.ContainsKey(h)) problems.Add($"Prized model {model} is listed twice.");
+                    else prized[h] = reason;
+                }
+            }
+
             if (problems.Count > 0) throw new BreedDataException(problems);
 
             var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others, roller, tierCaps);
-            log.Info(Log, $"Loaded {breeds.Count} breeds and {catalog.ModelCount} horse models ({others.Count} not tied to a breed).");
+            foreach (var kv in prized) catalog._prized[kv.Key] = kv.Value;
+            log.Info(Log, $"Loaded {breeds.Count} breeds and {catalog.ModelCount} horse models ({others.Count} not tied to a breed, {prized.Count} prized).");
             return catalog;
         }
 

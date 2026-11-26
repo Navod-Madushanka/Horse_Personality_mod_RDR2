@@ -11,9 +11,11 @@ using HorsePersonalities.Core.Rolling;
 using HorsePersonalities.Core.Safety;
 using HorsePersonalities.Core.Saving;
 using HorsePersonalities.Core.Settings;
+using HorsePersonalities.Core.Stats;
 using HorsePersonalities.Core.Timing;
 using HorsePersonalities.Core.Tracking;
 using RDR2;
+using PedAttribute = HorsePersonalities.Core.GameApi.PedAttribute;
 
 namespace HorsePersonalities.Game
 {
@@ -28,6 +30,8 @@ namespace HorsePersonalities.Game
     /// Phase 3: personalities come from the roller; the debug overlay (DebugKey, F9 by default) shows them.
     /// Phase 4: permanent personalities load from horses.json at start and are written when one is added and when
     /// the script stops.
+    /// Phase 5: every second, the horse you ride and your saddle horse get their health and stamina base ranks set to
+    /// their original + the natural difference revealed so far by bond level (bond 2 and 3).
     /// </summary>
     public sealed class HorsePersonalitiesScript : Script
     {
@@ -49,6 +53,7 @@ namespace HorsePersonalities.Game
         private HorseRegistry _registry;
         private HorseSaveStore _store;
         private readonly IntervalGate _saddlePoll = new IntervalGate(250);
+        private readonly IntervalGate _statCheck = new IntervalGate(1000);
         private readonly HashSet<int> _wildMounted = new HashSet<int>();
         private int _saddleHorse = -1;
         private Keys _debugKey = Keys.F9;
@@ -88,10 +93,10 @@ namespace HorsePersonalities.Game
         private void StartRegistry()
         {
             var roller = new PersonalityRoller(_boot.Breeds, _boot.Settings);
-            _registry = new HorseRegistry(roller, _boot.Log);
+            _registry = new HorseRegistry(roller, _boot.Log, isPrizedModel: id => _boot.Breeds.TryGetPrized(id.Model, out _));
             // A schema 1 save (natural stats as fractions) gets its stats re-rolled from each horse's seed, as whole ranks.
             _store = new HorseSaveStore(_boot.Paths.DataDir, _boot.Log, (breed, origin, seed) =>
-                _boot.Breeds.TryGetBreed(breed, out Breed b) ? roller.Roll(b, origin, seed).NaturalStats : new NaturalStats(0, 0, 0, 0));
+                _boot.Breeds.TryGetBreed(breed, out Breed b) ? roller.Roll(b, origin, seed, origin == HorseOrigin.Stable).NaturalStats : new NaturalStats(0, 0, 0, 0));
             SaveLoadResult loaded = _store.Load(_boot.Settings.ResetAllHorses, DateTime.Now);
             _registry.Load(loaded.Records);
             if (loaded.Upgraded && _store.Save(_registry.Permanent))
@@ -135,6 +140,7 @@ namespace HorsePersonalities.Game
             _guard.Run("Events", ReadEvents);
             _guard.Run("MountTracking", TrackMount);
             if (_registry != null && _saddlePoll.Due(Environment.TickCount)) _guard.Run("SaddleWatch", WatchSaddle);
+            if (_registry != null && _statCheck.Due(Environment.TickCount)) _guard.Run("Stats", ApplyStats);
             _guard.Run("Overlay", () => _overlay.Draw(_game, _lastTickMs));
 
             _tickTimer.Stop();
@@ -224,6 +230,39 @@ namespace HorsePersonalities.Game
             _boot.Log.Info(Log, $"Saddle horse is now {saddle} ({d.ModelName}): " + (record == null ? "no breed, stays vanilla." : $"permanent personality {record.Id}."));
             if (record != null && _mounts.CurrentMount == saddle) _overlay.SetLines(OverlayText.Build(d, record));
             SaveIfChanged("saddle horse changed");
+        }
+
+        /// <summary>
+        /// Every second: health and stamina base ranks for the horse you ride and your saddle horse (Phase 5).
+        /// Writes only when a rank differs from its target, so a game reset (load, stable) is put right within a second.
+        /// </summary>
+        private void ApplyStats()
+        {
+            int mount = _mounts.CurrentMount, saddle = _saddleHorse > 0 ? _saddleHorse : 0;
+            foreach (int horse in mount == saddle ? new[] { mount } : new[] { mount, saddle })
+            {
+                if (horse == 0 || !_game.Exists(horse)) continue;
+                HorseDescription d = HorseDescriber.Describe(_game, _boot.Breeds, horse);
+                if (d.Breed == null) continue;
+                HorseRecord record = _registry.Find(horse, Fingerprint(d));
+                if (record == null || record.Status != PersonalityStatus.Permanent) continue;
+
+                RollerTuning t = _boot.Breeds.Roller;
+                List<StatChange> changes = StatPlanner.Plan(record, d.BondRank,
+                    _game.ReadAttribute(horse, PedAttribute.Health), _game.ReadAttribute(horse, PedAttribute.Stamina),
+                    t.RevealFirstRankBond, t.RevealSecondRankBond, _boot.Settings.RestoreVanillaStats, out var learned);
+                foreach (var (stat, baseRank) in learned)
+                {
+                    _registry.RememberVanillaBase(record, stat, baseRank);
+                    _boot.Log.Info("Stats", $"{record.Id}: original {stat} base rank is {baseRank}.");
+                }
+                foreach (StatChange c in changes)
+                {
+                    _game.SetAttributeBaseRank(horse, c.Attribute, c.To);
+                    _boot.Log.Info("Stats", $"{record.Id} at bond {d.BondRank}: {c}{(_boot.Settings.RestoreVanillaStats ? " [RestoreVanillaStats]" : "")}");
+                }
+            }
+            SaveIfChanged("stored original stat ranks");
         }
 
         private static HorseFingerprint Fingerprint(HorseDescription d) => new HorseFingerprint(d.ModelName, d.IsMale);

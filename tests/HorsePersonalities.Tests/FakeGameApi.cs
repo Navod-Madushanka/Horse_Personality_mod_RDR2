@@ -61,6 +61,19 @@ namespace HorsePersonalities.Tests
             Attributes[(ped, attribute)] = r;
         }
         public int GetCoreValue(int ped, AttributeCore core) => 100;
+        public void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank)
+        {
+            var r = ReadAttribute(ped, attribute);
+            r.BaseRank = rank;
+            r.Rank = rank + r.BonusRank;
+            Attributes[(ped, attribute)] = r;
+        }
+        public void SetBondLevel(int horse, int level)
+        {
+            var r = ReadAttribute(horse, PedAttribute.Bonding);
+            r.Rank = r.BaseRank = level;
+            Attributes[(horse, PedAttribute.Bonding)] = r;
+        }
 
         public void PlayVocalization(int ped, string vocalizationName) { }
         public bool IsVocalizationPlaying(int ped) => false;

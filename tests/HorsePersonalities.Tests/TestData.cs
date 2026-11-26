@@ -20,10 +20,11 @@ namespace HorsePersonalities.Tests
 
         /// <summary>A tiny valid breeds.json to edit in tests.</summary>
         public const string MinimalBreeds = @"{
-  ""schemaVersion"": 3,
+  ""schemaVersion"": 4,
   ""multiClassPenalty"": 0.10,
   ""roller"": { ""traitSpread"": 0.6, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
-                ""statSpread"": 0.6, ""statQualityShift"": 0.3, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5 },
+                ""statSpread"": 0.6, ""statQualityShift"": 0.3, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5,
+                ""goodBond4Speed"": 0.75, ""prizedBond4Speed"": 0.5, ""prizedBreakScoreBonus"": 1, ""revealFirstRankBond"": 2, ""revealSecondRankBond"": 3 },
   ""tiers"": { ""Heavy"": { ""statUpRanks"": 1, ""statDownRanks"": 2 }, ""Standard"": { ""statUpRanks"": 1, ""statDownRanks"": 2 },
                ""Race"": { ""statUpRanks"": 1, ""statDownRanks"": 1 }, ""Elite"": { ""statUpRanks"": 1, ""statDownRanks"": 0 } },
   ""classes"": { ""Race"": { ""physical"": 1.3, ""combat"": 0.7 }, ""War"": { ""physical"": 0.8, ""combat"": 1.5 } },
@@ -32,7 +33,8 @@ namespace HorsePersonalities.Tests
       ""handling"": ""Standard"", ""leans"": { ""courage"": 1, ""nerves"": 0, ""temper"": 1, ""bondAffinity"": 0 },
       ""likelyQuirks"": [""Head-tosser"", ""Picky eater"", ""nosy""], ""demeanor"": ""Proud and impatient."" }
   ],
-  ""otherModels"": [ { ""model"": ""a_c_horsemule_01"", ""note"": ""Mule"" } ]
+  ""otherModels"": [ { ""model"": ""a_c_horsemule_01"", ""note"": ""Mule"" } ],
+  ""prizedModels"": [ { ""model"": ""a_c_horse_turkoman_silver"", ""why"": ""CommunityFavorite"", ""note"": """" } ]
 }";
     }
 }
