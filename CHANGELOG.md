@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Phase 5: stats and the bond reveal, and prized horses (built Nov 26, 2026)
+- **Prized horses:** stable horses and the sheet's new Prized tab (six PC bonus coats so far) always roll good with no trait flaw; prized wild horses break Hard more often but are never Unbreakable. Shown as "(prized)".
+- **Stat bars:** health and stamina base ranks get the natural difference: the first rank at bond 2, a second rank (only -2 horses) at bond 3. The bonus rank (tack) is never touched. Originals are stored in `horses.json` and re-applied after a reset.
+- `RestoreVanillaStats` puts each horse back to its original for an uninstall. `RevealPerBondLevel` is retired.
+- DevTools trigger 42 steps the bond level, for testing the reveal.
+- breeds.json schema 4 (prized models; five new Roller tab settings). Roller version 3.
+
 ### In-game results (Nov 26, 2026)
 - **Phase 1 passed.** Wanderer works as wander-then-graze; mission flag and every cutscene detector work; Show-off was cut.
 - **Phases 2, 3 and 4 passed in game:** stable ids and personalities across 3 reloads, the schema 1 save upgraded to ranks, a broken save recovered from the backup.
