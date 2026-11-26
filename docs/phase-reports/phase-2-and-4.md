@@ -22,7 +22,7 @@ Written Nov 24, 2026. Built before Phase 1 passed, by Navod's decision (the plan
 **Phase 4: the save file**
 
 - **`horses.json`** in the plan's format, one record per permanent horse: breed, origin, status, quality, traits, quirks, natural stats, breaking, plus the roll's `seed` and `rollerVersion`. Numbers are saved at full precision, so a reload gives back exactly the same horse. Skills join in Phase 8.
-- **Written only on events:** when a horse becomes permanent, when a kept horse is seen on a new day (its `lastSeen` date), and when the script stops (reload or quit). Never every frame.
+- **Written only on events:** when a horse becomes permanent, when a kept horse is seen on a new day (its `lastSeen` date), and after an upgrade or a recovery from the backup. It was also meant to write when the script stops, but in game (Nov 25) the hook never tells the script the game is exiting: no "Script stopped" line reached the log in any session. Never every frame.
 - **Safe writes:** each write goes to a temporary file first and then replaces `horses.json`, so a crash mid-write leaves the old file. The previous file is kept as `horses.backup.json`.
 - **Recovery:** a broken or unreadable `horses.json` is kept as `horses.broken-<time>.json` (never deleted) and the backup loads instead. If both are broken, the mod starts empty without crashing. One bad record is skipped with a log line and the rest load.
 - **`ResetAllHorses = true`:** on the next load the save is moved aside as `horses.reset-<time>.json` and the mod starts empty. The setting then turns itself back to false in the INI, so it only resets once.
@@ -48,7 +48,7 @@ The 5 Phase 3 preview tests went away with the preview code; the registry replac
 1. **Is the saddle horse what we think?** "Owned" means `_GET_SADDLE_HORSE_FOR_PLAYER`. Phase 1's saddle-swap detector checks it changes when you swap saddles. If it doesn't, the trigger for "permanent" has to move.
 2. **Wild horses.** Wild origin depends on `EVENT_PLAYER_MOUNT_WILD_HORSE`, which Phase 1 checks. If it never fires, the logged taming state may do instead.
 3. **Identical horses collide.** Two owned horses of the same model and sex share one personality until the game shows a way to tell them apart. DevTools trigger 35 looks for one.
-4. **Game saves aren't detected.** The plan also wants a write on game save. No native for that is known, so the mod writes on its own events and on exit instead. A game crash loses at most the last session's `lastSeen` dates, never a personality: those are written the moment they become permanent.
+4. **Game saves aren't detected.** The plan also wants a write on game save. No native for that is known, so the mod writes on its own events instead (not on exit; see above). Quitting loses at most the last session's `lastSeen` dates, never a personality: those are written the moment they become permanent.
 5. **Two playthroughs share one file.** There's no way yet to tell save slots apart. `ResetAllHorses` covers a new playthrough, as the plan says.
 
 ## In-game test steps (after Phase 1 passes)
