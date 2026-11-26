@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Phase 6: core behaviors (built Nov 26, 2026)
+- Threat spooks from Courage (predators, gunfire, explosions), each threat judged once; rearing, throwing the rider, bolting or watching, by Courage and Temper.
+- Random spooks from Nerves, weighted by night, gallop and bond, times `SpookFrequency`: noticeable but rare.
+- Bucks and refusals from Temper when pushed (low-stamina spur, long sprint, hard stop); kicks when you linger behind.
+- Bond XP scaled by Bond affinity, slower from bond 3 to 4 for good (0.75) and prized (0.5) horses, and for Hard wild horses (0.8).
+- Hard wild horses throw you twice more; Unbreakable ones every attempt.
+- Cooldowns per behavior and a 20 s gap; everything held during missions and cutscenes.
+- New sheet tab Behavior (37 settings) and `data/predator-models.csv`; breeds.json schema 5.
+
 ### Phase 5: stats and the bond reveal, and prized horses (built Nov 26, 2026)
 - **Prized horses:** stable horses and the sheet's new Prized tab (six PC bonus coats so far) always roll good with no trait flaw; prized wild horses break Hard more often but are never Unbreakable. Shown as "(prized)".
 - **Stat bars:** health and stamina base ranks get the natural difference: the first rank at bond 2, a second rank (only -2 horses) at bond 3. The bonus rank (tack) is never touched. Originals are stored in `horses.json` and re-applied after a reset.
