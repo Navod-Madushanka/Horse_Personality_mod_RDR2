@@ -19,8 +19,10 @@ namespace HorsePersonalities.Tests
         public static string BreedsJson => Read("data", "breeds.json");
 
         /// <summary>A tiny valid breeds.json to edit in tests.</summary>
-        public const string MinimalBreeds = @"{
-  ""schemaVersion"": 4,
+        public static string MinimalBreeds => MinimalTemplate.Replace("\"BEHAVIOR\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["behavior"].ToJson(false));
+
+        private const string MinimalTemplate = @"{
+  ""schemaVersion"": 5,
   ""multiClassPenalty"": 0.10,
   ""roller"": { ""traitSpread"": 0.6, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
                 ""statSpread"": 0.6, ""statQualityShift"": 0.3, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5,
@@ -34,6 +36,8 @@ namespace HorsePersonalities.Tests
       ""likelyQuirks"": [""Head-tosser"", ""Picky eater"", ""nosy""], ""demeanor"": ""Proud and impatient."" }
   ],
   ""otherModels"": [ { ""model"": ""a_c_horsemule_01"", ""note"": ""Mule"" } ],
+  ""behavior"": ""BEHAVIOR"",
+  ""predatorModels"": [""a_c_wolf_01""],
   ""prizedModels"": [ { ""model"": ""a_c_horse_turkoman_silver"", ""why"": ""CommunityFavorite"", ""note"": """" } ]
 }";
     }

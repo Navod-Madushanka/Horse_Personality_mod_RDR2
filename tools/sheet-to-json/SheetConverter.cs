@@ -20,14 +20,19 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   Roller.csv   the sheet's Roller tab (Setting, Value): the roller's tuning numbers
     ///   Tiers.csv    the sheet's Tiers tab (Tier, Stat up cap, Stat down cap)
     ///   Prized.csv   the sheet's Prized tab (Model, Why, Notes): special, rare and community-favorite models
+    ///   Behavior.csv the sheet's Behavior tab (Setting, Value): Phase 6 rates, chances and timings
+    ///   predator-models.csv  model,note: animals a horse may spook at (game data, kept in the repo)
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
     /// </summary>
     public static class SheetConverter
     {
-        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv)
+        public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv,
+            string behaviorCsv, string predatorsCsv)
         {
             var problems = new List<string>();
-            JsonValue roller = ReadRoller(rollerCsv, problems);
+            JsonValue roller = ReadSettings(rollerCsv, RollerTuning.Fields, "Roller.csv", problems);
+            JsonValue behavior = ReadSettings(behaviorCsv, HorsePersonalities.Core.Behavior.BehaviorTuning.Fields, "Behavior.csv", problems);
+            JsonValue predators = ReadPredators(predatorsCsv, problems);
             JsonValue tiers = ReadTiers(tiersCsv, problems);
 
             // ---- Classes ----
@@ -200,35 +205,56 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("classes", classesJson)
                 .Set("roller", roller)
                 .Set("tiers", tiers)
+                .Set("behavior", behavior)
+                .Set("predatorModels", predators)
                 .Set("breeds", breeds)
                 .Set("otherModels", others)
                 .Set("prizedModels", prizedModels);
         }
 
-        private static JsonValue ReadRoller(string csv, List<string> problems)
+        private static JsonValue ReadPredators(string csv, List<string> problems)
         {
-            var rows = Csv.Parse(csv);
+            var result = JsonValue.NewArray();
+            var rows = Csv.Parse(csv ?? "");
+            if (rows.Count == 0) { problems.Add("predator-models.csv is empty."); return result; }
+            int mCol = Col(Header(rows[0]), "model", problems, "predator-models.csv");
+            var seen = new SortedSet<string>(StringComparer.Ordinal);
+            for (int i = 1; i < rows.Count; i++)
+            {
+                string m = Cell(rows[i], mCol).Trim().ToLowerInvariant();
+                if (m.Length == 0) continue;
+                if (!m.StartsWith("a_c_", StringComparison.Ordinal)) problems.Add($"predator-models.csv row {i + 1}: {m} is not an animal model (a_c_...).");
+                else if (!seen.Add(m)) problems.Add($"predator-models.csv row {i + 1}: {m} is listed twice.");
+            }
+            foreach (string m in seen) result.Add(m);
+            return result;
+        }
+
+        /// <summary>A Setting/Value tab (Roller, Behavior): every field by its sheet label, written in the fields' order.</summary>
+        private static JsonValue ReadSettings(string csv, IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> fields, string file, List<string> problems)
+        {
+            var rows = Csv.Parse(csv ?? "");
             var result = JsonValue.NewObject();
             int header = rows.FindIndex(r => Cell(r, 0).Equals("Setting", StringComparison.OrdinalIgnoreCase));
-            if (header < 0) { problems.Add("Roller.csv: no header row starting with \"Setting\"."); return result; }
-            int vCol = Col(Header(rows[header]), "Value", problems, "Roller.csv");
+            if (header < 0) { problems.Add($"{file}: no header row starting with \"Setting\"."); return result; }
+            int vCol = Col(Header(rows[header]), "Value", problems, file);
             var seen = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
             for (int i = header + 1; i < rows.Count; i++)
             {
                 string label = Cell(rows[i], 0).Trim();
                 if (label.Length == 0) continue;
-                var field = RollerTuning.Fields.FirstOrDefault(f => f.Label.Equals(label, StringComparison.OrdinalIgnoreCase));
-                if (field.Key == null) { problems.Add($"Roller.csv: unknown setting \"{label}\". Known: {string.Join(", ", RollerTuning.Fields.Select(f => f.Label))}."); continue; }
+                var field = fields.FirstOrDefault(f => f.Label.Equals(label, StringComparison.OrdinalIgnoreCase));
+                if (field.Key == null) { problems.Add($"{file}: unknown setting \"{label}\". Known: {string.Join(", ", fields.Select(f => f.Label))}."); continue; }
                 string raw = Cell(rows[i], vCol);
                 double v = raw.Trim().EndsWith("%", StringComparison.Ordinal) ? ParseFraction(raw) : (TryNumber(raw, out double n) ? n : double.NaN);
-                if (double.IsNaN(v)) { problems.Add($"Roller.csv: {label} \"{raw}\" is not a number."); continue; }
+                if (double.IsNaN(v)) { problems.Add($"{file}: {label} \"{raw}\" is not a number."); continue; }
                 seen[field.Key] = v;
             }
             // Written in the Fields order, so the JSON doesn't change when rows move in the sheet.
-            foreach (var f in RollerTuning.Fields)
+            foreach (var f in fields)
             {
                 if (seen.TryGetValue(f.Key, out double v)) result.Set(f.Key, Round(v));
-                else problems.Add($"Roller.csv: no \"{f.Label}\" row.");
+                else problems.Add($"{file}: no \"{f.Label}\" row.");
             }
             return result;
         }

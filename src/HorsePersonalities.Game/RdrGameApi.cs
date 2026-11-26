@@ -112,6 +112,45 @@ namespace HorsePersonalities.Game
         public void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank) =>
             Function.Call(Natives.SET_ATTRIBUTE_BONUS_RANK, ped, (int)attribute, rank);
 
+        public float GetSpeed(int entity) => Function.Call<float>(Natives.GET_ENTITY_SPEED, entity);
+        public int GameHour => Function.Call<int>(Natives.GET_CLOCK_HOURS);
+        public bool IsSprintPressed => CallBool(Natives.IS_CONTROL_PRESSED, 0, Natives.INPUT_HORSE_SPRINT);
+        public bool IsPedShooting(int ped) => CallBool(Natives.IS_PED_SHOOTING, ped);
+
+        public Vec3 GetPosition(int entity)
+        {
+            Vector3 p = Coords(entity);
+            return new Vec3(p.X, p.Y, p.Z);
+        }
+
+        public Vec3 GetForward(int entity)
+        {
+            Vector3 f = Function.Call<Vector3>(Natives.GET_ENTITY_FORWARD_VECTOR, entity);
+            return new Vec3(f.X, f.Y, f.Z);
+        }
+
+        private readonly List<int> _near = new List<int>();
+
+        public IReadOnlyList<int> PedsNear(int around, float radius)
+        {
+            _near.Clear();
+            Vector3 c = Coords(around);
+            float r2 = radius * radius;
+            // The hook's pool read can fail at random; it then returns an empty array (World.GetAllPeds).
+            foreach (RDR2.Ped ped in RDR2.World.GetAllPeds())
+            {
+                int h = ped.Handle;
+                if (h == around) continue;
+                Vector3 p = Coords(h);
+                float dx = p.X - c.X, dy = p.Y - c.Y, dz = p.Z - c.Z;
+                if (dx * dx + dy * dy + dz * dz <= r2) _near.Add(h);
+            }
+            return _near;
+        }
+
+        public void SetAttributePoints(int ped, PedAttribute attribute, int points) =>
+            Function.Call(Natives.SET_ATTRIBUTE_POINTS, ped, (int)attribute, points);
+
         public void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank) =>
             Function.Call(Natives.SET_ATTRIBUTE_BASE_RANK, ped, (int)attribute, rank);
 

@@ -1,0 +1,38 @@
+Setting,Value,What it does
+Spook base rate,0.01,"Random spooks per minute for a horse with average Nerves, in daylight, walking, at bond 2-3. Multiplied by the player's SpookFrequency."
+Nerves slope,0.55,"Each point of Nerves multiplies the random spook rate by e^slope: 0.55 makes Nerves +2 three times as jumpy as average, -2 a third."
+Night spook multiplier,2.5,Random spook rate at night.
+Night starts hour,21,Game hour (0-23) when night starts.
+Night ends hour,5,Game hour (0-23) when night ends.
+Gallop spook multiplier,1.5,Random spook rate at a gallop.
+Gallop speed,9,Speed in m/s that counts as a gallop.
+Weak bond spook multiplier,1.5,Random spook rate at bond level 1 or below.
+Full bond spook multiplier,0.6,Random spook rate at bond level 4.
+Threat spook chance,0.5,Chance an average-Courage horse spooks at a nearby predator or gunshot.
+Courage slope,1.1,How fast that chance falls with Courage: 1.1 gives about 90% at Courage -2 and 10% at +2.
+Predator range,20,Metres within which a predator counts as a threat.
+Rider gunfire scale,0.4,Your own shots count this much of a stranger's: horses are used to their rider.
+Explosion courage penalty,1,An explosion is judged as if the horse had this much less Courage.
+Push buck chance,0.05,"Chance an average-Temper horse bucks or refuses when pushed (spurred at low stamina, a long sprint, a hard stop)."
+Temper slope,1,Each point of Temper multiplies that chance by e^slope: Temper +2 is about 7 times average.
+Max push buck chance,0.5,The push buck chance never goes above this.
+Low stamina,25,Stamina core (0-100) below which spurring counts as pushing.
+Long sprint seconds,30,Sprinting this long counts as pushing.
+Hard stop slowdown,8,Losing this many m/s in one second from a gallop counts as a hard stop or turn.
+Scared buck temper,1,A scared horse you're riding with Temper at or above this throws you instead of rearing.
+Rear courage,-0.5,"A scared or spooked horse you're riding with Courage below this rears; above it, it only gets agitated."
+Bolt courage,0,"A scared horse you're not riding with Courage below this bolts; above it, it watches the threat."
+Kick chance,0.05,Chance an average-Temper horse kicks you after you stand behind it (Temper slope applies).
+Kick linger seconds,3,How long you stand behind it before it may kick.
+Kick behind distance,2.5,Metres behind the horse that count as behind it.
+Bond affinity slope,0.2,"Each point of Bond affinity multiplies bond XP by e^slope: +2 about 1.5 times, -2 about 0.67."
+Hard bond speed,0.8,Bond XP rate for a wild horse that broke Hard.
+Hard extra throws,2,Extra times a Hard wild horse throws you before it can break.
+Hard throw after seconds,8,Seconds into breaking before a Hard horse's extra throw.
+Unbreakable throw after seconds,5,Seconds into breaking before an Unbreakable horse always throws you.
+Spook cooldown,60,Seconds between two spooks of one horse.
+Buck cooldown,90,Seconds between two bucks or refusals.
+Kick cooldown,60,Seconds between two kicks.
+Tell cooldown,30,"Seconds between small tells (a snort, a look at a threat)."
+Behavior gap,20,Shortest gap between any two behaviors of one horse.
+Threat quiet seconds,20,"A horse judges a threat once: each predator when it comes in range, gunfire once per gunfight. The gunfight is over after this many quiet seconds."

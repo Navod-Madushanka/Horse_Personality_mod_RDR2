@@ -48,6 +48,21 @@ namespace HorsePersonalities.Tests
         public int GetTamingState(int horse) => 0;
         public float DistanceBetween(int a, int b) => 0;
         public int GetOutfitCount(int ped) => 1;
+        public readonly Dictionary<int, float> Speeds = new Dictionary<int, float>();
+        public readonly Dictionary<int, Vec3> Positions = new Dictionary<int, Vec3>();
+        public float GetSpeed(int entity) => Speeds.TryGetValue(entity, out float v) ? v : 0;
+        public int GameHour { get; set; } = 12;
+        public bool IsSprintPressed { get; set; }
+        public bool IsPedShooting(int ped) => false;
+        public Vec3 GetPosition(int entity) => Positions.TryGetValue(entity, out Vec3 v) ? v : default;
+        public Vec3 GetForward(int entity) => new Vec3(0, 1, 0);
+        public IReadOnlyList<int> PedsNear(int around, float radius) => new List<int>();
+        public void SetAttributePoints(int ped, PedAttribute attribute, int points)
+        {
+            var r = ReadAttribute(ped, attribute);
+            r.Points = points;
+            Attributes[(ped, attribute)] = r;
+        }
         public int GetMetaPedType(int ped) => 0;
         public int GetClosestHumanPed(int aroundEntity, float radius, int excludePed) => 0;
 

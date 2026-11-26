@@ -37,11 +37,12 @@ namespace HorsePersonalities.Core.GameApi
         public static readonly GameEventType ShotFired = new GameEventType("EVENT_SHOT_FIRED", 0, "");
         public static readonly GameEventType EntityDamaged = new GameEventType("EVENT_ENTITY_DAMAGED", 9, "damaged entity, damager, weapon hash, ...");
         public static readonly GameEventType LootComplete = new GameEventType("EVENT_LOOT_COMPLETE", 3, "looter, looted entity, success");
+        public static readonly GameEventType EntityExplosion = new GameEventType("EVENT_ENTITY_EXPLOSION", 6, "ped who caused it, ?, weapon hash, ...");
 
         public static readonly IReadOnlyList<GameEventType> All = new[]
         {
             PedAnimalInteraction, CalmPed, HorseBroken, HorseStartedBreaking, PlayerMountWildHorse,
-            PlayerHorseAgitatedByAnimal, ShotFiredWhizzedBy, ShotFired, EntityDamaged, LootComplete,
+            PlayerHorseAgitatedByAnimal, ShotFiredWhizzedBy, ShotFired, EntityDamaged, LootComplete, EntityExplosion,
         };
 
         private static readonly Dictionary<uint, GameEventType> ByHash = BuildIndex();

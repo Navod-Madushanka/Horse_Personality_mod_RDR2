@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -62,6 +62,46 @@
       "statDownRanks": 0
     }
   },
+  "behavior": {
+    "spookBaseRate": 0.01,
+    "nervesSlope": 0.55,
+    "nightSpookMultiplier": 2.5,
+    "nightStartsHour": 21,
+    "nightEndsHour": 5,
+    "gallopSpookMultiplier": 1.5,
+    "gallopSpeed": 9,
+    "weakBondSpookMultiplier": 1.5,
+    "fullBondSpookMultiplier": 0.6,
+    "threatSpookChance": 0.5,
+    "courageSlope": 1.1,
+    "predatorRange": 20,
+    "riderGunfireScale": 0.4,
+    "explosionCouragePenalty": 1,
+    "pushBuckChance": 0.05,
+    "temperSlope": 1,
+    "maxPushBuckChance": 0.5,
+    "lowStamina": 25,
+    "longSprintSeconds": 30,
+    "hardStopSlowdown": 8,
+    "scaredBuckTemper": 1,
+    "rearCourage": -0.5,
+    "boltCourage": 0,
+    "kickChance": 0.05,
+    "kickLingerSeconds": 3,
+    "kickBehindDistance": 2.5,
+    "bondAffinitySlope": 0.2,
+    "hardBondSpeed": 0.8,
+    "hardExtraThrows": 2,
+    "hardThrowAfterSeconds": 8,
+    "unbreakableThrowAfterSeconds": 5,
+    "spookCooldown": 60,
+    "buckCooldown": 90,
+    "kickCooldown": 60,
+    "tellCooldown": 30,
+    "behaviorGap": 20,
+    "threatQuietSeconds": 20
+  },
+  "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snakeblacktailrattle_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
     {
       "name": "American Paint",

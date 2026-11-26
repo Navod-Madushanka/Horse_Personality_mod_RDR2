@@ -32,6 +32,8 @@ namespace HorsePersonalities.Game
     /// the script stops.
     /// Phase 5: every second, the horse you ride and your saddle horse get their health and stamina base ranks set to
     /// their original + the natural difference revealed so far by bond level (bond 2 and 3).
+    /// Phase 6: spooks, bucks, refusals and kicks from the horse's traits (BehaviorRunner, every 250 ms), bond XP scaled
+    /// by Bond affinity and quality (every second), Hard and Unbreakable breaking, all held during missions and cutscenes.
     /// </summary>
     public sealed class HorsePersonalitiesScript : Script
     {
@@ -54,6 +56,8 @@ namespace HorsePersonalities.Game
         private HorseSaveStore _store;
         private readonly IntervalGate _saddlePoll = new IntervalGate(250);
         private readonly IntervalGate _statCheck = new IntervalGate(1000);
+        private readonly IntervalGate _behaviorCheck = new IntervalGate(250);
+        private BehaviorRunner _behavior;
         private readonly HashSet<int> _wildMounted = new HashSet<int>();
         private int _saddleHorse = -1;
         private Keys _debugKey = Keys.F9;
@@ -101,6 +105,7 @@ namespace HorsePersonalities.Game
             _registry.Load(loaded.Records);
             if (loaded.Upgraded && _store.Save(_registry.Permanent))
                 _boot.Log.Info("Save", "Wrote the upgraded horses.json.");
+            _behavior = new BehaviorRunner(_game, _boot.Breeds, _boot.Settings, _registry, _boot.Log);
             if (_boot.Settings.ResetAllHorses) TurnOffReset();
         }
 
@@ -140,7 +145,13 @@ namespace HorsePersonalities.Game
             _guard.Run("Events", ReadEvents);
             _guard.Run("MountTracking", TrackMount);
             if (_registry != null && _saddlePoll.Due(Environment.TickCount)) _guard.Run("SaddleWatch", WatchSaddle);
-            if (_registry != null && _statCheck.Due(Environment.TickCount)) _guard.Run("Stats", ApplyStats);
+            if (_registry != null && _statCheck.Due(Environment.TickCount))
+            {
+                _guard.Run("Stats", ApplyStats);
+                _guard.Run("Bonding", () => _behavior.UpdateBonding(_mounts.CurrentMount));
+            }
+            if (_behavior != null && _behaviorCheck.Due(Environment.TickCount))
+                _guard.Run("Behaviors", () => _behavior.Update(_mounts.CurrentMount, _game.GameTimeMs / 1000.0));
             _guard.Run("Overlay", () => _overlay.Draw(_game, _lastTickMs));
 
             _tickTimer.Stop();
@@ -213,7 +224,9 @@ namespace HorsePersonalities.Game
         /// <summary>EVENT_PLAYER_MOUNT_WILD_HORSE marks a horse as wild for the session, so its roll includes breaking.</summary>
         private void ReadEvents()
         {
-            foreach (GameEvent e in _game.ReadAiEvents())
+            IReadOnlyList<GameEvent> events = _game.ReadAiEvents();
+            _behavior?.OnEvents(events);
+            foreach (GameEvent e in events)
                 if (e.Hash == GameEvents.PlayerMountWildHorse.Hash && e.Data.Length >= 1 && _wildMounted.Add((int)e.Data[0]))
                     _boot.Log.Info(Log, $"Horse {e.Data[0]} is wild (EVENT_PLAYER_MOUNT_WILD_HORSE).");
         }

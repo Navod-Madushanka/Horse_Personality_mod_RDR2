@@ -6,6 +6,20 @@ namespace HorsePersonalities.Game
 {
     internal static class Natives
     {
+        /// <summary>ENTITY::GET_ENTITY_SPEED(int entity) -> float</summary>
+        public const ulong GET_ENTITY_SPEED = 0xFB6BA510A533DF81;
+        /// <summary>CLOCK::GET_CLOCK_HOURS() -> int</summary>
+        public const ulong GET_CLOCK_HOURS = 0xC82CF208C2B19199;
+        /// <summary>PAD::IS_CONTROL_PRESSED(int control, uint action) -> bool</summary>
+        public const ulong IS_CONTROL_PRESSED = 0xF3A21BCD95725A4A;
+        /// <summary>INPUT_HORSE_SPRINT, from the hook's eInputType.HorseSprint.</summary>
+        public const uint INPUT_HORSE_SPRINT = 0x5AA007D7;
+        /// <summary>PED::IS_PED_SHOOTING(int ped) -> bool</summary>
+        public const ulong IS_PED_SHOOTING = 0x34616828CD07F1A1;
+        /// <summary>ENTITY::GET_ENTITY_FORWARD_VECTOR(int entity) -> Vector3</summary>
+        public const ulong GET_ENTITY_FORWARD_VECTOR = 0x2412D9C05BB09B97;
+        /// <summary>ATTRIBUTE::SET_ATTRIBUTE_POINTS(int ped, int attributeIndex, int p2)</summary>
+        public const ulong SET_ATTRIBUTE_POINTS = 0x09A59688C26D88DF;
         /// <summary>ATTRIBUTE::SET_ATTRIBUTE_BASE_RANK(int ped, int attributeIndex, int newValue)</summary>
         public const ulong SET_ATTRIBUTE_BASE_RANK = 0x5DA12E025D47D4E5;
         /// <summary>PED::_SET_MOUNT_BONDING_LEVEL(int ped, int bondingLevel)</summary>

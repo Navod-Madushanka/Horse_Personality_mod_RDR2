@@ -95,11 +95,27 @@ namespace HorsePersonalities.Core.GameApi
         int GetMetaPedType(int ped);
         int GetClosestHumanPed(int aroundEntity, float radius, int excludePed);
 
+        // ---- Phase 6: what the horse is doing and what is around it ----
+        /// <summary>GET_ENTITY_SPEED, m/s.</summary>
+        float GetSpeed(int entity);
+        /// <summary>GET_CLOCK_HOURS: the game's hour, 0-23.</summary>
+        int GameHour { get; }
+        /// <summary>IS_CONTROL_PRESSED(0, INPUT_HORSE_SPRINT 0x5AA007D7): the player is spurring.</summary>
+        bool IsSprintPressed { get; }
+        bool IsPedShooting(int ped);
+        Vec3 GetPosition(int entity);
+        /// <summary>GET_ENTITY_FORWARD_VECTOR: the way the entity faces.</summary>
+        Vec3 GetForward(int entity);
+        /// <summary>Peds within <paramref name="radius"/> of an entity, from the hook's ped pool. May come back empty if the pool read fails.</summary>
+        IReadOnlyList<int> PedsNear(int around, float radius);
+
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);
         void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank);
         /// <summary>SET_ATTRIBUTE_BASE_RANK. Phase 5 changes only the base rank; the bonus is the game's (tack).</summary>
         void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank);
+        /// <summary>SET_ATTRIBUTE_POINTS. Phase 6 uses it on bonding points to speed up or slow down bonding; unverified in game.</summary>
+        void SetAttributePoints(int ped, PedAttribute attribute, int points);
         /// <summary>_SET_MOUNT_BONDING_LEVEL (1-4). DevTools only, for testing the bond reveal; the game may save it.</summary>
         void SetBondLevel(int horse, int level);
         int GetCoreValue(int ped, AttributeCore core);

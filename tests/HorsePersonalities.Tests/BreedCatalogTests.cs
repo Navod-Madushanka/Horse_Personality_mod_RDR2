@@ -119,6 +119,16 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void LoadsBehaviorTuningAndPredators()
+        {
+            var c = Shipped();
+            Assert.Equal(0.55, c.Behavior.NervesSlope);
+            Assert.Equal(14, c.PredatorModelCount);
+            Assert.True(c.IsPredator(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_wolf_01")));
+            Assert.False(c.IsPredator(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_horse_arabian_white")));
+        }
+
+        [Fact]
         public void TiersRunFromHeavyToElite() =>
             Assert.True(StatTier.Heavy < StatTier.Standard && StatTier.Standard < StatTier.Race && StatTier.Race < StatTier.Elite);
 
@@ -139,7 +149,7 @@ namespace HorsePersonalities.Tests
         }
 
         [Theory]
-        [InlineData("\"schemaVersion\": 4", "\"schemaVersion\": 3", "schemaVersion")]
+        [InlineData("\"schemaVersion\": 5", "\"schemaVersion\": 4", "schemaVersion")]
         [InlineData("[\"Race\", \"War\"]", "[\"Race\", \"Pony\"]", "unknown class \"Pony\"")]
         [InlineData("\"courage\": 1", "\"courage\": 3", "outside -2..+2")]
         [InlineData("\"multiClassPenalty\": 0.10", "\"multiClassPenalty\": 1.5", "multiClassPenalty")]

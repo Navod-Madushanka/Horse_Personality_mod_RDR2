@@ -10,9 +10,11 @@ namespace HorsePersonalities.Tests
         private static string Export(string file) => TestData.Read("data", "sheet-export", file);
 
         /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
-        private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null) =>
+        private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null,
+            string behavior = null, string predators = null) =>
             SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
-                roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"));
+                roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"),
+                behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"));
 
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()
@@ -146,6 +148,33 @@ namespace HorsePersonalities.Tests
         {
             string prized = Export("Prized.csv") + "a_c_horse_turkoman_gold,Turkoman,Community favorite,\n";
             Assert.Contains(Convert(prized: prized)["prizedModels"].Items, m => m["why"].AsString() == "CommunityFavorite");
+        }
+
+        [Fact]
+        public void BehaviorTabAndPredatorsAreConverted()
+        {
+            var json = Convert();
+            Assert.Equal(0.01, json["behavior"]["spookBaseRate"].AsNumber());
+            Assert.Equal(20, json["behavior"]["threatQuietSeconds"].AsInt());
+            Assert.Contains(json["predatorModels"].Items, m => m.AsString() == "a_c_wolf_01");
+        }
+
+        [Theory]
+        [InlineData("Spook base rate,0.01,", "Spook rate,0.01,", "unknown setting \"Spook rate\"")]
+        [InlineData("Behavior gap,20,", "", "no \"Behavior gap\" row")]
+        public void BadBehaviorTabIsAnError(string find, string replace, string expected)
+        {
+            string tab = Export("Behavior.csv");
+            tab = replace.Length == 0 ? string.Join("\n", tab.Split('\n').Where(l => !l.StartsWith(find))) : tab.Replace(find, replace);
+            var ex = Assert.Throws<ConversionException>(() => Convert(behavior: tab));
+            Assert.Contains(expected, ex.Message);
+        }
+
+        [Fact]
+        public void PredatorListMustBeAnimals()
+        {
+            var ex = Assert.Throws<ConversionException>(() => Convert(predators: TestData.Read("data", "predator-models.csv") + "a_c_horse_arabian_white,horse?\nmp_male,person\n"));
+            Assert.Contains("mp_male is not an animal model", ex.Message);
         }
 
         [Fact]

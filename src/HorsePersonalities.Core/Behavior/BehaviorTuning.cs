@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using HorsePersonalities.Core.Json;
+
+namespace HorsePersonalities.Core.Behavior
+{
+    /// <summary>
+    /// Phase 6 tuning, from the breed sheet's Behavior tab (rule 6: no tuning numbers in code). Rates are per minute,
+    /// times are seconds, distances metres, speeds m/s.
+    /// </summary>
+    public sealed class BehaviorTuning
+    {
+        private readonly Dictionary<string, double> _v;
+
+        private BehaviorTuning(Dictionary<string, double> v) { _v = v; }
+
+        public double this[string key] => _v[key];
+
+        public double SpookBaseRate => _v["spookBaseRate"];
+        public double NervesSlope => _v["nervesSlope"];
+        public double NightSpookMultiplier => _v["nightSpookMultiplier"];
+        public int NightStartsHour => (int)_v["nightStartsHour"];
+        public int NightEndsHour => (int)_v["nightEndsHour"];
+        public double GallopSpookMultiplier => _v["gallopSpookMultiplier"];
+        public double GallopSpeed => _v["gallopSpeed"];
+        public double WeakBondSpookMultiplier => _v["weakBondSpookMultiplier"];
+        public double FullBondSpookMultiplier => _v["fullBondSpookMultiplier"];
+        public double ThreatSpookChance => _v["threatSpookChance"];
+        public double CourageSlope => _v["courageSlope"];
+        public double PredatorRange => _v["predatorRange"];
+        public double RiderGunfireScale => _v["riderGunfireScale"];
+        public double ExplosionCouragePenalty => _v["explosionCouragePenalty"];
+        public double PushBuckChance => _v["pushBuckChance"];
+        public double TemperSlope => _v["temperSlope"];
+        public double MaxPushBuckChance => _v["maxPushBuckChance"];
+        public double LowStamina => _v["lowStamina"];
+        public double LongSprintSeconds => _v["longSprintSeconds"];
+        public double HardStopSlowdown => _v["hardStopSlowdown"];
+        public double ScaredBuckTemper => _v["scaredBuckTemper"];
+        public double RearCourage => _v["rearCourage"];
+        public double BoltCourage => _v["boltCourage"];
+        public double KickChance => _v["kickChance"];
+        public double KickLingerSeconds => _v["kickLingerSeconds"];
+        public double KickBehindDistance => _v["kickBehindDistance"];
+        public double BondAffinitySlope => _v["bondAffinitySlope"];
+        public double HardBondSpeed => _v["hardBondSpeed"];
+        public int HardExtraThrows => (int)_v["hardExtraThrows"];
+        public double HardThrowAfterSeconds => _v["hardThrowAfterSeconds"];
+        public double UnbreakableThrowAfterSeconds => _v["unbreakableThrowAfterSeconds"];
+        public double SpookCooldown => _v["spookCooldown"];
+        public double BuckCooldown => _v["buckCooldown"];
+        public double KickCooldown => _v["kickCooldown"];
+        public double TellCooldown => _v["tellCooldown"];
+        public double BehaviorGap => _v["behaviorGap"];
+        public double ThreatQuietSeconds => _v["threatQuietSeconds"];
+
+        public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
+        {
+            ("spookBaseRate", "Spook base rate", 0.0, 5.0, false),
+            ("nervesSlope", "Nerves slope", 0.0, 3.0, false),
+            ("nightSpookMultiplier", "Night spook multiplier", 0.0, 10.0, false),
+            ("nightStartsHour", "Night starts hour", 0.0, 23.0, true),
+            ("nightEndsHour", "Night ends hour", 0.0, 23.0, true),
+            ("gallopSpookMultiplier", "Gallop spook multiplier", 0.0, 10.0, false),
+            ("gallopSpeed", "Gallop speed", 1.0, 30.0, false),
+            ("weakBondSpookMultiplier", "Weak bond spook multiplier", 0.0, 10.0, false),
+            ("fullBondSpookMultiplier", "Full bond spook multiplier", 0.0, 10.0, false),
+            ("threatSpookChance", "Threat spook chance", 0.001, 0.999, false),
+            ("courageSlope", "Courage slope", 0.0, 5.0, false),
+            ("predatorRange", "Predator range", 1.0, 200.0, false),
+            ("riderGunfireScale", "Rider gunfire scale", 0.0, 1.0, false),
+            ("explosionCouragePenalty", "Explosion courage penalty", 0.0, 4.0, false),
+            ("pushBuckChance", "Push buck chance", 0.0, 1.0, false),
+            ("temperSlope", "Temper slope", 0.0, 3.0, false),
+            ("maxPushBuckChance", "Max push buck chance", 0.0, 1.0, false),
+            ("lowStamina", "Low stamina", 0.0, 100.0, false),
+            ("longSprintSeconds", "Long sprint seconds", 1.0, 600.0, false),
+            ("hardStopSlowdown", "Hard stop slowdown", 0.5, 50.0, false),
+            ("scaredBuckTemper", "Scared buck temper", -2.0, 3.0, false),
+            ("rearCourage", "Rear courage", -3.0, 3.0, false),
+            ("boltCourage", "Bolt courage", -3.0, 3.0, false),
+            ("kickChance", "Kick chance", 0.0, 1.0, false),
+            ("kickLingerSeconds", "Kick linger seconds", 0.5, 60.0, false),
+            ("kickBehindDistance", "Kick behind distance", 0.5, 10.0, false),
+            ("bondAffinitySlope", "Bond affinity slope", 0.0, 2.0, false),
+            ("hardBondSpeed", "Hard bond speed", 0.05, 2.0, false),
+            ("hardExtraThrows", "Hard extra throws", 0.0, 10.0, true),
+            ("hardThrowAfterSeconds", "Hard throw after seconds", 0.5, 120.0, false),
+            ("unbreakableThrowAfterSeconds", "Unbreakable throw after seconds", 0.5, 120.0, false),
+            ("spookCooldown", "Spook cooldown", 0.0, 3600.0, false),
+            ("buckCooldown", "Buck cooldown", 0.0, 3600.0, false),
+            ("kickCooldown", "Kick cooldown", 0.0, 3600.0, false),
+            ("tellCooldown", "Tell cooldown", 0.0, 3600.0, false),
+            ("behaviorGap", "Behavior gap", 0.0, 3600.0, false),
+            ("threatQuietSeconds", "Threat quiet seconds", 1.0, 600.0, false),
+        };
+
+        /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>
+        public static BehaviorTuning Of(IDictionary<string, double> values)
+        {
+            var d = new Dictionary<string, double>(StringComparer.Ordinal);
+            foreach (var f in Fields) d[f.Key] = values.TryGetValue(f.Key, out double v) ? v : throw new ArgumentException("Missing " + f.Key);
+            return new BehaviorTuning(d);
+        }
+
+        internal static BehaviorTuning Read(JsonValue j, List<string> problems)
+        {
+            if (j.Kind != JsonKind.Object)
+            {
+                problems.Add("\"behavior\" must be an object with the Behavior tab's settings.");
+                return null;
+            }
+            var v = new Dictionary<string, double>(StringComparer.Ordinal);
+            foreach (var f in Fields)
+            {
+                double x = j.GetNumber(f.Key, double.NaN);
+                if (double.IsNaN(x)) problems.Add($"behavior.{f.Key} ({f.Label}) is missing.");
+                else if (x < f.Min || x > f.Max) problems.Add($"behavior.{f.Key} ({f.Label}) = {x} is outside {f.Min} to {f.Max}.");
+                else if (f.Whole && x != Math.Floor(x)) problems.Add($"behavior.{f.Key} ({f.Label}) = {x} must be a whole number.");
+                v[f.Key] = x;
+            }
+            return new BehaviorTuning(v);
+        }
+    }
+}

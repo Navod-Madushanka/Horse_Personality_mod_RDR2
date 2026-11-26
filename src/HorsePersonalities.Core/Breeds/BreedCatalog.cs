@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HorsePersonalities.Core.Behavior;
 using HorsePersonalities.Core.Hashing;
 using HorsePersonalities.Core.Json;
 using HorsePersonalities.Core.Logging;
@@ -37,7 +38,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 4;
+        public const int CurrentSchemaVersion = 5;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -52,6 +53,15 @@ namespace HorsePersonalities.Core.Breeds
         public IReadOnlyList<OtherModel> OtherModels { get; }
         public RollerTuning Roller { get; }
         private readonly Dictionary<uint, PrizedReason> _prized = new Dictionary<uint, PrizedReason>();
+        private readonly HashSet<uint> _predators = new HashSet<uint>();
+
+        /// <summary>Phase 6 tuning from the sheet's Behavior tab.</summary>
+        public BehaviorTuning Behavior { get; private set; }
+
+        /// <summary>True for a predator model (data/predator-models.csv): a threat a horse may spook at.</summary>
+        public bool IsPredator(uint modelHash) => _predators.Contains(modelHash);
+
+        public int PredatorModelCount => _predators.Count;
         public IReadOnlyDictionary<StatTier, TierCap> TierCaps { get; }
 
         private BreedCatalog(int schemaVersion, double penalty, Dictionary<string, LearningRate> classRates,
@@ -215,10 +225,23 @@ namespace HorsePersonalities.Core.Breeds
                 }
             }
 
+            BehaviorTuning behavior = BehaviorTuning.Read(root["behavior"], problems);
+            var predators = new HashSet<uint>();
+            JsonValue predArray = root["predatorModels"];
+            if (predArray.Kind != JsonKind.Array || predArray.Count == 0) problems.Add("\"predatorModels\" must list at least one model.");
+            else foreach (JsonValue pm in predArray.Items)
+            {
+                string model = pm.Kind == JsonKind.String ? pm.AsString() : pm.GetString("model", null);
+                if (string.IsNullOrWhiteSpace(model)) problems.Add("A predatorModels entry has no model.");
+                else predators.Add(Joaat.Hash(model.Trim().ToLowerInvariant()));
+            }
+
             if (problems.Count > 0) throw new BreedDataException(problems);
 
             var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others, roller, tierCaps);
             foreach (var kv in prized) catalog._prized[kv.Key] = kv.Value;
+            catalog.Behavior = behavior;
+            foreach (uint h in predators) catalog._predators.Add(h);
             log.Info(Log, $"Loaded {breeds.Count} breeds and {catalog.ModelCount} horse models ({others.Count} not tied to a breed, {prized.Count} prized).");
             return catalog;
         }
