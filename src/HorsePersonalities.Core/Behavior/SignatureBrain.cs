@@ -59,6 +59,8 @@ namespace HorsePersonalities.Core.Behavior
         public double SecondsSinceGallop;
         /// <summary>How long its last gallop lasted.</summary>
         public double LastGallopSeconds;
+        /// <summary>Someone hurrying toward the player within Stranger danger range (0 for none).</summary>
+        public int RushingPerson;
     }
 
     /// <summary>
@@ -200,6 +202,10 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Snub, _t.SnobRate, "Snob: ears back at a cheaper horse", s.LowerTierHorse));
             if (p.Has(Signature.MustLead) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.HorseAhead != 0)
                 candidates.Add((BehaviorAction.Agitate, _t.MustLeadRate, "Must lead: stuck behind another horse", 0));
+            if (p.Has(Signature.DownhillSnob) && walking && -s.ClimbSpeed >= _t.DownhillSpeed)
+                candidates.Add((BehaviorAction.Snub, _t.DownhillSnobRate, $"Downhill snob: held to a walk going down {-s.ClimbSpeed:0.0} m/s", 0));
+            if (p.Has(Signature.StrangerDanger) && s.RushingPerson != 0)
+                candidates.Add((BehaviorAction.SquareUp, _t.StrangerDangerRate, "Stranger danger: someone's rushing you", s.RushingPerson));
             if (p.Has(Signature.Racer) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.Challenger != 0)
                 candidates.Add((BehaviorAction.Call, _t.RacerRate, "Racer: a challenger alongside", s.Challenger));
             if (p.Has(Signature.ShortKing) && s.OtherHorse != 0)
@@ -242,6 +248,14 @@ namespace HorsePersonalities.Core.Behavior
         /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
         public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>
             p != null && p.Has(Signature.Unhurried) && mounted && spurring && secondsSinceDanger > _t.DangerMemorySeconds ? _t.UnhurriedRatio : (double?)null;
+
+        /// <summary>Grudge: it was hurt while you rode it. None when it doesn't hold grudges.</summary>
+        public Decision OnHurt(int horse, Personality p, CooldownBook cd, double now)
+        {
+            if (p == null || !p.Has(Signature.Grudge)) return Decision.None;
+            cd.Used(horse, BehaviorGroup.Signature, now);
+            return new Decision { Action = BehaviorAction.Agitate, Group = BehaviorGroup.Signature, Cause = $"Grudge: hurt while you rode it; sulks for {_t.GrudgeSeconds:0} s" };
+        }
 
         /// <summary>Saddle hater, as you get on. None when it doesn't happen.</summary>
         public Decision OnMounted(int horse, Personality p, CooldownBook cd, double now)

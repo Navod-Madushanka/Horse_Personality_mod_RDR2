@@ -70,8 +70,10 @@ namespace HorsePersonalities.Core.Behavior
         /// <param name="coat">The horse's coat design, if it has one: its loved and ignored treats come first.</param>
         /// <param name="treatName">The fed treat's name (data/treats.csv), when the item code is known.</param>
         public (BehaviorAction First, BehaviorAction Second, string Cause) React(Personality p, DemeanorTraits demeanor, CareKind kind, int bondLevel, uint itemHash,
-            Coat coat = null, string treatName = null)
+            Coat coat = null, string treatName = null, bool sulking = false)
         {
+            if (sulking && (kind == CareKind.Pat || kind == CareKind.Brush))
+                return (BehaviorAction.None, BehaviorAction.None, "Grudge: still sore about that crash (a treat would help)");
             if (kind == CareKind.Feed && coat != null && treatName != null)
             {
                 if (coat.LovesTreats.Any(x => string.Equals(x, treatName, StringComparison.OrdinalIgnoreCase)))

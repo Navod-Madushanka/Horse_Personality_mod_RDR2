@@ -149,6 +149,12 @@ namespace HorsePersonalities.Core.Behavior
         public double SeparationRate => _v["separationRate"];
         public double NoBrakesChance => _v["noBrakesChance"];
         public double NoBrakesSeconds => _v["noBrakesSeconds"];
+        public double GrudgeSeconds => _v["grudgeSeconds"];
+        public double DownhillSpeed => _v["downhillSpeed"];
+        public double DownhillSnobRate => _v["downhillSnobRate"];
+        public double StrangerDangerRange => _v["strangerDangerRange"];
+        public double StrangerDangerSpeed => _v["strangerDangerSpeed"];
+        public double StrangerDangerRate => _v["strangerDangerRate"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -283,6 +289,12 @@ namespace HorsePersonalities.Core.Behavior
             ("separationRate", "Separation rate", 0.0, 20.0, false),
             ("noBrakesChance", "No brakes chance", 0.0, 1.0, false),
             ("noBrakesSeconds", "No brakes seconds", 0.1, 10.0, false),
+            ("grudgeSeconds", "Grudge seconds", 1.0, 3600.0, false),
+            ("downhillSpeed", "Downhill speed", 0.1, 10.0, false),
+            ("downhillSnobRate", "Downhill snob rate", 0.0, 20.0, false),
+            ("strangerDangerRange", "Stranger danger range", 0.5, 50.0, false),
+            ("strangerDangerSpeed", "Stranger danger speed", 0.1, 20.0, false),
+            ("strangerDangerRate", "Stranger danger rate", 0.0, 60.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

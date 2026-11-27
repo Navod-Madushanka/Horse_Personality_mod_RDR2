@@ -130,3 +130,9 @@ Separation distance,3,Separation anxiety: you this far away (m) from it while it
 Separation rate,3,Separation anxiety: whinnies per minute while you're away.
 No brakes chance,0.5,No brakes: chance of a sideways skid on a hard stop from a gallop.
 No brakes seconds,1.5,No brakes: from gallop to under walking pace within this many seconds is a hard stop.
+Grudge seconds,120,"Grudge: after it's hurt under you, pats and brushing get nothing back for this long (a treat forgives it)."
+Downhill speed,0.8,Downhill snob: going down faster than this (m/s) at a walk is a steep downhill.
+Downhill snob rate,1,Downhill snob: offended snorts per minute when held to a walk downhill.
+Stranger danger range,6,Stranger danger: someone hurrying toward you within this range (m).
+Stranger danger speed,2.5,Stranger danger: walking faster than this (m/s) toward you counts as hurrying.
+Stranger danger rate,6,"Stranger danger: how quickly it reacts, per minute, while someone is rushing you."

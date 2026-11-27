@@ -194,7 +194,13 @@
     "separationDistance": 3,
     "separationRate": 3,
     "noBrakesChance": 0.5,
-    "noBrakesSeconds": 1.5
+    "noBrakesSeconds": 1.5,
+    "grudgeSeconds": 120,
+    "downhillSpeed": 0.8,
+    "downhillSnobRate": 1,
+    "strangerDangerRange": 6,
+    "strangerDangerSpeed": 2.5,
+    "strangerDangerRate": 6
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1646,6 +1652,72 @@
         "impatient": 2,
         "alert": 1,
         "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_nokota_reversedappleroan",
+      "breed": "Nokota",
+      "archetype": "The Stunt Driver",
+      "vibe": "The Flashy Daredevil (Saint Denis). Built for high-stakes getaways: a striking spotted coat and elite race stats, every narrow Saint Denis alley and Ambarino cliff trail a personal obstacle course, thrives on adrenaline, outruns lawmen by inches. A reckless show-off with zero self-preservation: corners too fast, tries to jump wagons it can't clear, offended if you slow it down on a steep downhill. Like every Nokota: weaves forests like a dirt bike, bonds with riders who give it freedom, a glass cannon that holds a grudge if you crash it into a rock.",
+      "leans": {
+        "courage": 1,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["Showboat", "DownhillSnob", "Grudge"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_nokota_blueroan",
+      "breed": "Nokota",
+      "archetype": "The Scarred Survivor",
+      "vibe": "The Street-Smart Rebel (wild in West Elizabeth and New Hanover; the Murfree Brood). Tougher than it looks and fiercely loyal once earned: survivor's grit, laser-focused galloping out of an ambush, every oatcake and brush stroke a luxury gift. Deeply suspicious of strangers and quick to bolt: an NPC walking fast toward you in town gets spun on and kicked into the mud before you've dismounted. Holds a grudge if you crash it.",
+      "leans": {
+        "courage": 1,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["StrangerDanger", "Vain", "Grudge"],
+      "lovesTreats": ["Oatcakes"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_nokota_whiteroan",
+      "breed": "Nokota",
+      "archetype": "The Wild Child",
+      "vibe": "The Spirited Free-Roamer (wild in West Elizabeth and New Hanover). Light on its hooves, endlessly energetic, happiest off the beaten path, glides over plains and riverbeds and turns a hunt into a high-speed chase. Hates rules, saddles and standing still: untied for ten seconds it wanders off to join a herd of deer, ignoring your whistle until it's ready. Holds a grudge if you crash it.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Wanderer"],
+      "signatures": ["Wanderlust", "SelectiveHearing", "Restless", "SaddleHater", "Grudge"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
         "fussy": 0
       }
     }

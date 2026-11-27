@@ -527,6 +527,13 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **No brakes** (Buckskin): stopping hard from a gallop (under walking pace within 1.5 s): 50% a sideways skid.
   - Reused: Snake drama (all), Hill sigh (baseline), Trail snob, Restless and Night owl (Black), Clumsy, Scatterbrain and Showboat (Silver Tail, Buckskin), Vain (Palomino Dapple). The Silver Tail loves sugar cubes.
   - Cut: swamps as an insult (no swamp check yet), the Black's bear-pelt tantrum (no pelt moment), the binoculars (Restless covers standing still), tripping over fences and splashing into rivers (no steering), trees and squirrels (Scatterbrain covers it).
+  - Prized (Navod, Nov 27): Black Standardbred (Rare).
+- **Nokota coats** (Navod, Nov 27, 2026): *The Stunt Driver* (Reverse Dapple Roan), *The Scarred Survivor* (Blue Roan) and *The Wild Child* (White Roan); the baseline's habits are on all three, which are the only Nokota coats. Three new signatures; DevTools trigger 60 checks the damage event:
+  - **Grudge** (all): hurt while you ride it (a crash into a rock, a fall, a bullet): snorts and stamps, and for 2 minutes your pats and brushing get nothing back. A treat forgives it.
+  - **Downhill snob** (Reverse Dapple): held to a walk going steeply downhill: an offended snort, 1/min.
+  - **Stranger danger** (Blue Roan): someone hurrying toward you within 6 m: it spins on them, agitated and glaring, never a real kick (kicking a townsperson is a crime).
+  - Reused: Showboat (Reverse Dapple), Vain (Blue Roan; it loves oatcakes), Wanderlust, Selective hearing, Restless and Saddle hater (White Roan).
+  - Cut: low health (that is the breed's stats), being slippery when spooked (its Nerves), cornering too fast and jumping wagons (no steering), joining a herd of deer (Wanderlust wanders; no herd to join).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

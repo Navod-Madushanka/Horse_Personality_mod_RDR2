@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(34, Catalog.CoatCount);
+            Assert.Equal(37, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -537,6 +537,45 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Call, S(With(Signature.SeparationAnxiety), away).Action);
             away.PlayerDistance = 1; away.PlayerNear = true;
             Assert.True(S(With(Signature.SeparationAnxiety), away).IsNone);
+        }
+            // ---- Nokota coats ----
+
+        [Fact]
+        public void NokotaCoatsLoadAndAllHoldGrudges()
+        {
+            foreach (string m in new[] { "reversedappleroan", "blueroan", "whiteroan" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_nokota_" + m, out Coat c));
+                Assert.Contains(Signature.Grudge, c.Signatures);
+            }
+            Catalog.TryGetCoat("a_c_horse_nokota_blueroan", out Coat survivor);
+            Assert.Contains("Oatcakes", survivor.LovesTreats);
+        }
+
+        [Fact]
+        public void GrudgeSulksAfterAHurtAndOnlyForGrudgeHorses()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Agitate, brain.OnHurt(1, With(Signature.Grudge), new CooldownBook(T, 0), 0).Action);
+            Assert.True(brain.OnHurt(1, With(), new CooldownBook(T, 0), 0).IsNone);
+            var care = new CareReactor(T, () => 0);
+            var warm = new Personality("Nokota", HorseOrigin.Stable, 1, HorseQuality.Good, new Traits(0, 0, 0, 2), new[] { Quirk.Nosy },
+                new NaturalStats(0, 0, 0, 0), BreakingDifficulty.Normal, false, "Test", new[] { Signature.Grudge });
+            Assert.Equal(BehaviorAction.None, care.React(warm, DemeanorTraits.None, CareKind.Pat, 1, 0, sulking: true).First);
+            Assert.NotEqual(BehaviorAction.None, care.React(warm, DemeanorTraits.None, CareKind.Pat, 1, 0, sulking: false).First);
+        }
+
+        [Fact]
+        public void DownhillSnobAndStrangerDanger()
+        {
+            var down = Riding(speed: 1.5); down.ClimbSpeed = -T.DownhillSpeed;
+            Assert.Equal(BehaviorAction.Snub, S(With(Signature.DownhillSnob), down).Action);
+            down.ClimbSpeed = T.DownhillSpeed; // uphill
+            Assert.True(S(With(Signature.DownhillSnob), down).IsNone);
+            var rush = Riding(); rush.RushingPerson = 14;
+            var d = S(With(Signature.StrangerDanger), rush);
+            Assert.Equal(BehaviorAction.SquareUp, d.Action);
+            Assert.Equal(14, d.Target);
         }
     }
 }

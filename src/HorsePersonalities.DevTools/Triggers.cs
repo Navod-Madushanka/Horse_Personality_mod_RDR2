@@ -393,6 +393,24 @@ namespace HorsePersonalities.DevTools
                     for (int i = 1; i <= 10; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"Sneaking {n}/10: {ctx.Game.IsPlayerSneaking}")); }
                     return "GET_PED_STEALTH_MOVEMENT once a second for 10 s (see the log)";
                 }, needsHorse: false));
+
+            // ---- Nokota coats (Nov 27, 2026): 60 ----
+            t.Add(new Trigger("damage.watch", "Horse damage watch (30 s)", "Grudge",
+                "Press, then ride the horse into a rock or tree, or take a small fall. Each hit should log one line.",
+                ctx =>
+                {
+                    int h = ctx.Horse, until = ctx.Now + 30000;
+                    void Watch()
+                    {
+                        if (ctx.Now >= until) { ctx.Log("Damage watch ended."); return; }
+                        foreach (GameEvent e in ctx.Game.ReadAiEvents())
+                            if (e.Hash == GameEvents.EntityDamaged.Hash && e.Data.Length >= 1 && (int)e.Data[0] == h)
+                                ctx.Log($"EVENT_ENTITY_DAMAGED on your horse (damager {(e.Data.Length > 1 ? e.Data[1] : 0)}, weapon 0x{(e.Data.Length > 2 ? e.Data[2] : 0):X8})");
+                        ctx.After(0, Watch);
+                    }
+                    Watch();
+                    return "Watching EVENT_ENTITY_DAMAGED on your horse for 30 s (see the log)";
+                }));
             return t;
         }
 

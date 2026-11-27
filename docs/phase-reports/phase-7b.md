@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (499 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (502 tests pass); not run in game yet.
 
 ## What changed
 
@@ -115,6 +115,24 @@ The Turkoman is Standard in this mod's stat tiers, so Snob's "lower tier" means 
 | No brakes | Gallop to under walking pace within 1.5 s: 50% a sideways skid |
 
 Cut: swamps (no swamp check yet), the Black's bear-pelt tantrum (no pelt moment), the binoculars (Restless covers standing still), fences and rivers (no steering), trees and squirrels (Scatterbrain).
+
+## Nokota coats (added Nov 27)
+
+All three Nokota coats have a design, so the baseline's Grudge is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Reverse Dapple Roan | The Stunt Driver | +1 / +1 / +1 / +1 | Head-tosser | Showboat, Downhill snob, Grudge |
+| Blue Roan | The Scarred Survivor | +1 / +1 / +1 / -1 | Nosy | Stranger danger, Vain, Grudge; loves oatcakes |
+| White Roan | The Wild Child | 0 / +1 / 0 / +1 | Wanderer | Wanderlust, Selective hearing, Restless, Saddle hater, Grudge |
+
+| Signature | How it plays | Needs in game |
+| --- | --- | --- |
+| Grudge | Hurt while you ride it: snorts and stamps, then 2 minutes of nothing back for pats and brushing; a treat forgives it | Trigger 60 (does the damage event fire on a crash?) |
+| Downhill snob | Held to a walk going steeply downhill: an offended snort, 1/min | - |
+| Stranger danger | Someone hurrying toward you within 6 m: spins on them, agitated and glaring. Never a real kick | - |
+
+Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and wagon jumping (no steering), joining a deer herd (Wanderlust wanders off).
 
 ## Testing it
 

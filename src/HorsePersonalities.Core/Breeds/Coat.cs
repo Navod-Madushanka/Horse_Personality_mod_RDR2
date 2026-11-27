@@ -54,6 +54,10 @@ namespace HorsePersonalities.Core.Breeds
         Spoiled,
         SeparationAnxiety,
         NoBrakes,
+        // Nokota coats (Nov 27, 2026)
+        Grudge,
+        DownhillSnob,
+        StrangerDanger,
     }
 
     /// <summary>
