@@ -811,6 +811,11 @@
   ],
   "prizedModels": [
     {
+      "model": "a_c_horse_americanstandardbred_black",
+      "why": "Rare",
+      "note": "The Midnight Legend: the only solid black you can tame, wild in Big Valley. Navod, Nov 27, 2026"
+    },
+    {
       "model": "a_c_horse_appaloosa_fewspotted_pc",
       "why": "Special",
       "note": "PC bonus coat"

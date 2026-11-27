@@ -17,6 +17,7 @@
 - **Turkoman coats** (Navod): the Elite Adrenaline Junkie baseline (four coats), the Aristocratic Assassin (Dark Bay), the Hollywood Action Star (Gold), the Stoic Ghost (Silver). New signatures Restless, Trail snob, War horse, Snob, Showboat, Must lead, Vain (11 new Behavior settings).
 - The Gold Turkoman is on the Prized tab as a community favorite (Navod): always good, never below its design, in line for the +2 long-use growth in Phase 8.
 - **American Standardbred coats** (Navod): the Thin-Skinned Sports Car baseline (Light Buckskin), the Midnight Legend (Black), the Golden Boy (Silver Tail Buckskin), the Teacher's Pet (Palomino Dapple), the Track Rookie (Buckskin). New signatures Racer, Spoiled, Separation anxiety, No brakes (8 new Behavior settings).
+- The Black American Standardbred is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

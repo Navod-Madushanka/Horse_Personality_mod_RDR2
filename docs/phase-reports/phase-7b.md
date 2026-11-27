@@ -102,7 +102,7 @@ The Turkoman is Standard in this mod's stat tiers, so Snob's "lower tier" means 
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
 | Light Buckskin | The Thin-Skinned Sports Car (baseline) | -1 / +2 / 0 / +1 | Head-tosser | Snake drama, Hill sigh |
-| Black | The Midnight Legend | 0 / +1 / +1 / 0 | Head-tosser | Trail snob, Restless, Night owl, Snake drama |
+| Black (prized: Rare) | The Midnight Legend | 0 / +1 / +1 / 0 | Head-tosser | Trail snob, Restless, Night owl, Snake drama |
 | Silver Tail Buckskin | The Golden Boy | 0 / +1 / 0 / +1 | Chatterbox | Racer, Spoiled, Showboat, Clumsy, Scatterbrain, Snake drama; loves sugar cubes |
 | Palomino Dapple | The Teacher's Pet | -2 / +2 / -2 / +2 | Shadow | Separation anxiety, Vain, Snake drama |
 | Buckskin | The Track Rookie | 0 / +1 / 0 / +1 | Head-tosser | No brakes, Scatterbrain, Clumsy, Snake drama |
@@ -125,4 +125,4 @@ Cut: swamps (no swamp check yet), the Black's bear-pelt tantrum (no pelt moment)
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian and the Tiger Striped Bay are prized (Rare) and the Silver Dapple Pinto and Gold Turkoman prized (community favorites).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto and Gold Turkoman prized (community favorites).
