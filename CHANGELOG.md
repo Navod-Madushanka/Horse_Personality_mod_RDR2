@@ -21,6 +21,7 @@
 - **Nokota coats** (Navod): the Stunt Driver (Reverse Dapple Roan), the Scarred Survivor (Blue Roan), the Wild Child (White Roan). New signatures Grudge, Downhill snob, Stranger danger (6 new Behavior settings); DevTools trigger 60 (damage watch).
 - The Reverse Dapple Roan Nokota is on the Prized tab as a community favorite (Navod): always good, never below its design, in line for the +2 long-use growth in Phase 8.
 - **Thoroughbred coats** (Navod): the High-Strung Drama Queen baseline (Black Chestnut), the Exotic Supermodel (Brindle), the Brooding Outlaw Prince (Reverse Dapple Black), the Untamed Rebel (Blood Bay), the Loyal Veteran (Dapple Grey). New signatures Needs soothing, Hill crawler, Water sigh, Apple beggar (8 new Behavior settings); DevTools trigger 61 (in water). Rachel (John's horse) is a story model and stays vanilla.
+- The Reverse Dapple Black Thoroughbred (Ultimate Edition) is on the Prized tab as Special (Navod): always good, never below its design.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

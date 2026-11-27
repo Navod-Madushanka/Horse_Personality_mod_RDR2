@@ -140,7 +140,7 @@ Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and
 | --- | --- | --- | --- | --- |
 | Black Chestnut | The High-Strung Drama Queen (baseline) | -1 / +2 / +1 / +1 | Head-tosser | Needs soothing, Clumsy |
 | Brindle | The Exotic Supermodel | -1 / +2 / +1 / 0 | Chatterbox | Snake drama, Mud tantrum, Vain, Needs soothing, Clumsy |
-| Reverse Dapple Black | The Brooding Outlaw Prince | +1 / 0 / +1 / 0 | Head-tosser | Snob, Guard dog, Town disdain, Night owl |
+| Reverse Dapple Black (prized: Special) | The Brooding Outlaw Prince | +1 / 0 / +1 / 0 | Head-tosser | Snob, Guard dog, Town disdain, Night owl |
 | Blood Bay | The Untamed Rebel | +2 / +1 / +2 / +1 | Head-tosser | No brakes, Needs soothing, Clumsy |
 | Dapple Grey | The Loyal Veteran | +1 / -1 / -1 / +2 | Shadow | Hill crawler, Hill sigh, Water sigh, Apple beggar; loves apples |
 
@@ -162,4 +162,4 @@ Rachel, John's Dapple Grey in the epilogue, is a story model (`a_c_horse_gang_jo
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred prized (Special).
