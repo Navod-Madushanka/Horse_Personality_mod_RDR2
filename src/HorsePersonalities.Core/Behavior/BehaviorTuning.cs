@@ -117,6 +117,19 @@ namespace HorsePersonalities.Core.Behavior
         public double ClumsyRate => _v["clumsyRate"];
         public double SnackMagnetRate => _v["snackMagnetRate"];
         public double SnackSeconds => _v["snackSeconds"];
+        public double ShortKingRange => _v["shortKingRange"];
+        public double ShortKingRate => _v["shortKingRate"];
+        public double SelectiveHearingChance => _v["selectiveHearingChance"];
+        public double SelectiveHearingSeconds => _v["selectiveHearingSeconds"];
+        public double SaddleHaterChance => _v["saddleHaterChance"];
+        public double BountyStomperRange => _v["bountyStomperRange"];
+        public double BountyStomperRate => _v["bountyStomperRate"];
+        public double GuardRange => _v["guardRange"];
+        public double GuardRate => _v["guardRate"];
+        public double UnhurriedRatio => _v["unhurriedRatio"];
+        public double DangerMemorySeconds => _v["dangerMemorySeconds"];
+        public double JealousRange => _v["jealousRange"];
+        public double JealousChance => _v["jealousChance"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -219,6 +232,19 @@ namespace HorsePersonalities.Core.Behavior
             ("clumsyRate", "Clumsy rate", 0.0, 20.0, false),
             ("snackMagnetRate", "Snack magnet rate", 0.0, 20.0, false),
             ("snackSeconds", "Snack seconds", 1.0, 60.0, false),
+            ("shortKingRange", "Short king range", 0.5, 100.0, false),
+            ("shortKingRate", "Short king rate", 0.0, 20.0, false),
+            ("selectiveHearingChance", "Selective hearing chance", 0.0, 1.0, false),
+            ("selectiveHearingSeconds", "Selective hearing seconds", 0.5, 60.0, false),
+            ("saddleHaterChance", "Saddle hater chance", 0.0, 1.0, false),
+            ("bountyStomperRange", "Bounty stomper range", 0.5, 50.0, false),
+            ("bountyStomperRate", "Bounty stomper rate", 0.0, 20.0, false),
+            ("guardRange", "Guard range", 0.5, 50.0, false),
+            ("guardRate", "Guard rate", 0.0, 20.0, false),
+            ("unhurriedRatio", "Unhurried ratio", 0.1, 3.0, false),
+            ("dangerMemorySeconds", "Danger memory seconds", 0.0, 3600.0, false),
+            ("jealousRange", "Jealous range", 1.0, 200.0, false),
+            ("jealousChance", "Jealous chance", 0.0, 1.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

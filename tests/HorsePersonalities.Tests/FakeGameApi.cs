@@ -67,6 +67,9 @@ namespace HorsePersonalities.Tests
         public readonly List<int> Unhitched = new List<int>();
         public void Unhitch(int horse) => Unhitched.Add(horse);
         public Vec3 GetVelocity(int entity) => new Vec3(0, 0, 0);
+        public bool IsHogtied(int ped) => false;
+        public bool IsPlayerSneaking { get; set; }
+        public bool IsWhistlePressed { get; set; }
         public void SetAttributePoints(int ped, PedAttribute attribute, int points)
         {
             var r = ReadAttribute(ped, attribute);

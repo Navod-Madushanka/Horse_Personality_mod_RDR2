@@ -63,6 +63,11 @@ namespace HorsePersonalities.Game
         private double _lastPlayerDistance = -1;
         private ScanResult _lastScan;
         private bool _wasAiming;
+        private int _lastMounted;
+        private double _lastDangerAt = double.NegativeInfinity;
+        private float _unhurriedRatio;
+        private bool _unhurriedSnorted;
+        private readonly HashSet<int> _silent = new HashSet<int>();
         private double _aimSeconds;
         private double _playerFiredAt = double.NegativeInfinity;
         private int _lazyHorse;
@@ -76,6 +81,7 @@ namespace HorsePersonalities.Game
             public bool OtherHorseNear;
             // Phase 7b
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
+            public int OtherHorse, HogtiedPerson, GuardTarget;
         }
 
         public BehaviorRunner(IGameApi game, BreedCatalog catalog, ModSettings settings, HorseRegistry registry, ILog log)
@@ -110,6 +116,7 @@ namespace HorsePersonalities.Game
                     _explosionThisWindow = true;
                     _explosionBy = e.Data.Length > 0 ? (int)e.Data[0] : 0;
                 }
+                else if (e.Hash == GameEvents.PedWhistle.Hash && _game.IsWhistlePressed) OnWhistle();
                 else if (e.Hash == GameEvents.InventoryItemRemoved.Hash && e.Data.Length >= 1)
                 {
                     _lastItemRemoved = unchecked((uint)e.Data[0]);
@@ -123,6 +130,30 @@ namespace HorsePersonalities.Game
                     if (_lastSpook.TryGetValue(horse, out double at) && _now - at <= CalmAfterSpookWindow) Care(horse, CareKind.Calm, 0);
                 }
             }
+        }
+
+        /// <summary>Selective hearing: you whistled for your last horse while it's off on its own.</summary>
+        private void OnWhistle()
+        {
+            int player = _game.PlayerPed;
+            if (_lastHold != null || _game.GetMount(player) != 0) return;
+            int horse = _game.GetLastMount(player);
+            if (!TryRecord(horse, out HorseRecord record, out _)) return;
+            Decision d = _signatures.OnWhistle(horse, record.Personality, false, _cooldowns, _now);
+            if (d.IsNone) return;
+            _log.Info(Log, $"{record.Id}: {d.Action} ({d.Cause})");
+            Play(horse, d.Action, 0);
+        }
+
+        /// <summary>Jealous: the saddle horse sees you with another horse.</summary>
+        private void CheckJealous(int other, string what)
+        {
+            int saddle = _game.GetSaddleHorse();
+            if (saddle == 0 || saddle == other || !_game.Exists(saddle) || !TryRecord(saddle, out HorseRecord record, out _)) return;
+            Decision d = _signatures.OnRival(saddle, record.Personality, _game.DistanceBetween(saddle, other), what, _cooldowns, _now);
+            if (d.IsNone) return;
+            _log.Info(Log, $"{record.Id}: {d.Action} ({d.Cause})");
+            Play(saddle, d.Action, other);
         }
 
         /// <summary>Phase 1: a pat, brush or feed sends Interaction_Begin, its own type, then Complete and Cancel together.</summary>
@@ -163,6 +194,7 @@ namespace HorsePersonalities.Game
         private void Care(int horse, CareKind kind, uint item)
         {
             if (_lastHold != null || !TryRecord(horse, out HorseRecord record, out HorseDescription d)) return;
+            if (kind != CareKind.Calm) CheckJealous(horse, kind == CareKind.Pat ? "patted" : kind == CareKind.Brush ? "brushed" : "fed");
             var (first, second, cause) = _care.React(record.Personality, DemeanorOf(record.Personality, d), kind, d.BondRank, item,
                 CoatOf(record.Personality, d), _catalog.TreatName(item));
             _log.Info(Log, $"{record.Id}: after {kind}: {(first == BehaviorAction.None ? "no reaction" : first + (second == BehaviorAction.None ? "" : " + " + second))} ({cause})");
@@ -188,6 +220,9 @@ namespace HorsePersonalities.Game
             int horse = mounted ? mount : _game.GetLastMount(player);
             _lazyHorse = 0;
             if (horse == 0 || !_game.Exists(horse) || _game.IsDead(horse)) return;
+            bool justMounted = mounted && horse != _lastMounted;
+            if (!mounted || horse != _lastMounted) _unhurriedSnorted = false;
+            _lastMounted = mounted ? horse : 0;
             double playerDistance = mounted ? 0 : _game.DistanceBetween(horse, player);
             bool near = !mounted && playerDistance <= NearDistance;
             if (!TryRecord(horse, out HorseRecord record, out HorseDescription d)) return;
@@ -223,6 +258,13 @@ namespace HorsePersonalities.Game
                 _lastHold = hold;
             }
             if (hold != null) { _push.Reset(); _wasAiming = false; _aimSeconds = 0; return; }
+            if (p.Has(Signature.SilentStealth)) _silent.Add(horse); else _silent.Remove(horse);
+            if (justMounted)
+            {
+                CheckJealous(horse, "rode");
+                Decision nip = _signatures.OnMounted(horse, p, _cooldowns, nowSeconds);
+                if (!nip.IsNone) { Play(horse, nip.Action, player); _log.Info(Log, $"{record.Id}: {nip.Action} ({nip.Cause})"); return; }
+            }
 
             double speed = _game.GetSpeed(horse);
             double still = speed < _t.StandingStillSpeed ? (_stillSeconds.TryGetValue(horse, out double st) ? st : 0) + dt : 0;
@@ -231,7 +273,9 @@ namespace HorsePersonalities.Game
             _lastPlayerDistance = mounted || far ? -1 : playerDistance;
             if (far)
             {
-                var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.BondRank };
+                if (p.Has(Signature.GuardDog) && _scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds);
+                var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.BondRank,
+                    GuardTarget = _lastScan.GuardTarget };
                 Decision gone = _signatures.Decide(horse, p, away, dt, _cooldowns, nowSeconds);
                 if (!gone.IsNone) { Play(horse, gone.Action, 0); _log.Info(Log, $"{record.Id}: {gone.Action} ({gone.Cause})"); }
                 return;
@@ -266,6 +310,7 @@ namespace HorsePersonalities.Game
                 if (_threats.IsNew(horse, rider ? "rider gunfire" : "gunfire", nowSeconds)) s.Threat = rider ? Threat.RiderGunfire : Threat.Gunfire;
             }
 
+            if (s.Threat != Threat.None || shot || explosion || _lastScan.EnemiesInCombat > 0) _lastDangerAt = nowSeconds;
             Decision decision = _brain.Decide(horse, p, s, dt, _cooldowns, nowSeconds);
 
             // ---- Phase 7: quirks and demeanor, when nothing bigger happened ----
@@ -294,7 +339,16 @@ namespace HorsePersonalities.Game
             _aimSeconds = aiming ? _aimSeconds + dt : 0;
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
-            if (cap.HasValue) { _lazyHorse = horse; _lazyRatio = (float)cap.Value; }
+            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt);
+            _lazyRatio = cap.HasValue ? (float)cap.Value : 0f;
+            _unhurriedRatio = hurry.HasValue ? (float)hurry.Value : 0f;
+            if (cap.HasValue || p.Has(Signature.Unhurried)) _lazyHorse = horse;
+            if (hurry.HasValue && !_unhurriedSnorted)
+            {
+                _unhurriedSnorted = true;
+                Vocal(horse, "SNORT");
+                _log.Info(Log, $"{record.Id}: Unhurried: no danger for {Math.Min(9999, nowSeconds - _lastDangerAt):0} s, so it trots");
+            }
             if (decision.IsNone && p.Signatures.Count > 0)
             {
                 bool town = p.Has(Signature.TownDisdain) && _game.IsInTown(horse);
@@ -317,6 +371,9 @@ namespace HorsePersonalities.Game
                     StrangerClose = _lastScan.StrangerClose,
                     CreepTarget = _lastScan.CreepTarget,
                     AimingSeconds = _aimSeconds,
+                    OtherHorse = _lastScan.OtherHorse,
+                    HogtiedPerson = _lastScan.HogtiedPerson,
+                    GuardTarget = _lastScan.GuardTarget,
                 };
                 decision = _signatures.Decide(horse, p, sig, dt, _cooldowns, nowSeconds);
             }
@@ -336,7 +393,8 @@ namespace HorsePersonalities.Game
             bool snakeDrama = p.Has(Signature.SnakeDrama);
             double snakeRange = _t.PredatorRange * (snakeDrama ? _t.SnakeRangeMultiplier : 1);
             float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), Math.Max(_t.NosyRange, _t.KickerWitnessRange));
-            if (p.Has(Signature.Prankster)) range = Math.Max(range, (float)_t.PranksterEnemyRange);
+            if (p.Has(Signature.Prankster) || p.Has(Signature.Unhurried)) range = Math.Max(range, (float)_t.PranksterEnemyRange);
+            if (p.Has(Signature.ShortKing)) range = Math.Max(range, (float)_t.ShortKingRange);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
             int humans = 0;
@@ -357,8 +415,11 @@ namespace HorsePersonalities.Game
                     if (r.TownPerson == 0 && dist <= _t.TownDisdainRange && p.Has(Signature.TownDisdain)) r.TownPerson = ped;
                     if (r.StrangerClose == 0 && dist <= _t.SoulStareRange && p.Has(Signature.SoulStare)) r.StrangerClose = ped;
                     if (r.CreepTarget == 0 && dist <= _t.CreeperRange && p.Has(Signature.CampCreeper)) r.CreepTarget = ped;
-                    if (dist <= _t.PranksterEnemyRange && p.Has(Signature.Prankster) && _game.IsPedInCombatWith(ped, player)) r.EnemiesInCombat++;
+                    if (dist <= _t.PranksterEnemyRange && (p.Has(Signature.Prankster) || p.Has(Signature.Unhurried)) && _game.IsPedInCombatWith(ped, player)) r.EnemiesInCombat++;
+                    if (r.HogtiedPerson == 0 && dist <= _t.BountyStomperRange && p.Has(Signature.BountyStomper) && _game.IsHogtied(ped)) r.HogtiedPerson = ped;
+                    if (r.GuardTarget == 0 && dist <= _t.GuardRange && p.Has(Signature.GuardDog)) r.GuardTarget = ped;
                 }
+                else if (r.OtherHorse == 0 && p.Has(Signature.ShortKing) && dist <= _t.ShortKingRange && _catalog.IsKnownModel(model)) r.OtherHorse = ped;
                 if (!human && _catalog.IsKnownModel(model) && dist <= _t.NosyRange) r.OtherHorseNear = true;
                 if (dist <= _t.NosyRange && r.PasserBy == 0 && (human || _catalog.IsKnownModel(model))) r.PasserBy = ped;
                 if (!human) continue;
@@ -386,17 +447,17 @@ namespace HorsePersonalities.Game
             int player = _game.PlayerPed;
             switch (action)
             {
-                case BehaviorAction.Snort: _game.PlayVocalization(horse, "SNORT"); break;
-                case BehaviorAction.Call: _game.PlayVocalization(horse, "CALL"); break;
-                case BehaviorAction.Content: _game.PlayVocalization(horse, "CONTENT"); break;
+                case BehaviorAction.Snort: Vocal(horse, "SNORT"); break;
+                case BehaviorAction.Call: Vocal(horse, "CALL"); break;
+                case BehaviorAction.Content: Vocal(horse, "CONTENT"); break;
                 case BehaviorAction.LookAt: _game.LookAtEntity(horse, target, 3000); break;
                 case BehaviorAction.LookAtThreat:
                     _game.LookAtEntity(horse, target, 3000);
-                    _game.PlayVocalization(horse, "AGITATED");
+                    Vocal(horse, "AGITATED");
                     break;
                 case BehaviorAction.Agitate:
                     _game.HorseAgitate(horse, false);
-                    _game.PlayVocalization(horse, "SNORT");
+                    Vocal(horse, "SNORT");
                     break;
                 case BehaviorAction.Rear: _game.HorseAction(horse, 1); break;
                 case BehaviorAction.QuickStop: _game.HorseAction(horse, 3); break;
@@ -420,10 +481,10 @@ namespace HorsePersonalities.Game
                     break;
                 // ---- Phase 7b ----
                 case BehaviorAction.Snub:
-                    _game.PlayVocalization(horse, "SNORT");
+                    Vocal(horse, "SNORT");
                     if (target != 0 && target != player) _game.LookAtEntity(horse, target, 3000);
                     break;
-                case BehaviorAction.Sigh: _game.PlayVocalization(horse, SighSound); break;
+                case BehaviorAction.Sigh: Vocal(horse, SighSound); break;
                 case BehaviorAction.Stare: _game.LookAtEntity(horse, target, (int)(_t.SoulStareSeconds * 1000)); break;
                 case BehaviorAction.Brawl:
                     _game.Combat(horse, target);
@@ -450,6 +511,24 @@ namespace HorsePersonalities.Game
                     _game.HorseAction(horse, 3); // quick stop
                     Schedule(1.0, "snack", () => _game.StartScenario(horse, "WORLD_ANIMAL_HORSE_GRAZING", (int)(_t.SnackSeconds * 1000), "WORLD_ANIMAL_HORSE_GRAZING"));
                     break;
+                case BehaviorAction.SquareUp:
+                    _game.HorseAgitate(horse, false);
+                    Vocal(horse, "SNORT");
+                    if (target != 0) _game.LookAtEntity(horse, target, 4000);
+                    break;
+                case BehaviorAction.JealousCall:
+                    Vocal(horse, "CALL");
+                    _game.HorseAgitate(horse, false);
+                    if (target != 0) _game.LookAtEntity(horse, target, 4000);
+                    break;
+                case BehaviorAction.Ignore:
+                    // Trigger 57: after the game starts its come-to-you, cancel it and nose the ground.
+                    Schedule(1.5, "ignore whistle", () =>
+                    {
+                        _game.ClearTasks(horse);
+                        _game.StartScenario(horse, "WORLD_ANIMAL_HORSE_GRAZING", (int)(_t.SelectiveHearingSeconds * 1000), "WORLD_ANIMAL_HORSE_GRAZING");
+                    });
+                    break;
                 case BehaviorAction.Wander:
                     // Phase 1 trigger 41: wander, then graze with the grazing animation named.
                     _game.WanderNearby(horse, 15f);
@@ -465,8 +544,16 @@ namespace HorsePersonalities.Game
         /// <summary>Every frame: Lazy pace caps the horse's pace while you aren't spurring (the cap lasts one frame).</summary>
         public void EveryFrame(int mount)
         {
-            if (_lazyHorse == 0 || mount != _lazyHorse || _lastHold != null || _game.IsSprintPressed) return;
-            _game.SetMaxMoveBlendRatio(_lazyHorse, _lazyRatio);
+            if (_lazyHorse == 0 || mount != _lazyHorse || _lastHold != null) return;
+            float ratio = _game.IsSprintPressed ? _unhurriedRatio : _lazyRatio; // Unhurried caps the spur; Lazy pace the rest
+            if (ratio > 0) _game.SetMaxMoveBlendRatio(_lazyHorse, ratio);
+        }
+
+        /// <summary>A sound from the horse, unless it is a Silent stealth horse and you are sneaking.</summary>
+        private void Vocal(int horse, string sound)
+        {
+            if (_silent.Contains(horse) && _game.IsPlayerSneaking) return;
+            _game.PlayVocalization(horse, sound);
         }
 
         private void Schedule(double inSeconds, string what, Action run) => _scheduled.Add((_now + inSeconds, what, run));

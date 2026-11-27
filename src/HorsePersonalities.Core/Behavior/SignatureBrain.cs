@@ -35,6 +35,12 @@ namespace HorsePersonalities.Core.Behavior
         public int CreepTarget;
         /// <summary>How long the player has aimed without a break (0 when not aiming).</summary>
         public double AimingSeconds;
+        /// <summary>Another horse within Short king range (0 for none).</summary>
+        public int OtherHorse;
+        /// <summary>A hogtied person within Bounty stomper range (0 for none).</summary>
+        public int HogtiedPerson;
+        /// <summary>A stranger within Guard range of the horse (0 for none).</summary>
+        public int GuardTarget;
     }
 
     /// <summary>
@@ -94,7 +100,17 @@ namespace HorsePersonalities.Core.Behavior
                 _roamedThisStop.Add(horse);
                 return Use(horse, BehaviorAction.Roam, $"Wanderlust: untied {s.StandingStillSeconds:0} s with you {s.PlayerDistance:0} m away, off to see the next hill", cooldowns, now);
             }
-            if (far) return Decision.None; // only the two habits above work with you far away
+            if (p.Has(Signature.GuardDog) && !s.Mounted && s.GuardTarget != 0 && Ready(horse, cooldowns, now) && dt > 0)
+            {
+                double roll = _random(), chance = 1 - Math.Exp(-_t.GuardRate * dt / 60.0);
+                if (roll < chance)
+                {
+                    Decision g = Use(horse, BehaviorAction.SquareUp, $"Guard dog: a stranger at your saddlebags: {F3(_t.GuardRate)}/min", cooldowns, now);
+                    g.Target = s.GuardTarget;
+                    return g;
+                }
+            }
+            if (far) return Decision.None; // only the habits above work with you far away
             if (p.Has(Signature.BoredBuck) && s.Mounted && s.StandingStillSeconds > 0 && s.AimingSeconds >= _t.BoredAimSeconds
                 && !_boredThisAim.Contains(horse) && Ready(horse, cooldowns, now))
             {
@@ -121,6 +137,10 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.SnackStop, _t.SnackMagnetRate, "Snack magnet: spotted something tasty", 0));
             if (p.Has(Signature.Clumsy) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.SpeedMs < _t.GallopSpeed)
                 candidates.Add((BehaviorAction.Skid, _t.ClumsyRate, "Clumsy: tripped over its own hooves", 0));
+            if (p.Has(Signature.ShortKing) && s.OtherHorse != 0)
+                candidates.Add((BehaviorAction.SquareUp, _t.ShortKingRate, "Short king: picking a fight with a bigger horse", s.OtherHorse));
+            if (p.Has(Signature.BountyStomper) && s.HogtiedPerson != 0)
+                candidates.Add((BehaviorAction.SquareUp, _t.BountyStomperRate, "Bounty stomper: stamping at the hogtied bounty", s.HogtiedPerson));
             if (p.Has(Signature.MudTantrum) && s.DirtRank >= _t.FussyDirtRank)
                 candidates.Add((BehaviorAction.Agitate, _t.FussyRate, $"Mud tantrum: dirt rank {s.DirtRank}", 0));
             if (p.Has(Signature.TownDisdain) && s.InTown && s.TownPerson != 0)
@@ -151,7 +171,41 @@ namespace HorsePersonalities.Core.Behavior
         }
 
         /// <summary>Habits that need the horse watched with you far away (the runner otherwise stops at 15 m).</summary>
-        public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust));
+        public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust) || p.Has(Signature.GuardDog));
+
+        /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
+        public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>
+            p != null && p.Has(Signature.Unhurried) && mounted && spurring && secondsSinceDanger > _t.DangerMemorySeconds ? _t.UnhurriedRatio : (double?)null;
+
+        /// <summary>Saddle hater, as you get on. None when it doesn't happen.</summary>
+        public Decision OnMounted(int horse, Personality p, CooldownBook cd, double now)
+        {
+            if (p == null || !p.Has(Signature.SaddleHater) || !Ready(horse, cd, now)) return Decision.None;
+            double roll = _random();
+            return roll < _t.SaddleHaterChance
+                ? Use(horse, BehaviorAction.Agitate, $"Saddle hater: nips at you as you get on: roll {F3(roll)} vs {F3(_t.SaddleHaterChance)}", cd, now)
+                : Decision.None;
+        }
+
+        /// <summary>Selective hearing, when you whistle and it's not under you. None: it comes as usual.</summary>
+        public Decision OnWhistle(int horse, Personality p, bool mounted, CooldownBook cd, double now)
+        {
+            if (p == null || mounted || !p.Has(Signature.SelectiveHearing) || !Ready(horse, cd, now)) return Decision.None;
+            double roll = _random();
+            return roll < _t.SelectiveHearingChance
+                ? Use(horse, BehaviorAction.Ignore, $"Selective hearing: busy with a weird bush: roll {F3(roll)} vs {F3(_t.SelectiveHearingChance)}", cd, now)
+                : Decision.None;
+        }
+
+        /// <summary>Jealous: you're giving attention to another horse near it. None when it lets it go.</summary>
+        public Decision OnRival(int horse, Personality p, double distance, string what, CooldownBook cd, double now)
+        {
+            if (p == null || !p.Has(Signature.Jealous) || distance > _t.JealousRange || !Ready(horse, cd, now)) return Decision.None;
+            double roll = _random();
+            return roll < _t.JealousChance
+                ? Use(horse, BehaviorAction.JealousCall, $"Jealous: you {what} another horse {distance:0} m away: roll {F3(roll)} vs {F3(_t.JealousChance)}", cd, now)
+                : Decision.None;
+        }
 
         /// <summary>Dusk and night: from Dusk starts hour until Night ends hour.</summary>
         public bool IsDusk(int hour) =>

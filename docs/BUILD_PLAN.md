@@ -496,6 +496,18 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Clumsy** (Amber Champagne): a trip (skid) now and then at a trot or canter, 0.3/min.
   - **Snack magnet** (Amber Champagne): at a walk it stops dead and grazes a few seconds, 0.3/min (needs trigger 46).
   - Cut: cornering like a wagon and knocking over fences (no script control over handling or jumping), nudging you while you loot (no nudge animation; its Shadow quirk keeps it close instead). Endurance is the breed's own stamina.
+  - Prized (Navod, Nov 27): Silver Dapple Pinto (community favorite), White Arabian (Rare).
+- **Mustang coats** (Navod, Nov 27, 2026): a baseline *Short King* for the five coats without a design, *The Scarred Mercenary* (Tiger Striped Bay), *The Stoic Bodyguard* (Grullo Dun) and *The Scrappy Underdog* (Wild Bay). Eight new signatures; whistle, hogtied and sneaking detection need DevTools triggers 56-59:
+  - **Short king** (baseline, Tiger, Grullo): squares up to another horse close by (agitated, glaring at it), 0.5/min. No real fight: a script-started fight could hurt an NPC's horse and turn its rider hostile.
+  - **Selective hearing** (baseline, Tiger, Wild Bay): you whistle while it is off on its own: 30% it ignores you for 6 s, nosing at the ground, before it comes. Needs trigger 56-57 (whistle detection, cancelling the come-to-you).
+  - **Saddle hater** (Tiger): 40% it nips and tosses its head as you get on.
+  - **Bounty stomper** (Tiger): stamps and glares at a hogtied person within 3 m, 1/min. It never actually tramples: that would kill your bounties. Trigger 58.
+  - **Guard dog** (Grullo): left alone, stomps at strangers within 3 m (your saddlebags), 2/min, watched at any distance.
+  - **Silent stealth** (Grullo): while you sneak, none of the mod's sounds play from it. Trigger 59.
+  - **Unhurried** (Grullo): spurring with no danger in the last 60 s (no threat, gunfire or fight) caps it at a trot, with a snort the first time.
+  - **Jealous** (Wild Bay): you pat, brush or feed another horse, or ride one, within 20 m of it: it calls and stamps.
+  - Reused: Wolf brawler now covers bears too (it always did: every predator); Clumsy for the Wild Bay's zero spatial awareness.
+  - Cut: refusing your path for its own shortcut, charging through brush and taking cliffs like stairs (no script control over steering or terrain), getting stuck between trees and walking into campfires (no control; Clumsy stands in), nipping as you tighten the girth (no girth moment; Saddle hater plays on mounting).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

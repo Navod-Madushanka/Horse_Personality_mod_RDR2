@@ -337,6 +337,62 @@ namespace HorsePersonalities.DevTools
                     for (int i = 1; i <= 10; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"Climb {n}/10: up {ctx.Game.GetVelocity(h).Z:0.00} m/s, speed {ctx.Game.GetSpeed(h):0.0} m/s")); }
                     return "GET_ENTITY_VELOCITY once a second for 10 s (see the log)";
                 }));
+
+            // ---- Mustang coats (Nov 27, 2026): 56-59 ----
+            t.Add(new Trigger("whistle.watch", "Whistle detection (20 s)", "Selective hearing",
+                "Press, then whistle a few times (on foot and on horseback). Each whistle should log one line with True for the button.",
+                ctx =>
+                {
+                    int until = ctx.Now + 20000;
+                    void Watch()
+                    {
+                        if (ctx.Now >= until) { ctx.Log("Whistle watch ended."); return; }
+                        foreach (GameEvent e in ctx.Game.ReadAiEvents())
+                            if (e.Hash == GameEvents.PedWhistle.Hash) ctx.Log($"EVENT_PED_WHISTLE; whistle button held: {ctx.Game.IsWhistlePressed}");
+                        ctx.After(0, Watch);
+                    }
+                    Watch();
+                    return "Watching for EVENT_PED_WHISTLE for 20 s (see the log)";
+                }, needsHorse: false));
+            t.Add(new Trigger("whistle.ignore", "Ignore the next whistle (20 s)", "Selective hearing",
+                "Get off, walk 30 m away, press, then whistle. Does the horse start to come, then stop and nose the ground for 6 s? Whistle again: does it come?",
+                ctx =>
+                {
+                    int h = ctx.Horse, until = ctx.Now + 20000;
+                    void Watch()
+                    {
+                        if (ctx.Now >= until) { ctx.Log("No whistle heard in 20 s."); return; }
+                        foreach (GameEvent e in ctx.Game.ReadAiEvents())
+                            if (e.Hash == GameEvents.PedWhistle.Hash)
+                            {
+                                ctx.After(1500, () => { ctx.Game.ClearTasks(h); ctx.Game.StartScenario(h, "WORLD_ANIMAL_HORSE_GRAZING", 6000, "WORLD_ANIMAL_HORSE_GRAZING"); ctx.Log("Whistle ignored: tasks cleared, grazing 6 s."); });
+                                return;
+                            }
+                        ctx.After(0, Watch);
+                    }
+                    Watch();
+                    return "Waiting for your whistle (20 s)";
+                }));
+            t.Add(new Trigger("hogtied.check", "Hogtied people near me (10 m)", "Bounty stomper",
+                "Hogtie someone, stand next to them, press. Should count 1; 0 when nobody is tied up.",
+                ctx =>
+                {
+                    int player = ctx.Game.PlayerPed, n = 0, near = 0;
+                    foreach (int ped in ctx.Game.PedsNear(player, 10f))
+                    {
+                        if (ped == player || !ctx.Game.IsHuman(ped)) continue;
+                        near++;
+                        if (ctx.Game.IsHogtied(ped)) n++;
+                    }
+                    return $"IS_PED_HOGTIED: {n} of {near} people within 10 m are tied up";
+                }, needsHorse: false));
+            t.Add(new Trigger("sneak.check", "Am I sneaking? (10 s readout)", "Silent stealth",
+                "Press, then crouch-walk (sneak) for a few seconds and stand up again. The log should flip to True while sneaking.",
+                ctx =>
+                {
+                    for (int i = 1; i <= 10; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"Sneaking {n}/10: {ctx.Game.IsPlayerSneaking}")); }
+                    return "GET_PED_STEALTH_MOVEMENT once a second for 10 s (see the log)";
+                }, needsHorse: false));
             return t;
         }
 

@@ -162,7 +162,20 @@
     "boredBuckChance": 0.3,
     "clumsyRate": 0.3,
     "snackMagnetRate": 0.3,
-    "snackSeconds": 5
+    "snackSeconds": 5,
+    "shortKingRange": 8,
+    "shortKingRate": 0.5,
+    "selectiveHearingChance": 0.3,
+    "selectiveHearingSeconds": 6,
+    "saddleHaterChance": 0.4,
+    "bountyStomperRange": 3,
+    "bountyStomperRate": 1,
+    "guardRange": 3,
+    "guardRate": 2,
+    "unhurriedRatio": 2,
+    "dangerMemorySeconds": 60,
+    "jealousRange": 20,
+    "jealousChance": 0.8
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1158,6 +1171,182 @@
       "demeanorTraits": {
         "impatient": 0,
         "alert": 0,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_blackovero",
+      "breed": "Mustang",
+      "archetype": "The Short King (Mustang baseline)",
+      "vibe": "Practically bulletproof nerves and endless grit: doesn't flinch when bullets fly, charges through brush, takes rocky cliffs like a staircase, bonds deeply with riders who treat it as an equal. Aggressively stubborn with short-king syndrome: picks fights with horses twice its size, ignores your whistle when a weird bush needs investigating.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_buckskin",
+      "breed": "Mustang",
+      "archetype": "The Short King (Mustang baseline)",
+      "vibe": "Practically bulletproof nerves and endless grit: doesn't flinch when bullets fly, charges through brush, takes rocky cliffs like a staircase, bonds deeply with riders who treat it as an equal. Aggressively stubborn with short-king syndrome: picks fights with horses twice its size, ignores your whistle when a weird bush needs investigating.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_chestnuttovero",
+      "breed": "Mustang",
+      "archetype": "The Short King (Mustang baseline)",
+      "vibe": "Practically bulletproof nerves and endless grit: doesn't flinch when bullets fly, charges through brush, takes rocky cliffs like a staircase, bonds deeply with riders who treat it as an equal. Aggressively stubborn with short-king syndrome: picks fights with horses twice its size, ignores your whistle when a weird bush needs investigating.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_goldendun",
+      "breed": "Mustang",
+      "archetype": "The Short King (Mustang baseline)",
+      "vibe": "Practically bulletproof nerves and endless grit: doesn't flinch when bullets fly, charges through brush, takes rocky cliffs like a staircase, bonds deeply with riders who treat it as an equal. Aggressively stubborn with short-king syndrome: picks fights with horses twice its size, ignores your whistle when a weird bush needs investigating.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_reddunovero",
+      "breed": "Mustang",
+      "archetype": "The Short King (Mustang baseline)",
+      "vibe": "Practically bulletproof nerves and endless grit: doesn't flinch when bullets fly, charges through brush, takes rocky cliffs like a staircase, bonds deeply with riders who treat it as an equal. Aggressively stubborn with short-king syndrome: picks fights with horses twice its size, ignores your whistle when a weird bush needs investigating.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_tigerstripedbay",
+      "breed": "Mustang",
+      "archetype": "The Scarred Mercenary",
+      "vibe": "The Desert Outlaw (Rio Bravo). Undisputed boss of the wild herds: survived the heat, rattlesnakes and cougars of New Austin, fearless to the point of recklessness, wants to throw hooves with a grizzly. Slightly feral and perpetually grumpy: hates saddles, nips your fingers at the girth, tries to trample bounty hunters you've already tied up.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 2,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["WolfBrawler", "SaddleHater", "BountyStomper", "ShortKing", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_grullodun",
+      "breed": "Mustang",
+      "archetype": "The Stoic Bodyguard",
+      "vibe": "The Blue-Collar Bouncer (Heartlands). Steady, watchful, fiercely protective: guards your saddlebags while you're in the saloon, dead silent when you sneak up on an O'Driscoll camp. Moves at its own pace and won't be rushed without real danger: sprint down a normal road for fun and it side-eyes you and trots at half speed.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["GuardDog", "SilentStealth", "Unhurried", "ShortKing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_mustang_wildbay",
+      "breed": "Mustang",
+      "archetype": "The Scrappy Underdog",
+      "vibe": "The Loyal Sidekick (Heartlands). All heart, zero ego: easygoing, adaptable, happy to be part of the gang for any terrible plan. Zero spatial awareness and terrible impulse control: stuck between trees, walks into campfires, unreasonably jealous if you look at another horse.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow", "Chatterbox"],
+      "signatures": ["Clumsy", "Jealous", "SelectiveHearing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
         "affectionate": 2,
         "fussy": 0
       }

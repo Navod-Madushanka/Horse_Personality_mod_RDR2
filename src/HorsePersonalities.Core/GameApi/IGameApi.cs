@@ -126,6 +126,12 @@ namespace HorsePersonalities.Core.GameApi
         void Unhitch(int horse);
         /// <summary>GET_ENTITY_VELOCITY(entity, 0).</summary>
         Vec3 GetVelocity(int entity);
+        /// <summary>IS_PED_HOGTIED (Bounty stomper, trigger 58).</summary>
+        bool IsHogtied(int ped);
+        /// <summary>GET_PED_STEALTH_MOVEMENT on the player: sneaking (Silent stealth, trigger 59).</summary>
+        bool IsPlayerSneaking { get; }
+        /// <summary>IS_CONTROL_PRESSED for INPUT_WHISTLE or INPUT_WHISTLE_HORSEBACK (Selective hearing, trigger 56).</summary>
+        bool IsWhistlePressed { get; }
 
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);

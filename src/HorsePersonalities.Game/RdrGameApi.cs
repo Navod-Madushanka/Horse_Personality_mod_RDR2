@@ -162,6 +162,10 @@ namespace HorsePersonalities.Game
         public bool IsPedInCombatWith(int ped, int target) => CallBool(Natives.IS_PED_IN_COMBAT, ped, target);
         public void SetMaxMoveBlendRatio(int ped, float ratio) => Function.Call(Natives.SET_PED_MAX_MOVE_BLEND_RATIO, ped, ratio);
         public void Unhitch(int horse) => Function.Call(Natives.UNHITCH_HORSE, horse);
+        public bool IsHogtied(int ped) => CallBool(Natives.IS_PED_HOGTIED, ped);
+        public bool IsPlayerSneaking => CallBool(Natives.GET_PED_STEALTH_MOVEMENT, PlayerPed);
+        public bool IsWhistlePressed =>
+            CallBool(Natives.IS_CONTROL_PRESSED, 0, Natives.INPUT_WHISTLE) || CallBool(Natives.IS_CONTROL_PRESSED, 0, Natives.INPUT_WHISTLE_HORSEBACK);
 
         public Vec3 GetVelocity(int entity)
         {

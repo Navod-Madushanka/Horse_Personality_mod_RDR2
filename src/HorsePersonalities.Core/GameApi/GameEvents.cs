@@ -38,6 +38,8 @@ namespace HorsePersonalities.Core.GameApi
         public static readonly GameEventType EntityDamaged = new GameEventType("EVENT_ENTITY_DAMAGED", 9, "damaged entity, damager, weapon hash, ...");
         public static readonly GameEventType LootComplete = new GameEventType("EVENT_LOOT_COMPLETE", 3, "looter, looted entity, success");
         public static readonly GameEventType EntityExplosion = new GameEventType("EVENT_ENTITY_EXPLOSION", 6, "ped who caused it, ?, weapon hash, ...");
+        /// <summary>Someone whistled (Phase 7b, Selective hearing). Fields unknown: the runner pairs it with the whistle button.</summary>
+        public static readonly GameEventType PedWhistle = new GameEventType("EVENT_PED_WHISTLE", 0, "");
         public static readonly GameEventType InventoryItemRemoved = new GameEventType("EVENT_INVENTORY_ITEM_REMOVED", 1, "inventory item hash");
 
         public static readonly IReadOnlyList<GameEventType> All = new[]

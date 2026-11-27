@@ -134,6 +134,12 @@ namespace HorsePersonalities.Game
         public const ulong UNHITCH_HORSE = 0x0348469DAA17576C;
         /// <summary>ENTITY::GET_ENTITY_VELOCITY(int entity, int p1) -> Vector3</summary>
         public const ulong GET_ENTITY_VELOCITY = 0x4805D2B1D8CF94A9;
+        /// <summary>PED::IS_PED_HOGTIED(int ped) -> bool</summary>
+        public const ulong IS_PED_HOGTIED = 0x3AA24CCC0D451379;
+        /// <summary>PED::GET_PED_STEALTH_MOVEMENT(int ped) -> bool</summary>
+        public const ulong GET_PED_STEALTH_MOVEMENT = 0x7C2AC9CA66575FBF;
+        /// <summary>INPUT_WHISTLE and INPUT_WHISTLE_HORSEBACK, from the hook's eInputType.</summary>
+        public const uint INPUT_WHISTLE = 0x24978A28, INPUT_WHISTLE_HORSEBACK = 0xE7EB9185;
         /// <summary>SCRIPTS::GET_NUMBER_OF_EVENTS(int eventGroup) -> int</summary>
         public const ulong GET_NUMBER_OF_EVENTS = 0x5CE8DE5909565748;
         /// <summary>SCRIPTS::GET_EVENT_AT_INDEX(int eventGroup, int eventIndex) -> uint</summary>

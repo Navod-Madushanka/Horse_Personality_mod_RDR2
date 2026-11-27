@@ -98,3 +98,16 @@ Bored buck chance,0.3,Bored buck: chance per aim. Bond 1-2 throws you; bond 3-4 
 Clumsy rate,0.3,Clumsy: trips (skids) per minute at a trot or canter.
 Snack magnet rate,0.3,Snack magnet: stops to graze per minute at a walk.
 Snack seconds,5,Snack magnet: how long it grazes before you can move on.
+Short king range,8,Short king: another horse within this range (m) gets squared up to.
+Short king rate,0.5,Short king: stand-offs per minute while another horse is close.
+Selective hearing chance,0.3,Selective hearing: chance it ignores your whistle at first.
+Selective hearing seconds,6,Selective hearing: how long it ignores you before it comes.
+Saddle hater chance,0.4,Saddle hater: chance it nips and tosses its head as you get on.
+Bounty stomper range,3,Bounty stomper: a hogtied person within this range (m) gets stamped at.
+Bounty stomper rate,1,Bounty stomper: stamps per minute (never a real trample).
+Guard range,3,Guard dog: strangers within this range (m) of the horse get stomped at.
+Guard rate,2,Guard dog: stomps per minute while a stranger is close and you're off it.
+Unhurried ratio,2,Unhurried: the pace cap when you spur without danger (move blend ratio: 2 trot).
+Danger memory seconds,60,"Unhurried: seconds after a threat, gunfire or fight that it will still sprint."
+Jealous range,20,Jealous: it notices you with another horse within this range (m).
+Jealous chance,0.8,"Jealous: chance it calls and stamps when you pat, brush, feed or ride another horse."

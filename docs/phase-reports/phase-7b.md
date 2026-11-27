@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (484 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (490 tests pass); not run in game yet.
 
 ## What changed
 
@@ -54,9 +54,31 @@ Cut: cornering like a wagon, knocking over fences (no script control), nudging y
 
 **Fix found while building:** the runner stopped looking at a horse more than 15 m from you, so Escape artist (20 m) could never have fired. Horses with Escape artist or Wanderlust are now watched at any distance, for those two habits only.
 
+## Mustang coats (added Nov 27)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirks | Signatures |
+| --- | --- | --- | --- | --- |
+| Black Overo, Buckskin, Chestnut Tovero, Golden Dun, Red Dun Overo | The Short King (baseline) | +2 / -2 / +1 / 0 | Nosy | Short king, Selective hearing |
+| Tiger Striped Bay | The Scarred Mercenary | +2 / -2 / +2 / -1 | Kicker | Wolf brawler, Saddle hater, Bounty stomper, Short king, Selective hearing |
+| Grullo Dun | The Stoic Bodyguard | +1 / -2 / 0 / +1 | Nosy | Guard dog, Silent stealth, Unhurried, Short king |
+| Wild Bay | The Scrappy Underdog | +1 / 0 / -1 / +2 | Shadow, Chatterbox | Clumsy, Jealous, Selective hearing |
+
+| Signature | How it plays | Needs in game |
+| --- | --- | --- |
+| Short king | Squares up to a horse within 8 m (agitated, glaring), 0.5/min. Never a real fight | - |
+| Selective hearing | Your whistle, with it off on its own: 30% it cancels its come-to-you and noses the ground 6 s | Triggers 56-57 |
+| Saddle hater | 40% nip and head toss as you get on | - |
+| Bounty stomper | Stamps and glares at a hogtied person within 3 m, 1/min. Never tramples (your bounty would die) | Trigger 58 |
+| Guard dog | Left alone, at any distance: stomps at a stranger within 3 m, 2/min | - |
+| Silent stealth | No sounds from the mod while you sneak | Trigger 59 |
+| Unhurried | Spurring with no danger in 60 s: capped at a trot, one snort | Trigger 45 |
+| Jealous | You pat, brush, feed or ride another horse within 20 m of it: call and stamp, 80% | - |
+
+Cut: shortcuts, charging brush, cliffs like stairs (no steering or terrain control); stuck between trees and walking into campfires (Clumsy stands in); the girth nip (Saddle hater plays on mounting).
+
 ## Testing it
 
-- **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian and Fox Trotter coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
+- **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
 - **DevTools triggers 43-55** check each native the signatures rely on. See the home test doc, Stage 12.
 
 ## Open

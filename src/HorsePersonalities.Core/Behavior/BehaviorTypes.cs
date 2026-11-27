@@ -18,6 +18,8 @@ namespace HorsePersonalities.Core.Behavior
         Unhitch, Graze, Brawl, Creep, Stare, Sigh, Snub,
         // Fox Trotter coats: Roam (wander freely, trigger 40), SnackStop (quick stop, then graze ridden, trigger 46).
         Roam, SnackStop,
+        // Mustang coats: SquareUp (agitate + glare at a horse or person), Ignore (clear the come-to-you, nose the ground), Jealous (call + stamp).
+        SquareUp, Ignore, JealousCall,
     }
 
     [Flags]

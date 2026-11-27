@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(14, Catalog.CoatCount);
+            Assert.Equal(22, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -374,6 +374,65 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Skid, S(With(Signature.Clumsy), Riding(speed: (T.WalkSpeed + T.GallopSpeed) / 2)).Action);
             Assert.True(S(With(Signature.Clumsy), Riding(speed: T.GallopSpeed + 1)).IsNone);
             Assert.Equal(BehaviorAction.SnackStop, S(With(Signature.SnackMagnet), Riding(speed: 1.5)).Action);
+        }
+            // ---- Mustang coats ----
+
+        [Fact]
+        public void MustangCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_mustang_tigerstripedbay", out Coat merc));
+            Assert.Equal("The Scarred Mercenary", merc.Archetype);
+            Assert.Contains(Signature.BountyStomper, merc.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_mustang_buckskin", out Coat baseline));
+            Assert.Equal(new[] { Signature.ShortKing, Signature.SelectiveHearing }, baseline.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_mustang_wildbay", out Coat bay));
+            Assert.Equal(new[] { Quirk.Shadow, Quirk.Chatterbox }, bay.SignatureQuirks);
+        }
+
+        [Fact]
+        public void ShortKingAndBountyStomperSquareUpButNeverFight()
+        {
+            var horse = Riding(); horse.OtherHorse = 12;
+            var d = S(With(Signature.ShortKing), horse);
+            Assert.Equal(BehaviorAction.SquareUp, d.Action);
+            Assert.Equal(12, d.Target);
+            var bounty = Riding(); bounty.HogtiedPerson = 8;
+            Assert.Equal(BehaviorAction.SquareUp, S(With(Signature.BountyStomper), bounty).Action);
+            Assert.True(S(With(Signature.BountyStomper), Riding()).IsNone);
+        }
+
+        [Fact]
+        public void GuardDogStompsAtStrangersEvenWithYouFarAway()
+        {
+            Assert.True(SignatureBrain.WatchedFar(With(Signature.GuardDog)));
+            var away = new SignatureSituation { PlayerDistance = 200, GuardTarget = 3 };
+            Assert.Equal(BehaviorAction.SquareUp, S(With(Signature.GuardDog), away).Action);
+            var riding = Riding(); riding.GuardTarget = 3;
+            Assert.True(S(With(Signature.GuardDog), riding).IsNone); // only while you're off it
+        }
+
+        [Fact]
+        public void UnhurriedCapsTheSpurOnlyWithoutDanger()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var p = With(Signature.Unhurried);
+            Assert.Equal(T.UnhurriedRatio, brain.UnhurriedCap(p, true, true, T.DangerMemorySeconds + 1));
+            Assert.Null(brain.UnhurriedCap(p, true, true, 5)); // danger a moment ago: it runs
+            Assert.Null(brain.UnhurriedCap(p, true, false, 999));
+            Assert.Null(brain.UnhurriedCap(With(), true, true, 999));
+        }
+
+        [Fact]
+        public void SaddleHaterSelectiveHearingAndJealousy()
+        {
+            var yes = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Agitate, yes.OnMounted(1, With(Signature.SaddleHater), new CooldownBook(T, 0), 0).Action);
+            Assert.True(yes.OnMounted(1, With(), new CooldownBook(T, 0), 0).IsNone);
+            Assert.Equal(BehaviorAction.Ignore, yes.OnWhistle(1, With(Signature.SelectiveHearing), false, new CooldownBook(T, 0), 0).Action);
+            Assert.True(yes.OnWhistle(1, With(Signature.SelectiveHearing), true, new CooldownBook(T, 0), 0).IsNone);
+            Assert.True(new SignatureBrain(T, () => 0.99).OnWhistle(1, With(Signature.SelectiveHearing), false, new CooldownBook(T, 0), 0).IsNone);
+            Assert.Equal(BehaviorAction.JealousCall, yes.OnRival(1, With(Signature.Jealous), 5, "patted", new CooldownBook(T, 0), 0).Action);
+            Assert.True(yes.OnRival(1, With(Signature.Jealous), T.JealousRange + 1, "patted", new CooldownBook(T, 0), 0).IsNone);
         }
     }
 }

@@ -32,6 +32,15 @@ namespace HorsePersonalities.Core.Breeds
         BoredBuck,
         Clumsy,
         SnackMagnet,
+        // Mustang coats (Nov 27, 2026)
+        ShortKing,
+        SelectiveHearing,
+        SaddleHater,
+        BountyStomper,
+        GuardDog,
+        SilentStealth,
+        Unhurried,
+        Jealous,
     }
 
     /// <summary>
