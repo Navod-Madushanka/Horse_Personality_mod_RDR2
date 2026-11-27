@@ -862,6 +862,11 @@
       "note": "The Scarred Mercenary: wild only, near Rio Bravo. Navod, Nov 27, 2026"
     },
     {
+      "model": "a_c_horse_nokota_reversedappleroan",
+      "why": "CommunityFavorite",
+      "note": "The Stunt Driver: sold at Saint Denis. Navod, Nov 27, 2026"
+    },
+    {
       "model": "a_c_horse_tennesseewalker_goldpalomino_pc",
       "why": "Special",
       "note": "PC bonus coat"

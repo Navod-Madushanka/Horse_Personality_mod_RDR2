@@ -122,7 +122,7 @@ All three Nokota coats have a design, so the baseline's Grudge is on each of the
 
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
-| Reverse Dapple Roan | The Stunt Driver | +1 / +1 / +1 / +1 | Head-tosser | Showboat, Downhill snob, Grudge |
+| Reverse Dapple Roan (prized: community favorite) | The Stunt Driver | +1 / +1 / +1 / +1 | Head-tosser | Showboat, Downhill snob, Grudge |
 | Blue Roan | The Scarred Survivor | +1 / +1 / +1 / -1 | Nosy | Stranger danger, Vain, Grudge; loves oatcakes |
 | White Roan | The Wild Child | 0 / +1 / 0 / +1 | Wanderer | Wanderlust, Selective hearing, Restless, Saddle hater, Grudge |
 
@@ -143,4 +143,4 @@ Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto and Gold Turkoman prized (community favorites).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites).

@@ -19,6 +19,7 @@
 - **American Standardbred coats** (Navod): the Thin-Skinned Sports Car baseline (Light Buckskin), the Midnight Legend (Black), the Golden Boy (Silver Tail Buckskin), the Teacher's Pet (Palomino Dapple), the Track Rookie (Buckskin). New signatures Racer, Spoiled, Separation anxiety, No brakes (8 new Behavior settings).
 - The Black American Standardbred is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
 - **Nokota coats** (Navod): the Stunt Driver (Reverse Dapple Roan), the Scarred Survivor (Blue Roan), the Wild Child (White Roan). New signatures Grudge, Downhill snob, Stranger danger (6 new Behavior settings); DevTools trigger 60 (damage watch).
+- The Reverse Dapple Roan Nokota is on the Prized tab as a community favorite (Navod): always good, never below its design, in line for the +2 long-use growth in Phase 8.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
