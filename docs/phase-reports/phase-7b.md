@@ -59,7 +59,7 @@ Cut: cornering like a wagon, knocking over fences (no script control), nudging y
 | Coat | Archetype | Leans (C/N/T/B) | Quirks | Signatures |
 | --- | --- | --- | --- | --- |
 | Black Overo, Buckskin, Chestnut Tovero, Golden Dun, Red Dun Overo | The Short King (baseline) | +2 / -2 / +1 / 0 | Nosy | Short king, Selective hearing |
-| Tiger Striped Bay | The Scarred Mercenary | +2 / -2 / +2 / -1 | Kicker | Wolf brawler, Saddle hater, Bounty stomper, Short king, Selective hearing |
+| Tiger Striped Bay (prized: Rare) | The Scarred Mercenary | +2 / -2 / +2 / -1 | Kicker | Wolf brawler, Saddle hater, Bounty stomper, Short king, Selective hearing |
 | Grullo Dun | The Stoic Bodyguard | +1 / -2 / 0 / +1 | Nosy | Guard dog, Silent stealth, Unhurried, Short king |
 | Wild Bay | The Scrappy Underdog | +1 / 0 / -1 / +2 | Shadow, Chatterbox | Clumsy, Jealous, Selective hearing |
 
@@ -85,4 +85,4 @@ Cut: shortcuts, charging brush, cliffs like stairs (no steering or terrain contr
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian is prized (Rare) and the Silver Dapple Pinto prized (community favorite).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian and the Tiger Striped Bay are prized (Rare) and the Silver Dapple Pinto prized (community favorite).

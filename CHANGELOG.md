@@ -13,6 +13,7 @@
 - The Silver Dapple Pinto is on the Prized tab as a community favorite (Navod): always good, never below its design, never Unbreakable, and in line for the +2 long-use growth in Phase 8.
 - The White Arabian is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
 - **Mustang coats** (Navod): the Short King baseline (five coats), the Scarred Mercenary (Tiger Striped Bay), the Stoic Bodyguard (Grullo Dun), the Scrappy Underdog (Wild Bay). New signatures Short king, Selective hearing, Saddle hater, Bounty stomper, Guard dog, Silent stealth, Unhurried, Jealous (13 new Behavior settings); DevTools triggers 56-59 (whistle, ignoring a whistle, hogtied, sneaking).
+- The Tiger Striped Bay Mustang is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
