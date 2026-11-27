@@ -561,6 +561,8 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 Logic is tested outside the game on every commit; behavior is tested in game at the end of each phase; the whole mod passes one end-to-end run before release.
 
+The in-game test plan, stage by stage (Stages 1 to 12, Phases 0 to 7b), is `docs/testing/home-test-plan.md`: a snapshot of the shared home test doc, which stays the working copy for marking results.
+
 ### Unit tests (no game needed)
 
 Run from Visual Studio's Test Explorer against `HorsePersonalities.Core`:
