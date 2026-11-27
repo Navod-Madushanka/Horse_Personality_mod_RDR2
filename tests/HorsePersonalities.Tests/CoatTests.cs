@@ -307,6 +307,22 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void SilverDappleIsAPrizedCommunityFavorite()
+        {
+            const string model = "a_c_horse_missourifoxtrotter_silverdapplepinto";
+            Assert.True(Catalog.TryGetPrized(model, out _));
+            Catalog.TryGetBreed("Missouri Fox Trotter", out Breed mft);
+            for (ulong seed = 1; seed < 300; seed++)
+            {
+                var p = Roller.Roll(mft, HorseOrigin.Wild, seed, true, model);
+                Assert.Equal(HorseQuality.Good, p.Quality);
+                Assert.NotEqual(BreakingDifficulty.Unbreakable, p.Breaking);
+                Assert.True(p.Traits.BondAffinity >= -1 - 1e-9); // never below its design: no flaw
+                Assert.Contains(Signature.Wanderlust, p.Signatures);
+            }
+        }
+
+        [Fact]
         public void StoicGivesNothingBackForAPat()
         {
             var care = new CareReactor(T, () => 0);

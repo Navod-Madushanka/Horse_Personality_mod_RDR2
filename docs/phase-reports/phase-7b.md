@@ -39,7 +39,7 @@ All share one cooldown (*Signature cooldown*, 60 s) and the 20 s gap, and are he
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
 | Black Tovero, Blue Roan, Buckskin Brindle, Dapple Grey, Sable Champagne | The Blue-Collar Athlete (baseline) | +1 / -2 / -1 / 0 | Shadow | Stoic |
-| Silver Dapple Pinto | The Elusive Celebrity | +2 / -1 / 0 / -1 | Nosy | Wanderlust, Escape artist, Bored buck, Stoic |
+| Silver Dapple Pinto (prized: community favorite) | The Elusive Celebrity | +2 / -1 / 0 / -1 | Nosy | Wanderlust, Escape artist, Bored buck, Stoic |
 | Amber Champagne | The Golden Retriever | +1 / 0 / -1 / +2 | Shadow | Clumsy, Snack magnet, Roadside grazer |
 
 | Signature | How it plays |

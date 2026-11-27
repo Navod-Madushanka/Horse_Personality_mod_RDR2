@@ -130,7 +130,7 @@ namespace HorsePersonalities.Tests
         public void PrizedTabBecomesPrizedModels()
         {
             var p = Convert()["prizedModels"];
-            Assert.Equal(6, p.Count);
+            Assert.Equal(7, p.Count);
             Assert.Contains(p.Items, m => m["model"].AsString() == "a_c_horse_arabian_redchestnut_pc" && m["why"].AsString() == "Special");
         }
 
