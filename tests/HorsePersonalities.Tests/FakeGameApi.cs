@@ -97,6 +97,8 @@ namespace HorsePersonalities.Tests
             r.Rank = rank + r.BonusRank;
             Attributes[(ped, attribute)] = r;
         }
+        public int BondPointsForRank(int horse, int rank) => rank <= 1 ? 0 : (rank - 1) * 500;
+
         public void SetBondLevel(int horse, int level)
         {
             var r = ReadAttribute(horse, PedAttribute.Bonding);

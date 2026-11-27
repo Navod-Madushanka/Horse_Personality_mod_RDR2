@@ -94,6 +94,8 @@ namespace HorsePersonalities.Game
         public const ulong GET_ATTRIBUTE_POINTS = 0x219DA04BAA9CB065;
         /// <summary>ATTRIBUTE::GET_MAX_ATTRIBUTE_POINTS(int ped, int attributeIndex) -> int</summary>
         public const ulong GET_MAX_ATTRIBUTE_POINTS = 0x223BF310F854871C;
+        /// <summary>ATTRIBUTE::GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK(Hash modelHash, int attributeIndex, int rank) -> int (hash read from the hook's own wrapper)</summary>
+        public const ulong GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK = 0x94A7F191DB49A44D;
         /// <summary>ATTRIBUTE::SET_ATTRIBUTE_BONUS_RANK(int ped, int attributeIndex, int newValue) -> void</summary>
         public const ulong SET_ATTRIBUTE_BONUS_RANK = 0x920F9488BD115EFB;
         /// <summary>ATTRIBUTE::_GET_ATTRIBUTE_CORE_VALUE(int ped, int coreIndex) -> int</summary>

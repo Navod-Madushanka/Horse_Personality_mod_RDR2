@@ -181,6 +181,8 @@ namespace HorsePersonalities.Game
             Function.Call(Natives.SET_ATTRIBUTE_BASE_RANK, ped, (int)attribute, rank);
 
         public void SetBondLevel(int horse, int level) => Function.Call(Natives.SET_MOUNT_BONDING_LEVEL, horse, level);
+        public int BondPointsForRank(int horse, int rank) =>
+            Function.Call<int>(Natives.GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK, GetModel(horse), (int)PedAttribute.Bonding, rank);
 
         public int GetCoreValue(int ped, AttributeCore core) => Function.Call<int>(Natives.GET_ATTRIBUTE_CORE_VALUE, ped, (int)core);
 

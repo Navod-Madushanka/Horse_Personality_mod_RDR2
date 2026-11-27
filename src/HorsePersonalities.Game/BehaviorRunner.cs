@@ -664,6 +664,8 @@ namespace HorsePersonalities.Game
         /// Every second, for a permanent horse you ride: scales the bond XP the game just gave (Bond affinity, slower to
         /// bond 4 for good and prized horses, Hard wild horses) by adding or removing points.
         /// </summary>
+        private const int MaxNaturalBondGain = 300;
+
         public void UpdateBonding(int horse)
         {
             if (!TryRecord(horse, out HorseRecord record, out _) || record.Status != PersonalityStatus.Permanent) return;
@@ -674,6 +676,14 @@ namespace HorsePersonalities.Game
                 return;
             }
             int gained = bond.Points - before.Points;
+            // A jump far bigger than bonding ever gives (the largest natural gain seen in game was +35) was set from outside:
+            // DevTools trigger 42 or a trainer's "max bond". Scaling it would undo the jump, so take it as it is.
+            if (gained > MaxNaturalBondGain)
+            {
+                _log.Debug(Log, $"{record.Id}: bond XP jumped +{gained} to {bond.Points} (bond {bond.Rank}), set from outside; not scaled.");
+                _bondSeen[horse] = (bond.Rank, bond.Points);
+                return;
+            }
             if (!_pace.TryGetValue(horse, out BondPace pace)) _pace[horse] = pace = new BondPace(_t, _catalog.Roller);
             int adjust = pace.Adjustment(record.Personality, before.Rank, bond.Rank, gained);
             int points = bond.Points;

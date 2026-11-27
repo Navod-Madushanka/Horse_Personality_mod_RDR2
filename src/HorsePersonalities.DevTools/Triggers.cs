@@ -237,11 +237,20 @@ namespace HorsePersonalities.DevTools
                 "Use a test save: the game may keep the new level. Ride or stand by the horse, press, wait 1-2 s, check its health and stamina bars.",
                 ctx =>
                 {
-                    int before = ctx.Game.ReadAttribute(ctx.Horse, PedAttribute.Bonding).Rank;
-                    int next = before >= 4 ? 1 : before + 1;
-                    ctx.Game.SetBondLevel(ctx.Horse, next);
-                    ctx.After(500, () => ctx.Log($"Bond after _SET_MOUNT_BONDING_LEVEL {next}: rank {ctx.Game.ReadAttribute(ctx.Horse, PedAttribute.Bonding).Rank}"));
-                    return $"_SET_MOUNT_BONDING_LEVEL {before} -> {next}";
+                    int h = ctx.Horse;
+                    AttributeReading before = ctx.Game.ReadAttribute(h, PedAttribute.Bonding);
+                    int next = before.Rank >= 4 ? 1 : before.Rank + 1;
+                    // In game (Nov 27, 2026) _SET_MOUNT_BONDING_LEVEL alone left the bond rank unchanged, so also set the bond XP to the
+                    // amount the next level starts at, the way a pat crossing the threshold does.
+                    ctx.Game.SetBondLevel(h, next);
+                    int points = ctx.Game.BondPointsForRank(h, next);
+                    if (points > 0 || next == 1) ctx.Game.SetAttributePoints(h, PedAttribute.Bonding, points);
+                    ctx.After(500, () =>
+                    {
+                        AttributeReading after = ctx.Game.ReadAttribute(h, PedAttribute.Bonding);
+                        ctx.Log($"Bond after setting level {next}: rank {after.Rank}, XP {after.Points}/{after.MaxPoints}");
+                    });
+                    return $"Bond {before.Rank} -> {next}: XP {before.Points} -> {points} (points needed for level {next})";
                 }));
 
             // ---- Phase 7b: coat signatures (Nov 27, 2026). Numbers 43-55, appended so earlier numbers don't move. ----

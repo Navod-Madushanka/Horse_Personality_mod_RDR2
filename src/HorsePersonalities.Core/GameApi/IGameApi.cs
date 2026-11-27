@@ -144,6 +144,11 @@ namespace HorsePersonalities.Core.GameApi
         void SetAttributePoints(int ped, PedAttribute attribute, int points);
         /// <summary>_SET_MOUNT_BONDING_LEVEL (1-4). DevTools only, for testing the bond reveal; the game may save it.</summary>
         void SetBondLevel(int horse, int level);
+        /// <summary>
+        /// GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK for bonding on this horse's model: the bond XP a level starts at.
+        /// _SET_MOUNT_BONDING_LEVEL alone did not change the bond rank in game (Nov 27, 2026); setting the points does what a pat does.
+        /// </summary>
+        int BondPointsForRank(int horse, int rank);
         int GetCoreValue(int ped, AttributeCore core);
 
         // ---- Behaviors (Phase 1 trigger candidates) ----
