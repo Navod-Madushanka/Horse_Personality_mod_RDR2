@@ -49,6 +49,11 @@ namespace HorsePersonalities.Core.Breeds
         Showboat,
         MustLead,
         Vain,
+        // American Standardbred coats (Nov 27, 2026)
+        Racer,
+        Spoiled,
+        SeparationAnxiety,
+        NoBrakes,
     }
 
     /// <summary>

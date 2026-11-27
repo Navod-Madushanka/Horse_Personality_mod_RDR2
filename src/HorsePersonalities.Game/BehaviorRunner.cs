@@ -66,6 +66,7 @@ namespace HorsePersonalities.Game
         private int _lastMounted;
         private double _walkSeconds;
         private double _lastGallopAt = double.NegativeInfinity;
+        private double _gallopSeconds, _lastGallopSeconds;
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -84,7 +85,7 @@ namespace HorsePersonalities.Game
             // Phase 7b
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
             public int OtherHorse, HogtiedPerson, GuardTarget;
-            public int NearEnemy, LowerTierHorse, Crowd, HorseAhead;
+            public int NearEnemy, LowerTierHorse, Crowd, HorseAhead, Challenger;
         }
 
         public BehaviorRunner(IGameApi game, BreedCatalog catalog, ModSettings settings, HorseRegistry registry, ILog log)
@@ -272,7 +273,13 @@ namespace HorsePersonalities.Game
             double speed = _game.GetSpeed(horse);
             bool walkingNow = mounted && speed >= _t.StandingStillSpeed && speed < _t.WalkSpeed;
             _walkSeconds = walkingNow ? _walkSeconds + dt : 0;
-            if (mounted && speed >= _t.GallopSpeed) _lastGallopAt = nowSeconds;
+            if (mounted && speed >= _t.GallopSpeed)
+            {
+                _lastGallopAt = nowSeconds;
+                _gallopSeconds += dt;
+                _lastGallopSeconds = _gallopSeconds;
+            }
+            else _gallopSeconds = 0;
             double still = speed < _t.StandingStillSpeed ? (_stillSeconds.TryGetValue(horse, out double st) ? st : 0) + dt : 0;
             _stillSeconds[horse] = still;
             bool walkedAway = !mounted && _lastPlayerDistance >= 0 && _lastPlayerDistance < _t.ShadowTriggerDistance && playerDistance >= _t.ShadowTriggerDistance;
@@ -387,6 +394,9 @@ namespace HorsePersonalities.Game
                     JustStoppedFromGallop = mounted && still > 0 && nowSeconds - _lastGallopAt <= 3,
                     Crowd = _lastScan.Crowd,
                     HorseAhead = _lastScan.HorseAhead,
+                    Challenger = _lastScan.Challenger,
+                    SecondsSinceGallop = mounted && speed >= _t.GallopSpeed ? 0 : nowSeconds - _lastGallopAt,
+                    LastGallopSeconds = _lastGallopSeconds,
                 };
                 decision = _signatures.Decide(horse, p, sig, dt, _cooldowns, nowSeconds);
             }
@@ -411,6 +421,7 @@ namespace HorsePersonalities.Game
             if (p.Has(Signature.ShortKing) || p.Has(Signature.Snob)) range = Math.Max(range, (float)_t.ShortKingRange);
             if (p.Has(Signature.Showboat)) range = Math.Max(range, (float)_t.ShowboatRange);
             if (p.Has(Signature.MustLead)) range = Math.Max(range, (float)_t.MustLeadRange);
+            if (p.Has(Signature.Racer)) range = Math.Max(range, (float)_t.RacerRange);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
             int humans = 0;
@@ -445,6 +456,7 @@ namespace HorsePersonalities.Game
                     if (r.OtherHorse == 0 && p.Has(Signature.ShortKing) && dist <= _t.ShortKingRange) r.OtherHorse = ped;
                     if (r.LowerTierHorse == 0 && p.Has(Signature.Snob) && dist <= _t.ShortKingRange
                         && _catalog.TryGetBreedByModel(model, out Breed other) && other.Tier <= own.Tier && other.Name != own.Name) r.LowerTierHorse = ped;
+                    if (r.Challenger == 0 && p.Has(Signature.Racer) && dist <= _t.RacerRange && _game.GetSpeed(ped) >= _t.WalkSpeed) r.Challenger = ped;
                     if (r.HorseAhead == 0 && p.Has(Signature.MustLead) && dist <= _t.MustLeadRange)
                     {
                         var (behindIt, sideIt) = Vec3.BehindAndSide(at, forward, _game.GetPosition(ped));

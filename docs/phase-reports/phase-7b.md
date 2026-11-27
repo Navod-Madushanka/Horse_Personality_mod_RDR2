@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (494 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (499 tests pass); not run in game yet.
 
 ## What changed
 
@@ -96,6 +96,25 @@ Cut: shortcuts, charging brush, cliffs like stairs (no steering or terrain contr
 | Vain | Every brushing: a happy nicker and call |
 
 The Turkoman is Standard in this mod's stat tiers, so Snob's "lower tier" means its own tier or lower, other than Turkomans. Cut: charging ambushes and sure footing (its Courage instead), the muddy pelt (Mud tantrum), jumping wagons and splashing rivers (no steering), the Silver's sidewalk bite (Town disdain).
+
+## American Standardbred coats (added Nov 27)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Light Buckskin | The Thin-Skinned Sports Car (baseline) | -1 / +2 / 0 / +1 | Head-tosser | Snake drama, Hill sigh |
+| Black | The Midnight Legend | 0 / +1 / +1 / 0 | Head-tosser | Trail snob, Restless, Night owl, Snake drama |
+| Silver Tail Buckskin | The Golden Boy | 0 / +1 / 0 / +1 | Chatterbox | Racer, Spoiled, Showboat, Clumsy, Scatterbrain, Snake drama; loves sugar cubes |
+| Palomino Dapple | The Teacher's Pet | -2 / +2 / -2 / +2 | Shadow | Separation anxiety, Vain, Snake drama |
+| Buckskin | The Track Rookie | 0 / +1 / 0 / +1 | Head-tosser | No brakes, Scatterbrain, Clumsy, Snake drama |
+
+| Signature | How it plays |
+| --- | --- |
+| Racer | Another moving horse within 15 m while you ride at pace: a challenging call, 1/min |
+| Spoiled | Stopping after 20 s+ of galloping: 70% it calls for a treat |
+| Separation anxiety | Left standing with you 3 m+ away (any distance): whinnies, 3/min |
+| No brakes | Gallop to under walking pace within 1.5 s: 50% a sideways skid |
+
+Cut: swamps (no swamp check yet), the Black's bear-pelt tantrum (no pelt moment), the binoculars (Restless covers standing still), fences and rivers (no steering), trees and squirrels (Scatterbrain).
 
 ## Testing it
 

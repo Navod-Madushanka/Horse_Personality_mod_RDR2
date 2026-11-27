@@ -53,6 +53,12 @@ namespace HorsePersonalities.Core.Behavior
         public int Crowd;
         /// <summary>A moving horse ahead within Must lead range (0 for none).</summary>
         public int HorseAhead;
+        /// <summary>Another moving horse within Racer range (0 for none).</summary>
+        public int Challenger;
+        /// <summary>Seconds since it was last at a gallop.</summary>
+        public double SecondsSinceGallop;
+        /// <summary>How long its last gallop lasted.</summary>
+        public double LastGallopSeconds;
     }
 
     /// <summary>
@@ -73,6 +79,7 @@ namespace HorsePersonalities.Core.Behavior
         private readonly HashSet<int> _escapedThisStop = new HashSet<int>();
         private readonly HashSet<int> _roamedThisStop = new HashSet<int>();
         private readonly HashSet<int> _boredThisAim = new HashSet<int>();
+        private readonly HashSet<int> _stopHandled = new HashSet<int>();
 
         public SignatureBrain(BehaviorTuning tuning, Func<double> random)
         {
@@ -122,7 +129,30 @@ namespace HorsePersonalities.Core.Behavior
                     return g;
                 }
             }
+            if (p.Has(Signature.SeparationAnxiety) && !s.Mounted && s.StandingStillSeconds > 0 && s.PlayerDistance >= _t.SeparationDistance
+                && Ready(horse, cooldowns, now) && dt > 0 && _random() < 1 - Math.Exp(-_t.SeparationRate * dt / 60.0))
+                return Use(horse, BehaviorAction.Call, $"Separation anxiety: you're {s.PlayerDistance:0} m away and it thinks you left forever", cooldowns, now);
             if (far) return Decision.None; // only the habits above work with you far away
+
+            // A stop after a gallop: No brakes (a hard stop), Spoiled (a long gallop). One answer per stop.
+            if (s.SecondsSinceGallop <= 0) _stopHandled.Remove(horse);
+            else if (s.Mounted && s.SpeedMs < _t.WalkSpeed && !_stopHandled.Contains(horse) && Ready(horse, cooldowns, now))
+            {
+                if (p.Has(Signature.NoBrakes) && s.SecondsSinceGallop <= _t.NoBrakesSeconds)
+                {
+                    _stopHandled.Add(horse);
+                    double roll = _random();
+                    if (roll < _t.NoBrakesChance)
+                        return Use(horse, BehaviorAction.Skid, $"No brakes: a hard stop from a gallop: roll {F3(roll)} vs {F3(_t.NoBrakesChance)}", cooldowns, now);
+                }
+                if (p.Has(Signature.Spoiled) && s.LastGallopSeconds >= _t.SpoiledGallopSeconds && s.StandingStillSeconds > 0)
+                {
+                    _stopHandled.Add(horse);
+                    double roll = _random();
+                    if (roll < _t.SpoiledChance)
+                        return Use(horse, BehaviorAction.Call, $"Spoiled: {s.LastGallopSeconds:0} s of galloping deserves a sugar cube: roll {F3(roll)} vs {F3(_t.SpoiledChance)}", cooldowns, now);
+                }
+            }
             if (p.Has(Signature.BoredBuck) && s.Mounted && s.StandingStillSeconds > 0 && s.AimingSeconds >= _t.BoredAimSeconds
                 && !_boredThisAim.Contains(horse) && Ready(horse, cooldowns, now))
             {
@@ -170,6 +200,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Snub, _t.SnobRate, "Snob: ears back at a cheaper horse", s.LowerTierHorse));
             if (p.Has(Signature.MustLead) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.HorseAhead != 0)
                 candidates.Add((BehaviorAction.Agitate, _t.MustLeadRate, "Must lead: stuck behind another horse", 0));
+            if (p.Has(Signature.Racer) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.Challenger != 0)
+                candidates.Add((BehaviorAction.Call, _t.RacerRate, "Racer: a challenger alongside", s.Challenger));
             if (p.Has(Signature.ShortKing) && s.OtherHorse != 0)
                 candidates.Add((BehaviorAction.SquareUp, _t.ShortKingRate, "Short king: picking a fight with a bigger horse", s.OtherHorse));
             if (p.Has(Signature.BountyStomper) && s.HogtiedPerson != 0)
@@ -204,7 +236,8 @@ namespace HorsePersonalities.Core.Behavior
         }
 
         /// <summary>Habits that need the horse watched with you far away (the runner otherwise stops at 15 m).</summary>
-        public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust) || p.Has(Signature.GuardDog));
+        public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust) || p.Has(Signature.GuardDog)
+            || p.Has(Signature.SeparationAnxiety));
 
         /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
         public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>

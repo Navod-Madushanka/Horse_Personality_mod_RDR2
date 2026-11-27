@@ -272,7 +272,7 @@
     },
     {
       "name": "Coat design",
-      "purpose": "Phase 7b: a coat with a written design (Arabian, Fox Trotter, Mustang, Turkoman) gets exactly that design (traits, signature quirks, signatures). Other horses: Average.",
+      "purpose": "Phase 7b: a coat with a written design (Arabian, Fox Trotter, Mustang, Turkoman, Standardbred) gets exactly that design (traits, signature quirks, signatures). Other horses: Average.",
       "quality": "Good",
       "prized": false,
       "coatDesign": true,
@@ -323,6 +323,11 @@
     "a_c_horse_turkoman_perlino": "Coat design",
     "a_c_horse_turkoman_darkbay": "Coat design",
     "a_c_horse_turkoman_gold": "Coat design",
-    "a_c_horse_turkoman_silver": "Coat design"
+    "a_c_horse_turkoman_silver": "Coat design",
+    "a_c_horse_americanstandardbred_lightbuckskin": "Coat design",
+    "a_c_horse_americanstandardbred_black": "Coat design",
+    "a_c_horse_americanstandardbred_silvertailbuckskin": "Coat design",
+    "a_c_horse_americanstandardbred_palominodapple": "Coat design",
+    "a_c_horse_americanstandardbred_buckskin": "Coat design"
   }
 }

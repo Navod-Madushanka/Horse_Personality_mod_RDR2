@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(29, Catalog.CoatCount);
+            Assert.Equal(34, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -484,6 +484,59 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Agitate, S(With(Signature.MustLead), behind).Action);
             var care = new CareReactor(T, () => 0.99);
             Assert.Equal(BehaviorAction.Content, care.React(With(Signature.Vain), DemeanorTraits.None, CareKind.Brush, 4, 0).First);
+        }
+            // ---- American Standardbred coats ----
+
+        [Fact]
+        public void StandardbredCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_americanstandardbred_palominodapple", out Coat pet));
+            Assert.Equal("The Teacher's Pet", pet.Archetype);
+            Assert.Equal(-2, pet.Leans.Courage);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_americanstandardbred_lightbuckskin", out Coat baseline));
+            Assert.Equal(new[] { Signature.SnakeDrama, Signature.HillSigh }, baseline.Signatures);
+        }
+
+        [Fact]
+        public void RacerCallsAChallenger()
+        {
+            var s = Riding(speed: T.WalkSpeed + 2); s.Challenger = 6;
+            Assert.Equal(BehaviorAction.Call, S(With(Signature.Racer), s).Action);
+            s.Challenger = 0;
+            Assert.True(S(With(Signature.Racer), s).IsNone);
+        }
+
+        [Fact]
+        public void NoBrakesSkidsOnAHardStopOnce()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var cd = new CooldownBook(T, 0);
+            var stop = Riding(speed: 1); stop.SecondsSinceGallop = 1;
+            Assert.Equal(BehaviorAction.Skid, brain.Decide(1, With(Signature.NoBrakes), stop, 0.25, cd, 0).Action);
+            Assert.True(brain.Decide(1, With(Signature.NoBrakes), stop, 0.25, cd, 10_000).IsNone); // same stop
+            var slow = Riding(speed: 1); slow.SecondsSinceGallop = T.NoBrakesSeconds + 2;
+            Assert.True(S(With(Signature.NoBrakes), slow).IsNone); // eased down, not a hard stop
+        }
+
+        [Fact]
+        public void SpoiledWantsATreatAfterALongGallop()
+        {
+            var stop = Riding(speed: 0, still: 1); stop.SecondsSinceGallop = 3; stop.LastGallopSeconds = T.SpoiledGallopSeconds;
+            Assert.Equal(BehaviorAction.Call, S(With(Signature.Spoiled), stop).Action);
+            stop.LastGallopSeconds = 5;
+            Assert.True(S(With(Signature.Spoiled), stop).IsNone);
+        }
+
+        [Fact]
+        public void SeparationAnxietyWhinniesWhenYouWalkAwayEvenFar()
+        {
+            Assert.True(SignatureBrain.WatchedFar(With(Signature.SeparationAnxiety)));
+            var away = new SignatureSituation { PlayerNear = true, PlayerDistance = T.SeparationDistance, StandingStillSeconds = 2 };
+            Assert.Equal(BehaviorAction.Call, S(With(Signature.SeparationAnxiety), away).Action);
+            away.PlayerNear = false; away.PlayerDistance = 300;
+            Assert.Equal(BehaviorAction.Call, S(With(Signature.SeparationAnxiety), away).Action);
+            away.PlayerDistance = 1; away.PlayerNear = true;
+            Assert.True(S(With(Signature.SeparationAnxiety), away).IsNone);
         }
     }
 }

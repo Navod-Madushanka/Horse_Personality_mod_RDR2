@@ -519,6 +519,14 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Vain** (Gold): every brushing gets a happy nicker and call, no dice.
   - Reused: Silent stealth and Mud tantrum (Dark Bay), Town disdain and Stoic (Silver). The Dark Bay loves sugar cubes and ignores haycubes.
   - Cut: charging into ambushes and never losing its footing (no control over speed or footing), disgust at a muddy pelt (no pelt-stowing moment; Mud tantrum covers the vanity), veering off to jump wagons and splash through rivers (no steering), the Silver's bite (a real bite on a sidewalk is a crime; Town disdain snaps instead).
+  - Prized (Navod, Nov 27): Gold Turkoman (community favorite).
+- **American Standardbred coats** (Navod, Nov 27, 2026): a baseline *Thin-Skinned Sports Car* for the Light Buckskin, *The Midnight Legend* (Black), *The Golden Boy* (Silver Tail Buckskin), *The Teacher's Pet* (Palomino Dapple) and *The Track Rookie* (Buckskin). Four new signatures from tested pieces, so no new DevTools triggers:
+  - **Racer** (Silver Tail): another horse moving within 15 m while you ride at pace: a challenging call, 1/min.
+  - **Spoiled** (Silver Tail): stopping after 20 s+ of galloping: 70% it calls for its sugar cube.
+  - **Separation anxiety** (Palomino Dapple): left standing with you 3 m+ away, at any distance: whinnies, 3/min.
+  - **No brakes** (Buckskin): stopping hard from a gallop (under walking pace within 1.5 s): 50% a sideways skid.
+  - Reused: Snake drama (all), Hill sigh (baseline), Trail snob, Restless and Night owl (Black), Clumsy, Scatterbrain and Showboat (Silver Tail, Buckskin), Vain (Palomino Dapple). The Silver Tail loves sugar cubes.
+  - Cut: swamps as an insult (no swamp check yet), the Black's bear-pelt tantrum (no pelt moment), the binoculars (Restless covers standing still), tripping over fences and splashing into rivers (no steering), trees and squirrels (Scatterbrain covers it).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

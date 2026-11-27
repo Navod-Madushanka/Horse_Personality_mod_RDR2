@@ -122,3 +122,11 @@ Showboat crowd,3,Showboat: how many people make a crowd.
 Showboat chance,0.6,Showboat: chance it rears when you stop from a gallop in front of a crowd.
 Must lead range,12,Must lead: a moving horse ahead within this range (m) annoys it.
 Must lead rate,1,Must lead: agitated per minute while it has to follow another horse.
+Racer range,15,Racer: another moving horse within this range (m) is a challenger.
+Racer rate,1,Racer: challenging calls per minute while you ride at pace next to another horse.
+Spoiled gallop seconds,20,"Spoiled: seconds of galloping before a stop earns it a treat, in its mind."
+Spoiled chance,0.7,Spoiled: chance it calls for a treat when that gallop ends.
+Separation distance,3,Separation anxiety: you this far away (m) from it while it stands counts as leaving.
+Separation rate,3,Separation anxiety: whinnies per minute while you're away.
+No brakes chance,0.5,No brakes: chance of a sideways skid on a hard stop from a gallop.
+No brakes seconds,1.5,No brakes: from gallop to under walking pace within this many seconds is a hard stop.

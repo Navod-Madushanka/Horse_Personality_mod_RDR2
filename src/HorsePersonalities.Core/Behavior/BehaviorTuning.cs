@@ -141,6 +141,14 @@ namespace HorsePersonalities.Core.Behavior
         public double ShowboatChance => _v["showboatChance"];
         public double MustLeadRange => _v["mustLeadRange"];
         public double MustLeadRate => _v["mustLeadRate"];
+        public double RacerRange => _v["racerRange"];
+        public double RacerRate => _v["racerRate"];
+        public double SpoiledGallopSeconds => _v["spoiledGallopSeconds"];
+        public double SpoiledChance => _v["spoiledChance"];
+        public double SeparationDistance => _v["separationDistance"];
+        public double SeparationRate => _v["separationRate"];
+        public double NoBrakesChance => _v["noBrakesChance"];
+        public double NoBrakesSeconds => _v["noBrakesSeconds"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -267,6 +275,14 @@ namespace HorsePersonalities.Core.Behavior
             ("showboatChance", "Showboat chance", 0.0, 1.0, false),
             ("mustLeadRange", "Must lead range", 1.0, 100.0, false),
             ("mustLeadRate", "Must lead rate", 0.0, 20.0, false),
+            ("racerRange", "Racer range", 1.0, 100.0, false),
+            ("racerRate", "Racer rate", 0.0, 20.0, false),
+            ("spoiledGallopSeconds", "Spoiled gallop seconds", 1.0, 600.0, false),
+            ("spoiledChance", "Spoiled chance", 0.0, 1.0, false),
+            ("separationDistance", "Separation distance", 0.5, 100.0, false),
+            ("separationRate", "Separation rate", 0.0, 20.0, false),
+            ("noBrakesChance", "No brakes chance", 0.0, 1.0, false),
+            ("noBrakesSeconds", "No brakes seconds", 0.1, 10.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

@@ -186,7 +186,15 @@
     "showboatCrowd": 3,
     "showboatChance": 0.6,
     "mustLeadRange": 12,
-    "mustLeadRate": 1
+    "mustLeadRate": 1,
+    "racerRange": 15,
+    "racerRate": 1,
+    "spoiledGallopSeconds": 20,
+    "spoiledChance": 0.7,
+    "separationDistance": 3,
+    "separationRate": 3,
+    "noBrakesChance": 0.5,
+    "noBrakesSeconds": 1.5
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1523,6 +1531,116 @@
         "impatient": 1,
         "alert": 2,
         "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanstandardbred_lightbuckskin",
+      "breed": "American Standardbred",
+      "archetype": "The Thin-Skinned Sports Car (Standardbred baseline)",
+      "vibe": "Explosive acceleration, effortless top speed on flat roads, razor-sharp steering: lives for a sprint, loves passing stagecoaches at full gallop, a finely tuned sports car on open trails. Thin-skinned and easily rattled: one stray gunshot or a rattlesnake three zip codes away sends its heart through the roof, and rocky hills and thick swamps are personal insults.",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["SnakeDrama", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanstandardbred_black",
+      "breed": "American Standardbred",
+      "archetype": "The Midnight Legend",
+      "vibe": "The Sleek Street Racer (wild in Big Valley). Effortlessly cool and intimidatingly fast, the only solid jet-black horse you can tame in the wild: quiet swagger, lethal grace in open meadows, leaves bounty hunters in the dust. Way too proud to walk: pulls at the bit to canter, won't stand still for your binoculars, throws a tantrum if you make it haul a heavy bear pelt.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["TrailSnob", "Restless", "NightOwl", "SnakeDrama"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanstandardbred_silvertailbuckskin",
+      "breed": "American Standardbred",
+      "archetype": "The Golden Boy",
+      "vibe": "The Flashy Track Champion (Tumbleweed). Confident, energetic, thrives on competition: every NPC on horseback is a challenger in an unspoken race, and an open desert road is pure joy. A showboat with zero survival instincts: trips over low fences, splashes blindly into deep rivers, demands sugar cubes after doing the bare minimum.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["Racer", "Spoiled", "Showboat", "Clumsy", "Scatterbrain", "SnakeDrama"],
+      "lovesTreats": ["Sugar cube"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanstandardbred_palominodapple",
+      "breed": "American Standardbred",
+      "archetype": "The Teacher's Pet",
+      "vibe": "The Cheerful Overachiever (Valentine). Eager to please, sweet-tempered, adaptable, answers the lightest touch, loves being groomed, upbeat on long boring rides. Terminal people-pleaser with separation anxiety: hitch it and walk ten feet away and it whinnies like you left forever; panics the moment a wolf looks your way.",
+      "leans": {
+        "courage": -2,
+        "nerves": 2,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["SeparationAnxiety", "Vain", "SnakeDrama"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanstandardbred_buckskin",
+      "breed": "American Standardbred",
+      "archetype": "The Track Rookie",
+      "vibe": "The Scrappy Underdog (wild across New Hanover and West Elizabeth). Energetic, quick-footed, punches above its weight: every ride is its first big race, 100% effort out of the gate, no fancy saddles needed. Clumsy and over-caffeinated: zero brakes, skids sideways when you stop quickly, runs into trees looking at a squirrel.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["NoBrakes", "Scatterbrain", "Clumsy", "SnakeDrama"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 1,
         "fussy": 0
       }
     }
