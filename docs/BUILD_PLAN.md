@@ -489,6 +489,14 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Every snake model is a threat now (five added to `predator-models.csv`), not only for Snake drama.
   - Test mode: a new **Coat design** preset gives a coat model exactly its written design (no dice); the seven Arabian coat models are assigned to it. Other presets on those horses carry no signatures, so each preset still tests one thing.
   - DevTools triggers 43-55 check the natives the signatures need (town zone, unhitch, walk cap, graze ridden, aiming, enemies in combat, attack an animal, follow a person, four sigh sounds, climb speed).
+- **Missouri Fox Trotter coats** (Navod, Nov 27, 2026): a baseline *Blue-Collar Athlete* for the five coats without their own design, *The Elusive Celebrity* (Silver Dapple Pinto) and *The Golden Retriever* (Amber Champagne). Five new signatures, built from tested pieces, so no new DevTools triggers:
+  - **Stoic** (baseline, Silver Dapple): a pat gets nothing back, whatever its traits ("the emotional range of a brick wall").
+  - **Wanderlust** (Silver Dapple): left untied with you 8 m+ away for 8 s, it walks off down the road freely (trigger 40's wander) for 40 s; whistle it back.
+  - **Bored buck** (Silver Dapple): you aim from its back, standing still, for 8 s: 30% it throws you (bond 1-2) or fidgets and spoils your aim (bond 3-4). Once per aim.
+  - **Clumsy** (Amber Champagne): a trip (skid) now and then at a trot or canter, 0.3/min.
+  - **Snack magnet** (Amber Champagne): at a walk it stops dead and grazes a few seconds, 0.3/min (needs trigger 46).
+  - Cut: cornering like a wagon and knocking over fences (no script control over handling or jumping), nudging you while you loot (no nudge animation; its Shadow quirk keeps it close instead). Endurance is the breed's own stamina.
+  - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience
 

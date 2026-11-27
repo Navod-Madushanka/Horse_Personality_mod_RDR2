@@ -90,3 +90,11 @@ Creeper rate,0.3,Camp creeper: creeps per minute while you're near and an NPC is
 Creeper seconds,6,Camp creeper: how long it follows the NPC.
 Brush excitement chance,0.9,Brush excitement: chance it gets excited as soon as you start brushing.
 Signature cooldown,60,Shortest gap (s) between two coat signature habits on one horse (they also respect the 20 s Behavior gap).
+Wanderlust delay seconds,8,Wanderlust: seconds standing untied with you away before it sets off.
+Wanderlust player distance,8,Wanderlust: you must be at least this far away (m).
+Wanderlust seconds,40,Wanderlust: how long it roams before it stops (whistle it back sooner).
+Bored aim seconds,8,"Bored buck: seconds of aiming from its back, standing still, before it gets bored."
+Bored buck chance,0.3,Bored buck: chance per aim. Bond 1-2 throws you; bond 3-4 only fidgets.
+Clumsy rate,0.3,Clumsy: trips (skids) per minute at a trot or canter.
+Snack magnet rate,0.3,Snack magnet: stops to graze per minute at a walk.
+Snack seconds,5,Snack magnet: how long it grazes before you can move on.

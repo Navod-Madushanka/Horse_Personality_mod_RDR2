@@ -86,6 +86,8 @@ namespace HorsePersonalities.Core.Behavior
                 if (taste == Taste.Ignores) return (BehaviorAction.Snort, BehaviorAction.None, $"Picky eater: doesn't care for this treat (0x{itemHash:X8})");
             }
 
+            if (kind == CareKind.Pat && p.Has(Signature.Stoic))
+                return (BehaviorAction.None, BehaviorAction.None, "Stoic: a pat gets nothing back");
             ReactionStyle style = Style(p, demeanor);
             if (style == ReactionStyle.Neutral) return (BehaviorAction.None, BehaviorAction.None, "neutral: vanilla only");
             double chance = Math.Max(0, _t.ReactionChance * (1 - _t.ReactionBondSoften * Math.Max(0, bondLevel - 1)));

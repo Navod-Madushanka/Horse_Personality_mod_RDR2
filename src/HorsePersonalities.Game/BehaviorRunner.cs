@@ -63,6 +63,7 @@ namespace HorsePersonalities.Game
         private double _lastPlayerDistance = -1;
         private ScanResult _lastScan;
         private bool _wasAiming;
+        private double _aimSeconds;
         private double _playerFiredAt = double.NegativeInfinity;
         private int _lazyHorse;
         private float _lazyRatio;
@@ -189,9 +190,12 @@ namespace HorsePersonalities.Game
             if (horse == 0 || !_game.Exists(horse) || _game.IsDead(horse)) return;
             double playerDistance = mounted ? 0 : _game.DistanceBetween(horse, player);
             bool near = !mounted && playerDistance <= NearDistance;
-            if (!mounted && !near) { _lastPlayerDistance = -1; return; }
             if (!TryRecord(horse, out HorseRecord record, out HorseDescription d)) return;
             Personality p = record.Personality;
+            // Far away, only Escape artist and Wanderlust are watched (they need you gone).
+            bool far = !mounted && !near;
+            if (far) _lastPlayerDistance = -1;
+            if (far && !SignatureBrain.WatchedFar(p)) return;
 
             // Hard and Unbreakable wild horses while you break them. Not held by the mission guard: no mission breaks horses.
             if (mounted && p.Origin == HorseOrigin.Wild && p.Breaking != BreakingDifficulty.Normal)
@@ -218,13 +222,20 @@ namespace HorsePersonalities.Game
                 _log.Info(Log, hold == null ? "Behaviors back on." : $"Behaviors held: {hold}.");
                 _lastHold = hold;
             }
-            if (hold != null) { _push.Reset(); _wasAiming = false; return; }
+            if (hold != null) { _push.Reset(); _wasAiming = false; _aimSeconds = 0; return; }
 
             double speed = _game.GetSpeed(horse);
             double still = speed < _t.StandingStillSpeed ? (_stillSeconds.TryGetValue(horse, out double st) ? st : 0) + dt : 0;
             _stillSeconds[horse] = still;
             bool walkedAway = !mounted && _lastPlayerDistance >= 0 && _lastPlayerDistance < _t.ShadowTriggerDistance && playerDistance >= _t.ShadowTriggerDistance;
-            _lastPlayerDistance = mounted ? -1 : playerDistance;
+            _lastPlayerDistance = mounted || far ? -1 : playerDistance;
+            if (far)
+            {
+                var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.BondRank };
+                Decision gone = _signatures.Decide(horse, p, away, dt, _cooldowns, nowSeconds);
+                if (!gone.IsNone) { Play(horse, gone.Action, 0); _log.Info(Log, $"{record.Id}: {gone.Action} ({gone.Cause})"); }
+                return;
+            }
             if (_scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds);
             else _lastScan.NewPredator = 0; // a predator counts once, in the scan that found it
 
@@ -277,9 +288,10 @@ namespace HorsePersonalities.Game
             }
 
             // ---- Phase 7b: coat signatures ----
-            bool aiming = mounted && p.Has(Signature.DramaticRear) && _game.IsPlayerAiming;
+            bool aiming = mounted && (p.Has(Signature.DramaticRear) || p.Has(Signature.BoredBuck)) && _game.IsPlayerAiming;
             bool startedAiming = aiming && !_wasAiming;
             _wasAiming = aiming;
+            _aimSeconds = aiming ? _aimSeconds + dt : 0;
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
             if (cap.HasValue) { _lazyHorse = horse; _lazyRatio = (float)cap.Value; }
@@ -304,6 +316,7 @@ namespace HorsePersonalities.Game
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
                     CreepTarget = _lastScan.CreepTarget,
+                    AimingSeconds = _aimSeconds,
                 };
                 decision = _signatures.Decide(horse, p, sig, dt, _cooldowns, nowSeconds);
             }
@@ -428,6 +441,14 @@ namespace HorsePersonalities.Game
                     _game.Unhitch(horse);
                     Schedule(1.0, "wander off", () => _game.WanderNearby(horse, 15f));
                     Schedule(1.0 + _t.WanderSeconds, "end wander", () => _game.ClearTasks(horse));
+                    break;
+                case BehaviorAction.Roam:
+                    _game.WanderFreely(horse);
+                    Schedule(_t.WanderlustSeconds, "end roam", () => _game.ClearTasks(horse));
+                    break;
+                case BehaviorAction.SnackStop:
+                    _game.HorseAction(horse, 3); // quick stop
+                    Schedule(1.0, "snack", () => _game.StartScenario(horse, "WORLD_ANIMAL_HORSE_GRAZING", (int)(_t.SnackSeconds * 1000), "WORLD_ANIMAL_HORSE_GRAZING"));
                     break;
                 case BehaviorAction.Wander:
                     // Phase 1 trigger 41: wander, then graze with the grazing animation named.

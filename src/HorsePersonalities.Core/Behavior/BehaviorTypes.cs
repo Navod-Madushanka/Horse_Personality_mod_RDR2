@@ -16,6 +16,8 @@ namespace HorsePersonalities.Core.Behavior
         Call, Content, Follow, Wander, KickNpc, LookAt,
         // Phase 7b: coat signatures. Unhitch, Graze, Brawl, Creep, Stare and Sigh need Phase 7b's DevTools triggers 43-54.
         Unhitch, Graze, Brawl, Creep, Stare, Sigh, Snub,
+        // Fox Trotter coats: Roam (wander freely, trigger 40), SnackStop (quick stop, then graze ridden, trigger 46).
+        Roam, SnackStop,
     }
 
     [Flags]

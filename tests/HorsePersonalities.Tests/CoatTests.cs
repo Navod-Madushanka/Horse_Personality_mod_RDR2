@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(7, Catalog.CoatCount);
+            Assert.Equal(14, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -293,6 +293,71 @@ namespace HorsePersonalities.Tests
             var excited = new CareReactor(T, () => 0);
             Assert.Equal(BehaviorAction.Agitate, excited.BrushStarted(With(Signature.BrushExcitement)).First);
             Assert.Equal(BehaviorAction.None, excited.BrushStarted(With()).First);
+        }
+            // ---- Missouri Fox Trotter coats ----
+
+        [Fact]
+        public void FoxTrotterCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_missourifoxtrotter_silverdapplepinto", out Coat celeb));
+            Assert.Equal("The Elusive Celebrity", celeb.Archetype);
+            Assert.Contains(Signature.Wanderlust, celeb.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_missourifoxtrotter_blueroan", out Coat baseline));
+            Assert.Equal(new[] { Signature.Stoic }, baseline.Signatures);
+        }
+
+        [Fact]
+        public void StoicGivesNothingBackForAPat()
+        {
+            var care = new CareReactor(T, () => 0);
+            var warm = new Personality("Missouri Fox Trotter", HorseOrigin.Stable, 1, HorseQuality.Good, new Traits(0, 0, 0, 2), new[] { Quirk.Shadow },
+                new NaturalStats(0, 0, 0, 0), BreakingDifficulty.Normal, false, "Test", new[] { Signature.Stoic });
+            Assert.Equal(BehaviorAction.None, care.React(warm, DemeanorTraits.None, CareKind.Pat, 1, 0).First);
+            Assert.NotEqual(BehaviorAction.None, care.React(warm, DemeanorTraits.None, CareKind.Brush, 1, 0).First);
+        }
+
+        [Fact]
+        public void WanderlustRoamsWithYouFarAwayOncePerStop()
+        {
+            var p = With(Signature.Wanderlust);
+            var brain = new SignatureBrain(T, () => 0);
+            var cd = new CooldownBook(T, 0);
+            var s = new SignatureSituation { PlayerDistance = 300, StandingStillSeconds = T.WanderlustDelaySeconds }; // far: not near, not mounted
+            Assert.Equal(BehaviorAction.Roam, brain.Decide(1, p, s, 0.25, cd, 0).Action);
+            Assert.True(brain.Decide(1, p, s, 0.25, cd, 10_000).IsNone);
+            s.PlayerDistance = T.WanderlustPlayerDistance - 1; s.PlayerNear = true;
+            Assert.True(new SignatureBrain(T, () => 0).Decide(1, p, s, 0.25, new CooldownBook(T, 0), 0).IsNone);
+        }
+
+        [Fact]
+        public void FarAwayOnlyTheLeaveMeHabitsWork()
+        {
+            Assert.True(SignatureBrain.WatchedFar(With(Signature.EscapeArtist)));
+            Assert.False(SignatureBrain.WatchedFar(With(Signature.SoulStare)));
+            var s = new SignatureSituation { PlayerDistance = 100, StrangerClose = 5, StandingStillSeconds = 1 };
+            Assert.True(S(With(Signature.SoulStare, Signature.EscapeArtist), s).IsNone);
+        }
+
+        [Fact]
+        public void BoredBuckOncePerAimThrowsOnlyAtLowBond()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var cd = new CooldownBook(T, 0);
+            var s = Riding(still: 3); s.AimingSeconds = T.BoredAimSeconds; s.BondLevel = 1;
+            Assert.Equal(BehaviorAction.ThrowRider, brain.Decide(1, With(Signature.BoredBuck), s, 0.25, cd, 0).Action);
+            Assert.True(brain.Decide(1, With(Signature.BoredBuck), s, 0.25, cd, 10_000).IsNone); // same aim
+            s.BondLevel = 4;
+            Assert.Equal(BehaviorAction.Agitate, S(With(Signature.BoredBuck), s).Action);
+            s.AimingSeconds = T.BoredAimSeconds - 1;
+            Assert.True(S(With(Signature.BoredBuck), s).IsNone);
+        }
+
+        [Fact]
+        public void ClumsyTripsAtATrotAndSnackMagnetStopsAtAWalk()
+        {
+            Assert.Equal(BehaviorAction.Skid, S(With(Signature.Clumsy), Riding(speed: (T.WalkSpeed + T.GallopSpeed) / 2)).Action);
+            Assert.True(S(With(Signature.Clumsy), Riding(speed: T.GallopSpeed + 1)).IsNone);
+            Assert.Equal(BehaviorAction.SnackStop, S(With(Signature.SnackMagnet), Riding(speed: 1.5)).Action);
         }
     }
 }

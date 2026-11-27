@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (478 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (484 tests pass); not run in game yet.
 
 ## What changed
 
@@ -34,9 +34,29 @@ All share one cooldown (*Signature cooldown*, 60 s) and the 20 s gap, and are he
 | Soul stare | 6 s stare at a stranger within 4 m, 1/min | - |
 | Camp creeper | You near, off it: follows someone within 10 m for 6 s, 0.3/min | Trigger 50 |
 
+## Missouri Fox Trotter coats (added Nov 27)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Black Tovero, Blue Roan, Buckskin Brindle, Dapple Grey, Sable Champagne | The Blue-Collar Athlete (baseline) | +1 / -2 / -1 / 0 | Shadow | Stoic |
+| Silver Dapple Pinto | The Elusive Celebrity | +2 / -1 / 0 / -1 | Nosy | Wanderlust, Escape artist, Bored buck, Stoic |
+| Amber Champagne | The Golden Retriever | +1 / 0 / -1 / +2 | Shadow | Clumsy, Snack magnet, Roadside grazer |
+
+| Signature | How it plays |
+| --- | --- |
+| Stoic | A pat gets nothing back, whatever its traits (brushing and feeding still can) |
+| Wanderlust | Untied, you 8 m+ away for 8 s: wanders freely for 40 s, once per stop. Whistle it back |
+| Bored buck | You aim from its back, standing still, 8 s: 30% it throws you (bond 1-2) or fidgets (bond 3-4), once per aim |
+| Clumsy | A skid at a trot or canter, 0.3/min |
+| Snack magnet | At a walk: a quick stop, then 5 s of grazing, 0.3/min |
+
+Cut: cornering like a wagon, knocking over fences (no script control), nudging you while you loot (Shadow keeps it close instead). Mud, rain and hills not bothering it is its Nerves -2 and no Mud tantrum; endurance is the breed's own stamina.
+
+**Fix found while building:** the runner stopped looking at a horse more than 15 m from you, so Escape artist (20 m) could never have fired. Horses with Escape artist or Wanderlust are now watched at any distance, for those two habits only.
+
 ## Testing it
 
-- **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The seven Arabian coat models are assigned to it, so in test mode every Arabian you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
+- **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian and Fox Trotter coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
 - **DevTools triggers 43-55** check each native the signatures rely on. See the home test doc, Stage 12.
 
 ## Open

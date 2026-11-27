@@ -109,6 +109,14 @@ namespace HorsePersonalities.Core.Behavior
         public double CreeperSeconds => _v["creeperSeconds"];
         public double BrushExcitementChance => _v["brushExcitementChance"];
         public double SignatureCooldown => _v["signatureCooldown"];
+        public double WanderlustDelaySeconds => _v["wanderlustDelaySeconds"];
+        public double WanderlustPlayerDistance => _v["wanderlustPlayerDistance"];
+        public double WanderlustSeconds => _v["wanderlustSeconds"];
+        public double BoredAimSeconds => _v["boredAimSeconds"];
+        public double BoredBuckChance => _v["boredBuckChance"];
+        public double ClumsyRate => _v["clumsyRate"];
+        public double SnackMagnetRate => _v["snackMagnetRate"];
+        public double SnackSeconds => _v["snackSeconds"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -203,6 +211,14 @@ namespace HorsePersonalities.Core.Behavior
             ("creeperSeconds", "Creeper seconds", 0.5, 60.0, false),
             ("brushExcitementChance", "Brush excitement chance", 0.0, 1.0, false),
             ("signatureCooldown", "Signature cooldown", 0.0, 3600.0, false),
+            ("wanderlustDelaySeconds", "Wanderlust delay seconds", 1.0, 600.0, false),
+            ("wanderlustPlayerDistance", "Wanderlust player distance", 0.0, 200.0, false),
+            ("wanderlustSeconds", "Wanderlust seconds", 1.0, 600.0, false),
+            ("boredAimSeconds", "Bored aim seconds", 1.0, 120.0, false),
+            ("boredBuckChance", "Bored buck chance", 0.0, 1.0, false),
+            ("clumsyRate", "Clumsy rate", 0.0, 20.0, false),
+            ("snackMagnetRate", "Snack magnet rate", 0.0, 20.0, false),
+            ("snackSeconds", "Snack seconds", 1.0, 60.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

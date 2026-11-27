@@ -33,6 +33,8 @@ namespace HorsePersonalities.Core.Behavior
         public int StrangerClose;
         /// <summary>A human NPC within Camp creeper range (0 for none).</summary>
         public int CreepTarget;
+        /// <summary>How long the player has aimed without a break (0 when not aiming).</summary>
+        public double AimingSeconds;
     }
 
     /// <summary>
@@ -51,6 +53,8 @@ namespace HorsePersonalities.Core.Behavior
         private readonly Func<double> _random;
         private readonly HashSet<int> _grazedThisStop = new HashSet<int>();
         private readonly HashSet<int> _escapedThisStop = new HashSet<int>();
+        private readonly HashSet<int> _roamedThisStop = new HashSet<int>();
+        private readonly HashSet<int> _boredThisAim = new HashSet<int>();
 
         public SignatureBrain(BehaviorTuning tuning, Func<double> random)
         {
@@ -64,8 +68,11 @@ namespace HorsePersonalities.Core.Behavior
 
         public Decision Decide(int horse, Personality p, SignatureSituation s, double dt, CooldownBook cooldowns, double now)
         {
-            if (p == null || p.Signatures.Count == 0 || (!s.Mounted && !s.PlayerNear && !p.Has(Signature.EscapeArtist))) return Decision.None;
-            if (s.StandingStillSeconds <= 0) { _grazedThisStop.Remove(horse); _escapedThisStop.Remove(horse); }
+            if (p == null || p.Signatures.Count == 0) return Decision.None;
+            bool far = !s.Mounted && !s.PlayerNear;
+            if (far && !WatchedFar(p)) return Decision.None;
+            if (s.StandingStillSeconds <= 0) { _grazedThisStop.Remove(horse); _escapedThisStop.Remove(horse); _roamedThisStop.Remove(horse); }
+            if (s.AimingSeconds <= 0) _boredThisAim.Remove(horse);
 
             // Answers to a moment come first: they are once per moment, not a rate.
             if (p.Has(Signature.DramaticRear) && s.Mounted && s.StartedAiming && s.StandingStillSeconds > 0 && IsDusk(s.GameHour)
@@ -81,6 +88,22 @@ namespace HorsePersonalities.Core.Behavior
                 _escapedThisStop.Add(horse);
                 return Use(horse, BehaviorAction.Unhitch, $"Escape artist: left standing {s.StandingStillSeconds:0} s with you {s.PlayerDistance:0} m away", cooldowns, now);
             }
+            if (p.Has(Signature.Wanderlust) && !s.Mounted && s.PlayerDistance >= _t.WanderlustPlayerDistance
+                && s.StandingStillSeconds >= _t.WanderlustDelaySeconds && !_roamedThisStop.Contains(horse) && Ready(horse, cooldowns, now))
+            {
+                _roamedThisStop.Add(horse);
+                return Use(horse, BehaviorAction.Roam, $"Wanderlust: untied {s.StandingStillSeconds:0} s with you {s.PlayerDistance:0} m away, off to see the next hill", cooldowns, now);
+            }
+            if (far) return Decision.None; // only the two habits above work with you far away
+            if (p.Has(Signature.BoredBuck) && s.Mounted && s.StandingStillSeconds > 0 && s.AimingSeconds >= _t.BoredAimSeconds
+                && !_boredThisAim.Contains(horse) && Ready(horse, cooldowns, now))
+            {
+                _boredThisAim.Add(horse);
+                double roll = _random();
+                if (roll < _t.BoredBuckChance)
+                    return Use(horse, s.BondLevel <= 2 ? BehaviorAction.ThrowRider : BehaviorAction.Agitate,
+                        $"Bored buck: you aimed {s.AimingSeconds:0} s, bond {s.BondLevel}: roll {F3(roll)} vs {F3(_t.BoredBuckChance)}", cooldowns, now);
+            }
             if (p.Has(Signature.RoadsideGrazer) && s.Mounted && s.StandingStillSeconds >= _t.GrazerIdleSeconds
                 && !_grazedThisStop.Contains(horse) && Ready(horse, cooldowns, now))
             {
@@ -94,6 +117,10 @@ namespace HorsePersonalities.Core.Behavior
             var candidates = new List<(BehaviorAction Action, double PerMinute, string Why, int Target)>();
             if (p.Has(Signature.MoodyRefusal) && walking)
                 candidates.Add((BehaviorAction.QuickStop, _t.MoodyRefusalRate * (s.BondLevel <= 1 ? 1.5 : 1), "Moody refusal: in a mood at a walk" + (s.BondLevel <= 1 ? ", weak bond" : ""), 0));
+            if (p.Has(Signature.SnackMagnet) && walking)
+                candidates.Add((BehaviorAction.SnackStop, _t.SnackMagnetRate, "Snack magnet: spotted something tasty", 0));
+            if (p.Has(Signature.Clumsy) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.SpeedMs < _t.GallopSpeed)
+                candidates.Add((BehaviorAction.Skid, _t.ClumsyRate, "Clumsy: tripped over its own hooves", 0));
             if (p.Has(Signature.MudTantrum) && s.DirtRank >= _t.FussyDirtRank)
                 candidates.Add((BehaviorAction.Agitate, _t.FussyRate, $"Mud tantrum: dirt rank {s.DirtRank}", 0));
             if (p.Has(Signature.TownDisdain) && s.InTown && s.TownPerson != 0)
@@ -122,6 +149,9 @@ namespace HorsePersonalities.Core.Behavior
             }
             return Decision.None;
         }
+
+        /// <summary>Habits that need the horse watched with you far away (the runner otherwise stops at 15 m).</summary>
+        public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust));
 
         /// <summary>Dusk and night: from Dusk starts hour until Night ends hour.</summary>
         public bool IsDusk(int hour) =>

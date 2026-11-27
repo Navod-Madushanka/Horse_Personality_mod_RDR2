@@ -154,7 +154,15 @@
     "creeperRate": 0.3,
     "creeperSeconds": 6,
     "brushExcitementChance": 0.9,
-    "signatureCooldown": 60
+    "signatureCooldown": 60,
+    "wanderlustDelaySeconds": 8,
+    "wanderlustPlayerDistance": 8,
+    "wanderlustSeconds": 40,
+    "boredAimSeconds": 8,
+    "boredBuckChance": 0.3,
+    "clumsyRate": 0.3,
+    "snackMagnetRate": 0.3,
+    "snackSeconds": 5
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -987,6 +995,160 @@
         "impatient": 0,
         "alert": 2,
         "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_blacktovero",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Blue-Collar Athlete (Fox Trotter baseline)",
+      "vibe": "Unmatched work ethic, rock-solid reliability, incredible endurance: doesn't care about mud, rain or steep mountain trails, and will happily run from one side of the map to the other. Zero finesse or grace, and the emotional range of a brick wall when you try to praise it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_blueroan",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Blue-Collar Athlete (Fox Trotter baseline)",
+      "vibe": "Unmatched work ethic, rock-solid reliability, incredible endurance: doesn't care about mud, rain or steep mountain trails, and will happily run from one side of the map to the other. Zero finesse or grace, and the emotional range of a brick wall when you try to praise it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_buckskinbrindle",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Blue-Collar Athlete (Fox Trotter baseline)",
+      "vibe": "Unmatched work ethic, rock-solid reliability, incredible endurance: doesn't care about mud, rain or steep mountain trails, and will happily run from one side of the map to the other. Zero finesse or grace, and the emotional range of a brick wall when you try to praise it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_dapplegrey",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Blue-Collar Athlete (Fox Trotter baseline)",
+      "vibe": "Unmatched work ethic, rock-solid reliability, incredible endurance: doesn't care about mud, rain or steep mountain trails, and will happily run from one side of the map to the other. Zero finesse or grace, and the emotional range of a brick wall when you try to praise it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_sablechampagne",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Blue-Collar Athlete (Fox Trotter baseline)",
+      "vibe": "Unmatched work ethic, rock-solid reliability, incredible endurance: doesn't care about mud, rain or steep mountain trails, and will happily run from one side of the map to the other. Zero finesse or grace, and the emotional range of a brick wall when you try to praise it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_silverdapplepinto",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Elusive Celebrity",
+      "vibe": "The Legend (Albert Mason, Blackwater). Everyone in the West wants this horse, and it knows it. Cool under pressure, fearless around wildlife: casually trots past an alligator just to flex. Long bounty hunts are a morning jog. Chronic wanderlust and zero loyalty to hitching posts. Doesn't buck you out of fear; bucks you because it got bored waiting for you to aim.",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Wanderlust", "EscapeArtist", "BoredBuck", "Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_missourifoxtrotter_amberchampagne",
+      "breed": "Missouri Fox Trotter",
+      "archetype": "The Golden Retriever",
+      "vibe": "The Cheerful Farmhand (Scarlett Meadows). Pure sunshine: eager, friendly, obsessed with earning its keep, a steady upbeat rhythm whether hauling an elk or outrunning the law, loves a brush-down after a long day. Clumsy and easily distracted by snacks: trips on flat roads, tries to eat every wildflower it passes.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Clumsy", "SnackMagnet", "RoadsideGrazer"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
         "fussy": 0
       }
     }

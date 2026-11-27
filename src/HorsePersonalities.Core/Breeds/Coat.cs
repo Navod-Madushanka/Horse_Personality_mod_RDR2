@@ -26,6 +26,12 @@ namespace HorsePersonalities.Core.Breeds
         WolfBrawler,
         SoulStare,
         CampCreeper,
+        // Missouri Fox Trotter coats (Nov 27, 2026)
+        Stoic,
+        Wanderlust,
+        BoredBuck,
+        Clumsy,
+        SnackMagnet,
     }
 
     /// <summary>

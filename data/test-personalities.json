@@ -272,7 +272,7 @@
     },
     {
       "name": "Coat design",
-      "purpose": "Phase 7b: an Arabian coat gets exactly its hand-written design (traits, signature quirks, signatures). Other horses: Average.",
+      "purpose": "Phase 7b: an Arabian or Fox Trotter coat gets exactly its hand-written design (traits, signature quirks, signatures). Other horses: Average.",
       "quality": "Good",
       "prized": false,
       "coatDesign": true,
@@ -301,6 +301,13 @@
     "a_c_horse_arabian_rosegreybay": "Coat design",
     "a_c_horse_arabian_redchestnut": "Coat design",
     "a_c_horse_arabian_redchestnut_pc": "Coat design",
-    "a_c_horse_arabian_warpedbrindle_pc": "Coat design"
+    "a_c_horse_arabian_warpedbrindle_pc": "Coat design",
+    "a_c_horse_missourifoxtrotter_blacktovero": "Coat design",
+    "a_c_horse_missourifoxtrotter_blueroan": "Coat design",
+    "a_c_horse_missourifoxtrotter_buckskinbrindle": "Coat design",
+    "a_c_horse_missourifoxtrotter_dapplegrey": "Coat design",
+    "a_c_horse_missourifoxtrotter_sablechampagne": "Coat design",
+    "a_c_horse_missourifoxtrotter_silverdapplepinto": "Coat design",
+    "a_c_horse_missourifoxtrotter_amberchampagne": "Coat design"
   }
 }
