@@ -130,7 +130,7 @@ namespace HorsePersonalities.Tests
         public void PrizedTabBecomesPrizedModels()
         {
             var p = Convert()["prizedModels"];
-            Assert.Equal(9, p.Count);
+            Assert.Equal(10, p.Count);
             Assert.Contains(p.Items, m => m["model"].AsString() == "a_c_horse_arabian_redchestnut_pc" && m["why"].AsString() == "Special");
         }
 
@@ -147,8 +147,9 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void CommunityFavoriteIsReadFromTheSheetsWording()
         {
-            string prized = Export("Prized.csv") + "a_c_horse_turkoman_gold,Turkoman,Community favorite,\n";
-            Assert.Contains(Convert(prized: prized)["prizedModels"].Items, m => m["why"].AsString() == "CommunityFavorite");
+            // The shipped Prized tab writes "Community favorite" (the Gold Turkoman and the Silver Dapple Pinto).
+            Assert.Contains("Community favorite", Export("Prized.csv"));
+            Assert.Contains(Convert()["prizedModels"].Items, m => m["model"].AsString() == "a_c_horse_turkoman_gold" && m["why"].AsString() == "CommunityFavorite");
         }
 
         [Fact]

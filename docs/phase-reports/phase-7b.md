@@ -82,7 +82,7 @@ Cut: shortcuts, charging brush, cliffs like stairs (no steering or terrain contr
 | --- | --- | --- | --- | --- |
 | Black, Chestnut, Grey, Perlino | The Elite Adrenaline Junkie (baseline) | +2 / -1 / +1 / +1 | Head-tosser | Restless, Trail snob |
 | Dark Bay | The Aristocratic Assassin | +2 / -2 / +1 / 0 | Kicker | War horse, Snob, Silent stealth, Mud tantrum, Restless; loves sugar cubes, ignores haycubes |
-| Gold | The Hollywood Action Star | +1 / +1 / +1 / +1 | Head-tosser, Chatterbox | Showboat, Must lead, Vain, Restless, Trail snob |
+| Gold (prized: community favorite) | The Hollywood Action Star | +1 / +1 / +1 / +1 | Head-tosser, Chatterbox | Showboat, Must lead, Vain, Restless, Trail snob |
 | Silver | The Stoic Ghost | +2 / -2 / +1 / 0 | Kicker | Town disdain, Stoic, Restless |
 
 | Signature | How it plays |
@@ -106,4 +106,4 @@ The Turkoman is Standard in this mod's stat tiers, so Snob's "lower tier" means 
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian and the Tiger Striped Bay are prized (Rare) and the Silver Dapple Pinto prized (community favorite).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian and the Tiger Striped Bay are prized (Rare) and the Silver Dapple Pinto and Gold Turkoman prized (community favorites).
