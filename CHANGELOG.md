@@ -11,6 +11,7 @@
 - breeds.json schema 7; Roller version 4; 29 new Behavior/Roller settings.
 - **Missouri Fox Trotter coats** (Navod): the Blue-Collar Athlete baseline (five coats), the Elusive Celebrity (Silver Dapple Pinto), the Golden Retriever (Amber Champagne). New signatures Stoic, Wanderlust, Bored buck, Clumsy, Snack magnet (8 new Behavior settings); cornering, fence knocking and loot nudging cut.
 - The Silver Dapple Pinto is on the Prized tab as a community favorite (Navod): always good, never below its design, never Unbreakable, and in line for the +2 long-use growth in Phase 8.
+- The White Arabian is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

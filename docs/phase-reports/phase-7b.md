@@ -63,4 +63,4 @@ Cut: cornering like a wagon, knocking over fences (no script control), nudging y
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats; the White Arabian on the Prized tab as Rare is still his call.
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian is prized (Rare) and the Silver Dapple Pinto prized (community favorite).
