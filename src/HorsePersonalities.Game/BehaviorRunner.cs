@@ -68,6 +68,7 @@ namespace HorsePersonalities.Game
         private double _lastGallopAt = double.NegativeInfinity;
         private double _gallopSeconds, _lastGallopSeconds;
         private readonly Dictionary<int, double> _grudgeUntil = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _soothedAt = new Dictionary<int, double>();
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -214,6 +215,7 @@ namespace HorsePersonalities.Game
         {
             if (_lastHold != null || !TryRecord(horse, out HorseRecord record, out HorseDescription d)) return;
             if (kind != CareKind.Calm) CheckJealous(horse, kind == CareKind.Pat ? "patted" : kind == CareKind.Brush ? "brushed" : "fed");
+            if (kind == CareKind.Pat || kind == CareKind.Calm) _soothedAt[horse] = _now; // Needs soothing
             bool sulking = _grudgeUntil.TryGetValue(horse, out double grudge) && _now < grudge;
             if (sulking && kind == CareKind.Feed)
             {
@@ -376,9 +378,11 @@ namespace HorsePersonalities.Game
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
             double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt);
-            _lazyRatio = cap.HasValue ? (float)cap.Value : 0f;
-            _unhurriedRatio = hurry.HasValue ? (float)hurry.Value : 0f;
-            if (cap.HasValue || p.Has(Signature.Unhurried)) _lazyHorse = horse;
+            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) ? _game.GetVelocity(horse).Z : 0;
+            double? crawl = _signatures.HillCap(p, mounted, climb);
+            _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
+            _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
+            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried)) _lazyHorse = horse;
             if (hurry.HasValue && !_unhurriedSnorted)
             {
                 _unhurriedSnorted = true;
@@ -402,7 +406,10 @@ namespace HorsePersonalities.Game
                     StartedAiming = startedAiming,
                     EnemiesInCombat = _lastScan.EnemiesInCombat,
                     PlayerFiredRecently = nowSeconds - _playerFiredAt < 30,
-                    ClimbSpeed = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) ? _game.GetVelocity(horse).Z : 0,
+                    ClimbSpeed = climb,
+                    SecondsSinceDanger = nowSeconds - _lastDangerAt,
+                    SoothedSinceDanger = _soothedAt.TryGetValue(horse, out double soothed) && soothed >= _lastDangerAt,
+                    InWater = p.Has(Signature.WaterSigh) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
                     CreepTarget = _lastScan.CreepTarget,
@@ -439,7 +446,7 @@ namespace HorsePersonalities.Game
             bool snakeDrama = p.Has(Signature.SnakeDrama);
             double snakeRange = _t.PredatorRange * (snakeDrama ? _t.SnakeRangeMultiplier : 1);
             float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), Math.Max(_t.NosyRange, _t.KickerWitnessRange));
-            bool fights = p.Has(Signature.Prankster) || p.Has(Signature.Unhurried) || p.Has(Signature.WarHorse);
+            bool fights = p.Has(Signature.Prankster) || p.Has(Signature.Unhurried) || p.Has(Signature.WarHorse) || p.Has(Signature.NeedsSoothing);
             if (fights) range = Math.Max(range, (float)_t.PranksterEnemyRange);
             if (p.Has(Signature.ShortKing) || p.Has(Signature.Snob)) range = Math.Max(range, (float)_t.ShortKingRange);
             if (p.Has(Signature.Showboat)) range = Math.Max(range, (float)_t.ShowboatRange);
@@ -594,10 +601,15 @@ namespace HorsePersonalities.Game
                     Vocal(horse, "SNORT");
                     if (target != 0) _game.LookAtEntity(horse, target, 4000);
                     break;
+                case BehaviorAction.Fret:
                 case BehaviorAction.JealousCall:
                     Vocal(horse, "CALL");
                     _game.HorseAgitate(horse, false);
                     if (target != 0) _game.LookAtEntity(horse, target, 4000);
+                    break;
+                case BehaviorAction.Beg:
+                    Vocal(horse, "CONTENT");
+                    _game.LookAtEntity(horse, player, 3000);
                     break;
                 case BehaviorAction.Ignore:
                     // Trigger 57: after the game starts its come-to-you, cancel it and nose the ground.

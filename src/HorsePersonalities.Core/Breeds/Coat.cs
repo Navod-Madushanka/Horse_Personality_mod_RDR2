@@ -58,6 +58,11 @@ namespace HorsePersonalities.Core.Breeds
         Grudge,
         DownhillSnob,
         StrangerDanger,
+        // Thoroughbred coats (Nov 27, 2026)
+        NeedsSoothing,
+        HillCrawler,
+        WaterSigh,
+        AppleBeggar,
     }
 
     /// <summary>

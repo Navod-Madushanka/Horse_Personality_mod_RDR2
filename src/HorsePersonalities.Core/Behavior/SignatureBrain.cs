@@ -61,6 +61,12 @@ namespace HorsePersonalities.Core.Behavior
         public double LastGallopSeconds;
         /// <summary>Someone hurrying toward the player within Stranger danger range (0 for none).</summary>
         public int RushingPerson;
+        /// <summary>Seconds since the last danger (threat, gunfire, fight); large when there was none.</summary>
+        public double SecondsSinceDanger;
+        /// <summary>You patted or calmed it since that danger.</summary>
+        public bool SoothedSinceDanger;
+        /// <summary>IS_ENTITY_IN_WATER on the horse.</summary>
+        public bool InWater;
     }
 
     /// <summary>
@@ -202,6 +208,13 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Snub, _t.SnobRate, "Snob: ears back at a cheaper horse", s.LowerTierHorse));
             if (p.Has(Signature.MustLead) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.HorseAhead != 0)
                 candidates.Add((BehaviorAction.Agitate, _t.MustLeadRate, "Must lead: stuck behind another horse", 0));
+            if (p.Has(Signature.NeedsSoothing) && (s.Mounted || s.PlayerNear) && !s.SoothedSinceDanger
+                && s.SecondsSinceDanger >= _t.NeedsSoothingDelay && s.SecondsSinceDanger <= _t.NeedsSoothingSeconds)
+                candidates.Add((BehaviorAction.Fret, _t.NeedsSoothingRate, $"Needs soothing: still rattled {s.SecondsSinceDanger:0} s after the danger", 0));
+            if (p.Has(Signature.WaterSigh) && s.Mounted && s.InWater && s.SpeedMs >= _t.StandingStillSpeed)
+                candidates.Add((BehaviorAction.Sigh, _t.WaterSighRate, "Water sigh: wet hooves, again", 0));
+            if (p.Has(Signature.AppleBeggar) && !s.Mounted && s.PlayerNear && s.PlayerDistance <= _t.BeggarRange && s.StandingStillSeconds >= _t.BeggarSeconds)
+                candidates.Add((BehaviorAction.Beg, _t.BeggarRate, "Apple beggar: you've been standing here long enough to hand over an apple", 0));
             if (p.Has(Signature.DownhillSnob) && walking && -s.ClimbSpeed >= _t.DownhillSpeed)
                 candidates.Add((BehaviorAction.Snub, _t.DownhillSnobRate, $"Downhill snob: held to a walk going down {-s.ClimbSpeed:0.0} m/s", 0));
             if (p.Has(Signature.StrangerDanger) && s.RushingPerson != 0)
@@ -244,6 +257,10 @@ namespace HorsePersonalities.Core.Behavior
         /// <summary>Habits that need the horse watched with you far away (the runner otherwise stops at 15 m).</summary>
         public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust) || p.Has(Signature.GuardDog)
             || p.Has(Signature.SeparationAnxiety));
+
+        /// <summary>Hill crawler: the cap on a steep climb, spurred or not, or null.</summary>
+        public double? HillCap(Personality p, bool mounted, double climbSpeed) =>
+            p != null && p.Has(Signature.HillCrawler) && mounted && climbSpeed >= _t.HillClimbSpeed ? _t.HillCrawlRatio : (double?)null;
 
         /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
         public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>

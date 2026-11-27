@@ -534,6 +534,15 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Stranger danger** (Blue Roan): someone hurrying toward you within 6 m: it spins on them, agitated and glaring, never a real kick (kicking a townsperson is a crime).
   - Reused: Showboat (Reverse Dapple), Vain (Blue Roan; it loves oatcakes), Wanderlust, Selective hearing, Restless and Saddle hater (White Roan).
   - Cut: low health (that is the breed's stats), being slippery when spooked (its Nerves), cornering too fast and jumping wagons (no steering), joining a herd of deer (Wanderlust wanders; no herd to join).
+  - Prized (Navod, Nov 27): Reverse Dapple Roan Nokota (community favorite).
+- **Thoroughbred coats** (Navod, Nov 27, 2026): a baseline *High-Strung Drama Queen* for the Black Chestnut, *The Exotic Supermodel* (Brindle), *The Brooding Outlaw Prince* (Reverse Dapple Black), *The Untamed Rebel* (Blood Bay) and *The Loyal Veteran* (Dapple Grey). Five new signatures; DevTools trigger 61 checks the in-water native:
+  - **Needs soothing** (baseline, Brindle, Blood Bay): after any danger (a threat, gunfire, a fight) it frets, calling and stamping 2/min for up to 2 minutes, until you pat or calm it.
+  - **Hill crawler** (Dapple Grey): climbing steeply, it slows to a walk even when you spur it (trigger 45's walk cap).
+  - **Water sigh** (Dapple Grey): moving through water: a heavy sigh, 1/min (trigger 61).
+  - **Apple beggar** (Dapple Grey): you stand on foot next to it for 10 s: it nickers and looks at you for an apple, 1/min. It loves apples.
+  - Reused: Clumsy (baseline: trips on rocks with its long legs), Snake drama, Mud tantrum and Vain (Brindle), Snob, Guard dog, Town disdain and Night owl (Reverse Dapple Black), No brakes (Blood Bay), Hill sigh (Dapple Grey).
+  - Rachel, John's Dapple Grey in the epilogue, is a story model (a_c_horse_gang_john) and stays vanilla, as decided for gang horses; a Dapple Grey you tame gets this design.
+  - Cut: towering over townsfolk (its size is the game's), swamps (no swamp check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping control), nudging you (no nudge animation; Apple beggar asks instead).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

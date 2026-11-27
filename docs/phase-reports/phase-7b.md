@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (502 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (505 tests pass); not run in game yet.
 
 ## What changed
 
@@ -133,6 +133,25 @@ All three Nokota coats have a design, so the baseline's Grudge is on each of the
 | Stranger danger | Someone hurrying toward you within 6 m: spins on them, agitated and glaring. Never a real kick | - |
 
 Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and wagon jumping (no steering), joining a deer herd (Wanderlust wanders off).
+
+## Thoroughbred coats (added Nov 27)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Black Chestnut | The High-Strung Drama Queen (baseline) | -1 / +2 / +1 / +1 | Head-tosser | Needs soothing, Clumsy |
+| Brindle | The Exotic Supermodel | -1 / +2 / +1 / 0 | Chatterbox | Snake drama, Mud tantrum, Vain, Needs soothing, Clumsy |
+| Reverse Dapple Black | The Brooding Outlaw Prince | +1 / 0 / +1 / 0 | Head-tosser | Snob, Guard dog, Town disdain, Night owl |
+| Blood Bay | The Untamed Rebel | +2 / +1 / +2 / +1 | Head-tosser | No brakes, Needs soothing, Clumsy |
+| Dapple Grey | The Loyal Veteran | +1 / -1 / -1 / +2 | Shadow | Hill crawler, Hill sigh, Water sigh, Apple beggar; loves apples |
+
+| Signature | How it plays | Needs in game |
+| --- | --- | --- |
+| Needs soothing | After any danger, frets (call and stamp) 2/min for up to 2 minutes, until you pat or calm it | - |
+| Hill crawler | Climbing steeply: capped at a walk, even when spurred | Trigger 45 |
+| Water sigh | Moving through water: a heavy sigh, 1/min | Trigger 61 |
+| Apple beggar | You on foot next to it for 10 s: nickers and looks at you, 1/min | - |
+
+Rachel, John's Dapple Grey in the epilogue, is a story model (`a_c_horse_gang_john`) and stays vanilla, as decided for gang horses. Cut: height (the game's), swamps (no check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping), the nudge (no animation).
 
 ## Testing it
 

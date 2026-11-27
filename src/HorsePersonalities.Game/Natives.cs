@@ -140,6 +140,8 @@ namespace HorsePersonalities.Game
         public const ulong GET_PED_STEALTH_MOVEMENT = 0x7C2AC9CA66575FBF;
         /// <summary>INPUT_WHISTLE and INPUT_WHISTLE_HORSEBACK, from the hook's eInputType.</summary>
         public const uint INPUT_WHISTLE = 0x24978A28, INPUT_WHISTLE_HORSEBACK = 0xE7EB9185;
+        /// <summary>ENTITY::IS_ENTITY_IN_WATER(int entity) -> bool</summary>
+        public const ulong IS_ENTITY_IN_WATER = 0xDDE5C125AC446723;
         /// <summary>SCRIPTS::GET_NUMBER_OF_EVENTS(int eventGroup) -> int</summary>
         public const ulong GET_NUMBER_OF_EVENTS = 0x5CE8DE5909565748;
         /// <summary>SCRIPTS::GET_EVENT_AT_INDEX(int eventGroup, int eventIndex) -> uint</summary>

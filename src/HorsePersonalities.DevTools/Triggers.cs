@@ -411,6 +411,16 @@ namespace HorsePersonalities.DevTools
                     Watch();
                     return "Watching EVENT_ENTITY_DAMAGED on your horse for 30 s (see the log)";
                 }));
+
+            // ---- Thoroughbred coats (Nov 27, 2026): 61 ----
+            t.Add(new Trigger("water.check", "Is my horse in water? (15 s readout)", "Water sigh",
+                "Press, then ride into a river or lake and out again. The log should flip to True in the water.",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    for (int i = 1; i <= 15; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"In water {n}/15: {ctx.Game.IsInWater(h)}")); }
+                    return "IS_ENTITY_IN_WATER once a second for 15 s (see the log)";
+                }));
             return t;
         }
 

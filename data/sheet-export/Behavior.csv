@@ -136,3 +136,11 @@ Downhill snob rate,1,Downhill snob: offended snorts per minute when held to a wa
 Stranger danger range,6,Stranger danger: someone hurrying toward you within this range (m).
 Stranger danger speed,2.5,Stranger danger: walking faster than this (m/s) toward you counts as hurrying.
 Stranger danger rate,6,"Stranger danger: how quickly it reacts, per minute, while someone is rushing you."
+Needs soothing delay,5,Needs soothing: seconds after the danger before it starts fretting.
+Needs soothing seconds,120,"Needs soothing: it frets for up to this long after a danger, unless you pat or calm it."
+Needs soothing rate,2,Needs soothing: frets (call and stamp) per minute.
+Hill crawl ratio,1,"Hill crawler: the pace cap on a steep climb (move blend ratio: 1 walk), even when spurred."
+Water sigh rate,1,Water sigh: heavy sighs per minute moving through water.
+Beggar range,2.5,Apple beggar: you on foot within this range (m) of it.
+Beggar seconds,10,Apple beggar: seconds you stand there before it starts asking.
+Beggar rate,1,Apple beggar: asks per minute after that.

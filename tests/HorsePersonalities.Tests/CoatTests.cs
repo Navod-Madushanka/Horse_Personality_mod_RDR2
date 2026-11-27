@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(37, Catalog.CoatCount);
+            Assert.Equal(42, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -576,6 +576,46 @@ namespace HorsePersonalities.Tests
             var d = S(With(Signature.StrangerDanger), rush);
             Assert.Equal(BehaviorAction.SquareUp, d.Action);
             Assert.Equal(14, d.Target);
+        }
+            // ---- Thoroughbred coats ----
+
+        [Fact]
+        public void ThoroughbredCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_thoroughbred_dapplegrey", out Coat vet));
+            Assert.Equal("The Loyal Veteran", vet.Archetype);
+            Assert.Contains("Apple", vet.LovesTreats);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_thoroughbred_blackchestnut", out Coat baseline));
+            Assert.Equal(new[] { Signature.NeedsSoothing, Signature.Clumsy }, baseline.Signatures);
+            Assert.False(Catalog.TryGetCoat("a_c_horse_gang_john", out _)); // Rachel stays vanilla
+        }
+
+        [Fact]
+        public void NeedsSoothingFretsAfterDangerUntilPatted()
+        {
+            var p = With(Signature.NeedsSoothing);
+            var s = Riding(); s.SecondsSinceDanger = 30;
+            Assert.Equal(BehaviorAction.Fret, S(p, s).Action);
+            s.SoothedSinceDanger = true;
+            Assert.True(S(p, s).IsNone);
+            s.SoothedSinceDanger = false; s.SecondsSinceDanger = T.NeedsSoothingSeconds + 1;
+            Assert.True(S(p, s).IsNone); // it got over it
+            s.SecondsSinceDanger = 1;
+            Assert.True(S(p, s).IsNone); // not yet
+        }
+
+        [Fact]
+        public void HillCrawlerWaterSighAppleBeggar()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(T.HillCrawlRatio, brain.HillCap(With(Signature.HillCrawler), true, T.HillClimbSpeed));
+            Assert.Null(brain.HillCap(With(Signature.HillCrawler), true, 0));
+            var wet = Riding(speed: 2); wet.InWater = true;
+            Assert.Equal(BehaviorAction.Sigh, S(With(Signature.WaterSigh), wet).Action);
+            var beg = new SignatureSituation { PlayerNear = true, PlayerDistance = 1.5, StandingStillSeconds = T.BeggarSeconds };
+            Assert.Equal(BehaviorAction.Beg, S(With(Signature.AppleBeggar), beg).Action);
+            beg.PlayerDistance = 8;
+            Assert.True(S(With(Signature.AppleBeggar), beg).IsNone);
         }
     }
 }

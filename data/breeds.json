@@ -200,7 +200,15 @@
     "downhillSnobRate": 1,
     "strangerDangerRange": 6,
     "strangerDangerSpeed": 2.5,
-    "strangerDangerRate": 6
+    "strangerDangerRate": 6,
+    "needsSoothingDelay": 5,
+    "needsSoothingSeconds": 120,
+    "needsSoothingRate": 2,
+    "hillCrawlRatio": 1,
+    "waterSighRate": 1,
+    "beggarRange": 2.5,
+    "beggarSeconds": 10,
+    "beggarRate": 1
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1723,6 +1731,116 @@
         "impatient": 2,
         "alert": 1,
         "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_thoroughbred_blackchestnut",
+      "breed": "Thoroughbred",
+      "archetype": "The High-Strung Drama Queen (Thoroughbred baseline)",
+      "vibe": "Massive stride, breathtaking top speed, commanding height that towers over townsfolk: nothing feels smoother or faster at full gallop on an open road. High-strung drama queens with glass ankles: panic at loud noises, trip easily on rocky ground with those long legs, need constant soothing pats after even a minor skirmish.",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["NeedsSoothing", "Clumsy"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_thoroughbred_brindle",
+      "breed": "Thoroughbred",
+      "archetype": "The Exotic Supermodel",
+      "vibe": "The High-Stakes Gambler (Strawberry). Flashy, fierce, built to outrun the law: a tiger-striped coat and elite race stats, loves high-speed getaways and being pushed to the limit on open trails. Painfully vain and easily rattled: hates muddy swamps, panics when a snake hisses ten yards away, refuses to move until every speck of trail dust is brushed off.",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["SnakeDrama", "MudTantrum", "Vain", "NeedsSoothing", "Clumsy"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_thoroughbred_reversedappleblack",
+      "breed": "Thoroughbred",
+      "archetype": "The Brooding Outlaw Prince",
+      "vibe": "The Midnight Legend (Ultimate Edition). Sleek, dark, effortlessly intimidating; unlike other Thoroughbreds it carries a quiet swagger, glides into camp like royalty, tears down moonlit roads with lethal grace. Deeply moody and elitist: looks down its nose at every other horse in camp, snorts at strangers who walk too close, throws a mini-tantrum if you make it haul a smelly carcass.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["Snob", "GuardDog", "TownDisdain", "NightOwl"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 1
+      }
+    },
+    {
+      "model": "a_c_horse_thoroughbred_bloodbay",
+      "breed": "Thoroughbred",
+      "archetype": "The Untamed Rebel",
+      "vibe": "The Fiery Hothead (wild in the Heartlands and Big Valley). Pure heart and explosive energy: once broken it gives everything, sprinting fearlessly across open plains, bonding deeply with riders who give it room to run. Zero brakes and terrible impulse control: fights the reins when you slow down, overshoots sharp turns, treats every fallen log as an Olympic hurdle.",
+      "leans": {
+        "courage": 2,
+        "nerves": 1,
+        "temper": 2,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["NoBrakes", "NeedsSoothing", "Clumsy"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_thoroughbred_dapplegrey",
+      "breed": "Thoroughbred",
+      "archetype": "The Loyal Veteran",
+      "vibe": "The Graceful Companion (wild in the Heartlands and Big Valley). Steady, affectionate, far calmer than its flashier cousins: speed with genuine dependability, carries you across the frontier without complaint. Stubbornly opinionated about its comfort: slows to a crawl on steep rocky climbs, sighs loudly when you sprint through deep water, nudges you relentlessly for apples whenever you stand still.",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["HillCrawler", "HillSigh", "WaterSigh", "AppleBeggar"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
         "fussy": 0
       }
     }

@@ -20,6 +20,8 @@ namespace HorsePersonalities.Core.Behavior
         Roam, SnackStop,
         // Mustang coats: SquareUp (agitate + glare at a horse or person), Ignore (clear the come-to-you, nose the ground), Jealous (call + stamp).
         SquareUp, Ignore, JealousCall,
+        // Thoroughbred coats: Fret (call + stamp), Beg (nicker + look at you).
+        Fret, Beg,
     }
 
     [Flags]

@@ -155,6 +155,14 @@ namespace HorsePersonalities.Core.Behavior
         public double StrangerDangerRange => _v["strangerDangerRange"];
         public double StrangerDangerSpeed => _v["strangerDangerSpeed"];
         public double StrangerDangerRate => _v["strangerDangerRate"];
+        public double NeedsSoothingDelay => _v["needsSoothingDelay"];
+        public double NeedsSoothingSeconds => _v["needsSoothingSeconds"];
+        public double NeedsSoothingRate => _v["needsSoothingRate"];
+        public double HillCrawlRatio => _v["hillCrawlRatio"];
+        public double WaterSighRate => _v["waterSighRate"];
+        public double BeggarRange => _v["beggarRange"];
+        public double BeggarSeconds => _v["beggarSeconds"];
+        public double BeggarRate => _v["beggarRate"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -295,6 +303,14 @@ namespace HorsePersonalities.Core.Behavior
             ("strangerDangerRange", "Stranger danger range", 0.5, 50.0, false),
             ("strangerDangerSpeed", "Stranger danger speed", 0.1, 20.0, false),
             ("strangerDangerRate", "Stranger danger rate", 0.0, 60.0, false),
+            ("needsSoothingDelay", "Needs soothing delay", 0.0, 600.0, false),
+            ("needsSoothingSeconds", "Needs soothing seconds", 1.0, 3600.0, false),
+            ("needsSoothingRate", "Needs soothing rate", 0.0, 20.0, false),
+            ("hillCrawlRatio", "Hill crawl ratio", 0.1, 3.0, false),
+            ("waterSighRate", "Water sigh rate", 0.0, 20.0, false),
+            ("beggarRange", "Beggar range", 0.5, 20.0, false),
+            ("beggarSeconds", "Beggar seconds", 1.0, 600.0, false),
+            ("beggarRate", "Beggar rate", 0.0, 20.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

@@ -132,6 +132,8 @@ namespace HorsePersonalities.Core.GameApi
         bool IsPlayerSneaking { get; }
         /// <summary>IS_CONTROL_PRESSED for INPUT_WHISTLE or INPUT_WHISTLE_HORSEBACK (Selective hearing, trigger 56).</summary>
         bool IsWhistlePressed { get; }
+        /// <summary>IS_ENTITY_IN_WATER (Water sigh, trigger 61).</summary>
+        bool IsInWater(int entity);
 
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);
