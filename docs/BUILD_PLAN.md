@@ -38,6 +38,17 @@ Every horse is built from three layers: the breed sets the limits, the individua
    - **Quirks:** 1 to 2 habits from the list of 7 (Chatterbox, Kicker, Head-tosser, Nosy, Shadow, Wanderer, Picky eater). Show-off was cut on Nov 25, 2026: the game has no piaffe a script can trigger.
 3. **Experience** (learned, separate from personality): gunfire, predators, handling, speed and acceleration. Learning speed comes from the breed's class.
 
+### Coat personalities
+
+Decided Nov 27, 2026. Every coat gets a hand-written personality that fits the horse in the game and is fun to ride, starting with Navod's Arabians. Navod writes the coats; the mod turns each into data in the breed sheet's **Coats** tab.
+
+- **Layers become breed, then coat, then individual.** A coat's row gives its archetype and vibe; its own trait leanings, which replace the breed's; its signature quirks and signature behaviors; the treats it loves and ignores; and its demeanor.
+- **Same character, small differences.** Every White Arabian is the Ice Queen: her signature quirks and behaviors always show, and her traits stay close to the design. The dice only nudge the details (Roller tab: *Coat spread*, smaller than the breed spread; how jumpy, which extra quirk), so no two feel exactly alike.
+- A coat with no row yet uses its breed as before.
+- **Signature behaviors** are new habits built from what the game allows (see Phase 7b), each in the sheet's **Signatures** tab with how it works and whether it has passed a trigger test. Ideas the game can't do are listed there as cut, so the written personality and the mod stay honest with each other.
+- The hard rules still hold: no behavior during story missions and cutscenes (a Rose Gray grazes on ordinary rides only), cooldowns, no UI.
+- Prized coats (special, rare, community favorites) still always roll good; their flaws come from their quirks and signature behaviors.
+
 ### How traits are rolled
 
 - Each horse first rolls **good or bad**. `GoodHorseChance` (default 80%) sets the odds.
@@ -462,6 +473,16 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - All rates are in the Behavior tab. Quirks and demeanor are held in missions and cutscenes like every behavior.
 - **Test:** each quirk shows at least once in 15 minutes with its horse; cooldowns hold; each reaction matches the table; none fire in missions.
 - **Done when:** you can name a horse's quirk by watching it.
+
+### Phase 7b: Coat personalities and signature behaviors
+
+- **Agent builds:**
+  - the Coats tab in `breeds.json`, and rolls around a coat's design;
+  - each signature behavior in the Signatures tab: first a DevTools trigger to prove the game can do it, then the behavior itself;
+  - treat names in the sheet, mapped to the item codes the game reports.
+- **You:** write the coats (Arabians first), run the new triggers, mark Works or Doesn't work.
+- **Test:** each coat's signature behaviors show with that coat, and two horses of one coat feel like the same character but not identical.
+- **Done when:** you can tell which Arabian coat you're riding with your eyes closed (almost).
 
 ### Phase 8: Skills and experience
 
