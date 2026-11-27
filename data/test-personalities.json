@@ -269,7 +269,38 @@
         "stamina": -2
       },
       "breaking": "Normal"
+    },
+    {
+      "name": "Coat design",
+      "purpose": "Phase 7b: an Arabian coat gets exactly its hand-written design (traits, signature quirks, signatures). Other horses: Average.",
+      "quality": "Good",
+      "prized": false,
+      "coatDesign": true,
+      "traits": {
+        "courage": 0,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "quirks": [
+        "Nosy"
+      ],
+      "naturalStats": {
+        "speed": 0,
+        "acceleration": 0,
+        "health": 0,
+        "stamina": 0
+      },
+      "breaking": "Normal"
     }
   ],
-  "assign": {}
+  "assign": {
+    "a_c_horse_arabian_grey": "Coat design",
+    "a_c_horse_arabian_white": "Coat design",
+    "a_c_horse_arabian_black": "Coat design",
+    "a_c_horse_arabian_rosegreybay": "Coat design",
+    "a_c_horse_arabian_redchestnut": "Coat design",
+    "a_c_horse_arabian_redchestnut_pc": "Coat design",
+    "a_c_horse_arabian_warpedbrindle_pc": "Coat design"
+  }
 }

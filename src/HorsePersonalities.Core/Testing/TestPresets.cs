@@ -20,16 +20,30 @@ namespace HorsePersonalities.Core.Testing
         private readonly BreakingDifficulty _breaking;
         private readonly HorseOrigin? _origin;
 
+        /// <summary>Phase 7b: a horse with a coat design gets exactly that design (traits, signature quirks, signatures), no dice.</summary>
+        public bool CoatDesign { get; }
+
         internal TestPreset(string name, string purpose, HorseQuality quality, bool prized, Traits traits, IReadOnlyList<Quirk> quirks,
-            NaturalStats stats, BreakingDifficulty breaking, HorseOrigin? origin)
+            NaturalStats stats, BreakingDifficulty breaking, HorseOrigin? origin, bool coatDesign = false)
         {
             Name = name; Purpose = purpose; _quality = quality; _prized = prized; _traits = traits; _quirks = quirks;
-            _stats = stats; _breaking = breaking; _origin = origin;
+            _stats = stats; _breaking = breaking; _origin = origin; CoatDesign = coatDesign;
         }
 
-        /// <summary>The preset on a horse of this breed. The preset's origin wins (Wild presets make breaking testable on any horse).</summary>
-        public Personality For(Breed breed, HorseOrigin origin, ulong seed) =>
-            new Personality(breed.Name, _origin ?? origin, seed, _quality, _traits, _quirks, _stats, _breaking, _prized);
+        /// <summary>
+        /// The preset on a horse of this breed. The preset's origin wins (Wild presets make breaking testable on any horse).
+        /// A Coat design preset on a horse whose model has a coat gives that coat's exact design; other horses get the preset's own values.
+        /// </summary>
+        public Personality For(Breed breed, HorseOrigin origin, ulong seed, string model = null, PersonalityRoller roller = null, BreedCatalog catalog = null)
+        {
+            if (CoatDesign && model != null && roller != null && catalog != null && catalog.TryGetCoat(model, out Coat coat))
+            {
+                Personality d = roller.Roll(breed, _origin ?? origin, seed, _prized || catalog.TryGetPrized(model, out _), model, exactDesign: true);
+                return new Personality(d.Breed, d.Origin, seed, d.Quality, new Traits(coat.Leans.Courage, coat.Leans.Nerves, coat.Leans.Temper, coat.Leans.BondAffinity),
+                    d.Quirks, _stats, _breaking, d.Prized, d.Archetype, d.Signatures);
+            }
+            return new Personality(breed.Name, _origin ?? origin, seed, _quality, _traits, _quirks, _stats, _breaking, _prized);
+        }
     }
 
     /// <summary>Loads HorsePersonalities/test-personalities.json: the presets and which models get which.</summary>
@@ -98,7 +112,8 @@ namespace HorsePersonalities.Core.Testing
                     if (!Enum.TryParse(p.GetString("quality", "Good"), true, out HorseQuality quality)) throw new JsonException("quality must be Good or Bad.");
                     if (!Enum.TryParse(p.GetString("breaking", "Normal"), true, out BreakingDifficulty breaking)) throw new JsonException("breaking must be Normal, Hard or Unbreakable.");
                     presets.Add(new TestPreset(name, p.GetString("purpose", ""), quality, p.GetBool("prized", false),
-                        new Traits(T("courage"), T("nerves"), T("temper"), T("bondAffinity")), quirks, stats, breaking, origin));
+                        new Traits(T("courage"), T("nerves"), T("temper"), T("bondAffinity")), quirks, stats, breaking, origin,
+                        p.GetBool("coatDesign", false)));
                 }
                 catch (JsonException ex) { problems.Add($"Preset {name}: {ex.Message}"); }
             }

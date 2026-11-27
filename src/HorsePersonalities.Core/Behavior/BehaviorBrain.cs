@@ -41,6 +41,16 @@ namespace HorsePersonalities.Core.Behavior
             Traits t = p.Traits;
 
             // 1. Threats.
+            // Wolf brawler (coat signature): a predator is something to fight, not flee, when you're off it.
+            if (s.Threat == Threat.Predator && p.Has(Breeds.Signature.WolfBrawler) && s.ThreatEntity != 0)
+            {
+                if (s.Mounted) return cooldowns.Ready(horse, BehaviorGroup.Tell, now)
+                    ? Use(horse, BehaviorAction.LookAtThreat, BehaviorGroup.Tell, "Wolf brawler: eyes the predator, unafraid", cooldowns, now)
+                    : Decision.None;
+                if (cooldowns.Ready(horse, BehaviorGroup.Signature, now))
+                    return Use(horse, BehaviorAction.Brawl, BehaviorGroup.Signature, "Wolf brawler: goes for the predator", cooldowns, now);
+                return Decision.None;
+            }
             if (s.Threat != Threat.None)
             {
                 double courage = t.Courage - (s.Threat == Threat.Explosion ? _t.ExplosionCouragePenalty : 0);
@@ -81,7 +91,7 @@ namespace HorsePersonalities.Core.Behavior
             // 3. Random spooks from Nerves.
             if (cooldowns.Ready(horse, BehaviorGroup.Spook, now) && dtSeconds > 0)
             {
-                double perMinute = RandomSpookRate(t.Nerves, s, out string factors);
+                double perMinute = RandomSpookRate(t.Nerves, s, out string factors, p);
                 double chance = 1 - Math.Exp(-perMinute * dtSeconds / 60.0);
                 double roll = _random();
                 if (roll < chance)
@@ -112,11 +122,16 @@ namespace HorsePersonalities.Core.Behavior
             return 1.0 / (1.0 + (1 - b) / b * Math.Exp(_t.CourageSlope * courage));
         }
 
-        public double RandomSpookRate(double nerves, HorseSituation s, out string factors)
+        public double RandomSpookRate(double nerves, HorseSituation s, out string factors, Personality p = null)
         {
             double rate = _t.SpookBaseRate * Math.Exp(_t.NervesSlope * nerves) * _spookFrequency;
             factors = "";
-            if (IsNight(s.GameHour)) { rate *= _t.NightSpookMultiplier; factors += ", night"; }
+            if (IsNight(s.GameHour))
+            {
+                if (p != null && p.Has(Breeds.Signature.NightOwl)) { rate *= _t.NightOwlMultiplier; factors += ", night (Night owl: calmer)"; }
+                else { rate *= _t.NightSpookMultiplier; factors += ", night"; }
+            }
+            if (s.InTown && p != null && p.Has(Breeds.Signature.CityLover)) { rate *= _t.CityLoverMultiplier; factors += ", town (City lover)"; }
             if (s.Mounted && s.SpeedMs >= _t.GallopSpeed) { rate *= _t.GallopSpookMultiplier; factors += ", gallop"; }
             if (s.BondLevel <= 1) { rate *= _t.WeakBondSpookMultiplier; factors += ", weak bond"; }
             else if (s.BondLevel >= 4) { rate *= _t.FullBondSpookMultiplier; factors += ", full bond"; }

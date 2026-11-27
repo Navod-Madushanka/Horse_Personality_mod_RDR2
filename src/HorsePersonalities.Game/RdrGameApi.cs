@@ -150,6 +150,25 @@ namespace HorsePersonalities.Game
 
         public bool IsHuman(int ped) => CallBool(Natives.IS_PED_HUMAN, ped);
 
+        // ---- Phase 7b ----
+
+        public bool IsInTown(int entity)
+        {
+            Vector3 p = Coords(entity);
+            return Function.Call<uint>(Natives.GET_MAP_ZONE_AT_COORDS, p.X, p.Y, p.Z, 1) != 0;
+        }
+
+        public bool IsPlayerAiming => CallBool(Natives.IS_PLAYER_FREE_AIMING, PlayerId);
+        public bool IsPedInCombatWith(int ped, int target) => CallBool(Natives.IS_PED_IN_COMBAT, ped, target);
+        public void SetMaxMoveBlendRatio(int ped, float ratio) => Function.Call(Natives.SET_PED_MAX_MOVE_BLEND_RATIO, ped, ratio);
+        public void Unhitch(int horse) => Function.Call(Natives.UNHITCH_HORSE, horse);
+
+        public Vec3 GetVelocity(int entity)
+        {
+            Vector3 v = Function.Call<Vector3>(Natives.GET_ENTITY_VELOCITY, entity, 0);
+            return new Vec3(v.X, v.Y, v.Z);
+        }
+
         public void SetAttributePoints(int ped, PedAttribute attribute, int points) =>
             Function.Call(Natives.SET_ATTRIBUTE_POINTS, ped, (int)attribute, points);
 

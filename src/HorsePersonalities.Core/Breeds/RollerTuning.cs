@@ -40,6 +40,8 @@ namespace HorsePersonalities.Core.Breeds
         public int RevealFirstRankBond => (int)_v["revealFirstRankBond"];
         /// <summary>Bond level at which a second rank of difference shows.</summary>
         public int RevealSecondRankBond => (int)_v["revealSecondRankBond"];
+        /// <summary>Standard deviation of one horse's trait from its coat's design (Phase 7b): smaller than TraitSpread.</summary>
+        public double CoatSpread => _v["coatSpread"];
 
         private RollerTuning(Dictionary<string, double> values)
         {
@@ -71,6 +73,7 @@ namespace HorsePersonalities.Core.Breeds
             ("prizedBreakScoreBonus", "Prized break score bonus", 0.0, 4.0, false),
             ("revealFirstRankBond", "Reveal first rank bond", 1.0, 4.0, true),
             ("revealSecondRankBond", "Reveal second rank bond", 1.0, 4.0, true),
+            ("coatSpread", "Coat spread", 0.0, 2.0, false),
         };
 
         internal static RollerTuning Read(JsonValue j, List<string> problems)

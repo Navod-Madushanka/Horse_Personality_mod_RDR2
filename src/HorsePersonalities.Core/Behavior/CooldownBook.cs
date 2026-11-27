@@ -48,6 +48,7 @@ namespace HorsePersonalities.Core.Behavior
                 case BehaviorGroup.Buck: return _t.BuckCooldown;
                 case BehaviorGroup.Kick: return _t.KickCooldown;
                 case BehaviorGroup.Quirk: return _quirkCooldown;
+                case BehaviorGroup.Signature: return _t.SignatureCooldown;
                 default: return _t.TellCooldown;
             }
         }

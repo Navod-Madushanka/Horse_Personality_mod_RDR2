@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Phase 7b: coat personalities and signature behaviors (built Nov 27, 2026)
+- The sheet's new Coats tab: hand-written personalities per coat (Navod's seven Arabian coats). A coat's leanings replace its breed's with a tighter spread (*Coat spread* 0.3); its signature quirks always show; its demeanor and loved/ignored treats replace the breed's. Other horses roll exactly as before.
+- 17 signature behaviors (Snake drama, Moody refusal, Mud tantrum, Town disdain, City lover, Night owl, Dramatic rear, Escape artist, Prankster, Lazy pace, Roadside grazer, Hill sigh, Brush excitement, Scatterbrain, Wolf brawler, Soul stare, Camp creeper), sharing a 60 s *Signature cooldown*, held in missions.
+- Every snake model is a threat (5 added to `predator-models.csv`).
+- `horses.json` saves each horse's archetype and signatures. `data/treats.csv` names treats (item codes still to fill).
+- Test mode preset **Coat design**, assigned to the Arabian coats. DevTools triggers 43-55.
+- breeds.json schema 7; Roller version 4; 29 new Behavior/Roller settings.
+
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
 - All 7 quirks: Chatterbox, Kicker (no witnesses), Head-tosser, Nosy, Shadow, Wanderer (wander, then graze), Picky eater (by the treat fed, fixed per horse).
 - Care reactions after pat, brush, feed and calm, affectionate, aloof or grumpy by traits, softening with the bond.

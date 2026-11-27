@@ -31,6 +31,7 @@ namespace HorsePersonalities.Core.Rolling
         private static readonly Quirk[] AllQuirks = (Quirk[])Enum.GetValues(typeof(Quirk));
 
         private readonly RollerTuning _tuning;
+        private readonly BreedCatalog _catalog;
         private readonly IReadOnlyDictionary<StatTier, TierCap> _caps;
         private readonly double _goodChance;
         private readonly double _unbreakableChance;
@@ -41,6 +42,7 @@ namespace HorsePersonalities.Core.Rolling
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             _tuning = catalog.Roller;
+            _catalog = catalog;
             _caps = catalog.TierCaps;
             _goodChance = settings.GoodHorseChance / 100.0;
             _unbreakableChance = settings.UnbreakableChance / 100.0;
@@ -54,9 +56,15 @@ namespace HorsePersonalities.Core.Rolling
             return (Math.Min(cap.Up, _maxRankChange), Math.Min(cap.Down, _maxRankChange));
         }
 
-        public Personality Roll(Breed breed, HorseOrigin origin, ulong seed, bool prized = false)
+        /// <param name="model">The horse's model. With a coat design (Phase 7b) its leanings, signature quirks and signatures are used.</param>
+        /// <param name="exactDesign">Test mode: a coat's design with no dice on the traits (Coat design preset).</param>
+        public Personality Roll(Breed breed, HorseOrigin origin, ulong seed, bool prized = false, string model = null, bool exactDesign = false)
         {
             if (breed == null) throw new ArgumentNullException(nameof(breed));
+            Coat coat = null;
+            if (model != null) _catalog.TryGetCoat(model, out coat);
+            TraitLeans leans = coat?.Leans ?? breed.Leans;
+            double spread = coat == null ? _tuning.TraitSpread : exactDesign ? 0 : _tuning.CoatSpread;
             var rng = new SeededRandom(seed);
 
             // 1. Good or bad.
@@ -66,7 +74,7 @@ namespace HorsePersonalities.Core.Rolling
             // 2. Traits. d = how far each trait sits on the good side of the breed (negative = bad side).
             var d = new double[TraitInfo.All.Length];
             for (int i = 0; i < d.Length; i++)
-                d[i] = q * _tuning.QualityShift + _tuning.TraitSpread * rng.NextGaussian();
+                d[i] = (exactDesign && coat != null ? 0 : q * _tuning.QualityShift * (coat != null ? 0.5 : 1)) + spread * rng.NextGaussian();
             if (prized) NoFlaws(d);
             else LimitWrongSide(d, q, _tuning.FlawMargin);
 
@@ -74,7 +82,7 @@ namespace HorsePersonalities.Core.Rolling
             for (int i = 0; i < d.Length; i++)
             {
                 Trait t = TraitInfo.All[i];
-                values[i] = Clamp(TraitInfo.Lean(breed.Leans, t) + TraitInfo.GoodDirection(t) * d[i], TraitLeans.Min, TraitLeans.Max);
+                values[i] = Clamp(TraitInfo.Lean(leans, t) + TraitInfo.GoodDirection(t) * d[i], TraitLeans.Min, TraitLeans.Max);
             }
             var traits = new Traits(values[0], values[1], values[2], values[3]);
 
@@ -83,8 +91,18 @@ namespace HorsePersonalities.Core.Rolling
             var quirks = new List<Quirk>(2);
             Quirk first = PickQuirk(rng, breed, quirks);
             Quirk second = PickQuirk(rng, breed, new List<Quirk> { first }); // always drawn: fixed draw count
-            quirks.Add(first);
-            if (two) quirks.Add(second);
+            if (coat != null && coat.SignatureQuirks.Count > 0)
+            {
+                // A coat's signature quirks always show; a single one may get a rolled companion.
+                quirks.AddRange(coat.SignatureQuirks);
+                if (quirks.Count == 1 && two && !exactDesign)
+                    quirks.Add(quirks.Contains(first) ? second : first);
+            }
+            else
+            {
+                quirks.Add(first);
+                if (two) quirks.Add(second);
+            }
 
             // 4. Natural stats.
             var (up, down) = StatLimits(breed.Tier);
@@ -106,7 +124,8 @@ namespace HorsePersonalities.Core.Rolling
                 else if (score >= _tuning.HardBreakScore) breaking = BreakingDifficulty.Hard;
             }
 
-            return new Personality(breed.Name, origin, seed, good ? HorseQuality.Good : HorseQuality.Bad, traits, quirks, stats, breaking, prized);
+            return new Personality(breed.Name, origin, seed, good ? HorseQuality.Good : HorseQuality.Bad, traits, quirks, stats, breaking, prized,
+                coat?.Archetype, coat?.Signatures);
         }
 
         /// <summary>

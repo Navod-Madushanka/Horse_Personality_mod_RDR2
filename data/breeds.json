@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "generatedBy": "tools/sheet-to-json from the breed sheet's CSV export. Edit the sheet, not this file.",
   "multiClassPenalty": 0.1,
   "classes": {
@@ -42,7 +42,8 @@
     "prizedBond4Speed": 0.5,
     "prizedBreakScoreBonus": 1,
     "revealFirstRankBond": 2,
-    "revealSecondRankBond": 3
+    "revealSecondRankBond": 3,
+    "coatSpread": 0.3
   },
   "tiers": {
     "Heavy": {
@@ -125,9 +126,37 @@
     "alertRate": 0.4,
     "fussyDirtRank": 2,
     "fussyRate": 0.5,
-    "affectionateDemeanorBonus": 0.4
+    "affectionateDemeanorBonus": 0.4,
+    "snakeRangeMultiplier": 3,
+    "moodyRefusalRate": 0.15,
+    "walkSpeed": 3,
+    "nightOwlMultiplier": 0.5,
+    "cityLoverMultiplier": 0.5,
+    "townDisdainRate": 1,
+    "townDisdainRange": 6,
+    "dramaticRearChance": 0.5,
+    "duskStartsHour": 18,
+    "escapeAfterSeconds": 60,
+    "escapePlayerDistance": 20,
+    "pranksterRate": 0.5,
+    "pranksterEnemyRange": 30,
+    "lazyWalkRatio": 1,
+    "grazerIdleSeconds": 10,
+    "grazerSeconds": 12,
+    "hillClimbSpeed": 0.8,
+    "hillSighRate": 1,
+    "scatterbrainRate": 0.3,
+    "soulStareRange": 4,
+    "soulStareSeconds": 6,
+    "soulStareRate": 1,
+    "brawlSeconds": 4,
+    "creeperRange": 10,
+    "creeperRate": 0.3,
+    "creeperSeconds": 6,
+    "brushExcitementChance": 0.9,
+    "signatureCooldown": 60
   },
-  "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snakeblacktailrattle_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
+  "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
     {
       "name": "American Paint",
@@ -770,6 +799,196 @@
       "model": "a_c_horse_tennesseewalker_goldpalomino_pc",
       "why": "Special",
       "note": "PC bonus coat"
+    }
+  ],
+  "treats": [
+    {
+      "name": "Peppermint",
+      "itemHash": ""
+    },
+    {
+      "name": "Oatcakes",
+      "itemHash": ""
+    },
+    {
+      "name": "Wild carrot",
+      "itemHash": ""
+    },
+    {
+      "name": "Apple",
+      "itemHash": ""
+    },
+    {
+      "name": "Carrot",
+      "itemHash": ""
+    },
+    {
+      "name": "Sugar cube",
+      "itemHash": ""
+    },
+    {
+      "name": "Haycube",
+      "itemHash": ""
+    },
+    {
+      "name": "Celery",
+      "itemHash": ""
+    }
+  ],
+  "coats": [
+    {
+      "model": "a_c_horse_arabian_grey",
+      "breed": "Arabian",
+      "archetype": "The Diva (Arabian baseline)",
+      "vibe": "Fiercely loyal, hyper-intelligent, eager to please, glued to the trail at speed. Thrives on attention, peppermints and brushing. A dramatic diva with zero chill: screams at a garter snake three miles away, refuses a pebble when in a mood, acts like mud is acid.",
+      "leans": {
+        "courage": -1,
+        "nerves": 2,
+        "temper": 0,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["SnakeDrama", "MoodyRefusal", "MudTantrum"],
+      "lovesTreats": ["Peppermint"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 2,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_white",
+      "breed": "Arabian",
+      "archetype": "The Ice Queen",
+      "vibe": "The High-Maintenance Aristocrat. Survived the Grizzlies alone: fiercely independent, fearless in a blizzard. Once tamed she treats you like chosen royalty, graceful, proud, unstoppable on open ground. Deeply offended by civilization: snorts at peasants in Saint Denis or Valentine, tantrums at a speck of mud, expects premium oatcakes and judges you for wild carrots.",
+      "leans": {
+        "courage": 2,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["TownDisdain", "MudTantrum", "SnakeDrama"],
+      "lovesTreats": ["Oatcakes"],
+      "ignoresTreats": ["Wild carrot"],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_black",
+      "breed": "Arabian",
+      "archetype": "The Dramatic Goth",
+      "vibe": "The Shadowy Outlaw. Smooth and sleek, thrives in city streets and midnight heists, loves looking intimidating: rears for sunset standoffs, gallops dark alleys like he owns the night. Too smart for his own good: unlatches his hitching post, and 'accidentally' bucks you off in front of rival gang members.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Wanderer"],
+      "signatures": ["CityLover", "NightOwl", "DramaticRear", "EscapeArtist", "Prankster", "MoodyRefusal"],
+      "lovesTreats": ["Peppermint", "Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_rosegreybay",
+      "breed": "Arabian",
+      "archetype": "The Retired War Hero",
+      "vibe": "The Bougie Grandparent. Nothing left to prove: calm, dignified, deeply affectionate, hard to rattle with gunfire, the swagger of a champion enjoying retirement. Stubborn and lazy off the clock: a glacial walk unless spurred, stops dead to eat grass, heavy sighs at every steep hill.",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": 1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["LazyPace", "RoadsideGrazer", "HillSigh", "MoodyRefusal"],
+      "lovesTreats": ["Peppermint"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 1
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_redchestnut",
+      "breed": "Arabian",
+      "archetype": "The Chaotic Younger Sibling",
+      "vibe": "Pure, unfiltered chaos energy: runs into trees because it's looking at birds, vibrates with excitement when you pull out the brush, treats every cliff edge like a fun jumping puzzle.",
+      "leans": {
+        "courage": 1,
+        "nerves": 2,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Chatterbox", "HeadTosser"],
+      "signatures": ["Scatterbrain", "BrushExcitement", "SnakeDrama"],
+      "lovesTreats": ["Peppermint"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 2,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_redchestnut_pc",
+      "breed": "Arabian",
+      "archetype": "The Chaotic Younger Sibling",
+      "vibe": "Same as the Red Chestnut (PC bonus coat).",
+      "leans": {
+        "courage": 1,
+        "nerves": 2,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Chatterbox", "HeadTosser"],
+      "signatures": ["Scatterbrain", "BrushExcitement", "SnakeDrama"],
+      "lovesTreats": ["Peppermint"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 2,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_arabian_warpedbrindle_pc",
+      "breed": "Arabian",
+      "archetype": "The Cryptid",
+      "vibe": "Slightly feral: stares directly into the souls of strangers, sneaks up behind camp members silently, and genuinely enjoys trampling wolves instead of running from them.",
+      "leans": {
+        "courage": 2,
+        "nerves": 1,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["WolfBrawler", "SoulStare", "CampCreeper"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
     }
   ]
 }

@@ -22,9 +22,9 @@ namespace HorsePersonalities.Tests
         public static string MinimalBreeds => MinimalTemplate.Replace("\"BEHAVIOR\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["behavior"].ToJson(false));
 
         private const string MinimalTemplate = @"{
-  ""schemaVersion"": 6,
+  ""schemaVersion"": 7,
   ""multiClassPenalty"": 0.10,
-  ""roller"": { ""traitSpread"": 0.6, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
+  ""roller"": { ""traitSpread"": 0.6, ""coatSpread"": 0.3, ""qualityShift"": 0.5, ""flawMargin"": 0.25, ""secondQuirkChance"": 0.35, ""likelyQuirkWeight"": 4,
                 ""statSpread"": 0.6, ""statQualityShift"": 0.3, ""hardBreakScore"": 1.5, ""unbreakableBreakScore"": 2.5,
                 ""goodBond4Speed"": 0.75, ""prizedBond4Speed"": 0.5, ""prizedBreakScoreBonus"": 1, ""revealFirstRankBond"": 2, ""revealSecondRankBond"": 3 },
   ""tiers"": { ""Heavy"": { ""statUpRanks"": 1, ""statDownRanks"": 2 }, ""Standard"": { ""statUpRanks"": 1, ""statDownRanks"": 2 },

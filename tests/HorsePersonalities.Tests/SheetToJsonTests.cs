@@ -11,10 +11,11 @@ namespace HorsePersonalities.Tests
 
         /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
         private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null,
-            string behavior = null, string predators = null, string demeanor = null) =>
+            string behavior = null, string predators = null, string demeanor = null, string coats = null, string treats = null) =>
             SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
                 roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"),
-                behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"), demeanor ?? Export("Demeanor.csv"));
+                behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"), demeanor ?? Export("Demeanor.csv"),
+                coats ?? Export("Coats.csv"), treats ?? TestData.Read("data", "treats.csv"));
 
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()

@@ -113,6 +113,20 @@ namespace HorsePersonalities.Core.GameApi
         /// <summary>PED::IS_PED_HUMAN.</summary>
         bool IsHuman(int ped);
 
+        // ---- Phase 7b: coat signatures (all need a DevTools check, triggers 43-54) ----
+        /// <summary>_GET_MAP_ZONE_AT_COORDS(x, y, z, 1 = TOWN) is not 0: the entity stands in a town.</summary>
+        bool IsInTown(int entity);
+        /// <summary>IS_PLAYER_FREE_AIMING.</summary>
+        bool IsPlayerAiming { get; }
+        /// <summary>IS_PED_IN_COMBAT(ped, target).</summary>
+        bool IsPedInCombatWith(int ped, int target);
+        /// <summary>SET_PED_MAX_MOVE_BLEND_RATIO (1 walk, 2 trot, 3 run). Lasts one frame: call it every frame.</summary>
+        void SetMaxMoveBlendRatio(int ped, float ratio);
+        /// <summary>_UNHITCH_HORSE.</summary>
+        void Unhitch(int horse);
+        /// <summary>GET_ENTITY_VELOCITY(entity, 0).</summary>
+        Vec3 GetVelocity(int entity);
+
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);
         void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank);

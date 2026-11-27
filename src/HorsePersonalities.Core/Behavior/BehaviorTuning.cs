@@ -80,6 +80,35 @@ namespace HorsePersonalities.Core.Behavior
         public double FussyDirtRank => _v["fussyDirtRank"];
         public double FussyRate => _v["fussyRate"];
         public double AffectionateDemeanorBonus => _v["affectionateDemeanorBonus"];
+        // Phase 7b: signature behaviors.
+        public double SnakeRangeMultiplier => _v["snakeRangeMultiplier"];
+        public double MoodyRefusalRate => _v["moodyRefusalRate"];
+        public double WalkSpeed => _v["walkSpeed"];
+        public double NightOwlMultiplier => _v["nightOwlMultiplier"];
+        public double CityLoverMultiplier => _v["cityLoverMultiplier"];
+        public double TownDisdainRate => _v["townDisdainRate"];
+        public double TownDisdainRange => _v["townDisdainRange"];
+        public double DramaticRearChance => _v["dramaticRearChance"];
+        public double DuskStartsHour => _v["duskStartsHour"];
+        public double EscapeAfterSeconds => _v["escapeAfterSeconds"];
+        public double EscapePlayerDistance => _v["escapePlayerDistance"];
+        public double PranksterRate => _v["pranksterRate"];
+        public double PranksterEnemyRange => _v["pranksterEnemyRange"];
+        public double LazyWalkRatio => _v["lazyWalkRatio"];
+        public double GrazerIdleSeconds => _v["grazerIdleSeconds"];
+        public double GrazerSeconds => _v["grazerSeconds"];
+        public double HillClimbSpeed => _v["hillClimbSpeed"];
+        public double HillSighRate => _v["hillSighRate"];
+        public double ScatterbrainRate => _v["scatterbrainRate"];
+        public double SoulStareRange => _v["soulStareRange"];
+        public double SoulStareSeconds => _v["soulStareSeconds"];
+        public double SoulStareRate => _v["soulStareRate"];
+        public double BrawlSeconds => _v["brawlSeconds"];
+        public double CreeperRange => _v["creeperRange"];
+        public double CreeperRate => _v["creeperRate"];
+        public double CreeperSeconds => _v["creeperSeconds"];
+        public double BrushExcitementChance => _v["brushExcitementChance"];
+        public double SignatureCooldown => _v["signatureCooldown"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -146,6 +175,34 @@ namespace HorsePersonalities.Core.Behavior
             ("fussyDirtRank", "Fussy dirt rank", 0.0, 100.0, false),
             ("fussyRate", "Fussy rate", 0.0, 20.0, false),
             ("affectionateDemeanorBonus", "Affectionate demeanor bonus", 0.0, 2.0, false),
+            ("snakeRangeMultiplier", "Snake range multiplier", 1.0, 10.0, false),
+            ("moodyRefusalRate", "Moody refusal rate", 0.0, 20.0, false),
+            ("walkSpeed", "Walk speed", 0.5, 10.0, false),
+            ("nightOwlMultiplier", "Night owl multiplier", 0.0, 10.0, false),
+            ("cityLoverMultiplier", "City lover multiplier", 0.0, 10.0, false),
+            ("townDisdainRate", "Town disdain rate", 0.0, 20.0, false),
+            ("townDisdainRange", "Town disdain range", 1.0, 50.0, false),
+            ("dramaticRearChance", "Dramatic rear chance", 0.0, 1.0, false),
+            ("duskStartsHour", "Dusk starts hour", 0.0, 23.0, false),
+            ("escapeAfterSeconds", "Escape after seconds", 1.0, 3600.0, false),
+            ("escapePlayerDistance", "Escape player distance", 0.0, 200.0, false),
+            ("pranksterRate", "Prankster rate", 0.0, 20.0, false),
+            ("pranksterEnemyRange", "Prankster enemy range", 1.0, 200.0, false),
+            ("lazyWalkRatio", "Lazy walk ratio", 0.1, 3.0, false),
+            ("grazerIdleSeconds", "Grazer idle seconds", 1.0, 600.0, false),
+            ("grazerSeconds", "Grazer seconds", 1.0, 120.0, false),
+            ("hillClimbSpeed", "Hill climb speed", 0.1, 10.0, false),
+            ("hillSighRate", "Hill sigh rate", 0.0, 20.0, false),
+            ("scatterbrainRate", "Scatterbrain rate", 0.0, 20.0, false),
+            ("soulStareRange", "Soul stare range", 0.5, 50.0, false),
+            ("soulStareSeconds", "Soul stare seconds", 0.5, 60.0, false),
+            ("soulStareRate", "Soul stare rate", 0.0, 20.0, false),
+            ("brawlSeconds", "Brawl seconds", 0.5, 60.0, false),
+            ("creeperRange", "Creeper range", 1.0, 100.0, false),
+            ("creeperRate", "Creeper rate", 0.0, 20.0, false),
+            ("creeperSeconds", "Creeper seconds", 0.5, 60.0, false),
+            ("brushExcitementChance", "Brush excitement chance", 0.0, 1.0, false),
+            ("signatureCooldown", "Signature cooldown", 0.0, 3600.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

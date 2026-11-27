@@ -58,8 +58,27 @@ namespace HorsePersonalities.Core.Behavior
         }
 
         /// <summary>What the horse does after a care action. Up to two actions (a picky eater's love is a call and a nicker).</summary>
-        public (BehaviorAction First, BehaviorAction Second, string Cause) React(Personality p, DemeanorTraits demeanor, CareKind kind, int bondLevel, uint itemHash)
+        /// <summary>Brush excitement (coat signature): as soon as you start brushing. None when it doesn't happen.</summary>
+        public (BehaviorAction First, BehaviorAction Second, string Cause) BrushStarted(Personality p)
         {
+            if (p == null || !p.Has(Signature.BrushExcitement)) return (BehaviorAction.None, BehaviorAction.None, "");
+            double roll = _random();
+            if (roll >= _t.BrushExcitementChance) return (BehaviorAction.None, BehaviorAction.None, $"Brush excitement: roll {roll:0.000} vs {_t.BrushExcitementChance:0.000} (calm this time)");
+            return (BehaviorAction.Agitate, BehaviorAction.Content, $"Brush excitement: roll {roll:0.000} vs {_t.BrushExcitementChance:0.000}");
+        }
+
+        /// <param name="coat">The horse's coat design, if it has one: its loved and ignored treats come first.</param>
+        /// <param name="treatName">The fed treat's name (data/treats.csv), when the item code is known.</param>
+        public (BehaviorAction First, BehaviorAction Second, string Cause) React(Personality p, DemeanorTraits demeanor, CareKind kind, int bondLevel, uint itemHash,
+            Coat coat = null, string treatName = null)
+        {
+            if (kind == CareKind.Feed && coat != null && treatName != null)
+            {
+                if (coat.LovesTreats.Any(x => string.Equals(x, treatName, StringComparison.OrdinalIgnoreCase)))
+                    return (BehaviorAction.Call, BehaviorAction.Content, $"{coat.Archetype}: loves {treatName}");
+                if (coat.IgnoresTreats.Any(x => string.Equals(x, treatName, StringComparison.OrdinalIgnoreCase)))
+                    return (BehaviorAction.Snub, BehaviorAction.None, $"{coat.Archetype}: judges you for {treatName}");
+            }
             if (kind == CareKind.Feed && p.Quirks.Contains(Quirk.PickyEater))
             {
                 Taste taste = TasteFor(p, itemHash);

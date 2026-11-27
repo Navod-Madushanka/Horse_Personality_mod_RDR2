@@ -243,6 +243,100 @@ namespace HorsePersonalities.DevTools
                     ctx.After(500, () => ctx.Log($"Bond after _SET_MOUNT_BONDING_LEVEL {next}: rank {ctx.Game.ReadAttribute(ctx.Horse, PedAttribute.Bonding).Rank}"));
                     return $"_SET_MOUNT_BONDING_LEVEL {before} -> {next}";
                 }));
+
+            // ---- Phase 7b: coat signatures (Nov 27, 2026). Numbers 43-55, appended so earlier numbers don't move. ----
+            t.Add(new Trigger("town.check", "Am I in a town?", "Town disdain, City lover",
+                "Press in Valentine or Saint Denis, then out on the trail. True in town, False outside?",
+                ctx => $"_GET_MAP_ZONE_AT_COORDS type TOWN: in town = {ctx.Game.IsInTown(ctx.Horse)}"));
+            t.Add(new Trigger("unhitch", "Unhitch, then wander (15 s)", "Escape artist",
+                "Hitch the horse at a post, walk 5 m away, press. Does it free itself and drift off?",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    ctx.Game.Unhitch(h);
+                    ctx.After(1000, () => ctx.Game.WanderNearby(h, 15f));
+                    ctx.After(16000, () => ctx.Game.ClearTasks(h));
+                    return "_UNHITCH_HORSE, then TASK_WANDER_IN_AREA 15 m for 15 s";
+                }));
+            t.Add(new Trigger("lazy.cap", "Lazy pace: walk cap (20 s)", "Lazy pace",
+                "Ride, press, push forward without spurring. Stuck at a walk? Does spurring still get a gallop?",
+                ctx =>
+                {
+                    int h = ctx.Horse, until = ctx.Now + 20000;
+                    void Cap()
+                    {
+                        if (ctx.Now >= until) { ctx.Log("Lazy pace cap ended."); return; }
+                        if (!ctx.Game.IsSprintPressed) ctx.Game.SetMaxMoveBlendRatio(h, 1.0f);
+                        ctx.After(0, Cap);
+                    }
+                    Cap();
+                    return "SET_PED_MAX_MOVE_BLEND_RATIO 1.0 every frame while not spurring, 20 s";
+                }));
+            t.Add(new Trigger("graze.ridden", "Graze with you on it (12 s)", "Roadside grazer",
+                "Sit still on the horse and press. Does it lower its head and eat with you on its back?",
+                ctx => { ctx.Game.StartScenario(ctx.Horse, "WORLD_ANIMAL_HORSE_GRAZING", 12000, "WORLD_ANIMAL_HORSE_GRAZING"); return "Grazing scenario while ridden, 12 s"; }));
+            t.Add(new Trigger("aim.check", "Am I aiming? (10 s readout)", "Dramatic rear",
+                "Press, then draw and aim your gun on horseback for a few seconds. The log should flip to True while aiming.",
+                ctx =>
+                {
+                    for (int i = 1; i <= 10; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"Aiming check {n}/10: {ctx.Game.IsPlayerAiming}")); }
+                    return "IS_PLAYER_FREE_AIMING once a second for 10 s (see the log)";
+                }, needsHorse: false));
+            t.Add(new Trigger("combat.check", "Enemies in combat with me (30 m)", "Prankster",
+                "Press during a fight or standoff (hostile NPCs). How many does it count? 0 when nobody is hostile?",
+                ctx =>
+                {
+                    int player = ctx.Game.PlayerPed, n = 0, near = 0;
+                    foreach (int ped in ctx.Game.PedsNear(player, 30f))
+                    {
+                        if (ped == player || !ctx.Game.IsHuman(ped)) continue;
+                        near++;
+                        if (ctx.Game.IsPedInCombatWith(ped, player)) n++;
+                    }
+                    return $"IS_PED_IN_COMBAT: {n} of {near} people within 30 m are fighting you";
+                }, needsHorse: false));
+            t.Add(new Trigger("brawl.animal", "Attack the nearest animal (4 s)", "Wolf brawler",
+                "Get off near a wolf or coyote (or any wild animal). Does your horse go for it and stop after 4 s?",
+                ctx =>
+                {
+                    int h = ctx.Horse, target = 0;
+                    float best = 40f;
+                    foreach (int ped in ctx.Game.PedsNear(h, 40f))
+                    {
+                        if (ped == h || ped == ctx.Game.PlayerPed || ctx.Game.IsHuman(ped) || ctx.Game.IsDead(ped)) continue;
+                        float d = ctx.Game.DistanceBetween(h, ped);
+                        if (d < best) { best = d; target = ped; }
+                    }
+                    if (target == 0) return "No animal within 40 m.";
+                    ctx.Game.Combat(h, target);
+                    ctx.After(4000, () => ctx.Game.ClearTasks(h));
+                    return $"TASK_COMBAT_PED on animal {target} (model 0x{ctx.Game.GetModel(target):X8}, {best:0} m), cleared after 4 s";
+                }));
+            t.Add(new Trigger("creep.npc", "Sneak up on the nearest person (6 s)", "Camp creeper",
+                "Get off in camp near someone. Does the horse walk up behind them quietly, then stop?",
+                ctx =>
+                {
+                    int h = ctx.Horse, target = ctx.Game.GetClosestHumanPed(h, 15f, ctx.Game.PlayerPed);
+                    if (target == 0) return "Nobody within 15 m.";
+                    ctx.Game.FollowEntity(h, target, 1.5f, 6000);
+                    ctx.After(6000, () => ctx.Game.ClearTasks(h));
+                    return $"TASK_FOLLOW_TO_OFFSET_OF_ENTITY on {target}, 1.5 m behind, 6 s";
+                }));
+            foreach (string sigh in new[] { "TIRED", "SIGH", "EXHAUSTED", "PANT" })
+            {
+                string name = sigh;
+                t.Add(new Trigger("sigh." + name.ToLowerInvariant(), $"Sigh candidate: {name}", "Hill sigh",
+                    "Press and listen. Does it sound like a heavy, put-upon sigh? (Silence = the sound doesn't exist.)",
+                    ctx => { ctx.Game.PlayVocalization(ctx.Horse, name); return $"Vocalization {name}"; }));
+            }
+            t.Add(new Trigger("climb.readout", "Climb speed readout (10 s)", "Hill sigh",
+                "Press, then walk the horse up a steep hill. The log shows upward speed (m/s) each second; note it on a steep climb.",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    for (int i = 1; i <= 10; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"Climb {n}/10: up {ctx.Game.GetVelocity(h).Z:0.00} m/s, speed {ctx.Game.GetSpeed(h):0.0} m/s")); }
+                    return "GET_ENTITY_VELOCITY once a second for 10 s (see the log)";
+                }));
             return t;
         }
 

@@ -13,3 +13,4 @@ Prized bond 4 speed,0.5,"Bond XP rate for a prized horse (stable-bought, special
 Prized break score bonus,1,"Added to a prized wild horse's Temper minus Bond affinity, so it breaks Hard more often. Prized horses are never Unbreakable. Proposed."
 Reveal first rank bond,2,Bond level at which the first rank of a health or stamina difference shows on the stat bars.
 Reveal second rank bond,3,Bond level at which a second rank of difference shows (only a -2 horse has one).
+Coat spread,0.3,How far one horse strays from its coat's designed traits (standard deviation). Smaller than Trait spread: a coat keeps its character.

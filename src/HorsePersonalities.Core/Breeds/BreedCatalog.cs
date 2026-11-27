@@ -38,7 +38,7 @@ namespace HorsePersonalities.Core.Breeds
     /// </summary>
     public sealed class BreedCatalog
     {
-        public const int CurrentSchemaVersion = 6;
+        public const int CurrentSchemaVersion = 7;
         private const string Log = "Breeds";
 
         private readonly Dictionary<string, Breed> _byName;
@@ -54,6 +54,29 @@ namespace HorsePersonalities.Core.Breeds
         public RollerTuning Roller { get; }
         private readonly Dictionary<uint, PrizedReason> _prized = new Dictionary<uint, PrizedReason>();
         private readonly HashSet<uint> _predators = new HashSet<uint>();
+        private readonly HashSet<uint> _snakes = new HashSet<uint>();
+        private readonly Dictionary<uint, Coat> _coats = new Dictionary<uint, Coat>();
+        private readonly Dictionary<string, uint> _treats = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>A coat's hand-written personality (the sheet's Coats tab), by model hash.</summary>
+        public bool TryGetCoat(uint modelHash, out Coat coat) => _coats.TryGetValue(modelHash, out coat);
+
+        public bool TryGetCoat(string model, out Coat coat) => _coats.TryGetValue(Joaat.Hash(model ?? ""), out coat);
+
+        public int CoatCount => _coats.Count;
+
+        /// <summary>A snake (Snake drama: threats from further away).</summary>
+        public bool IsSnake(uint modelHash) => _snakes.Contains(modelHash);
+
+        /// <summary>The game's item code for a treat name (data/treats.csv), or 0 while it isn't known yet.</summary>
+        public uint TreatHash(string name) => name != null && _treats.TryGetValue(name.Trim(), out uint h) ? h : 0;
+
+        /// <summary>The treat name for an item code the game reported, if it is known.</summary>
+        public string TreatName(uint itemHash)
+        {
+            foreach (var kv in _treats) if (kv.Value == itemHash && itemHash != 0) return kv.Key;
+            return null;
+        }
 
         /// <summary>Phase 6 tuning from the sheet's Behavior tab.</summary>
         public BehaviorTuning Behavior { get; private set; }
@@ -227,18 +250,54 @@ namespace HorsePersonalities.Core.Breeds
 
             BehaviorTuning behavior = BehaviorTuning.Read(root["behavior"], problems);
             var predators = new HashSet<uint>();
+            var snakes = new HashSet<uint>();
             JsonValue predArray = root["predatorModels"];
             if (predArray.Kind != JsonKind.Array || predArray.Count == 0) problems.Add("\"predatorModels\" must list at least one model.");
             else foreach (JsonValue pm in predArray.Items)
             {
                 string model = pm.Kind == JsonKind.String ? pm.AsString() : pm.GetString("model", null);
                 if (string.IsNullOrWhiteSpace(model)) problems.Add("A predatorModels entry has no model.");
-                else predators.Add(Joaat.Hash(model.Trim().ToLowerInvariant()));
+                else
+                {
+                    uint h = Joaat.Hash(model.Trim().ToLowerInvariant());
+                    predators.Add(h);
+                    if (model.IndexOf("snake", StringComparison.OrdinalIgnoreCase) >= 0) snakes.Add(h);
+                }
             }
+
+            var treats = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
+            JsonValue treatArray = root["treats"];
+            if (treatArray.Kind == JsonKind.Array)
+                foreach (JsonValue t in treatArray.Items)
+                {
+                    string tn = t.GetString("name", null);
+                    if (string.IsNullOrWhiteSpace(tn)) { problems.Add("A treats entry has no name."); continue; }
+                    string hex = t.GetString("itemHash", "");
+                    uint th = 0;
+                    if (hex.Length > 0 && !uint.TryParse(hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? hex.Substring(2) : hex,
+                            System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out th))
+                        problems.Add($"Treat {tn}: itemHash \"{hex}\" is not a hex code like 0x1234ABCD.");
+                    treats[tn.Trim()] = th;
+                }
+
+            var coats = new Dictionary<uint, Coat>();
+            JsonValue coatArray = root["coats"];
+            if (coatArray.Kind == JsonKind.Array)
+                foreach (JsonValue c in coatArray.Items)
+                {
+                    Coat coat = ReadCoat(c, modelOwner, treats, problems, log);
+                    if (coat == null) continue;
+                    uint h = Joaat.Hash(coat.Model);
+                    if (coats.ContainsKey(h)) problems.Add($"Coat {coat.Model} is listed twice.");
+                    else coats[h] = coat;
+                }
 
             if (problems.Count > 0) throw new BreedDataException(problems);
 
             var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others, roller, tierCaps);
+            foreach (uint h in snakes) catalog._snakes.Add(h);
+            foreach (var kv in coats) catalog._coats[kv.Key] = kv.Value;
+            foreach (var kv in treats) catalog._treats[kv.Key] = kv.Value;
             foreach (var kv in prized) catalog._prized[kv.Key] = kv.Value;
             catalog.Behavior = behavior;
             foreach (uint h in predators) catalog._predators.Add(h);
@@ -265,6 +324,58 @@ namespace HorsePersonalities.Core.Breeds
             foreach (StatTier t in Enum.GetValues(typeof(StatTier)))
                 if (!caps.ContainsKey(t) && j.Kind == JsonKind.Object && !problems.Exists(p => p.StartsWith("tiers." + t))) problems.Add($"tiers: no caps for {t}.");
             return caps;
+        }
+
+        private static Coat ReadCoat(JsonValue c, Dictionary<string, string> modelOwner, Dictionary<string, uint> treats, List<string> problems, ILog log)
+        {
+            string model = c.GetString("model", "").Trim().ToLowerInvariant();
+            if (model.Length == 0) { problems.Add("A coat has no model."); return null; }
+            if (!modelOwner.TryGetValue(model, out string breed) || breed == "otherModels") { problems.Add($"Coat {model} is not a breed's model."); return null; }
+            string named = c.GetString("breed", breed);
+            if (!string.Equals(NameMatching.Normalize(named), NameMatching.Normalize(breed), StringComparison.Ordinal))
+                problems.Add($"Coat {model}: breed is {named}, but the model belongs to {breed}.");
+
+            JsonValue l = c["leans"];
+            double L(string k)
+            {
+                double v = l.GetNumber(k, 0);
+                if (!TraitLeans.InRange(v)) problems.Add($"Coat {model}: lean {k} = {v} is outside -2..+2.");
+                return v;
+            }
+            var leans = new TraitLeans(L("courage"), L("nerves"), L("temper"), L("bondAffinity"));
+
+            var quirks = new List<Quirk>();
+            foreach (JsonValue q in c["signatureQuirks"].Kind == JsonKind.Array ? c["signatureQuirks"].Items : Array.Empty<JsonValue>())
+                if (q.Kind == JsonKind.String && NameMatching.TryParseQuirk(q.AsString(), out Quirk quirk)) { if (!quirks.Contains(quirk)) quirks.Add(quirk); }
+                else problems.Add($"Coat {model}: unknown quirk {q}.");
+            if (quirks.Count > 2) problems.Add($"Coat {model}: at most 2 signature quirks (a horse has 1 or 2).");
+
+            var sigs = new List<Signature>();
+            foreach (JsonValue s in c["signatures"].Kind == JsonKind.Array ? c["signatures"].Items : Array.Empty<JsonValue>())
+                if (s.Kind == JsonKind.String && SignatureNames.TryParse(s.AsString(), out Signature sig)) { if (!sigs.Contains(sig)) sigs.Add(sig); }
+                else problems.Add($"Coat {model}: unknown signature {s} (see the Signatures tab).");
+
+            List<string> Treats(string key)
+            {
+                var list = new List<string>();
+                foreach (JsonValue t in c[key].Kind == JsonKind.Array ? c[key].Items : Array.Empty<JsonValue>())
+                {
+                    string name = t.Kind == JsonKind.String ? t.AsString().Trim() : "";
+                    if (!treats.ContainsKey(name)) problems.Add($"Coat {model}: treat \"{name}\" is not in treats.csv.");
+                    else list.Add(name);
+                }
+                return list;
+            }
+
+            JsonValue d = c["demeanorTraits"];
+            double D(string k)
+            {
+                double v = d.GetNumber(k, 0);
+                if (v < 0 || v > DemeanorTraits.Max) problems.Add($"Coat {model}: demeanor {k} must be 0 to {DemeanorTraits.Max}.");
+                return v;
+            }
+            return new Coat(model, breed, c.GetString("archetype", ""), c.GetString("vibe", ""), leans, quirks, sigs,
+                Treats("lovesTreats"), Treats("ignoresTreats"), new DemeanorTraits(D("impatient"), D("alert"), D("affectionate"), D("fussy")));
         }
 
         private static bool IsRank(double v) => !double.IsNaN(v) && v == Math.Floor(v) && v >= 0 && v <= TierCap.MaxRank;

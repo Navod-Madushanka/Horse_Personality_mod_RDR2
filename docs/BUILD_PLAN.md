@@ -483,6 +483,12 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **You:** write the coats (Arabians first), run the new triggers, mark Works or Doesn't work.
 - **Test:** each coat's signature behaviors show with that coat, and two horses of one coat feel like the same character but not identical.
 - **Done when:** you can tell which Arabian coat you're riding with your eyes closed (almost).
+- **Built Nov 27, 2026** (code only, not yet tested in game; report: `docs/phase-reports/phase-7b.md`):
+  - A coat's leanings replace its breed's, with a tighter spread (Roller tab *Coat spread* 0.3) and half the quality shift; its signature quirks always show; its demeanor and loved/ignored treats replace the breed's. Horses whose model has no coat roll exactly as before. Roller version 4, breeds.json schema 7.
+  - All 17 kept signatures are built. Signatures share one cooldown (Behavior tab *Signature cooldown* 60 s) and are held in missions and cutscenes like every behavior, so Roadside grazer never grazes mid-mission.
+  - Every snake model is a threat now (five added to `predator-models.csv`), not only for Snake drama.
+  - Test mode: a new **Coat design** preset gives a coat model exactly its written design (no dice); the seven Arabian coat models are assigned to it. Other presets on those horses carry no signatures, so each preset still tests one thing.
+  - DevTools triggers 43-55 check the natives the signatures need (town zone, unhitch, walk cap, graze ridden, aiming, enemies in combat, attack an animal, follow a person, four sigh sounds, climb speed).
 
 ### Phase 8: Skills and experience
 

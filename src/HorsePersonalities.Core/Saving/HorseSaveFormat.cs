@@ -52,6 +52,8 @@ namespace HorsePersonalities.Core.Saving
                         .Set("health", p.NaturalStats.Health).Set("stamina", p.NaturalStats.Stamina))
                     .Set("breaking", p.Breaking.ToString())
                     .Set("prized", p.Prized)
+                    .Set("archetype", JsonValue.From(p.Archetype))
+                    .Set("signatures", Sigs(p))
                     .Set("vanillaBase", VanillaJson(r))
                     .Set("preset", JsonValue.From(r.Preset))
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
@@ -142,7 +144,8 @@ namespace HorsePersonalities.Core.Saving
             if (quirks.Count == 0) log.Warn(Log, $"{key}: has no quirks left (Show-off was cut); it keeps its other traits.");
 
             var p = new Personality(breed, origin, seed,
-                Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal), j.GetBool("prized", false));
+                Enum<HorseQuality>(j, "quality", null), traits, quirks, stats, Enum<BreakingDifficulty>(j, "breaking", BreakingDifficulty.Normal), j.GetBool("prized", false),
+                j.GetString("archetype", null), ReadSigs(j, key, log));
             var record = new HorseRecord(id, p, PersonalityStatus.Permanent, j.GetString("firstSeen", ""), j.GetString("lastSeen", "")) { Preset = j.GetString("preset", null) };
             JsonValue vb = j["vanillaBase"];
             if (vb.Kind == JsonKind.Object)
@@ -153,6 +156,22 @@ namespace HorsePersonalities.Core.Saving
                     record.VanillaBase[kv.Key] = v;
                 }
             return record;
+        }
+
+        private static JsonValue Sigs(Personality p)
+        {
+            var a = JsonValue.NewArray();
+            foreach (Signature s in p.Signatures) a.Add(s.ToString());
+            return a;
+        }
+
+        private static List<Signature> ReadSigs(JsonValue j, string key, ILog log)
+        {
+            var list = new List<Signature>();
+            foreach (JsonValue s in j["signatures"].Kind == JsonKind.Array ? j["signatures"].Items : Array.Empty<JsonValue>())
+                if (s.Kind == JsonKind.String && SignatureNames.TryParse(s.AsString(), out Signature sig)) list.Add(sig);
+                else log.Warn(Log, $"{key}: skipping unknown signature {s}.");
+            return list;
         }
 
         private static JsonValue VanillaJson(HorseRecord r)

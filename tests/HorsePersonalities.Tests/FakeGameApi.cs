@@ -58,6 +58,15 @@ namespace HorsePersonalities.Tests
         public Vec3 GetForward(int entity) => new Vec3(0, 1, 0);
         public IReadOnlyList<int> PedsNear(int around, float radius) => new List<int>();
         public bool IsHuman(int ped) => false;
+        public bool InTown;
+        public bool IsInTown(int entity) => InTown;
+        public bool IsPlayerAiming { get; set; }
+        public bool IsPedInCombatWith(int ped, int target) => false;
+        public float? MaxBlendRatio;
+        public void SetMaxMoveBlendRatio(int ped, float ratio) => MaxBlendRatio = ratio;
+        public readonly List<int> Unhitched = new List<int>();
+        public void Unhitch(int horse) => Unhitched.Add(horse);
+        public Vec3 GetVelocity(int entity) => new Vec3(0, 0, 0);
         public void SetAttributePoints(int ped, PedAttribute attribute, int points)
         {
             var r = ReadAttribute(ped, attribute);

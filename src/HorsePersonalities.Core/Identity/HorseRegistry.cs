@@ -172,7 +172,7 @@ namespace HorsePersonalities.Core.Identity
                 var (p, preset) = _override(id, breed, origin, seed);
                 return new HorseRecord(id, p, status, today, today) { Preset = preset };
             }
-            return new HorseRecord(id, _roller.Roll(breed, origin, seed, Prized(id, origin)), status, today, today);
+            return new HorseRecord(id, _roller.Roll(breed, origin, seed, Prized(id, origin), id.Model), status, today, today);
         }
 
         /// <summary>

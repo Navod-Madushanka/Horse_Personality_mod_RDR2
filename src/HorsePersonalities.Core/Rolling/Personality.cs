@@ -101,7 +101,7 @@ namespace HorsePersonalities.Core.Rolling
     public sealed class Personality
     {
         /// <summary>Bumped when the roll algorithm changes, so a saved seed can be told apart from a new one.</summary>
-        public const int RollerVersion = 3; // 2: natural stats in whole ranks, Show-off cut (Nov 25). 3: prized horses (Nov 26).
+        public const int RollerVersion = 4; // 2: ranks, Show-off cut (Nov 25). 3: prized (Nov 26). 4: coat personalities (Nov 27).
 
         public string Breed { get; }
         public HorseOrigin Origin { get; }
@@ -113,11 +113,18 @@ namespace HorsePersonalities.Core.Rolling
         public BreakingDifficulty Breaking { get; }
         /// <summary>Rolled as a prized horse (Build plan: Prized horses): always good, no trait flaws, slower to bond 4.</summary>
         public bool Prized { get; }
+        /// <summary>The coat's archetype ("The Ice Queen") when the horse was rolled from a coat design; null otherwise.</summary>
+        public string Archetype { get; }
+        /// <summary>The coat's signature behaviors (Phase 7b). Empty without a coat design.</summary>
+        public IReadOnlyList<Signature> Signatures { get; }
 
         public Personality(string breed, HorseOrigin origin, ulong seed, HorseQuality quality, Traits traits,
-            IReadOnlyList<Quirk> quirks, NaturalStats naturalStats, BreakingDifficulty breaking, bool prized = false)
+            IReadOnlyList<Quirk> quirks, NaturalStats naturalStats, BreakingDifficulty breaking, bool prized = false,
+            string archetype = null, IReadOnlyList<Signature> signatures = null)
         {
             Prized = prized;
+            Archetype = archetype;
+            Signatures = signatures ?? Array.Empty<Signature>();
             Breed = breed;
             Origin = origin;
             Seed = seed;
@@ -133,7 +140,7 @@ namespace HorsePersonalities.Core.Rolling
         {
             string T(double v) => v.ToString("+0.00;-0.00;0.00", CultureInfo.InvariantCulture);
             string R(int v) => v.ToString("+0;-0;0", CultureInfo.InvariantCulture);
-            return new[]
+            var lines = new List<string>
             {
                 $"{Breed} - {Quality.ToString().ToLowerInvariant()} horse{(Prized ? " (prized)" : "")} - seed {Seed:X16}",
                 $"Courage {T(Traits.Courage)}  Nerves {T(Traits.Nerves)}  Temper {T(Traits.Temper)}  Bond {T(Traits.BondAffinity)}",
@@ -141,7 +148,12 @@ namespace HorsePersonalities.Core.Rolling
                 $"Natural stats (ranks): speed {R(NaturalStats.Speed)}, accel {R(NaturalStats.Acceleration)}, health {R(NaturalStats.Health)}, stamina {R(NaturalStats.Stamina)}",
                 Origin == HorseOrigin.Wild ? $"Breaking: {Breaking}" : $"Breaking: {Breaking} ({Origin.ToString().ToLowerInvariant()} horse)",
             };
+            if (Archetype != null)
+                lines.Insert(1, $"Coat: {Archetype}" + (Signatures.Count > 0 ? " - " + string.Join(", ", Signatures.Select(SignatureNames.Label)) : ""));
+            return lines;
         }
+
+        public bool Has(Signature s) => ((IList<Signature>)Signatures).Contains(s);
 
         public override string ToString() => string.Join(" | ", Describe());
     }

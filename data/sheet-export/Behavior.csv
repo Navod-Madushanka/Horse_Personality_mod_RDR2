@@ -62,3 +62,31 @@ Alert rate,0.4,Demeanor Alert: looks around per minute per point of Alert.
 Fussy dirt rank,2,Demeanor Fussy: dirtiness rank at or above which it is unhappy (guess: Phase 7 checks the scale).
 Fussy rate,0.5,Demeanor Fussy: unhappy snorts per minute per point of Fussy while dirty.
 Affectionate demeanor bonus,0.4,Each point of a breed's Affectionate demeanor adds this to Bond affinity when choosing its care reaction style (drafts lean into pats).
+Snake range multiplier,3,Snake drama: snakes count as threats from this many times Predator range.
+Moody refusal rate,0.15,Moody refusal: refusals per minute while ridden at a walk (1.5 times at bond 1).
+Walk speed,3,"Below this speed (m/s), and above Standing still speed, a ridden horse is walking."
+Night owl multiplier,0.5,Night owl: random spook rate at night is multiplied by this instead of the night multiplier.
+City lover multiplier,0.5,City lover: random spook rate in towns.
+Town disdain rate,1,Town disdain: snorts and stares per minute in a town with people close.
+Town disdain range,6,Town disdain: people within this range (m) get the attitude.
+Dramatic rear chance,0.5,Dramatic rear: chance to rear when you start aiming while it stands still at dusk or night.
+Dusk starts hour,18,"Game hour from which it is dusk (Dramatic rear), until Night ends hour."
+Escape after seconds,60,Escape artist: seconds standing hitched with you away before it unhitches itself.
+Escape player distance,20,Escape artist: you must be at least this far away (m).
+Prankster rate,0.5,Prankster: throws per minute while you sit still on it near people in combat with you (before you've fired).
+Prankster enemy range,30,Prankster: enemies within this range (m) count.
+Lazy walk ratio,1,"Lazy pace: the most it will move without spurring (move blend ratio: 1 walk, 2 trot, 3 run)."
+Grazer idle seconds,10,Roadside grazer: seconds standing still with you on it before it lowers its head to graze.
+Grazer seconds,12,Roadside grazer: how long it grazes.
+Hill climb speed,0.8,Hill sigh: climbing faster than this (m/s upward) at a walk counts as a steep hill.
+Hill sigh rate,1,Hill sigh: sighs per minute on a steep climb.
+Scatterbrain rate,0.3,"Scatterbrain: sudden skids per minute at a gallop, without fear."
+Soul stare range,4,Soul stare: a stranger closer than this (m) gets stared at.
+Soul stare seconds,6,Soul stare: how long the stare lasts.
+Soul stare rate,1,Soul stare: stares per minute while a stranger is close.
+Brawl seconds,4,Wolf brawler: how long it fights a predator before the task is cleared.
+Creeper range,10,Camp creeper: NPCs within this range (m) may get crept up on.
+Creeper rate,0.3,Camp creeper: creeps per minute while you're near and an NPC is in range.
+Creeper seconds,6,Camp creeper: how long it follows the NPC.
+Brush excitement chance,0.9,Brush excitement: chance it gets excited as soon as you start brushing.
+Signature cooldown,60,Shortest gap (s) between two coat signature habits on one horse (they also respect the 20 s Behavior gap).

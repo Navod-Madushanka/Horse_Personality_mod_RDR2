@@ -122,6 +122,18 @@ namespace HorsePersonalities.Game
         public const ulong TASK_COMBAT_PED = 0xF166E48407BAC484;
         /// <summary>TASK::CLEAR_PED_TASKS(int ped, bool p1, bool p2) -> void</summary>
         public const ulong CLEAR_PED_TASKS = 0xE1EF3C1216AFF2CD;
+        /// <summary>ZONE::_GET_MAP_ZONE_AT_COORDS(float x, float y, float z, int type) -> uint. Type 1 = TOWN.</summary>
+        public const ulong GET_MAP_ZONE_AT_COORDS = 0x43AD8FC02B429D33;
+        /// <summary>PLAYER::IS_PLAYER_FREE_AIMING(int player) -> bool</summary>
+        public const ulong IS_PLAYER_FREE_AIMING = 0x936F967D4BE1CE9D;
+        /// <summary>PED::IS_PED_IN_COMBAT(int ped, int target) -> bool</summary>
+        public const ulong IS_PED_IN_COMBAT = 0x4859F1FC66A6278E;
+        /// <summary>TASK::SET_PED_MAX_MOVE_BLEND_RATIO(int ped, float value) -> void</summary>
+        public const ulong SET_PED_MAX_MOVE_BLEND_RATIO = 0x433083750C5E064A;
+        /// <summary>TASK::_UNHITCH_HORSE(int horse) -> void</summary>
+        public const ulong UNHITCH_HORSE = 0x0348469DAA17576C;
+        /// <summary>ENTITY::GET_ENTITY_VELOCITY(int entity, int p1) -> Vector3</summary>
+        public const ulong GET_ENTITY_VELOCITY = 0x4805D2B1D8CF94A9;
         /// <summary>SCRIPTS::GET_NUMBER_OF_EVENTS(int eventGroup) -> int</summary>
         public const ulong GET_NUMBER_OF_EVENTS = 0x5CE8DE5909565748;
         /// <summary>SCRIPTS::GET_EVENT_AT_INDEX(int eventGroup, int eventIndex) -> uint</summary>

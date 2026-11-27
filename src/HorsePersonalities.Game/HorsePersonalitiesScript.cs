@@ -59,6 +59,7 @@ namespace HorsePersonalities.Game
         private readonly IntervalGate _statCheck = new IntervalGate(1000);
         private readonly IntervalGate _behaviorCheck = new IntervalGate(250);
         private BehaviorRunner _behavior;
+        private PersonalityRoller _roller;
         private TestPresets _presets;
         private Keys _presetKey = Keys.F11;
         private readonly HashSet<int> _wildMounted = new HashSet<int>();
@@ -99,7 +100,7 @@ namespace HorsePersonalities.Game
         /// <summary>Loads saved horses (or resets them for a new playthrough). Runs once, at script start.</summary>
         private void StartRegistry()
         {
-            var roller = new PersonalityRoller(_boot.Breeds, _boot.Settings);
+            var roller = _roller = new PersonalityRoller(_boot.Breeds, _boot.Settings);
             _registry = new HorseRegistry(roller, _boot.Log, isPrizedModel: id => _boot.Breeds.TryGetPrized(id.Model, out _));
             bool test = _boot.Settings.TestPersonalities && LoadPresets();
             if (test)
@@ -108,7 +109,7 @@ namespace HorsePersonalities.Game
                 _registry.UseInsteadOfRoller((id, breed, origin, seed) =>
                 {
                     TestPreset preset = _presets.ForModel(id.Model);
-                    return (preset.For(breed, origin, seed), preset.Name);
+                    return (preset.For(breed, origin, seed, id.Model, roller, _boot.Breeds), preset.Name);
                 });
                 if (!Enum.TryParse(_boot.Settings.TestPresetKey, true, out _presetKey)) _presetKey = Keys.F11;
                 _boot.Log.Info("TestMode", $"Test mode on: presets instead of rolls, saved to horses.test.json. {_presetKey} gives your horse the next preset.");
@@ -157,7 +158,7 @@ namespace HorsePersonalities.Game
             HorseRecord current = _registry.Find(horse, id)
                 ?? _registry.OnMount(horse, id, d.Breed, HorseOrigin.Unknown, horse == _game.GetSaddleHorse());
             TestPreset next = _presets.Next(current?.Preset);
-            HorseRecord replaced = _registry.Replace(horse, id, next.For(d.Breed, current.Personality.Origin, current.Personality.Seed), next.Name);
+            HorseRecord replaced = _registry.Replace(horse, id, next.For(d.Breed, current.Personality.Origin, current.Personality.Seed, d.ModelName, _roller, _boot.Breeds), next.Name);
             _overlay.SetLines(OverlayText.Build(d, replaced));
             _game.ShowSubtitle($"Test preset: {next.Name}. {next.Purpose}");
             SaveIfChanged("test preset changed");
@@ -286,6 +287,7 @@ namespace HorsePersonalities.Game
         {
             IReadOnlyList<GameEvent> events = _game.ReadAiEvents();
             _behavior?.OnEvents(events);
+            _behavior?.EveryFrame(_mounts.CurrentMount);
             foreach (GameEvent e in events)
                 if (e.Hash == GameEvents.PlayerMountWildHorse.Hash && e.Data.Length >= 1 && _wildMounted.Add((int)e.Data[0]))
                     _boot.Log.Info(Log, $"Horse {e.Data[0]} is wild (EVENT_PLAYER_MOUNT_WILD_HORSE).");

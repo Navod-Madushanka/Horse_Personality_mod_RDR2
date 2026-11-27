@@ -22,15 +22,19 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   Prized.csv   the sheet's Prized tab (Model, Why, Notes): special, rare and community-favorite models
     ///   Behavior.csv the sheet's Behavior tab (Setting, Value): Phase 6 and 7 rates, chances and timings
     ///   Demeanor.csv the sheet's Demeanor tab (Breed, Impatient, Alert, Affectionate, Fussy): body language, 0-2
+    ///   Coats.csv    the sheet's Coats tab: hand-written coat personalities (Phase 7b)
+    ///   treats.csv   name,itemHash,note: treat names and the item codes the game reports (kept in the repo)
     ///   predator-models.csv  model,note: animals a horse may spook at (game data, kept in the repo)
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
     /// </summary>
     public static class SheetConverter
     {
         public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv,
-            string behaviorCsv, string predatorsCsv, string demeanorCsv)
+            string behaviorCsv, string predatorsCsv, string demeanorCsv, string coatsCsv, string treatsCsv)
         {
             var problems = new List<string>();
+            JsonValue treats = ReadTreats(treatsCsv, problems);
+            JsonValue coats = ReadCoats(coatsCsv, problems);
             var demeanor = ReadDemeanor(demeanorCsv, problems);
             JsonValue roller = ReadSettings(rollerCsv, RollerTuning.Fields, "Roller.csv", problems);
             JsonValue behavior = ReadSettings(behaviorCsv, HorsePersonalities.Core.Behavior.BehaviorTuning.Fields, "Behavior.csv", problems);
@@ -213,7 +217,90 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("predatorModels", predators)
                 .Set("breeds", breeds)
                 .Set("otherModels", others)
-                .Set("prizedModels", prizedModels);
+                .Set("prizedModels", prizedModels)
+                .Set("treats", treats)
+                .Set("coats", coats);
+        }
+
+        private static JsonValue ReadTreats(string csv, List<string> problems)
+        {
+            var result = JsonValue.NewArray();
+            var rows = Csv.Parse(csv ?? "");
+            if (rows.Count == 0) { problems.Add("treats.csv is empty."); return result; }
+            var h = Header(rows[0]);
+            int nCol = Col(h, "name", problems, "treats.csv"), hCol = Col(h, "itemHash", problems, "treats.csv");
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 1; i < rows.Count; i++)
+            {
+                string name = Cell(rows[i], nCol).Trim();
+                if (name.Length == 0) continue;
+                if (!seen.Add(name)) { problems.Add($"treats.csv: {name} is listed twice."); continue; }
+                string hash = Cell(rows[i], hCol).Trim();
+                result.Add(JsonValue.NewObject().Set("name", name).Set("itemHash", hash));
+            }
+            return result;
+        }
+
+        private static JsonValue ReadCoats(string csv, List<string> problems)
+        {
+            var result = JsonValue.NewArray();
+            var rows = Csv.Parse(csv ?? "");
+            int header = rows.FindIndex(r => Cell(r, 0).Equals("Model", StringComparison.OrdinalIgnoreCase));
+            if (header < 0) { problems.Add("Coats.csv: no header row starting with \"Model\"."); return result; }
+            var h = Header(rows[header]);
+            const string f = "Coats.csv";
+            int cBreed = Col(h, "Breed", problems, f), cArch = Col(h, "Archetype", problems, f), cVibe = Col(h, "Vibe", problems, f);
+            int cC = Col(h, "Courage", problems, f), cN = Col(h, "Nerves", problems, f), cT = Col(h, "Temper", problems, f), cB = Col(h, "Bond affinity", problems, f);
+            int cQ = Col(h, "Signature quirks", problems, f), cS = Col(h, "Signatures", problems, f);
+            int cLove = Col(h, "Loves treats", problems, f), cIgnore = Col(h, "Ignores treats", problems, f);
+            int cImp = Col(h, "Impatient", problems, f), cAl = Col(h, "Alert", problems, f), cAf = Col(h, "Affectionate", problems, f), cFu = Col(h, "Fussy", problems, f);
+            JsonValue List(string raw, Func<string, string> map)
+            {
+                var a = JsonValue.NewArray();
+                foreach (string part in (raw ?? "").Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    if (part.Trim().Length > 0) a.Add(map(part.Trim()));
+                return a;
+            }
+            for (int i = header + 1; i < rows.Count; i++)
+            {
+                var r = rows[i];
+                string model = Cell(r, 0).Trim().ToLowerInvariant();
+                if (model.Length == 0) continue;
+                string where = $"Coats.csv row {i + 1} ({model})";
+                double N(int col, string label, double min, double max)
+                {
+                    string raw = Cell(r, col);
+                    if (raw.Trim().Length == 0) return 0;
+                    if (!TryNumber(raw, out double v) || v < min || v > max) { problems.Add($"{where}: {label} \"{raw}\" must be {min} to {max}."); return 0; }
+                    return v;
+                }
+                var quirks = List(Cell(r, cQ), q =>
+                {
+                    if (NameMatching.TryParseQuirk(q, out Quirk quirk)) return quirk.ToString();
+                    problems.Add($"{where}: unknown quirk \"{q}\".");
+                    return q;
+                });
+                var sigs = List(Cell(r, cS), x =>
+                {
+                    if (SignatureNames.TryParse(x, out Signature sig)) return sig.ToString();
+                    problems.Add($"{where}: unknown signature \"{x}\" (see the Signatures tab; cut ones can't be used).");
+                    return x;
+                });
+                result.Add(JsonValue.NewObject()
+                    .Set("model", model)
+                    .Set("breed", Cell(r, cBreed).Trim())
+                    .Set("archetype", Cell(r, cArch).Trim())
+                    .Set("vibe", Cell(r, cVibe).Trim())
+                    .Set("leans", JsonValue.NewObject().Set("courage", N(cC, "Courage", -2, 2)).Set("nerves", N(cN, "Nerves", -2, 2))
+                        .Set("temper", N(cT, "Temper", -2, 2)).Set("bondAffinity", N(cB, "Bond affinity", -2, 2)))
+                    .Set("signatureQuirks", quirks)
+                    .Set("signatures", sigs)
+                    .Set("lovesTreats", List(Cell(r, cLove), x => x))
+                    .Set("ignoresTreats", List(Cell(r, cIgnore), x => x))
+                    .Set("demeanorTraits", JsonValue.NewObject().Set("impatient", N(cImp, "Impatient", 0, 2)).Set("alert", N(cAl, "Alert", 0, 2))
+                        .Set("affectionate", N(cAf, "Affectionate", 0, 2)).Set("fussy", N(cFu, "Fussy", 0, 2))));
+            }
+            return result;
         }
 
         private static Dictionary<string, JsonValue> ReadDemeanor(string csv, List<string> problems)

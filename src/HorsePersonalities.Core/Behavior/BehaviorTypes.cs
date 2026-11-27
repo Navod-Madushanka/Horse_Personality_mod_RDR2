@@ -14,13 +14,15 @@ namespace HorsePersonalities.Core.Behavior
         None, Snort, LookAtThreat, Agitate, Rear, QuickStop, Skid, ThrowRider, Bolt, Kick,
         // Phase 7: quirks, care reactions, demeanor (also from Phase 1 results).
         Call, Content, Follow, Wander, KickNpc, LookAt,
+        // Phase 7b: coat signatures. Unhitch, Graze, Brawl, Creep, Stare and Sigh need Phase 7b's DevTools triggers 43-54.
+        Unhitch, Graze, Brawl, Creep, Stare, Sigh, Snub,
     }
 
     [Flags]
     public enum PushKind { None = 0, LowStaminaSpur = 1, LongSprint = 2, HardStop = 4 }
 
     /// <summary>Cooldown groups (Behavior tab: Spook, Buck, Kick, Tell cooldowns).</summary>
-    public enum BehaviorGroup { Spook, Buck, Kick, Tell, Quirk }
+    public enum BehaviorGroup { Spook, Buck, Kick, Tell, Quirk, Signature }
 
     /// <summary>One check's view of a horse, built by the game layer every 250 ms.</summary>
     public struct HorseSituation
@@ -38,6 +40,8 @@ namespace HorsePersonalities.Core.Behavior
         public PushKind Pushed;
         /// <summary>The player has stood behind the horse for the kick linger time (one episode, reported once).</summary>
         public bool PlayerLingeredBehind;
+        /// <summary>Phase 7b: the horse is in a town (City lover).</summary>
+        public bool InTown;
     }
 
     /// <summary>A behavior to play, with the reason for the log (rule 9: the trait, the roll and the cooldown).</summary>
