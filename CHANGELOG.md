@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Phase 5 in game (Nov 27, 2026)
+- Stage 9 passed: the reveal follows the bond level, the game resets changed base ranks on reload (the mod re-applies within a second) and keeps them through a stable visit, so uninstalling and reloading gives vanilla stats.
+- DevTools trigger 42 now sets the bond XP for the next level: `_SET_MOUNT_BONDING_LEVEL` alone did nothing in game.
+- Bond pace leaves jumps over 300 XP alone (trigger 42, trainers) instead of scaling them.
+- Found: the game puts bond XP the mod sets back within minutes, so Phase 6's bond pace probably has no lasting effect. Check in row 10.10.
+
 ### Phase 7b: coat personalities and signature behaviors (built Nov 27, 2026)
 - The sheet's new Coats tab: hand-written personalities per coat (Navod's seven Arabian coats). A coat's leanings replace its breed's with a tighter spread (*Coat spread* 0.3); its signature quirks always show; its demeanor and loved/ignored treats replace the breed's. Other horses roll exactly as before.
 - 17 signature behaviors (Snake drama, Moody refusal, Mud tantrum, Town disdain, City lover, Night owl, Dramatic rear, Escape artist, Prankster, Lazy pace, Roadside grazer, Hill sigh, Brush excitement, Scatterbrain, Wolf brawler, Soul stare, Camp creeper), sharing a 60 s *Signature cooldown*, held in missions.

@@ -1,6 +1,6 @@
 # Phase 5 report: stats and the bond reveal, plus prized horses
 
-Written Nov 26, 2026. Built and unit tested; the in-game check is next.
+Written Nov 26, 2026. Built and unit tested; checked in game on Nov 27 (see In-game results).
 
 ## What was built
 
@@ -37,6 +37,40 @@ Written Nov 26, 2026. Built and unit tested; the in-game check is next.
 - **Prized horses:** always good with no bad-side trait over 10,000 rolls for 4 breeds; still get quirks; wild ones never Unbreakable and Hard exactly when the boosted score passes the line; stable horses and Prized-tab models are prized, a saddled stolen horse is not; saved and loaded.
 - **Phase 5:** the reveal at each bond level; originals learned at bond 1 with vanilla bars; one rank at bond 2, the second at bond 3; a game reset put back; the bonus rank ignored; ranks inside 0 and the game's max; restore; temporary horses untouched; originals saved.
 - **Converter:** the Prized tab, with every bad entry rejected (a gang horse, an unknown reason, a duplicate).
+
+## In-game results (Nov 27, 2026, home test Stage 9)
+
+Tested on the Thoroughbred (reversed dapple black, original health and stamina base rank 2) with test mode's *Prized stats* preset (health +1, stamina -2), then with test mode off.
+
+| Row | Result |
+| --- | --- |
+| 9.1 Originals stored | Pass: `original health base rank is 2`, `original stamina base rank is 2` |
+| 9.2 Overlay | Pass: *good horse (prized)*, health +1 and stamina -2 |
+| 9.3, M42, 9.4 Reveal by bond level | Pass. Bond 2 came from a real pat (XP 348 to 353) and the mod applied it within 0.1 s: health 2 to 3, stamina 2 to 1. Bond 3 (trigger 42): stamina 1 to 0, health unchanged. Bond 4 and the step back to bond 1 were not tried. |
+| 9.5 Saddle change | Not tried |
+| 9.6 Save, quit, reload | **The game resets the base ranks to vanilla on load.** The mod re-applied them 0.2 s after loading. |
+| 9.7 Stable the horse, take it out | **The game keeps the mod's base ranks**; nothing needed re-applying. Stable cutscenes held behaviors as designed. |
+| 9.8 Buy a horse | Pass: a stable-bought Dutch Warmblood rolled *good horse (prized)* |
+| 9.9 RestoreVanillaStats | Bars vanilla, but only because the game had already reset them on load; no `[RestoreVanillaStats]` line, since that line is written only for a change |
+
+### What this means
+
+- **Uninstalling is safe.** The game does not keep a changed base rank across a reload, so removing the mod and reloading gives vanilla stats. `RestoreVanillaStats` stays as a safety net. The README should say this.
+- **The mod must re-apply every session**, which it does within a second of loading.
+
+### Two problems found and fixed
+
+1. **`_SET_MOUNT_BONDING_LEVEL` does nothing.** The hash matches the hook's own wrapper, but the bond rank stayed the same after three presses. DevTools trigger 42 now also sets the bond XP to the amount the next level starts at (`GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK`, hash taken from the hook), the way a pat crossing the threshold does. Tested: bond 2 to 3, XP 361 to 950.
+2. **Phase 6's bond pace shrank trigger 42's jump.** It scales every bond XP gain each second. Gains over 300 XP in one step (bonding never gives that much; the largest seen was +35) are now left alone and logged at the Debug level. This also covers a trainer's "max bond".
+
+### Open problem for Phase 6: the game overrides bond XP the mod sets
+
+About three minutes after trigger 42 set bond XP to 950, with nothing pressed, the game put it back: `Bond: rank 3 -> 2, XP 950 -> 363` (21:25:22). The mod followed and re-applied the bond 2 stats. Phase 6's bond-pace scaling seems to be undone the same way: a pat gave +17, the mod scaled it to +18 (x1.11), and the next reading was 380, which is +17 on 363.
+
+So the game keeps the real bond XP somewhere the mod doesn't write, and copies it back. Setting `PA_BONDING` points therefore only lasts a few minutes:
+
+- Trigger 42 is still useful for testing, but check the bars right after pressing it.
+- **Bond pace (Bond affinity, slower bond 4 for good and prized horses, Hard wild horses) probably has no lasting effect in game.** Check it in home test row 10.10 before relying on it, and look for another way to change bonding speed.
 
 ## Known issues and things only the game can answer
 
