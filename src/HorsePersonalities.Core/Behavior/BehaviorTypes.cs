@@ -46,6 +46,8 @@ namespace HorsePersonalities.Core.Behavior
         public bool PlayerLingeredBehind;
         /// <summary>Phase 7b: the horse is in a town (City lover).</summary>
         public bool InTown;
+        /// <summary>Someone nearby is fighting you (War horse: never spooks then).</summary>
+        public bool InFight;
     }
 
     /// <summary>A behavior to play, with the reason for the log (rule 9: the trait, the roll and the cooldown).</summary>

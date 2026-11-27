@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(22, Catalog.CoatCount);
+            Assert.Equal(29, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -433,6 +433,57 @@ namespace HorsePersonalities.Tests
             Assert.True(new SignatureBrain(T, () => 0.99).OnWhistle(1, With(Signature.SelectiveHearing), false, new CooldownBook(T, 0), 0).IsNone);
             Assert.Equal(BehaviorAction.JealousCall, yes.OnRival(1, With(Signature.Jealous), 5, "patted", new CooldownBook(T, 0), 0).Action);
             Assert.True(yes.OnRival(1, With(Signature.Jealous), T.JealousRange + 1, "patted", new CooldownBook(T, 0), 0).IsNone);
+        }
+            // ---- Turkoman coats ----
+
+        [Fact]
+        public void TurkomanCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_turkoman_darkbay", out Coat assassin));
+            Assert.Equal("The Aristocratic Assassin", assassin.Archetype);
+            Assert.Contains("Sugar cube", assassin.LovesTreats);
+            Assert.Contains("Haycube", assassin.IgnoresTreats);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_turkoman_perlino", out Coat baseline));
+            Assert.Equal(new[] { Signature.Restless, Signature.TrailSnob }, baseline.Signatures);
+        }
+
+        [Fact]
+        public void RestlessAndTrailSnob()
+        {
+            Assert.Equal(BehaviorAction.Agitate, S(With(Signature.Restless), Riding(still: T.RestlessSeconds)).Action);
+            Assert.True(S(With(Signature.Restless), Riding(still: T.RestlessSeconds - 1)).IsNone);
+            var walk = Riding(speed: 1.5); walk.WalkingSeconds = T.TrailSnobSeconds;
+            Assert.Equal(BehaviorAction.Snub, S(With(Signature.TrailSnob), walk).Action);
+            walk.WalkingSeconds = 5;
+            Assert.True(S(With(Signature.TrailSnob), walk).IsNone);
+        }
+
+        [Fact]
+        public void WarHorseNeverSpooksInAFightAndFightsWhenYoureOff()
+        {
+            var brain = new BehaviorBrain(T, ModSettings.Defaults(), () => 0);
+            var fight = new HorseSituation { Mounted = true, Threat = Threat.Gunfire, InFight = true, GameHour = 12, BondLevel = 2 };
+            Assert.True(brain.Decide(1, With(Signature.WarHorse), fight, 0.25, new CooldownBook(T, 120), 0).IsNone);
+            Assert.False(brain.Decide(1, With(), fight, 0.25, new CooldownBook(T, 120), 0).IsNone);
+            var off = new SignatureSituation { PlayerNear = true, NearEnemy = 21 };
+            var d = S(With(Signature.WarHorse), off);
+            Assert.Equal(BehaviorAction.Brawl, d.Action);
+            Assert.Equal(21, d.Target);
+        }
+
+        [Fact]
+        public void SnobShowboatMustLeadVain()
+        {
+            var cheap = Riding(); cheap.LowerTierHorse = 5;
+            Assert.Equal(BehaviorAction.Snub, S(With(Signature.Snob), cheap).Action);
+            var stop = Riding(still: 1); stop.JustStoppedFromGallop = true; stop.Crowd = (int)T.ShowboatCrowd;
+            Assert.Equal(BehaviorAction.Rear, S(With(Signature.Showboat), stop).Action);
+            stop.Crowd = 0;
+            Assert.True(S(With(Signature.Showboat), stop).IsNone);
+            var behind = Riding(speed: T.WalkSpeed + 1); behind.HorseAhead = 4;
+            Assert.Equal(BehaviorAction.Agitate, S(With(Signature.MustLead), behind).Action);
+            var care = new CareReactor(T, () => 0.99);
+            Assert.Equal(BehaviorAction.Content, care.React(With(Signature.Vain), DemeanorTraits.None, CareKind.Brush, 4, 0).First);
         }
     }
 }

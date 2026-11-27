@@ -41,6 +41,14 @@ namespace HorsePersonalities.Core.Breeds
         SilentStealth,
         Unhurried,
         Jealous,
+        // Turkoman coats (Nov 27, 2026)
+        Restless,
+        TrailSnob,
+        WarHorse,
+        Snob,
+        Showboat,
+        MustLead,
+        Vain,
     }
 
     /// <summary>

@@ -41,6 +41,18 @@ namespace HorsePersonalities.Core.Behavior
         public int HogtiedPerson;
         /// <summary>A stranger within Guard range of the horse (0 for none).</summary>
         public int GuardTarget;
+        /// <summary>Seconds ridden at a walk without a break.</summary>
+        public double WalkingSeconds;
+        /// <summary>An enemy fighting you within War horse range (0 for none).</summary>
+        public int NearEnemy;
+        /// <summary>A cheaper horse within Short king range: not a higher stat tier, not its own breed (0 for none).</summary>
+        public int LowerTierHorse;
+        /// <summary>It came to a stop from a gallop in the last few seconds.</summary>
+        public bool JustStoppedFromGallop;
+        /// <summary>People within Showboat range.</summary>
+        public int Crowd;
+        /// <summary>A moving horse ahead within Must lead range (0 for none).</summary>
+        public int HorseAhead;
     }
 
     /// <summary>
@@ -120,6 +132,19 @@ namespace HorsePersonalities.Core.Behavior
                     return Use(horse, s.BondLevel <= 2 ? BehaviorAction.ThrowRider : BehaviorAction.Agitate,
                         $"Bored buck: you aimed {s.AimingSeconds:0} s, bond {s.BondLevel}: roll {F3(roll)} vs {F3(_t.BoredBuckChance)}", cooldowns, now);
             }
+            if (p.Has(Signature.Showboat) && s.Mounted && s.JustStoppedFromGallop && s.Crowd >= _t.ShowboatCrowd && Ready(horse, cooldowns, now))
+            {
+                double roll = _random();
+                Decision show = Use(horse, roll < _t.ShowboatChance ? BehaviorAction.Rear : BehaviorAction.None,
+                    $"Showboat: a big stop in front of {s.Crowd} people: roll {F3(roll)} vs {F3(_t.ShowboatChance)}", cooldowns, now);
+                if (!show.IsNone) return show;
+            }
+            if (p.Has(Signature.WarHorse) && !s.Mounted && s.NearEnemy != 0 && Ready(horse, cooldowns, now))
+            {
+                Decision war = Use(horse, BehaviorAction.Brawl, "War horse: goes for the enemy at your side", cooldowns, now);
+                war.Target = s.NearEnemy;
+                return war;
+            }
             if (p.Has(Signature.RoadsideGrazer) && s.Mounted && s.StandingStillSeconds >= _t.GrazerIdleSeconds
                 && !_grazedThisStop.Contains(horse) && Ready(horse, cooldowns, now))
             {
@@ -137,6 +162,14 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.SnackStop, _t.SnackMagnetRate, "Snack magnet: spotted something tasty", 0));
             if (p.Has(Signature.Clumsy) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.SpeedMs < _t.GallopSpeed)
                 candidates.Add((BehaviorAction.Skid, _t.ClumsyRate, "Clumsy: tripped over its own hooves", 0));
+            if (p.Has(Signature.Restless) && (s.Mounted || s.PlayerNear) && s.StandingStillSeconds >= _t.RestlessSeconds)
+                candidates.Add((BehaviorAction.Agitate, _t.RestlessRate, $"Restless: kept standing {s.StandingStillSeconds:0} s", 0));
+            if (p.Has(Signature.TrailSnob) && walking && s.WalkingSeconds >= _t.TrailSnobSeconds)
+                candidates.Add((BehaviorAction.Snub, _t.TrailSnobRate, $"Trail snob: {s.WalkingSeconds:0} s of walking is beneath it", 0));
+            if (p.Has(Signature.Snob) && s.LowerTierHorse != 0)
+                candidates.Add((BehaviorAction.Snub, _t.SnobRate, "Snob: ears back at a cheaper horse", s.LowerTierHorse));
+            if (p.Has(Signature.MustLead) && s.Mounted && s.SpeedMs >= _t.WalkSpeed && s.HorseAhead != 0)
+                candidates.Add((BehaviorAction.Agitate, _t.MustLeadRate, "Must lead: stuck behind another horse", 0));
             if (p.Has(Signature.ShortKing) && s.OtherHorse != 0)
                 candidates.Add((BehaviorAction.SquareUp, _t.ShortKingRate, "Short king: picking a fight with a bigger horse", s.OtherHorse));
             if (p.Has(Signature.BountyStomper) && s.HogtiedPerson != 0)

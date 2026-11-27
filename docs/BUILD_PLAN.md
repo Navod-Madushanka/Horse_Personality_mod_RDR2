@@ -508,6 +508,17 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Jealous** (Wild Bay): you pat, brush or feed another horse, or ride one, within 20 m of it: it calls and stamps.
   - Reused: Wolf brawler now covers bears too (it always did: every predator); Clumsy for the Wild Bay's zero spatial awareness.
   - Cut: refusing your path for its own shortcut, charging through brush and taking cliffs like stairs (no script control over steering or terrain), getting stuck between trees and walking into campfires (no control; Clumsy stands in), nipping as you tighten the girth (no girth moment; Saddle hater plays on mounting).
+  - Prized (Navod, Nov 27): Tiger Striped Bay (Rare).
+- **Turkoman coats** (Navod, Nov 27, 2026): a baseline *Elite Adrenaline Junkie* for the four coats without a design, *The Aristocratic Assassin* (Dark Bay), *The Hollywood Action Star* (Gold) and *The Stoic Ghost* (Silver). Seven new signatures from tested pieces, so no new DevTools triggers:
+  - **Restless** (all): standing still 10 s with you on it or near: stomps, snorts, tosses its head, 1.5/min (sooner and more often than the breed's Impatient demeanor).
+  - **Trail snob** (baseline, Gold): 30 s of walking: an insulted snort, 0.5/min.
+  - **War horse** (Dark Bay): in a fight it never spooks; off it, it goes for an enemy within 5 m for 4 s.
+  - **Snob** (Dark Bay): ears back (snort and glare) at a cheaper horse within 8 m: any breed of its own stat tier or lower (the Turkoman is Standard), other than Turkomans, 0.5/min.
+  - **Showboat** (Gold): you stop from a gallop with 3+ people within 15 m: 60% it rears.
+  - **Must lead** (Gold): riding behind another moving horse within 12 m: agitated, 1/min.
+  - **Vain** (Gold): every brushing gets a happy nicker and call, no dice.
+  - Reused: Silent stealth and Mud tantrum (Dark Bay), Town disdain and Stoic (Silver). The Dark Bay loves sugar cubes and ignores haycubes.
+  - Cut: charging into ambushes and never losing its footing (no control over speed or footing), disgust at a muddy pelt (no pelt-stowing moment; Mud tantrum covers the vanity), veering off to jump wagons and splash through rivers (no steering), the Silver's bite (a real bite on a sidewalk is a crime; Town disdain snaps instead).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

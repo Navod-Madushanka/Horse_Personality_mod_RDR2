@@ -64,6 +64,8 @@ namespace HorsePersonalities.Game
         private ScanResult _lastScan;
         private bool _wasAiming;
         private int _lastMounted;
+        private double _walkSeconds;
+        private double _lastGallopAt = double.NegativeInfinity;
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -82,6 +84,7 @@ namespace HorsePersonalities.Game
             // Phase 7b
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
             public int OtherHorse, HogtiedPerson, GuardTarget;
+            public int NearEnemy, LowerTierHorse, Crowd, HorseAhead;
         }
 
         public BehaviorRunner(IGameApi game, BreedCatalog catalog, ModSettings settings, HorseRegistry registry, ILog log)
@@ -267,20 +270,23 @@ namespace HorsePersonalities.Game
             }
 
             double speed = _game.GetSpeed(horse);
+            bool walkingNow = mounted && speed >= _t.StandingStillSpeed && speed < _t.WalkSpeed;
+            _walkSeconds = walkingNow ? _walkSeconds + dt : 0;
+            if (mounted && speed >= _t.GallopSpeed) _lastGallopAt = nowSeconds;
             double still = speed < _t.StandingStillSpeed ? (_stillSeconds.TryGetValue(horse, out double st) ? st : 0) + dt : 0;
             _stillSeconds[horse] = still;
             bool walkedAway = !mounted && _lastPlayerDistance >= 0 && _lastPlayerDistance < _t.ShadowTriggerDistance && playerDistance >= _t.ShadowTriggerDistance;
             _lastPlayerDistance = mounted || far ? -1 : playerDistance;
             if (far)
             {
-                if (p.Has(Signature.GuardDog) && _scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds);
+                if (p.Has(Signature.GuardDog) && _scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds, d.Breed);
                 var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.BondRank,
                     GuardTarget = _lastScan.GuardTarget };
                 Decision gone = _signatures.Decide(horse, p, away, dt, _cooldowns, nowSeconds);
                 if (!gone.IsNone) { Play(horse, gone.Action, 0); _log.Info(Log, $"{record.Id}: {gone.Action} ({gone.Cause})"); }
                 return;
             }
-            if (_scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds);
+            if (_scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds, d.Breed);
             else _lastScan.NewPredator = 0; // a predator counts once, in the scan that found it
 
             // ---- Phase 6: threats, pushes, random spooks, kicks ----
@@ -292,6 +298,7 @@ namespace HorsePersonalities.Game
                 GameHour = _game.GameHour,
                 BondLevel = d.BondRank,
                 InTown = p.Has(Signature.CityLover) && _game.IsInTown(horse),
+                InFight = _lastScan.EnemiesInCombat > 0,
                 Pushed = _push.Update(dt, mounted, speed, _game.GetCoreValue(horse, AttributeCore.Stamina), mounted && _game.IsSprintPressed),
             };
             if (!mounted)
@@ -374,6 +381,12 @@ namespace HorsePersonalities.Game
                     OtherHorse = _lastScan.OtherHorse,
                     HogtiedPerson = _lastScan.HogtiedPerson,
                     GuardTarget = _lastScan.GuardTarget,
+                    WalkingSeconds = _walkSeconds,
+                    NearEnemy = _lastScan.NearEnemy,
+                    LowerTierHorse = _lastScan.LowerTierHorse,
+                    JustStoppedFromGallop = mounted && still > 0 && nowSeconds - _lastGallopAt <= 3,
+                    Crowd = _lastScan.Crowd,
+                    HorseAhead = _lastScan.HorseAhead,
                 };
                 decision = _signatures.Decide(horse, p, sig, dt, _cooldowns, nowSeconds);
             }
@@ -386,15 +399,18 @@ namespace HorsePersonalities.Game
         }
 
         /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, witnesses, other horses.</summary>
-        private ScanResult Scan(int horse, int player, Personality p, double now)
+        private ScanResult Scan(int horse, int player, Personality p, double now, Breed own)
         {
             _threats.Forget(now);
             var r = new ScanResult();
             bool snakeDrama = p.Has(Signature.SnakeDrama);
             double snakeRange = _t.PredatorRange * (snakeDrama ? _t.SnakeRangeMultiplier : 1);
             float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), Math.Max(_t.NosyRange, _t.KickerWitnessRange));
-            if (p.Has(Signature.Prankster) || p.Has(Signature.Unhurried)) range = Math.Max(range, (float)_t.PranksterEnemyRange);
-            if (p.Has(Signature.ShortKing)) range = Math.Max(range, (float)_t.ShortKingRange);
+            bool fights = p.Has(Signature.Prankster) || p.Has(Signature.Unhurried) || p.Has(Signature.WarHorse);
+            if (fights) range = Math.Max(range, (float)_t.PranksterEnemyRange);
+            if (p.Has(Signature.ShortKing) || p.Has(Signature.Snob)) range = Math.Max(range, (float)_t.ShortKingRange);
+            if (p.Has(Signature.Showboat)) range = Math.Max(range, (float)_t.ShowboatRange);
+            if (p.Has(Signature.MustLead)) range = Math.Max(range, (float)_t.MustLeadRange);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
             int humans = 0;
@@ -415,11 +431,26 @@ namespace HorsePersonalities.Game
                     if (r.TownPerson == 0 && dist <= _t.TownDisdainRange && p.Has(Signature.TownDisdain)) r.TownPerson = ped;
                     if (r.StrangerClose == 0 && dist <= _t.SoulStareRange && p.Has(Signature.SoulStare)) r.StrangerClose = ped;
                     if (r.CreepTarget == 0 && dist <= _t.CreeperRange && p.Has(Signature.CampCreeper)) r.CreepTarget = ped;
-                    if (dist <= _t.PranksterEnemyRange && (p.Has(Signature.Prankster) || p.Has(Signature.Unhurried)) && _game.IsPedInCombatWith(ped, player)) r.EnemiesInCombat++;
+                    if (dist <= _t.PranksterEnemyRange && fights && _game.IsPedInCombatWith(ped, player))
+                    {
+                        r.EnemiesInCombat++;
+                        if (r.NearEnemy == 0 && dist <= _t.WarHorseRange && p.Has(Signature.WarHorse)) r.NearEnemy = ped;
+                    }
+                    if (dist <= _t.ShowboatRange && p.Has(Signature.Showboat)) r.Crowd++;
                     if (r.HogtiedPerson == 0 && dist <= _t.BountyStomperRange && p.Has(Signature.BountyStomper) && _game.IsHogtied(ped)) r.HogtiedPerson = ped;
                     if (r.GuardTarget == 0 && dist <= _t.GuardRange && p.Has(Signature.GuardDog)) r.GuardTarget = ped;
                 }
-                else if (r.OtherHorse == 0 && p.Has(Signature.ShortKing) && dist <= _t.ShortKingRange && _catalog.IsKnownModel(model)) r.OtherHorse = ped;
+                else if (_catalog.IsKnownModel(model))
+                {
+                    if (r.OtherHorse == 0 && p.Has(Signature.ShortKing) && dist <= _t.ShortKingRange) r.OtherHorse = ped;
+                    if (r.LowerTierHorse == 0 && p.Has(Signature.Snob) && dist <= _t.ShortKingRange
+                        && _catalog.TryGetBreedByModel(model, out Breed other) && other.Tier <= own.Tier && other.Name != own.Name) r.LowerTierHorse = ped;
+                    if (r.HorseAhead == 0 && p.Has(Signature.MustLead) && dist <= _t.MustLeadRange)
+                    {
+                        var (behindIt, sideIt) = Vec3.BehindAndSide(at, forward, _game.GetPosition(ped));
+                        if (behindIt < -1.0 && Math.Abs(sideIt) <= 4.0 && _game.GetSpeed(ped) >= _t.WalkSpeed) r.HorseAhead = ped;
+                    }
+                }
                 if (!human && _catalog.IsKnownModel(model) && dist <= _t.NosyRange) r.OtherHorseNear = true;
                 if (dist <= _t.NosyRange && r.PasserBy == 0 && (human || _catalog.IsKnownModel(model))) r.PasserBy = ped;
                 if (!human) continue;

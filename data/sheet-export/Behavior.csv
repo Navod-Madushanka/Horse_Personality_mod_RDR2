@@ -111,3 +111,14 @@ Unhurried ratio,2,Unhurried: the pace cap when you spur without danger (move ble
 Danger memory seconds,60,"Unhurried: seconds after a threat, gunfire or fight that it will still sprint."
 Jealous range,20,Jealous: it notices you with another horse within this range (m).
 Jealous chance,0.8,"Jealous: chance it calls and stamps when you pat, brush, feed or ride another horse."
+Restless seconds,10,Restless: seconds standing still (you on it or near) before it starts fidgeting.
+Restless rate,1.5,"Restless: stomps, snorts and head tosses per minute while it's kept standing."
+Trail snob seconds,30,Trail snob: seconds of walking before a casual ride insults it.
+Trail snob rate,0.5,Trail snob: insulted snorts per minute after that.
+War horse range,5,War horse: an enemy within this range (m) gets attacked while you're off it.
+Snob rate,0.5,"Snob: ears back per minute at a cheaper horse (same stat tier or lower, other breed) within Short king range."
+Showboat range,15,Showboat: people within this range (m) count as a crowd.
+Showboat crowd,3,Showboat: how many people make a crowd.
+Showboat chance,0.6,Showboat: chance it rears when you stop from a gallop in front of a crowd.
+Must lead range,12,Must lead: a moving horse ahead within this range (m) annoys it.
+Must lead rate,1,Must lead: agitated per minute while it has to follow another horse.

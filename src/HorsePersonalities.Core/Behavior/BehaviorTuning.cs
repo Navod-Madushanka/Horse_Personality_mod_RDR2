@@ -130,6 +130,17 @@ namespace HorsePersonalities.Core.Behavior
         public double DangerMemorySeconds => _v["dangerMemorySeconds"];
         public double JealousRange => _v["jealousRange"];
         public double JealousChance => _v["jealousChance"];
+        public double RestlessSeconds => _v["restlessSeconds"];
+        public double RestlessRate => _v["restlessRate"];
+        public double TrailSnobSeconds => _v["trailSnobSeconds"];
+        public double TrailSnobRate => _v["trailSnobRate"];
+        public double WarHorseRange => _v["warHorseRange"];
+        public double SnobRate => _v["snobRate"];
+        public double ShowboatRange => _v["showboatRange"];
+        public double ShowboatCrowd => _v["showboatCrowd"];
+        public double ShowboatChance => _v["showboatChance"];
+        public double MustLeadRange => _v["mustLeadRange"];
+        public double MustLeadRate => _v["mustLeadRate"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -245,6 +256,17 @@ namespace HorsePersonalities.Core.Behavior
             ("dangerMemorySeconds", "Danger memory seconds", 0.0, 3600.0, false),
             ("jealousRange", "Jealous range", 1.0, 200.0, false),
             ("jealousChance", "Jealous chance", 0.0, 1.0, false),
+            ("restlessSeconds", "Restless seconds", 1.0, 600.0, false),
+            ("restlessRate", "Restless rate", 0.0, 20.0, false),
+            ("trailSnobSeconds", "Trail snob seconds", 1.0, 600.0, false),
+            ("trailSnobRate", "Trail snob rate", 0.0, 20.0, false),
+            ("warHorseRange", "War horse range", 0.5, 50.0, false),
+            ("snobRate", "Snob rate", 0.0, 20.0, false),
+            ("showboatRange", "Showboat range", 1.0, 100.0, false),
+            ("showboatCrowd", "Showboat crowd", 1.0, 50.0, false),
+            ("showboatChance", "Showboat chance", 0.0, 1.0, false),
+            ("mustLeadRange", "Must lead range", 1.0, 100.0, false),
+            ("mustLeadRate", "Must lead rate", 0.0, 20.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

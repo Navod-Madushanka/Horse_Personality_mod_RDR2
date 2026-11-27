@@ -1,6 +1,6 @@
 # Phase 7b report: coat personalities and signature behaviors
 
-Written Nov 27, 2026. Built and unit tested (490 tests pass); not run in game yet.
+Written Nov 27, 2026. Built and unit tested (494 tests pass); not run in game yet.
 
 ## What changed
 
@@ -75,6 +75,27 @@ Cut: cornering like a wagon, knocking over fences (no script control), nudging y
 | Jealous | You pat, brush, feed or ride another horse within 20 m of it: call and stamp, 80% | - |
 
 Cut: shortcuts, charging brush, cliffs like stairs (no steering or terrain control); stuck between trees and walking into campfires (Clumsy stands in); the girth nip (Saddle hater plays on mounting).
+
+## Turkoman coats (added Nov 27)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirks | Signatures |
+| --- | --- | --- | --- | --- |
+| Black, Chestnut, Grey, Perlino | The Elite Adrenaline Junkie (baseline) | +2 / -1 / +1 / +1 | Head-tosser | Restless, Trail snob |
+| Dark Bay | The Aristocratic Assassin | +2 / -2 / +1 / 0 | Kicker | War horse, Snob, Silent stealth, Mud tantrum, Restless; loves sugar cubes, ignores haycubes |
+| Gold | The Hollywood Action Star | +1 / +1 / +1 / +1 | Head-tosser, Chatterbox | Showboat, Must lead, Vain, Restless, Trail snob |
+| Silver | The Stoic Ghost | +2 / -2 / +1 / 0 | Kicker | Town disdain, Stoic, Restless |
+
+| Signature | How it plays |
+| --- | --- |
+| Restless | Standing still 10 s with you on it or near: agitated, 1.5/min |
+| Trail snob | After 30 s of walking: an insulted snort, 0.5/min |
+| War horse | Never spooks while someone is fighting you; off it, goes for an enemy within 5 m |
+| Snob | Glares at a cheaper horse within 8 m (Standard tier or lower, not a Turkoman), 0.5/min |
+| Showboat | Stop from a gallop with 3+ people within 15 m: 60% rear |
+| Must lead | Behind a moving horse within 12 m: agitated, 1/min |
+| Vain | Every brushing: a happy nicker and call |
+
+The Turkoman is Standard in this mod's stat tiers, so Snob's "lower tier" means its own tier or lower, other than Turkomans. Cut: charging ambushes and sure footing (its Courage instead), the muddy pelt (Mud tantrum), jumping wagons and splashing rivers (no steering), the Silver's sidewalk bite (Town disdain).
 
 ## Testing it
 

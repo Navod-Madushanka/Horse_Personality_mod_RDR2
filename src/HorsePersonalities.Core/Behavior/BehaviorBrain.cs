@@ -51,7 +51,9 @@ namespace HorsePersonalities.Core.Behavior
                     return Use(horse, BehaviorAction.Brawl, BehaviorGroup.Signature, "Wolf brawler: goes for the predator", cooldowns, now);
                 return Decision.None;
             }
-            if (s.Threat != Threat.None)
+            // War horse (coat signature): in a fight it neither spooks nor tells.
+            bool battle = s.InFight && p.Has(Breeds.Signature.WarHorse);
+            if (s.Threat != Threat.None && !battle)
             {
                 double courage = t.Courage - (s.Threat == Threat.Explosion ? _t.ExplosionCouragePenalty : 0);
                 double chance = ThreatChance(courage) * (s.Threat == Threat.RiderGunfire ? _t.RiderGunfireScale : 1.0);
@@ -89,7 +91,7 @@ namespace HorsePersonalities.Core.Behavior
             }
 
             // 3. Random spooks from Nerves.
-            if (cooldowns.Ready(horse, BehaviorGroup.Spook, now) && dtSeconds > 0)
+            if (!battle && cooldowns.Ready(horse, BehaviorGroup.Spook, now) && dtSeconds > 0)
             {
                 double perMinute = RandomSpookRate(t.Nerves, s, out string factors, p);
                 double chance = 1 - Math.Exp(-perMinute * dtSeconds / 60.0);
