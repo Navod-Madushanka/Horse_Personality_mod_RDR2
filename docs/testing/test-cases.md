@@ -5,7 +5,7 @@
 
 Nov 28, 2026 · @Navod
 
-Every test left before version 1.0, stage by stage. Each row is one test: its name, why it matters, how to do it, what to look at, and what should happen. Mark the Result as you go and write in Notes only when something is odd.
+Every test left before version 1.0, stage by stage. Each row is one test: its name, why it matters, how to do it, what to look at, and what should happen. Mark the Result as you go. When something is odd, or a test asks you to copy a value, leave a comment on that row ("copy into Notes" means a comment).
 
 ## Before you start
 
@@ -414,6 +414,6 @@ After each session, send these so failures can be fixed and numbers tuned:
 - [ ] `scripts\HorsePersonalities\log.txt`
 - [ ] `phase1-results.csv` (DevTools results)
 - [ ] `horses.json`
-- [ ] This doc with Results and Notes filled in
+- [ ] This doc with Results and comments filled in
 
-The values to copy into Notes along the way: treat item codes (11.7, 12.21), the sigh sound (12.9), the climb speed (12.10), Rachel's and Cain's models (12.93, 12.82), which speech trigger worked (16.2, 16.3), the dirt ranks (16.4), and the bond XP lines (13.1, 13.2).
+The values to leave as comments along the way: treat item codes (11.7, 12.21), the sigh sound (12.9), the climb speed (12.10), Rachel's and Cain's models (12.93, 12.82), which speech trigger worked (16.2, 16.3), the dirt ranks (16.4), and the bond XP lines (13.1, 13.2).
