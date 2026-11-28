@@ -452,7 +452,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   Decided Nov 26, 2026:
   - **Quirks, built from what Phase 1 proved:**
     - Chatterbox: calls out and snorts now and then, more when other horses are near.
-    - Kicker: kicks an NPC standing right behind it, in town or out, witnesses or not. Changed Nov 28, 2026 (Navod): a kick seen by the law brings the law, and that is part of the fun; you choose whether to take a Kicker into town. The Kicker witness range setting is retired. It kicks dogs standing behind it too (Navod, Nov 28; the dog models are in `data/dog-models.csv`).
+    - Kicker: kicks an NPC standing right behind it, in town or out, witnesses or not. Changed Nov 28, 2026 (Navod): a kick seen by the law brings the law, and that is part of the fun; you choose whether to take a Kicker into town. The Kicker witness range setting is retired. It kicks dogs standing behind it too (Navod, Nov 28; the dog models are in `data/dog-models.csv`), except Rufus and Cain, the story dogs (Navod, Nov 28): Rufus is `a_c_dogrufus_01`; Cain is thought to be `a_c_doghobo_01`, to confirm in camp with DevTools trigger 63.
     - Head-tosser: restless head tossing while standing still.
     - Nosy: turns to watch people and animals passing within 12 m.
     - Shadow: follows you a few steps when you walk away.

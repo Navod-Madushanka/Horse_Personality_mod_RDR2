@@ -429,6 +429,12 @@ The Splashed White turns up at random campsites; the Overo and Tobiano run wild 
 | 12.80 | **Tobiano**: ride through Saint Denis | Horse, log | Stops dead and snorts now and then (*Country bumpkin*) |  |  |
 | 12.81 | **Grey Overo**: ride into a cactus; feed a sugar cube, then a haycube | Horse, log | A flat stare at you (*Deadpan*); a snort for the sugar cube, a happy call for the haycube (needs the item codes) |  |  |
 
+### Stage 12, story dogs
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.82 | In camp, stand next to Cain and run DevTools trigger 63 (read only) | Panel | Shows a model code; if it isn't 0xC5C5D255 (`a_c_doghobo_01`), copy it into Notes so Cain can be kept off the dog list |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

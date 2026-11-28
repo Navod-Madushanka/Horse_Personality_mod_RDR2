@@ -433,6 +433,22 @@ namespace HorsePersonalities.DevTools
                     ctx.Game.LookAtPoint(h, spot, 6000);
                     return $"TASK_LOOK_AT_COORD at ({spot.X:0}, {spot.Y:0}, {spot.Z:0}) for 6 s";
                 }));
+
+            // ---- Nov 28, 2026: 63, read only ----
+            t.Add(new Trigger("animal.model", "Nearest animal's model (read only)", "Kicker (story dogs kept off the dog list)",
+                "Stand next to Cain in camp (or any animal) and press. Copy the model code into Notes. Nothing is done to the animal.",
+                ctx =>
+                {
+                    int me = ctx.Game.PlayerPed, found = 0;
+                    float best = 15f;
+                    foreach (int ped in ctx.Game.PedsNear(me, 15f))
+                    {
+                        if (ped == me || ped == ctx.Horse || ctx.Game.IsHuman(ped)) continue;
+                        float d = ctx.Game.DistanceBetween(me, ped);
+                        if (d < best) { best = d; found = ped; }
+                    }
+                    return found == 0 ? "No animal within 15 m." : $"Nearest animal {found}: model 0x{ctx.Game.GetModel(found):X8}, {best:0.0} m away";
+                }, needsHorse: false));
             return t;
         }
 

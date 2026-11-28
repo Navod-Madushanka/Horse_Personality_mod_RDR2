@@ -685,7 +685,9 @@ namespace HorsePersonalities.Tests
             [Fact]
         public void DogsAreKnownKickerTargetsButNotPredators()
         {
-            Assert.Equal(14, Catalog.DogModelCount);
+            Assert.Equal(12, Catalog.DogModelCount);
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_dogrufus_01"))); // Rufus stays safe
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_doghobo_01")));  // Cain (to confirm)
             uint lab = HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_doglab_01");
             Assert.True(Catalog.IsDog(lab));
             Assert.False(Catalog.IsPredator(lab));
