@@ -458,8 +458,41 @@ namespace HorsePersonalities.DevTools
                     }
                     return found == 0 ? "No animal within 15 m." : $"Nearest animal {found}: model 0x{ctx.Game.GetModel(found):X8}, {best:0.0} m away";
                 }, needsHorse: false));
+
+            // ---- Nov 28, 2026: 64-65, does bond XP set by a script last? (Phase 6 open problem) ----
+            t.Add(BondXpTest("bond.add", "Bond XP +50, added (watch 5 min)", true));
+            t.Add(BondXpTest("bond.set", "Bond XP +50, set (control, watch 5 min)", false));
             return t;
         }
+
+        /// <summary>
+        /// Phase 6 open problem (Nov 27, 2026): bond XP set with SET_ATTRIBUTE_POINTS is put back by the game within minutes.
+        /// Adds 50 XP (ADD_ATTRIBUTE_POINTS) or sets +50 (SET, the control), then logs the XP every 30 s for 5 minutes.
+        /// </summary>
+        private static Trigger BondXpTest(string id, string name, bool add) =>
+            new Trigger(id, name, "Bond pace (Bond affinity, slower bond 4, Hard wild horses)",
+                "Use a test save. Ride or stand by your horse, press, then don't pat, brush, feed or ride hard for 5 minutes. " +
+                "Read the log: does the XP stay +50 higher, or drop back? Try both triggers.",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    AttributeReading before = ctx.Game.ReadAttribute(h, PedAttribute.Bonding);
+                    if (add) ctx.Game.AddAttributePoints(h, PedAttribute.Bonding, 50);
+                    else ctx.Game.SetAttributePoints(h, PedAttribute.Bonding, before.Points + 50);
+                    string how = add ? "ADD_ATTRIBUTE_POINTS +50" : $"SET_ATTRIBUTE_POINTS {before.Points + 50}";
+                    for (int i = 0; i <= 10; i++)
+                    {
+                        int n = i;
+                        ctx.After(500 + i * 30000, () =>
+                        {
+                            if (!ctx.Game.Exists(h)) return;
+                            AttributeReading now = ctx.Game.ReadAttribute(h, PedAttribute.Bonding);
+                            ctx.Log($"Bond XP check {n * 30} s after {how}: rank {now.Rank}, XP {now.Points} (was {before.Points}; " +
+                                    $"{(now.Points >= before.Points + 50 ? "kept" : now.Points > before.Points ? "partly kept" : "gone")})");
+                        });
+                    }
+                    return $"{how}: bond {before.Rank}, XP {before.Points}. Watching for 5 minutes (see the log).";
+                });
 
         private static Trigger Action(string id, string name, int actionId, string usedFor, string how) =>
             new Trigger(id, name, usedFor, how, ctx =>

@@ -446,6 +446,10 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Test:** with Rampage, spawn wolves beside a low-courage and a high-courage horse; ride a high-nerves horse at night; push a high-temper horse until it bucks; try to break an Unbreakable wild horse 5 times; start a mission and confirm nothing fires.
 - **Done when:** you can tell a brave horse from a nervous one without the overlay.
 
+**Open problem (found in game Nov 27, 2026, Phase 5 testing): bond pace does not last.** About three minutes after the mod sets a horse's bond XP (`SET_ATTRIBUTE_POINTS` on `PA_BONDING`), the game puts back its own value, so Bond affinity, the slower climb to bond 4 for good and prized horses, and the Hard wild horse pace have no lasting effect. The game keeps the real bond XP somewhere the mod does not write. Next step:
+- DevTools trigger 64 adds +50 bond XP with `ADD_ATTRIBUTE_POINTS` (the game may treat it like a real pat); trigger 65 sets +50 with `SET_ATTRIBUTE_POINTS`, as the mod does now, as the control. Each logs the bond XP every 30 s for 5 minutes. Home test Stage 13.
+- If 64's XP lasts and 65's doesn't, bond pace switches to adding points (and removing them by adding a negative amount, if the game allows it). If neither lasts, bond pace is cut from v1 or redesigned (for example, as care reactions that change how often the horse is willing to be patted).
+
 ### Phase 7: Quirks, reactions and demeanor
 
 - **Agent builds:** the quirks that passed Phase 1, care reactions (pat, brush, feed, calm), and breed demeanor.

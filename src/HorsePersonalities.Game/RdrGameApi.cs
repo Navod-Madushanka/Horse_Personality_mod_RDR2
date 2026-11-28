@@ -177,6 +177,9 @@ namespace HorsePersonalities.Game
         public void SetAttributePoints(int ped, PedAttribute attribute, int points) =>
             Function.Call(Natives.SET_ATTRIBUTE_POINTS, ped, (int)attribute, points);
 
+        public void AddAttributePoints(int ped, PedAttribute attribute, int points) =>
+            Function.Call(Natives.ADD_ATTRIBUTE_POINTS, ped, (int)attribute, points);
+
         public void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank) =>
             Function.Call(Natives.SET_ATTRIBUTE_BASE_RANK, ped, (int)attribute, rank);
 

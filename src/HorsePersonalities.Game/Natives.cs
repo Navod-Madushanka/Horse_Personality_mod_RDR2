@@ -18,6 +18,8 @@ namespace HorsePersonalities.Game
         public const ulong IS_PED_SHOOTING = 0x34616828CD07F1A1;
         /// <summary>ENTITY::GET_ENTITY_FORWARD_VECTOR(int entity) -> Vector3</summary>
         public const ulong GET_ENTITY_FORWARD_VECTOR = 0x2412D9C05BB09B97;
+        /// <summary>ATTRIBUTE::ADD_ATTRIBUTE_POINTS(int ped, int attributeIndex, int p2)</summary>
+        public const ulong ADD_ATTRIBUTE_POINTS = 0x75415EE0CB583760;
         /// <summary>ATTRIBUTE::SET_ATTRIBUTE_POINTS(int ped, int attributeIndex, int p2)</summary>
         public const ulong SET_ATTRIBUTE_POINTS = 0x09A59688C26D88DF;
         /// <summary>ATTRIBUTE::SET_ATTRIBUTE_BASE_RANK(int ped, int attributeIndex, int newValue)</summary>

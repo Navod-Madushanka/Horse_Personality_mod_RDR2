@@ -447,6 +447,16 @@ The Leopard is sold at Van Horn (and comes from No, No and Thrice, No); the Few 
 | --- | --- | --- | --- | --- | --- |
 | 12.82 | In camp, stand next to Cain and run DevTools trigger 63 (read only) | Panel | Shows a model code; if it isn't 0xC5C5D255 (`a_c_doghobo_01`), copy it into Notes so Cain can be kept off the dog list |  |  |
 
+## Stage 13: bond XP that lasts (added Nov 28)
+
+Phase 6's bond pace changes the bond XP the game gives, but in Stage 9 the game put the XP back within about three minutes. These two triggers check whether adding XP (instead of setting it) is kept. Use a test save. For each: stand by your horse, press the trigger, then do nothing to it for 5 minutes (no patting, brushing, feeding or hard riding). The log writes a line every 30 s ending in *kept*, *partly kept* or *gone*.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 13.1 | DevTools trigger 64 (*Bond XP +50, added*), then wait 5 minutes | Log | Every line says *kept* | | Copy the last line into Notes |
+| 13.2 | DevTools trigger 65 (*Bond XP +50, set*, the control), then wait 5 minutes | Log | Expected to end in *gone*, as in Stage 9 | | Copy the last line into Notes |
+| 13.3 | If 13.1 kept it: save, quit, reload | Overlay or trigger 32 | The bond XP is still the higher number | | |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

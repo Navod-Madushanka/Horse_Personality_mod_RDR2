@@ -142,6 +142,8 @@ namespace HorsePersonalities.Core.GameApi
         void SetAttributeBaseRank(int ped, PedAttribute attribute, int rank);
         /// <summary>SET_ATTRIBUTE_POINTS. Phase 6 uses it on bonding points to speed up or slow down bonding; unverified in game.</summary>
         void SetAttributePoints(int ped, PedAttribute attribute, int points);
+        /// <summary>ADD_ATTRIBUTE_POINTS: adds to the attribute's XP. Trigger 64 checks whether the game keeps bond XP added this way (SET doesn't last).</summary>
+        void AddAttributePoints(int ped, PedAttribute attribute, int points);
         /// <summary>_SET_MOUNT_BONDING_LEVEL (1-4). DevTools only, for testing the bond reveal; the game may save it.</summary>
         void SetBondLevel(int horse, int level);
         /// <summary>

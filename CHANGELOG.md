@@ -8,6 +8,9 @@
 - Bond pace leaves jumps over 300 XP alone (trigger 42, trainers) instead of scaling them.
 - Found: the game puts bond XP the mod sets back within minutes, so Phase 6's bond pace probably has no lasting effect. Check in row 10.10.
 
+### Open problem: bond pace does not last (Nov 28, 2026)
+- In game the bond XP the mod sets is put back by the game within about three minutes, so bond pace has no lasting effect. DevTools triggers 64 (add +50 bond XP with `ADD_ATTRIBUTE_POINTS`) and 65 (set +50, the control) watch the bond XP for 5 minutes; home test Stage 13. The plan records what happens next either way.
+
 ### Phase 7b: coat personalities and signature behaviors (built Nov 27, 2026)
 - The sheet's new Coats tab: hand-written personalities per coat (Navod's seven Arabian coats). A coat's leanings replace its breed's with a tighter spread (*Coat spread* 0.3); its signature quirks always show; its demeanor and loved/ignored treats replace the breed's. Other horses roll exactly as before.
 - 17 signature behaviors (Snake drama, Moody refusal, Mud tantrum, Town disdain, City lover, Night owl, Dramatic rear, Escape artist, Prankster, Lazy pace, Roadside grazer, Hill sigh, Brush excitement, Scatterbrain, Wolf brawler, Soul stare, Camp creeper), sharing a 60 s *Signature cooldown*, held in missions.

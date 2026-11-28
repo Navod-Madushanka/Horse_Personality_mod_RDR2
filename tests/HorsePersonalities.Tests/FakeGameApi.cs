@@ -78,6 +78,7 @@ namespace HorsePersonalities.Tests
             r.Points = points;
             Attributes[(ped, attribute)] = r;
         }
+        public void AddAttributePoints(int ped, PedAttribute attribute, int points) => SetAttributePoints(ped, attribute, ReadAttribute(ped, attribute).Points + points);
         public int GetMetaPedType(int ped) => 0;
         public int GetClosestHumanPed(int aroundEntity, float radius, int excludePed) => 0;
 
