@@ -296,7 +296,7 @@ New: **Winded** (after 30 s of galloping it wheezes, 2/min). Cut: size, turning 
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
 | Gold Palomino (PC bonus coat; prized, Special) | The Dependable Everyday Partner (baseline) | -1 / 0 / -1 / +2 | Shadow | Hill sigh |
-| Mahogany Bay (Arthur's first horse) | The Humble First Partner | 0 / +1 / -2 / +2 | Shadow | Jealous, Vain, Needs soothing, Hill sigh; loves wild carrots |
+| Mahogany Bay (Arthur's first horse; prized: Rare) | The Humble First Partner | 0 / +1 / -2 / +2 | Shadow | Jealous, Vain, Needs soothing, Hill sigh; loves wild carrots |
 | Flaxen Roan | The Desert Nomad | +1 / -2 / -1 / +1 | Nosy | Unhurried, Snack magnet |
 | Dapple Bay | The Country Explorer | -1 / +1 / 0 / +1 | Nosy | Snack magnet, Hill crawler, Hill sigh |
 | Black Rabicano, Chestnut, Red Roan | The Honest Worker | -1 / -1 / -1 / +1 | Shadow | Bail out, City lover, Hill sigh |
@@ -312,4 +312,4 @@ No new signatures. Cut: speed and stamina (its stats), campfires (no check), bir
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian, the Piebald Tobiano Hungarian Halfbred and the Splashed White Paint are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian, the Piebald Tobiano Hungarian Halfbred the Splashed White Paint and the Mahogany Bay Tennessee Walker are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).

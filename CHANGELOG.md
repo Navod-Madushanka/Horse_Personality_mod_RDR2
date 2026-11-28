@@ -57,6 +57,7 @@
 - **Kentucky Saddler coats** (Navod, Nov 28): the Polished Showboat (Buttermilk Buckskin), the Over-Eager Sidekick (Silver Bay), the Free-Spirited Wanderer (Chestnut Pinto), the Polite Town Commuter (Black and Grey). New signatures Freeze and Bail out.
 - **Morgan coats** (Navod, Nov 28): the Pocket-Sized Prince (Palomino), the Feisty Little Brawler (Liver Chestnut), the Gentle Sidekick (Flaxen Chestnut), the Honest Worker (Bay and Bay Roan). New signature Winded (2 new Behavior settings).
 - **Tennessee Walker coats** (Navod, Nov 28), the last breed: the Dependable Everyday Partner baseline (Gold Palomino), the Humble First Partner (Mahogany Bay), the Desert Nomad (Flaxen Roan), the Country Explorer (Dapple Bay), the Honest Worker (Black Rabicano, Chestnut, Red Roan). Every breed model now has a coat design.
+- The Mahogany Bay Tennessee Walker (Arthur's first horse) is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

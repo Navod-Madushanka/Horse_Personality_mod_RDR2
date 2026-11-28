@@ -115,7 +115,7 @@ namespace HorsePersonalities.Tests
             Assert.True(c.TryGetPrized("a_c_horse_turkoman_silver", out PrizedReason why));
             Assert.Equal(PrizedReason.CommunityFavorite, why);
             Assert.False(c.TryGetPrized("a_c_horse_turkoman_gold", out _));
-            Assert.Equal(17, Shipped().PrizedModelCount);
+            Assert.Equal(18, Shipped().PrizedModelCount);
         }
 
         [Fact]
