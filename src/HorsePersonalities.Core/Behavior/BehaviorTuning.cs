@@ -67,7 +67,6 @@ namespace HorsePersonalities.Core.Behavior
         public double WanderSeconds => _v["wanderSeconds"];
         public double GrazeSeconds => _v["grazeSeconds"];
         public double KickerChance => _v["kickerChance"];
-        public double KickerWitnessRange => _v["kickerWitnessRange"];
         public double ReactionDelaySeconds => _v["reactionDelaySeconds"];
         public double ReactionTraitThreshold => _v["reactionTraitThreshold"];
         public double ReactionChance => _v["reactionChance"];
@@ -219,7 +218,6 @@ namespace HorsePersonalities.Core.Behavior
             ("wanderSeconds", "Wander seconds", 1.0, 120.0, false),
             ("grazeSeconds", "Graze seconds", 1.0, 120.0, false),
             ("kickerChance", "Kicker chance", 0.0, 1.0, false),
-            ("kickerWitnessRange", "Kicker witness range", 1.0, 200.0, false),
             ("reactionDelaySeconds", "Reaction delay seconds", 0.0, 10.0, false),
             ("reactionTraitThreshold", "Reaction trait threshold", 0.0, 2.0, false),
             ("reactionChance", "Reaction chance", 0.0, 1.0, false),

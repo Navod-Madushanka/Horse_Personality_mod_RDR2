@@ -114,7 +114,6 @@
     "wanderSeconds": 12,
     "grazeSeconds": 18,
     "kickerChance": 0.25,
-    "kickerWitnessRange": 25,
     "reactionDelaySeconds": 0.6,
     "reactionTraitThreshold": 0.75,
     "reactionChance": 0.9,

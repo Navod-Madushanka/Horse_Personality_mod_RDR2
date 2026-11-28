@@ -452,7 +452,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   Decided Nov 26, 2026:
   - **Quirks, built from what Phase 1 proved:**
     - Chatterbox: calls out and snorts now and then, more when other horses are near.
-    - Kicker: kicks an NPC standing right behind it, only with no other people within 25 m (no witnesses, so no crime).
+    - Kicker: kicks an NPC standing right behind it, in town or out, witnesses or not. Changed Nov 28, 2026 (Navod): a kick seen by the law brings the law, and that is part of the fun; you choose whether to take a Kicker into town. The Kicker witness range setting is retired.
     - Head-tosser: restless head tossing while standing still.
     - Nosy: turns to watch people and animals passing within 12 m.
     - Shadow: follows you a few steps when you walk away.
@@ -558,7 +558,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Strict** (Dapple Dark Grey): hurt by sloppy riding (into a tree, down a ledge: the damage event, trigger 60): a judgmental snort, then no sprinting for 30 s (capped at a trot when you spur).
   - Reused: War horse and Trail snob (baseline: composed in a fight, routine rides beneath it), Wolf brawler, Town disdain and Snob (Piebald), Restless, No brakes and Racer (Flaxen Chestnut).
   - Prized (Navod, Nov 28): Piebald Tobiano (Rare).
-  - Cut: plowing through roadblocks, slow off the line and turning like a stagecoach (no movement control), kicking passing dogs (dogs aren't watched; its Kicker quirk kicks people behind it with no witnesses), refusing to be hitched by smaller breeds (no hitching control; Snob glares at them).
+  - Cut: plowing through roadblocks, slow off the line and turning like a stagecoach (no movement control), kicking passing dogs (dogs aren't watched; its Kicker quirk kicks people behind it, witnesses or not), refusing to be hitched by smaller breeds (no hitching control; Snob glares at them).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience
@@ -631,7 +631,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 | Stat changes get written into the game save | Removing the mod may leave changed horses | Test in Phase 5; `RestoreVanillaStats` puts them back before uninstalling; warn in the README; back up saves |
 | Handling can't change per horse | Handling skill does nothing | Keep it experimental; drop it if Phase 1 says so |
 | The breaking minigame can't be controlled | Hard and Unbreakable can't work as planned | Unbreakable forces a buck-off at the end; Hard adds extra buck attempts |
-| A kick in town counts as a crime | Players get a wanted level from a quirk | Test it; turn Kicker off in towns or near lawmen |
+| A kick in town counts as a crime | Players get a wanted level from a quirk | Decided Nov 28, 2026: that is the point. A Kicker kicks in town too, and the law may come; the player chooses where to take it |
 | Other horse mods change stats or temperament | Odd combinations | Apply differences on top of whatever the game reports; list known conflicts |
 | A game update renames or breaks natives | The mod stops working | All native calls in one adapter; the update regression check |
 

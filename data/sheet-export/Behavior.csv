@@ -49,7 +49,6 @@ Wanderer player distance,6,Wanderer: you must be at least this far away (m).
 Wander seconds,12,Wanderer: how long it wanders before grazing.
 Graze seconds,18,Wanderer: how long it grazes.
 Kicker chance,0.25,Kicker: chance per check to kick an NPC standing right behind it (Kick behind distance).
-Kicker witness range,25,"Kicker: kicks only with no other people within this range (m), so no crime is seen."
 Reaction delay seconds,0.6,"Care reactions start this long after the vanilla pat, brush or feed animation ends."
 Reaction trait threshold,0.75,Bond affinity at or above this (and Temper below it): affectionate. Temper at or above: grumpy. Bond affinity at or below minus this: aloof.
 Reaction chance,0.9,Chance of a care reaction at bond 1.

@@ -83,7 +83,7 @@ namespace HorsePersonalities.Game
 
         private struct ScanResult
         {
-            public int NewPredator, PasserBy, NpcBehind, Witnesses;
+            public int NewPredator, PasserBy, NpcBehind;
             public bool OtherHorseNear;
             // Phase 7b
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
@@ -366,7 +366,6 @@ namespace HorsePersonalities.Game
                     OtherHorseNear = _lastScan.OtherHorseNear,
                     PasserBy = _lastScan.PasserBy,
                     NpcBehind = _lastScan.NpcBehind,
-                    Witnesses = _lastScan.Witnesses,
                     PlayerWalkedAway = walkedAway,
                     DirtRank = DemeanorOf(p, d).Fussy > 0 ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                 };
@@ -442,14 +441,14 @@ namespace HorsePersonalities.Game
             _log.Info(Log, $"{record.Id}: {decision.Action} ({decision.Cause})");
         }
 
-        /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, witnesses, other horses.</summary>
+        /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, other horses.</summary>
         private ScanResult Scan(int horse, int player, Personality p, double now, Breed own)
         {
             _threats.Forget(now);
             var r = new ScanResult();
             bool snakeDrama = p.Has(Signature.SnakeDrama);
             double snakeRange = _t.PredatorRange * (snakeDrama ? _t.SnakeRangeMultiplier : 1);
-            float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), Math.Max(_t.NosyRange, _t.KickerWitnessRange));
+            float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), (float)_t.NosyRange);
             bool fights = p.Has(Signature.Prankster) || p.Has(Signature.Unhurried) || p.Has(Signature.WarHorse) || p.Has(Signature.NeedsSoothing);
             if (fights) range = Math.Max(range, (float)_t.PranksterEnemyRange);
             if (p.Has(Signature.ShortKing) || p.Has(Signature.Snob)) range = Math.Max(range, (float)_t.ShortKingRange);
@@ -459,7 +458,6 @@ namespace HorsePersonalities.Game
             Vec3 me = _game.GetPosition(player);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
-            int humans = 0;
             foreach (int ped in _game.PedsNear(horse, range))
             {
                 if (ped == player || _game.IsDead(ped)) continue;
@@ -514,9 +512,7 @@ namespace HorsePersonalities.Game
                 if (!human) continue;
                 var (behind, side) = Vec3.BehindAndSide(at, forward, _game.GetPosition(ped));
                 if (r.NpcBehind == 0 && behind > 0.3 && behind <= _t.KickBehindDistance && Math.Abs(side) <= 1.0) r.NpcBehind = ped;
-                else if (dist <= _t.KickerWitnessRange) humans++;
             }
-            r.Witnesses = humans;
             return r;
         }
 
