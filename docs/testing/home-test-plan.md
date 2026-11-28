@@ -255,7 +255,7 @@ In test mode. Give each quirk about 5 minutes in its situation, and note if it s
 | # | Do this | Look at | Pass if | Result | Notes |
 | --- | --- | --- | --- | --- | --- |
 | 11.1 | **Nervous** preset (Chatterbox): ride near other horses, then alone | Listen, log | It calls or snorts now and then, more near other horses; never more than once every 2 min |  |  |
-| 11.2 | **Hothead** preset (Kicker): stand it still with an NPC right behind it, first away from town, then in town with people and a lawman around | Horse, log | It kicks the NPC both times. In town, note whether the law comes after you (it may, by design) |  |  |
+| 11.2 | **Hothead** preset (Kicker): stand it still with an NPC right behind it, first away from town, then in town with people and a lawman around | Horse, log | It kicks the NPC both times. In town, note whether the law comes after you (it may, by design). Try a dog behind it too: it kicks that as well |  |  |
 | 11.3 | **Grumpy** preset (Head-tosser): leave it standing next to you | Horse | Restless head tossing now and then |  |  |
 | 11.4 | **Coward** preset (Nosy): stand by it on a road with people passing | Horse's head | It turns to watch people and horses going by |  |  |
 | 11.5 | **Brave** preset (Shadow): get off and walk away | Horse | It follows you a few steps (about 6 s) |  |  |

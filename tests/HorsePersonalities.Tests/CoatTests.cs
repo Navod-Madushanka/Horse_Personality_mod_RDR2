@@ -682,5 +682,14 @@ namespace HorsePersonalities.Tests
             Assert.Null(brain.StrictCap(With(Signature.Strict), true, false, true)); // not spurring
             Assert.Null(brain.StrictCap(With(), true, true, true));
         }
+            [Fact]
+        public void DogsAreKnownKickerTargetsButNotPredators()
+        {
+            Assert.Equal(14, Catalog.DogModelCount);
+            uint lab = HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_doglab_01");
+            Assert.True(Catalog.IsDog(lab));
+            Assert.False(Catalog.IsPredator(lab));
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_wolf")));
+        }
     }
 }

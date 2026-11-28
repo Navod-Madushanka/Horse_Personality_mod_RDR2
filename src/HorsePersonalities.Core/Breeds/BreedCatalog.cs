@@ -55,6 +55,12 @@ namespace HorsePersonalities.Core.Breeds
         private readonly Dictionary<uint, PrizedReason> _prized = new Dictionary<uint, PrizedReason>();
         private readonly HashSet<uint> _predators = new HashSet<uint>();
         private readonly HashSet<uint> _snakes = new HashSet<uint>();
+        private readonly HashSet<uint> _dogs = new HashSet<uint>();
+
+        /// <summary>A dog (data/dog-models.csv): a Kicker kicks one standing behind it.</summary>
+        public bool IsDog(uint modelHash) => _dogs.Contains(modelHash);
+
+        public int DogModelCount => _dogs.Count;
         private readonly Dictionary<uint, Coat> _coats = new Dictionary<uint, Coat>();
         private readonly Dictionary<string, uint> _treats = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
 
@@ -265,6 +271,13 @@ namespace HorsePersonalities.Core.Breeds
                 }
             }
 
+            var dogs = new HashSet<uint>();
+            JsonValue dogArray = root["dogModels"];
+            if (dogArray.Kind == JsonKind.Array)
+                foreach (JsonValue dm in dogArray.Items)
+                    if (dm.Kind == JsonKind.String && dm.AsString().Trim().Length > 0) dogs.Add(Joaat.Hash(dm.AsString().Trim().ToLowerInvariant()));
+                    else problems.Add("A dogModels entry is not a model name.");
+
             var treats = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
             JsonValue treatArray = root["treats"];
             if (treatArray.Kind == JsonKind.Array)
@@ -296,6 +309,7 @@ namespace HorsePersonalities.Core.Breeds
 
             var catalog = new BreedCatalog(schema, penalty, classRates, breeds, others, roller, tierCaps);
             foreach (uint h in snakes) catalog._snakes.Add(h);
+            foreach (uint h in dogs) catalog._dogs.Add(h);
             foreach (var kv in coats) catalog._coats[kv.Key] = kv.Value;
             foreach (var kv in treats) catalog._treats[kv.Key] = kv.Value;
             foreach (var kv in prized) catalog._prized[kv.Key] = kv.Value;

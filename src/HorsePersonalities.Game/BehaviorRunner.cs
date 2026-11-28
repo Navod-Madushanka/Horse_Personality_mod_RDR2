@@ -509,8 +509,10 @@ namespace HorsePersonalities.Game
                 }
                 if (!human && _catalog.IsKnownModel(model) && dist <= _t.NosyRange) r.OtherHorseNear = true;
                 if (dist <= _t.NosyRange && r.PasserBy == 0 && (human || _catalog.IsKnownModel(model))) r.PasserBy = ped;
-                if (!human) continue;
+                bool dog = !human && _catalog.IsDog(model);
+                if (!human && !dog) continue;
                 var (behind, side) = Vec3.BehindAndSide(at, forward, _game.GetPosition(ped));
+                // Kicker: a person or a dog right behind it (Navod, Nov 28: dogs too).
                 if (r.NpcBehind == 0 && behind > 0.3 && behind <= _t.KickBehindDistance && Math.Abs(side) <= 1.0) r.NpcBehind = ped;
             }
             return r;

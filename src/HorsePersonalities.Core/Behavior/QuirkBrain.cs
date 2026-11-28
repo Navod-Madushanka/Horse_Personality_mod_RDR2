@@ -55,7 +55,7 @@ namespace HorsePersonalities.Core.Behavior
                 {
                     double roll = _random();
                     if (roll < _t.KickerChance)
-                        return Use(horse, BehaviorAction.KickNpc, BehaviorGroup.Quirk, $"Kicker: someone behind it (witnesses or not; the law may come): roll {F3(roll)} vs {F3(_t.KickerChance)}", s.NpcBehind, cd, now);
+                        return Use(horse, BehaviorAction.KickNpc, BehaviorGroup.Quirk, $"Kicker: someone (or a dog) behind it, witnesses or not; the law may come: roll {F3(roll)} vs {F3(_t.KickerChance)}", s.NpcBehind, cd, now);
                 }
                 if (Has(p, Quirk.HeadTosser) && still && Chance(_t.HeadTosserRate, dt))
                     return Use(horse, BehaviorAction.Agitate, BehaviorGroup.Quirk, "Head-tosser: standing still", 0, cd, now);
