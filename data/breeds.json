@@ -2826,6 +2826,160 @@
         "affectionate": 1,
         "fussy": 0
       }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_goldpalomino_pc",
+      "breed": "Tennessee Walker",
+      "archetype": "The Dependable Everyday Partner (Tennessee Walker baseline)",
+      "vibe": "Smooth, comfortable gait, patient temperament, total dependability for everyday frontier life: handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva. Modest top speed, average stamina, ordinary reflexes: struggles to outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, prefers trotting away from heavy gunfire to charging into it.",
+      "leans": {
+        "courage": -1,
+        "nerves": 0,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_mahoganybay",
+      "breed": "Tennessee Walker",
+      "archetype": "The Humble First Partner",
+      "vibe": "The Ride-or-Die Survivor (Arthur's first horse, from Adler Ranch). Rescued from an O'Driscoll barn in a blinding blizzard, a one-of-a-kind coat with quiet, unshakable loyalty: it survived Colter's snowy peaks beside you and trusts you completely, calm in rough weather, eager to haul game back to camp, asking for nothing more than a warm brush and a wild carrot. Slightly shell-shocked by loud chaos and attached to routine: it began in a burned-down homestead, so campfires and explosions make it nervous, and if you leave it hitched in camp to ride a flashier horse it stares at you with devastatingly guilty puppy eyes until you come back. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Jealous", "Vain", "NeedsSoothing", "HillSigh"],
+      "lovesTreats": ["Wild carrot"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_flaxenroan",
+      "breed": "Tennessee Walker",
+      "archetype": "The Desert Nomad",
+      "vibe": "The Quiet Optimist (Tumbleweed). Sun-washed, hardy, surprisingly resilient: built for New Austin's dusty trails and scorching heat, a steady unbothered rhythm across the desert, conserves its energy, calm around rattlesnakes and coyotes. Stubbornly unhurried and immune to peer pressure: however frantically you spur it to keep up with faster horses it keeps its comfortable cruising pace, stopping to admire cacti or inspect rocks along the trail. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Unhurried", "SnackMagnet"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_dapplebay",
+      "breed": "Tennessee Walker",
+      "archetype": "The Country Explorer",
+      "vibe": "The Easygoing Companion (wild across New Hanover and West Elizabeth). Bright, friendly, endlessly adaptable: once tamed it brings upbeat, curious energy to hunts and scenic rides, weaves smoothly through meadows, stands by happily while you fish. Easily distracted and bad at straight lines: veers off the path to sniff wildflowers, spooks at birds taking off in front of it, runs out of breath the second you sprint up a steep ridge. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": -1,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["SnackMagnet", "HillCrawler", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_blackrabicano",
+      "breed": "Tennessee Walker",
+      "archetype": "The Honest Worker",
+      "vibe": "The Salt-of-the-Earth Everyday Mount (common ranch and wild mounts). Practical, approachable, drama-free: grazing in the Heartlands or hitched outside a Valentine saloon, calm in busy streets, tolerant of clumsy riders without grudges, carries supplies reliably from town to town. Zero heroic ambitions: steep cliffs are brick walls, bear pelts wind it, and the second an ambush starts it puts itself first, politely leaving you on foot while it trots back to safety. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": -1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["BailOut", "CityLover", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_chestnut",
+      "breed": "Tennessee Walker",
+      "archetype": "The Honest Worker",
+      "vibe": "The Salt-of-the-Earth Everyday Mount (common ranch and wild mounts). Practical, approachable, drama-free: grazing in the Heartlands or hitched outside a Valentine saloon, calm in busy streets, tolerant of clumsy riders without grudges, carries supplies reliably from town to town. Zero heroic ambitions: steep cliffs are brick walls, bear pelts wind it, and the second an ambush starts it puts itself first, politely leaving you on foot while it trots back to safety. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": -1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["BailOut", "CityLover", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_tennesseewalker_redroan",
+      "breed": "Tennessee Walker",
+      "archetype": "The Honest Worker",
+      "vibe": "The Salt-of-the-Earth Everyday Mount (common ranch and wild mounts). Practical, approachable, drama-free: grazing in the Heartlands or hitched outside a Valentine saloon, calm in busy streets, tolerant of clumsy riders without grudges, carries supplies reliably from town to town. Zero heroic ambitions: steep cliffs are brick walls, bear pelts wind it, and the second an ambush starts it puts itself first, politely leaving you on foot while it trots back to safety. Like every Tennessee Walker: a smooth, comfortable gait, patient, dependable for everyday frontier life, handles mud, rain and long trail rides without complaint, bonds easily, never a spoiled diva; modest top speed, average stamina, ordinary reflexes, can't outrun bounty hunters on fast mounts, a bit sluggish on steep climbs, would rather trot away from heavy gunfire than charge into it.",
+      "leans": {
+        "courage": -1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["BailOut", "CityLover", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     }
   ]
 }

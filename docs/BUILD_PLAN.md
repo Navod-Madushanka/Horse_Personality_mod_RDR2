@@ -605,6 +605,10 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Winded** (Palomino): after 30 s of galloping it wheezes dramatically (the sigh sound), 2/min, until it slows down.
   - Reused: Snake drama (all), Vain, Racer, Mud tantrum and Hill sigh (Palomino), Short king, Guard dog and No brakes (Liver Chestnut), Clumsy and Needs soothing (Flaxen Chestnut), Bail out, City lover and Hill sigh (Bay, Bay Roan).
   - Cut: small size, quick turns and tiny stamina (its stats), getting tossed in collisions (no control), cheap hay and muddy roads (no fuss is simply no habit), the swamp in particular (Mud tantrum covers mud anywhere), bolting for "the nearest safe barn" (no barn check; the Flaxen Chestnut spooks as a timid horse does).
+- **Tennessee Walker coats** (Navod, Nov 28, 2026), the last breed: a baseline *Dependable Everyday Partner* for the Gold Palomino (PC bonus coat), *The Humble First Partner* (Mahogany Bay, Arthur's first horse from Adler Ranch), *The Desert Nomad* (Flaxen Roan), *The Country Explorer* (Dapple Bay) and *The Honest Worker* (Black Rabicano, Chestnut and Red Roan, one design). No new signatures:
+  - Reused: Hill sigh (baseline: sluggish on climbs), Jealous, Vain and Needs soothing (Mahogany Bay: the guilty stare when you ride a flashier horse; it loves wild carrots), Unhurried and Snack magnet (Flaxen Roan), Snack magnet, Hill crawler and Hill sigh (Dapple Bay), Bail out, City lover and Hill sigh (the common coats).
+  - Cut: modest speed and average stamina (its stats), nervous around campfires (no campfire check; explosions already scare a low-Courage horse more), birds taking off (no bird check; Nerves +1 spooks it at nothing now and then), keeping a straight line (no steering).
+  - With this, every breed in the game has its coat personalities.
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

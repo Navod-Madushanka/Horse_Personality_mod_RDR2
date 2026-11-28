@@ -506,6 +506,17 @@ The Palomino and Flaxen Chestnut run wild across New Hanover and West Elizabeth;
 | 12.111 | **Flaxen Chestnut**: trot a while; get into a gunfight, then ride away | Horse, log | Trips now and then (*Clumsy*), frets after the fight until patted (*Needs soothing*) |  |  |
 | 12.112 | **Bay or Bay Roan**: ride near a bear or into gunfire; then through a busy town | Horse, log | Puts you down and trots off (*Bail out*); calm in town (*City lover*) |  |  |
 
+### Stage 12, Tennessee Walker coats
+
+The Mahogany Bay is Arthur's first horse (Adler Ranch); the Flaxen Roan is sold at Tumbleweed; the Dapple Bay runs wild across New Hanover and West Elizabeth; the Black Rabicano, Chestnut and Red Roan are common ranch and wild mounts; the Gold Palomino is the PC bonus coat.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.113 | **Mahogany Bay** as your saddle horse: ride another horse next to it; brush it; near an explosion | Horse, log | Calls and stares at you (*Jealous*), happy every brushing (*Vain*), frets after the explosion until patted (*Needs soothing*) |  |  |
+| 12.114 | **Flaxen Roan**: spur it on a quiet road; walk past grass and cacti | Horse, log | Holds its pace (*Unhurried*), stops to graze (*Snack magnet*) |  |  |
+| 12.115 | **Dapple Bay**: walk past grass; spur it up a steep ridge | Horse, log | Stops to graze (*Snack magnet*), walks the climb with a sigh (*Hill crawler*, *Hill sigh*) |  |  |
+| 12.116 | **Black Rabicano, Chestnut or Red Roan**: ride into an ambush | Horse, log | Puts you down and trots off (*Bail out*); calm in town otherwise (*City lover*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

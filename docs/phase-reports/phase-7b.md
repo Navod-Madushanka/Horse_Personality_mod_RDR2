@@ -291,6 +291,18 @@ The baseline's frail nerves is Snake drama on every coat.
 
 New: **Winded** (after 30 s of galloping it wheezes, 2/min). Cut: size, turning and stamina (its stats), collisions (no control), the swamp in particular (Mud tantrum anywhere), the safe barn (no barn check).
 
+## Tennessee Walker coats (added Nov 28): every breed done
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Gold Palomino (PC bonus coat; prized, Special) | The Dependable Everyday Partner (baseline) | -1 / 0 / -1 / +2 | Shadow | Hill sigh |
+| Mahogany Bay (Arthur's first horse) | The Humble First Partner | 0 / +1 / -2 / +2 | Shadow | Jealous, Vain, Needs soothing, Hill sigh; loves wild carrots |
+| Flaxen Roan | The Desert Nomad | +1 / -2 / -1 / +1 | Nosy | Unhurried, Snack magnet |
+| Dapple Bay | The Country Explorer | -1 / +1 / 0 / +1 | Nosy | Snack magnet, Hill crawler, Hill sigh |
+| Black Rabicano, Chestnut, Red Roan | The Honest Worker | -1 / -1 / -1 / +1 | Shadow | Bail out, City lover, Hill sigh |
+
+No new signatures. Cut: speed and stamina (its stats), campfires (no check), birds (no check; Nerves spooks it at nothing now and then), straight lines (no steering). **Every breed model in the game now has a coat design: 91 coats across all 19 breeds, Buell and Rachel included.**
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

@@ -30,7 +30,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(84, Catalog.CoatCount);
+            Assert.Equal(91, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -911,6 +911,19 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Sigh, S(With(Signature.Winded), s).Action);
             s.GallopingSeconds = T.WindedSeconds - 5;
             Assert.True(S(With(Signature.Winded), s).IsNone);
+        }
+            // ---- Tennessee Walker coats: the last breed ----
+
+        [Fact]
+        public void EveryBreedModelHasACoatDesign()
+        {
+            var json = HorsePersonalities.Core.Json.JsonValue.Parse(TestData.BreedsJson);
+            var missing = json["breeds"].Items.SelectMany(b => b["models"].Items.Select(m => m.AsString()))
+                .Where(m => !Catalog.TryGetCoat(m, out _)).ToList();
+            Assert.Empty(missing);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_tennesseewalker_mahoganybay", out Coat first));
+            Assert.Equal("The Humble First Partner", first.Archetype);
+            Assert.Contains(Signature.Jealous, first.Signatures);
         }
     }
 }
