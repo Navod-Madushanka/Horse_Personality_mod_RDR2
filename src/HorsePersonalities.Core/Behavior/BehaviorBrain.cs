@@ -67,7 +67,9 @@ namespace HorsePersonalities.Core.Behavior
                     {
                         BehaviorAction a;
                         BehaviorGroup g = BehaviorGroup.Spook;
-                        if (s.Mounted)
+                        if (s.Mounted && p.Has(Breeds.Signature.BailOut)) { a = BehaviorAction.BailOut; why += ", Bail out: it puts itself first"; }
+                        else if (s.Mounted && p.Has(Breeds.Signature.Freeze)) { a = BehaviorAction.QuickStop; why += ", Freeze: it stops dead"; }
+                        else if (s.Mounted)
                         {
                             if (t.Temper >= _t.ScaredBuckTemper && cooldowns.Ready(horse, BehaviorGroup.Buck, now)) { a = BehaviorAction.ThrowRider; g = BehaviorGroup.Buck; why += $", Temper {F(t.Temper)} bucks instead of rearing"; }
                             else a = t.Courage < _t.RearCourage ? BehaviorAction.Rear : BehaviorAction.Agitate;

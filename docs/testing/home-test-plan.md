@@ -482,6 +482,18 @@ Both coats pull wagons, farm carts and coaches (and turn up at stables that sell
 | 12.101 | **Sorrel**: spur it on a quiet road, feed it an oatcake, spur again; brush it; stand by it on foot | Horse, log | A jog until fed, then a gallop (*Unhurried*, *Bribable*; needs the oatcake code), happy every brushing (*Vain*), asks for an apple (*Apple beggar*) |  |  |
 | 12.102 | **Red Chestnut**: get on a few times; ride (and spur) through Valentine; turn it round sharply on a road | Horse, log | Ears back as you get on (*Saddle hater*), walks through town however you spur (*Town dawdler*), snorts at the turn (*Turn grumble*) |  |  |
 
+### Stage 12, Kentucky Saddler coats
+
+The Buttermilk Buckskin is the PC bonus coat; the Silver Bay and Chestnut Pinto run wild across New Hanover and West Elizabeth; the Black and Grey are common town and ranch mounts (and sold at stables).
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.103 | **Any Kentucky**: get into a gunfight, then ride away and wait | Horse, log | It frets for a while after (*Needs soothing*); a pat settles it |  |  |
+| 12.104 | **Buttermilk Buckskin**: brush it; ride through mud; walk up a hill | Horse, log | Happy every brushing (*Vain*), agitated when muddy (*Mud tantrum*), sighs on the hill (*Hill sigh*) |  |  |
+| 12.105 | **Silver Bay**: ride toward a wolf; trot a few minutes | Horse, log | Stops dead when scared, no rearing (*Freeze*); trips now and then (*Clumsy*) |  |  |
+| 12.106 | **Chestnut Pinto**: leave it untied and walk away; ride past bushes; sit still on it | Horse, log | Strolls off (*Wanderlust*), stops to graze (*Snack magnet*), fidgets when kept still (*Restless*) |  |  |
+| 12.107 | **Black or Grey**: ride into an ambush or near gunfire | Horse, log | Throws you and trots away from the trouble (*Bail out*); calm in a busy town otherwise (*City lover*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

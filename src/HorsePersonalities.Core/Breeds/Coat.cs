@@ -87,6 +87,9 @@ namespace HorsePersonalities.Core.Breeds
         // Suffolk Punch coats (Nov 28, 2026)
         TownDawdler,
         TurnGrumble,
+        // Kentucky Saddler coats (Nov 28, 2026)
+        Freeze,
+        BailOut,
     }
 
     /// <summary>

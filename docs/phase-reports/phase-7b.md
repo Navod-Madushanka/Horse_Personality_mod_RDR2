@@ -265,6 +265,19 @@ New: **Treat tantrum** (an hour of riding without a treat: tantrums, 0.5/min, un
 
 New: **Town dawdler** (ridden in a town: a walk, spurred or not) and **Turn grumble** (turned round 120 degrees within 2.5 s while moving: a grumpy snort). Bribable now lifts Unhurried too. Cut: handling, logs and straights (no control; its stats), the shootout snack (War horse keeps it calm), pockets (no animation), the saddle coming out (Saddle hater plays on mounting), the riders behind it (no check).
 
+## Kentucky Saddler coats (added Nov 28)
+
+The baseline's "zero appetite for danger" is Courage -2 and Needs soothing on every coat.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirks | Signatures |
+| --- | --- | --- | --- | --- |
+| Buttermilk Buckskin (PC bonus coat; prized, Special) | The Polished Showboat | -2 / +1 / -1 / +1 | Chatterbox | Vain, Mud tantrum, Hill sigh, Needs soothing |
+| Silver Bay | The Over-Eager Sidekick | -2 / +1 / -2 / +2 | Shadow | Freeze, Clumsy, Needs soothing |
+| Chestnut Pinto | The Free-Spirited Wanderer | -1 / +1 / 0 / 0 | Nosy, Head-tosser | Wanderlust, Snack magnet, Restless, Needs soothing |
+| Black, Grey | The Polite Town Commuter | -2 / -1 / 0 / 0 | Chatterbox | Bail out, City lover, Needs soothing |
+
+New: **Freeze** (scared under you: stops dead instead of rearing or bucking) and **Bail out** (scared under you: throws you and trots away from the threat for 4 s). Cut: stamina and health (its stats), the thunderstorm (no weather check), the road it heads for (no road check), keeping up with the posse (no control).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

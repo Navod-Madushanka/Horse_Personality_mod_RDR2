@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(74, Catalog.CoatCount);
+            Assert.Equal(79, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -864,6 +864,30 @@ namespace HorsePersonalities.Tests
             var p = With(Signature.Unhurried, Signature.Bribable);
             Assert.Equal(T.UnhurriedRatio, brain.UnhurriedCap(p, true, true, 999));
             Assert.Null(brain.UnhurriedCap(p, true, true, 999, bribed: true));
+        }
+            // ---- Kentucky Saddler coats ----
+
+        [Fact]
+        public void KentuckyCoatsAllNeedSoothing()
+        {
+            foreach (string m in new[] { "buttermilkbuckskin_pc", "silverbay", "chestnutpinto", "black", "grey" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_kentuckysaddle_" + m, out Coat c));
+                Assert.Contains(Signature.NeedsSoothing, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void FreezeAndBailOutChangeAScaredRide()
+        {
+            var brain = new BehaviorBrain(T, ModSettings.Defaults(), () => 0);
+            var wolf = new HorseSituation { Mounted = true, Threat = Threat.Predator, ThreatEntity = 7, GameHour = 12, BondLevel = 2 };
+            Personality Timid(params Signature[] sigs) =>
+                new Personality("Kentucky Saddler", HorseOrigin.Stable, 1, HorseQuality.Bad, new Traits(-2, 1, 0, 0), new[] { Quirk.Nosy },
+                    new NaturalStats(0, 0, 0, 0), BreakingDifficulty.Normal, false, "Test", sigs);
+            Assert.Equal(BehaviorAction.QuickStop, brain.Decide(1, Timid(Signature.Freeze), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
+            Assert.Equal(BehaviorAction.BailOut, brain.Decide(1, Timid(Signature.BailOut), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
+            Assert.Equal(BehaviorAction.Rear, brain.Decide(1, Timid(), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
         }
     }
 }

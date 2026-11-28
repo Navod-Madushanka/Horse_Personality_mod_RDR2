@@ -744,6 +744,11 @@ namespace HorsePersonalities.Game
                     _game.LookAtPoint(horse, spot, (int)(_t.NightStareSeconds * 1000));
                     break;
                 }
+                case BehaviorAction.BailOut:
+                    _game.HorseAction(horse, 2); // throw rider (Phase 1: works)
+                    if (target != 0 && target != player) Schedule(1.2, "bail out", () => _game.FleeFrom(horse, target, 25f, 4000));
+                    Schedule(5.5, "end bail out", () => _game.ClearTasks(horse));
+                    break;
                 case BehaviorAction.SideStep:
                     // A step or two away (the tested flee task, short and slow).
                     _game.FleeFrom(horse, target, 3f, 1500);

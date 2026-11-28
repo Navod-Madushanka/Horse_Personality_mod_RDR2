@@ -26,6 +26,8 @@ namespace HorsePersonalities.Core.Behavior
         StareAtNothing,
         // Appaloosa coats: SideStep (a short step away from someone).
         SideStep,
+        // Kentucky Saddler coats: BailOut (throw the rider, then trot away from the threat).
+        BailOut,
     }
 
     [Flags]

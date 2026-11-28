@@ -596,6 +596,11 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Changed: Bribable now lifts Unhurried as well as Hill crawler and Lazy pace, so oatcakes get the Sorrel past a leisurely jog.
   - Reused: Vain, Snack magnet, Apple beggar, Unhurried, Bribable and War horse (Sorrel: unbothered by danger, it loves oatcakes and apples), Saddle hater (Red Chestnut: ears back as you get on).
   - Cut: steering like a wheelbarrow, logs as canyons and slowness on straights (no handling or jumping control; its stats), stopping for clover in the middle of a shootout (War horse keeps it calm; Snack magnet grazes at a walk), pockets (no nudge animation; Apple beggar asks), the saddle coming out (no saddle moment; Saddle hater plays on mounting), annoying the riders behind it (no check for them; Town dawdler covers the snail's pace).
+- **Kentucky Saddler coats** (Navod, Nov 28, 2026): *The Polished Showboat* (Buttermilk Buckskin: the PC bonus coat, the only Buttermilk model in the game, already prized), *The Over-Eager Sidekick* (Silver Bay), *The Free-Spirited Wanderer* (Chestnut Pinto) and *The Polite Town Commuter* (Black and Grey, one design). The baseline ("zero appetite for danger") is Courage -2 and Needs soothing on every coat. Two new signatures change what a scared horse does under you:
+  - **Freeze** (Silver Bay): scared while you ride it, it stops dead (a quick stop) instead of rearing or bucking.
+  - **Bail out** (Black, Grey): scared while you ride it, it throws you and trots off to safety for 4 s, whatever its Temper.
+  - Reused: Needs soothing (all), Vain, Mud tantrum and Hill sigh (Buttermilk Buckskin), Clumsy (Silver Bay), Wanderlust, Snack magnet and Restless (Chestnut Pinto), City lover (Black, Grey: calm around bustling saloons).
+  - Cut: frail stamina and low health (its stats), the thunderstorm (no weather check), trotting back to the nearest road (no road check; Bail out trots away from the threat), draining stamina keeping up with the posse (no control).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

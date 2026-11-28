@@ -2604,6 +2604,116 @@
         "affectionate": 0,
         "fussy": 0
       }
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_buttermilkbuckskin_pc",
+      "breed": "Kentucky Saddler",
+      "archetype": "The Polished Showboat",
+      "vibe": "The Golden Country Gentleman (wild across New Hanover and West Elizabeth). A creamy golden coat and crisp black mane, the flashiest of the common riding breeds and it acts like it: graceful, photogenic, endlessly cheerful, loves trotting through town squares, bonds warmly with riders who keep its coat brushed. Painfully vain and easily rattled by rough terrain: prances around mud puddles to keep its hooves clean, gets winded halfway up gentle hills, bolts into the trees at the faintest distant gunshot. Like every Kentucky Saddler: a smooth, comfortable ride, eager to please, clean responsive handling on main roads, low-maintenance, adapts quickly to new riders, trots with natural elegance; frail stamina, low health, zero appetite for danger, gunfights, rocky cliffs and swamp predators are a horrifying breach of etiquette, panics quickly and runs out of steam when a chase gets serious.",
+      "leans": {
+        "courage": -2,
+        "nerves": 1,
+        "temper": -1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["Vain", "MudTantrum", "HillSigh", "NeedsSoothing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_silverbay",
+      "breed": "Kentucky Saddler",
+      "archetype": "The Over-Eager Sidekick",
+      "vibe": "The Optimistic Rookie (wild across New Hanover and West Elizabeth). Sweet-tempered, lively, always trying its absolute best: it lacks the power of elite breeds but attacks every ride with puppy-like enthusiasm, answers the reins eagerly, follows you anywhere without pushback. Clumsy and out of its depth in real outlaw trouble: trips over low rocks because it's looking around, drains its stamina keeping up with faster posse horses, freezes completely when a wolf growls. Like every Kentucky Saddler: a smooth, comfortable ride, eager to please, clean responsive handling on main roads, low-maintenance, adapts quickly to new riders, trots with natural elegance; frail stamina, low health, zero appetite for danger, gunfights, rocky cliffs and swamp predators are a horrifying breach of etiquette, panics quickly and runs out of steam when a chase gets serious.",
+      "leans": {
+        "courage": -2,
+        "nerves": 1,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Freeze", "Clumsy", "NeedsSoothing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_chestnutpinto",
+      "breed": "Kentucky Saddler",
+      "archetype": "The Free-Spirited Wanderer",
+      "vibe": "The Scrappy Trail Pony (wild across New Hanover and West Elizabeth). Spirited, nimble, happier off the beaten path than its stable-bred cousins: once broken it loves weaving through open meadows, answers light steering, brings a lively bounce to routine errands. Restless, nosy, easily distracted: untied for a few seconds it wanders off to inspect passing wagons, nibbles bushes mid-ride, tosses its head dramatically when you make it stand still. Like every Kentucky Saddler: a smooth, comfortable ride, eager to please, clean responsive handling on main roads, low-maintenance, adapts quickly to new riders, trots with natural elegance; frail stamina, low health, zero appetite for danger, gunfights, rocky cliffs and swamp predators are a horrifying breach of etiquette, panics quickly and runs out of steam when a chase gets serious.",
+      "leans": {
+        "courage": -1,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy", "HeadTosser"],
+      "signatures": ["Wanderlust", "SnackMagnet", "Restless", "NeedsSoothing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_black",
+      "breed": "Kentucky Saddler",
+      "archetype": "The Polite Town Commuter",
+      "vibe": "The Everyday Reliable (common town and ranch mounts). Calm, predictable, at home around bustling saloons, barking dogs and passing stagecoaches: a great everyday mount for errands, poker runs and scenic rides between towns. Zero heroic instincts: the second trouble starts, an O'Driscoll ambush or a sudden thunderstorm, it puts itself first, dumps you in the dirt and trots back toward the nearest road. Like every Kentucky Saddler: a smooth, comfortable ride, eager to please, clean responsive handling on main roads, low-maintenance, adapts quickly to new riders, trots with natural elegance; frail stamina, low health, zero appetite for danger, gunfights, rocky cliffs and swamp predators are a horrifying breach of etiquette, panics quickly and runs out of steam when a chase gets serious.",
+      "leans": {
+        "courage": -2,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["BailOut", "CityLover", "NeedsSoothing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_kentuckysaddle_grey",
+      "breed": "Kentucky Saddler",
+      "archetype": "The Polite Town Commuter",
+      "vibe": "The Everyday Reliable (common town and ranch mounts). Calm, predictable, at home around bustling saloons, barking dogs and passing stagecoaches: a great everyday mount for errands, poker runs and scenic rides between towns. Zero heroic instincts: the second trouble starts, an O'Driscoll ambush or a sudden thunderstorm, it puts itself first, dumps you in the dirt and trots back toward the nearest road. Like every Kentucky Saddler: a smooth, comfortable ride, eager to please, clean responsive handling on main roads, low-maintenance, adapts quickly to new riders, trots with natural elegance; frail stamina, low health, zero appetite for danger, gunfights, rocky cliffs and swamp predators are a horrifying breach of etiquette, panics quickly and runs out of steam when a chase gets serious.",
+      "leans": {
+        "courage": -2,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Chatterbox"],
+      "signatures": ["BailOut", "CityLover", "NeedsSoothing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
     }
   ]
 }
