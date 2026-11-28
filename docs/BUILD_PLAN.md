@@ -549,6 +549,10 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: War horse (all: never spooks in a fight, goes for enemies when you're off), Guard dog and Jealous (Perlino), Hill crawler and Hill sigh (Dark Bay), Short king (Rose Gray).
   - Prized (Navod, Nov 28): Perlino (Rare).
   - Cut: slow on straightaways, getting winded, handling like a tank (its stats and the game's handling), refusing jumps (no jumping control), refusing to flee when told (no hook into the flee command; its Shadow quirk keeps it close), pinning its ears at wagons (wagons aren't horses; Short king covers other horses).
+- **Ardennes coats** (Navod, Nov 28, 2026): *The Heavyweight Brawler* (Strawberry Roan), *The Gentle Giant* (Bay Roan) and *The Silent Juggernaut* (Iron Grey Roan); the baseline's War horse is on all three, which are the only Ardennes coats. One new signature:
+  - **Balker** (Iron Grey): on a steep climb or in water it plants its hooves (a refusal), 2/min, however hard you spur. Water needs trigger 61.
+  - Reused: War horse (all), Unhurried (Bay Roan, and the baseline's "sprinting is a punishment"), Wolf brawler, Short king and Restless (Strawberry Roan), Stoic (Iron Grey).
+  - Cut: plowing through small trees and barrelling over riders, turning like a battleship, the half-mile stopping distance and running off cliffs (no control over movement), shoving you with its head (no nudge animation; Restless stands in), bullying horses off the hay (Short king squares up instead), stepping on wagons, blocking doorways and crushing fences (no control).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

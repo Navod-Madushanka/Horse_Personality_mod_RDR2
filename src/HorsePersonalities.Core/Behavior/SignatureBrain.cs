@@ -211,6 +211,8 @@ namespace HorsePersonalities.Core.Behavior
             if (p.Has(Signature.NeedsSoothing) && (s.Mounted || s.PlayerNear) && !s.SoothedSinceDanger
                 && s.SecondsSinceDanger >= _t.NeedsSoothingDelay && s.SecondsSinceDanger <= _t.NeedsSoothingSeconds)
                 candidates.Add((BehaviorAction.Fret, _t.NeedsSoothingRate, $"Needs soothing: still rattled {s.SecondsSinceDanger:0} s after the danger", 0));
+            if (p.Has(Signature.Balker) && s.Mounted && s.SpeedMs >= _t.StandingStillSpeed && (s.ClimbSpeed >= _t.HillClimbSpeed || s.InWater))
+                candidates.Add((BehaviorAction.QuickStop, _t.BalkRate, s.InWater ? "Balker: that river is too deep" : "Balker: that trail is too steep", 0));
             if (p.Has(Signature.WaterSigh) && s.Mounted && s.InWater && s.SpeedMs >= _t.StandingStillSpeed)
                 candidates.Add((BehaviorAction.Sigh, _t.WaterSighRate, "Water sigh: wet hooves, again", 0));
             if (p.Has(Signature.AppleBeggar) && !s.Mounted && s.PlayerNear && s.PlayerDistance <= _t.BeggarRange && s.StandingStillSeconds >= _t.BeggarSeconds)

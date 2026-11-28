@@ -65,6 +65,8 @@ namespace HorsePersonalities.Core.Breeds
         AppleBeggar,
         // Andalusian coats (Nov 28, 2026)
         HatesBrushing,
+        // Ardennes coats (Nov 28, 2026)
+        Balker,
     }
 
     /// <summary>

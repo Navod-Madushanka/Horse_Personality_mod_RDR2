@@ -394,6 +394,17 @@ The Perlino stands wild by the waterfall at Brandywine Drop (Roanoke Ridge); the
 | 12.66 | **Dark Bay**: spur it up a steep trail | Horse, log | Drops to a walk with a snort (*Hill crawler*, *Hill sigh*) |  |  |
 | 12.67 | **Rose Gray**: brush it a few times; stand it near another horse | Horse, log | Stamps and snorts at every brushing (*Hates brushing*); squares up to the other horse (*Short king*) |  |  |
 
+### Stage 12, Ardennes coats
+
+The Strawberry Roan is sold at Van Horn, the Bay Roan at Scarlett Meadows; the Iron Grey Roan is a pre-order bonus.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.68 | **Any Ardennes**: ride into a gunfight and empty a repeater from the saddle | Horse, log | It never spooks while the fight is on (*War horse*) |  |  |
+| 12.69 | **Strawberry Roan**: off it near a wolf; then stand it near a smaller horse; then sit still on it | Horse, log | Goes for the wolf (*Wolf brawler*), squares up to the horse (*Short king*), fidgets when kept still (*Restless*) |  |  |
+| 12.70 | **Bay Roan**: spur it down a quiet road; then in a fight | Horse, log | Trots on the quiet road (*Unhurried*), full gallop in the fight |  |  |
+| 12.71 | **Iron Grey Roan**: spur it up a steep trail; then into a river; then pat it | Horse, log | Refuses on the climb and in the water (*Balker*); nothing back for the pat (*Stoic*) |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

@@ -208,7 +208,8 @@
     "waterSighRate": 1,
     "beggarRange": 2.5,
     "beggarSeconds": 10,
-    "beggarRate": 1
+    "beggarRate": 1,
+    "balkRate": 2
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1915,6 +1916,72 @@
       "ignoresTreats": [],
       "demeanorTraits": {
         "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_ardennes_strawberryroan",
+      "breed": "Ardennes",
+      "archetype": "The Heavyweight Brawler",
+      "vibe": "The Grizzled Berserker (Van Horn). One of the toughest warhorses in the game, with the scars and attitude of Van Horn's dockside brawlers: begs you to charge enemy camps, tramples wolves before they can lunge, soaks up absurd damage without flinching. Aggressive, impatient, terrible with personal space: shoves you with its head while you clean your guns, bullies smaller horses off the hay, won't step carefully around wagons. Like every Ardennes: unstoppable momentum and total fearlessness, plows through small trees, barrels over rival riders, calm while you empty a repeater from the saddle in an ambush; turns like a battleship, treats sprinting as punishment, parallel-parks like a stagecoach in Saint Denis alleys, takes half a mile to stop.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 2,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["WarHorse", "WolfBrawler", "ShortKing", "Restless"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_ardennes_bayroan",
+      "breed": "Ardennes",
+      "archetype": "The Gentle Giant",
+      "vibe": "The Stoic Protector (Scarlett Meadows). All the size and warhorse bravery of the breed with a surprisingly sweet, loyal temper: stands like a mountain while you hunt big game, carries bear pelts without a sweat, loves leaning its head on your shoulder for scratches. Slow to motivate and oblivious to its size: parks in front of doorways, crushes fences by leaning on them, won't go faster than a leisurely trot unless someone is shooting at you. Like every Ardennes: unstoppable momentum and total fearlessness, plows through small trees, barrels over rival riders, calm while you empty a repeater from the saddle in an ambush; turns like a battleship, treats sprinting as punishment, parallel-parks like a stagecoach in Saint Denis alleys, takes half a mile to stop.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["WarHorse", "Unhurried"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_ardennes_irongreyroan",
+      "breed": "Ardennes",
+      "archetype": "The Silent Juggernaut",
+      "vibe": "The Cold-Blooded Veteran (pre-order bonus). Imposing, disciplined, a medieval siege weapon with a dark metallic coat and thick feathered hooves: military precision, never spooks, never hesitates, a train robbery is a routine morning patrol. No sense of humor and fiercely stubborn: decide a trail is too steep or a river too deep and no spurring changes its mind; it plants all four hooves and stares at you until you pick another route.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["WarHorse", "Balker", "Stoic"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
         "alert": 1,
         "affectionate": 0,
         "fussy": 0

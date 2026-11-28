@@ -25,6 +25,7 @@
 - The home test plan (Stages 1 to 12) is now in the repo as `docs/testing/home-test-plan.md`.
 - **Andalusian coats** (Navod, Nov 28): the Waterfall Spirit (Perlino), the Heavy Enforcer (Dark Bay), the Pit-Fighter (Rose Gray). New signature Hates brushing.
 - The Perlino Andalusian is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable, but more often Hard to break.
+- **Ardennes coats** (Navod, Nov 28): the Heavyweight Brawler (Strawberry Roan), the Gentle Giant (Bay Roan), the Silent Juggernaut (Iron Grey Roan). New signature Balker (1 new Behavior setting).
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

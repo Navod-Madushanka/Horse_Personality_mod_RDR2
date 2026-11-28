@@ -165,6 +165,18 @@ All three Andalusian coats have a design, so the baseline's War horse is on each
 
 New: **Hates brushing** (every brushing gets a stamp and a snort). Cut: slowness, getting winded and tank handling (stats and the game's handling), jumps (no control), refusing to flee (no hook into the command; Shadow keeps it close), wagons (Short king covers horses).
 
+## Ardennes coats (added Nov 28)
+
+All three Ardennes coats have a design, so the baseline's War horse is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Strawberry Roan | The Heavyweight Brawler | +2 / -2 / +2 / 0 | Kicker | War horse, Wolf brawler, Short king, Restless |
+| Bay Roan | The Gentle Giant | +2 / -2 / -2 / +2 | Shadow | War horse, Unhurried |
+| Iron Grey Roan | The Silent Juggernaut | +2 / -2 / +1 / 0 | Nosy | War horse, Balker, Stoic |
+
+New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, however hard you spur; water needs trigger 61). Cut: plowing through trees and riders, battleship turning, the long stop and running off cliffs (no movement control), head shoves (no nudge animation), bullying horses off the hay (Short king squares up), wagons, doorways and fences.
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

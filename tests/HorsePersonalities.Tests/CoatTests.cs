@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(45, Catalog.CoatCount);
+            Assert.Equal(48, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -637,6 +637,29 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Agitate, r.First);
             Assert.Equal(BehaviorAction.Snort, r.Second);
             Assert.Equal(BehaviorAction.None, care.React(With(Signature.HatesBrushing), DemeanorTraits.None, CareKind.Pat, 4, 0).First);
+        }
+            // ---- Ardennes coats ----
+
+        [Fact]
+        public void ArdennesCoatsLoad()
+        {
+            foreach (string m in new[] { "strawberryroan", "bayroan", "irongreyroan" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_ardennes_" + m, out Coat c));
+                Assert.Contains(Signature.WarHorse, c.Signatures);
+            }
+            Catalog.TryGetCoat("a_c_horse_ardennes_strawberryroan", out Coat brawler);
+            Assert.DoesNotContain(Signature.Unhurried, brawler.Signatures); // it begs to charge
+        }
+
+        [Fact]
+        public void BalkerPlantsItsHoovesOnSteepClimbsAndInWater()
+        {
+            var climb = Riding(speed: 1.5); climb.ClimbSpeed = T.HillClimbSpeed;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.Balker), climb).Action);
+            var river = Riding(speed: 2); river.InWater = true;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.Balker), river).Action);
+            Assert.True(S(With(Signature.Balker), Riding(speed: 2)).IsNone);
         }
     }
 }

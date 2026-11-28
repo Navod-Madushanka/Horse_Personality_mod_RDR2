@@ -378,7 +378,7 @@ namespace HorsePersonalities.Game
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
             double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt);
-            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) ? _game.GetVelocity(horse).Z : 0;
+            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) ? _game.GetVelocity(horse).Z : 0;
             double? crawl = _signatures.HillCap(p, mounted, climb);
             _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
             _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
@@ -409,7 +409,7 @@ namespace HorsePersonalities.Game
                     ClimbSpeed = climb,
                     SecondsSinceDanger = nowSeconds - _lastDangerAt,
                     SoothedSinceDanger = _soothedAt.TryGetValue(horse, out double soothed) && soothed >= _lastDangerAt,
-                    InWater = p.Has(Signature.WaterSigh) && mounted && _game.IsInWater(horse),
+                    InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
                     CreepTarget = _lastScan.CreepTarget,
