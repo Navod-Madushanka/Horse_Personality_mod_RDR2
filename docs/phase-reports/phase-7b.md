@@ -153,6 +153,74 @@ Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and
 
 Rachel, John's Dapple Grey in the epilogue, is a story model (`a_c_horse_gang_john`) and stays vanilla, as decided for gang horses. Cut: height (the game's), swamps (no check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping), the nudge (no animation).
 
+## Andalusian coats (added Nov 28)
+
+All three Andalusian coats have a design, so the baseline's War horse is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Perlino (prized: Rare) | The Waterfall Spirit | +2 / -2 / +1 / +2 | Shadow | War horse, Guard dog, Jealous |
+| Dark Bay | The Heavy Enforcer | +2 / -2 / +1 / 0 | Nosy | War horse, Hill crawler, Hill sigh |
+| Rose Gray | The Pit-Fighter | +2 / -2 / +2 / -1 | Kicker | War horse, Short king, Hates brushing |
+
+New: **Hates brushing** (every brushing gets a stamp and a snort). Cut: slowness, getting winded and tank handling (stats and the game's handling), jumps (no control), refusing to flee (no hook into the command; Shadow keeps it close), wagons (Short king covers horses).
+
+## Ardennes coats (added Nov 28)
+
+All three Ardennes coats have a design, so the baseline's War horse is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Strawberry Roan | The Heavyweight Brawler | +2 / -2 / +2 / 0 | Kicker | War horse, Wolf brawler, Short king, Restless |
+| Bay Roan | The Gentle Giant | +2 / -2 / -2 / +2 | Shadow | War horse, Unhurried |
+| Iron Grey Roan (prized: Special) | The Silent Juggernaut | +2 / -2 / +1 / 0 | Nosy | War horse, Balker, Stoic |
+
+New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, however hard you spur; water needs trigger 61). Cut: plowing through trees and riders, battleship turning, the long stop and running off cliffs (no movement control), head shoves (no nudge animation), bullying horses off the hay (Short king squares up), wagons, doorways and fences.
+
+## Hungarian Halfbred coats (added Nov 28)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Liver Chestnut | The Military Pedigree (baseline) | +2 / -2 / +1 / 0 | Nosy | War horse, Trail snob |
+| Piebald Tobiano (prized: Rare) | The Outlaw Mercenary | +2 / -2 / +2 / -1 | Kicker | War horse, Wolf brawler, Town disdain, Snob, Trail snob |
+| Dapple Dark Grey | The Cavalry Officer | +2 / -2 / +1 / +1 | Nosy | War horse, Strict, Trail snob |
+| Flaxen Chestnut | The Fiery Sergeant | +2 / -1 / +2 / 0 | Head-tosser | War horse, Restless, No brakes, Racer |
+
+New: **Strict** (ridden into a tree or down a ledge, seen through the damage event (trigger 60): a judgmental snort, then capped at a trot when you spur for 30 s). Cut: roadblocks, slow starts and stagecoach turning (no movement control), kicking dogs (dogs aren't watched), hitching next to smaller breeds (no hitching control; Snob glares).
+
+## American Paint coats (added Nov 28)
+
+All four Paint coats have a design, so the baseline's Snack magnet (off the trail for wild carrots) is on each of them; they all love wild carrots.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Splashed White (prized: Rare) | The Mystic Wanderer | +1 / 0 / 0 / +2 | Wanderer | Sixth sense, Night stare, Escape artist, Snack magnet |
+| Overo | The Trailblazer | +1 / 0 / 0 / +1 | Nosy | Curious, Apple beggar, Snack magnet |
+| Tobiano | The Ranch Hand | 0 / +1 / -1 / +2 | Shadow | Country bumpkin, Snack magnet |
+| Grey Overo | The Desert Scout | +1 / -2 / 0 / 0 | Nosy | Deadpan, Snack magnet; loves haycubes, ignores sugar cubes |
+
+| Signature | How it plays | Needs in game |
+| --- | --- | --- |
+| Sixth sense | A predator within 60 m, before it's close enough to scare: a warning snort and a look, once per predator | - |
+| Night stare | At night, standing near you: stares at an empty spot 6 s, 0.5/min | Trigger 62 |
+| Curious | Off it, a predator within 30 m: walks a few steps toward it, 1/min | - |
+| Country bumpkin | Ridden in a town: stops dead and snorts, 1/min | Trigger 43 (town) |
+| Deadpan | Hurt while you ride it: a flat stare at you, no sound | Trigger 60 |
+
+Cut: fog, wooden bridges and standing in a stream (no check for them), nudging (no animation), bison (not watched), the warm-stable refusal (no stable control).
+
+## Appaloosa coats (added Nov 28)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Black Snowflake | The Clever Backtalker (baseline) | +1 / -1 / +1 / 0 | Kicker | Trail snob |
+| Leopard | The Spotted Diva | +1 / 0 / +1 / -1 | Head-tosser | Vain, Showboat, Mud tantrum, Trail snob |
+| Few Spotted (prized: Special, PC bonus) | The Ghostly Tracker | +1 / -2 / 0 / -1 | Wanderer | Silent stealth, Crowd shy, Wanderlust |
+| Brown Leopard | The Trail Boss | +1 / -2 / +1 / -1 | Kicker | Stoic, Hill crawler, Bribable, Trail snob; loves oatcakes |
+| Blanket, Leopard Blanket | The Wild Adventurer | +1 / +1 / 0 / +1 | Nosy | Scatterbrain, Apple beggar, Restless, Trail snob; loves apples |
+
+New: **Crowd shy** (off it, someone within 3 m: side-steps away, 2/min; won't take a treat with a stranger within 10 m) and **Bribable** (a loved treat lifts Hill crawler for 2 minutes). Cut: shortcuts (no steering), admiring its reflection (no check), bumping into people (no movement control), the bow in particular (Restless covers standing still).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
@@ -162,4 +230,4 @@ Rachel, John's Dapple Grey in the epilogue, is a story model (`a_c_horse_gang_jo
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian, the Piebald Tobiano Hungarian Halfbred and the Splashed White Paint are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).

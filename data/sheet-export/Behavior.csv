@@ -49,7 +49,6 @@ Wanderer player distance,6,Wanderer: you must be at least this far away (m).
 Wander seconds,12,Wanderer: how long it wanders before grazing.
 Graze seconds,18,Wanderer: how long it grazes.
 Kicker chance,0.25,Kicker: chance per check to kick an NPC standing right behind it (Kick behind distance).
-Kicker witness range,25,"Kicker: kicks only with no other people within this range (m), so no crime is seen."
 Reaction delay seconds,0.6,"Care reactions start this long after the vanilla pat, brush or feed animation ends."
 Reaction trait threshold,0.75,Bond affinity at or above this (and Temper below it): affectionate. Temper at or above: grumpy. Bond affinity at or below minus this: aloof.
 Reaction chance,0.9,Chance of a care reaction at bond 1.
@@ -144,3 +143,16 @@ Water sigh rate,1,Water sigh: heavy sighs per minute moving through water.
 Beggar range,2.5,Apple beggar: you on foot within this range (m) of it.
 Beggar seconds,10,Apple beggar: seconds you stand there before it starts asking.
 Beggar rate,1,Apple beggar: asks per minute after that.
+Balk rate,2,"Balker: refusals per minute on a steep climb (Hill climb speed) or in water, however hard you spur."
+Strict seconds,30,Strict: seconds it refuses to sprint after you ride it into something.
+Strict ratio,2,Strict: the pace cap when you spur during that time (move blend ratio: 2 trot).
+Sixth sense range,60,"Sixth sense: a predator within this range (m), but beyond Predator range, gets a warning snort and a look."
+Night stare rate,0.5,Night stare: stares at an empty spot per minute at night while standing near you.
+Night stare seconds,6,Night stare: how long the stare lasts.
+Curious range,30,Curious: a predator within this range (m) gets a closer look while you're off the horse.
+Curious rate,1,"Curious: walks toward it per minute (a few steps, Creeper seconds)."
+Bumpkin rate,1,Country bumpkin: stops dead and snorts per minute while ridden in a town.
+Crowd shy range,3,Crowd shy: someone within this range (m) of it while you're off it makes it side-step away.
+Crowd shy rate,2,Crowd shy: side-steps per minute while someone is that close.
+Crowd shy stranger range,10,Crowd shy: with a stranger within this range (m) it won't take a treat.
+Bribe seconds,120,Bribable: seconds a loved treat lifts its Hill crawler.

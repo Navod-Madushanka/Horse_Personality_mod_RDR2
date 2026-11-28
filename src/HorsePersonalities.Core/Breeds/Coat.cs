@@ -63,6 +63,21 @@ namespace HorsePersonalities.Core.Breeds
         HillCrawler,
         WaterSigh,
         AppleBeggar,
+        // Andalusian coats (Nov 28, 2026)
+        HatesBrushing,
+        // Ardennes coats (Nov 28, 2026)
+        Balker,
+        // Hungarian Halfbred coats (Nov 28, 2026)
+        Strict,
+        // American Paint coats (Nov 28, 2026)
+        SixthSense,
+        NightStare,
+        Curious,
+        CountryBumpkin,
+        Deadpan,
+        // Appaloosa coats (Nov 28, 2026)
+        CrowdShy,
+        Bribable,
     }
 
     /// <summary>

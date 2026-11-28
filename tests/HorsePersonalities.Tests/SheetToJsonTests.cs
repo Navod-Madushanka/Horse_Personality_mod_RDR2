@@ -11,11 +11,11 @@ namespace HorsePersonalities.Tests
 
         /// <summary>Converts the committed CSVs, with any of them swapped for a test's version.</summary>
         private static HorsePersonalities.Core.Json.JsonValue Convert(string breeds = null, string classes = null, string models = null, string roller = null, string tiers = null, string prized = null,
-            string behavior = null, string predators = null, string demeanor = null, string coats = null, string treats = null) =>
+            string behavior = null, string predators = null, string demeanor = null, string coats = null, string treats = null, string dogs = null) =>
             SheetConverter.Convert(breeds ?? Export("Breeds.csv"), classes ?? Export("Classes.csv"), models ?? TestData.Read("data", "horse-models.csv"),
                 roller ?? Export("Roller.csv"), tiers ?? Export("Tiers.csv"), prized ?? Export("Prized.csv"),
                 behavior ?? Export("Behavior.csv"), predators ?? TestData.Read("data", "predator-models.csv"), demeanor ?? Export("Demeanor.csv"),
-                coats ?? Export("Coats.csv"), treats ?? TestData.Read("data", "treats.csv"));
+                coats ?? Export("Coats.csv"), treats ?? TestData.Read("data", "treats.csv"), dogs ?? TestData.Read("data", "dog-models.csv"));
 
         [Fact]
         public void CommittedBreedsJsonMatchesTheSheetExport()
@@ -130,7 +130,7 @@ namespace HorsePersonalities.Tests
         public void PrizedTabBecomesPrizedModels()
         {
             var p = Convert()["prizedModels"];
-            Assert.Equal(13, p.Count);
+            Assert.Equal(17, p.Count);
             Assert.Contains(p.Items, m => m["model"].AsString() == "a_c_horse_arabian_redchestnut_pc" && m["why"].AsString() == "Special");
         }
 

@@ -255,7 +255,7 @@ In test mode. Give each quirk about 5 minutes in its situation, and note if it s
 | # | Do this | Look at | Pass if | Result | Notes |
 | --- | --- | --- | --- | --- | --- |
 | 11.1 | **Nervous** preset (Chatterbox): ride near other horses, then alone | Listen, log | It calls or snorts now and then, more near other horses; never more than once every 2 min |  |  |
-| 11.2 | **Hothead** preset (Kicker): away from town, stand it still with one NPC right behind it and nobody else around | Horse, log | It kicks the NPC. With other people within 25 m it doesn't. Note any wanted level |  |  |
+| 11.2 | **Hothead** preset (Kicker): stand it still with an NPC right behind it, first away from town, then in town with people and a lawman around | Horse, log | It kicks the NPC both times. In town, note whether the law comes after you (it may, by design). Try a dog behind it too: it kicks that as well |  |  |
 | 11.3 | **Grumpy** preset (Head-tosser): leave it standing next to you | Horse | Restless head tossing now and then |  |  |
 | 11.4 | **Coward** preset (Nosy): stand by it on a road with people passing | Horse's head | It turns to watch people and horses going by |  |  |
 | 11.5 | **Brave** preset (Shadow): get off and walk away | Horse | It follows you a few steps (about 6 s) |  |  |
@@ -382,6 +382,70 @@ The Brindle is sold at Strawberry; the Blood Bay and Dapple Grey run wild in the
 | 12.61 | **Reverse Dapple Black**: leave it in camp near other horses and people | Horse, log | Glares at cheaper horses (*Snob*), stomps at strangers who come close (*Guard dog*) |  |  |
 | 12.62 | **Blood Bay**: gallop and stop hard, a few times | Horse, log | Sideways skids (*No brakes*) |  |  |
 | 12.63 | **Dapple Grey**: spur it up a steep hill; ride through a river; stand next to it on foot | Horse, log | Walks the hill even when spurred (*Hill crawler*), sighs in the water (*Water sigh*), asks you for an apple (*Apple beggar*) |  |  |
+
+### Stage 12, Andalusian coats
+
+The Perlino stands wild by the waterfall at Brandywine Drop (Roanoke Ridge); the Dark Bay is sold at Strawberry, the Rose Gray at Van Horn.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.64 | **Any Andalusian**: ride into a gunfight | Horse, log | It never spooks while the fight is on (*War horse*) |  |  |
+| 12.65 | **Perlino**: get off in town with people passing close; then, as your saddle horse, ride another horse next to it | Horse, log | Stomps at people who come close (*Guard dog*); calls and stamps at the other horse (*Jealous*) |  |  |
+| 12.66 | **Dark Bay**: spur it up a steep trail | Horse, log | Drops to a walk with a snort (*Hill crawler*, *Hill sigh*) |  |  |
+| 12.67 | **Rose Gray**: brush it a few times; stand it near another horse | Horse, log | Stamps and snorts at every brushing (*Hates brushing*); squares up to the other horse (*Short king*) |  |  |
+
+### Stage 12, Ardennes coats
+
+The Strawberry Roan is sold at Van Horn, the Bay Roan at Scarlett Meadows; the Iron Grey Roan is a pre-order bonus.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.68 | **Any Ardennes**: ride into a gunfight and empty a repeater from the saddle | Horse, log | It never spooks while the fight is on (*War horse*) |  |  |
+| 12.69 | **Strawberry Roan**: off it near a wolf; then stand it near a smaller horse; then sit still on it | Horse, log | Goes for the wolf (*Wolf brawler*), squares up to the horse (*Short king*), fidgets when kept still (*Restless*) |  |  |
+| 12.70 | **Bay Roan**: spur it down a quiet road; then in a fight | Horse, log | Trots on the quiet road (*Unhurried*), full gallop in the fight |  |  |
+| 12.71 | **Iron Grey Roan**: spur it up a steep trail; then into a river; then pat it | Horse, log | Refuses on the climb and in the water (*Balker*); nothing back for the pat (*Stoic*) |  |  |
+
+### Stage 12, Hungarian Halfbred coats
+
+The Dapple Dark Grey is sold at Valentine (or rescued from Wrobel's barn); the Flaxen Chestnut runs wild in the Heartlands and Big Valley; the Piebald Tobiano rides with bounty hunters.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.72 | **Any Hungarian Halfbred** except the Flaxen Chestnut: walk it a couple of minutes; then ride into a gunfight | Horse, log | Insulted snorts at a walk (*Trail snob*); never spooks in the fight (*War horse*) |  |  |
+| 12.73 | **Piebald Tobiano**: ride through a busy town; stand it next to a Morgan | Horse, log | Snorts and glares at people (*Town disdain*), glares at the Morgan (*Snob*) |  |  |
+| 12.74 | **Dapple Dark Grey**: ride it into a tree, then spur it straight away | Horse, log | A judgmental snort, then only a trot for about 30 s (*Strict*) |  |  |
+| 12.75 | **Flaxen Chestnut**: stop and get off to pick herbs; gallop and stop hard; ride beside another rider | Horse, log | Stomps while you wait (*Restless*), skids on the hard stop (*No brakes*), calls at the other rider (*Racer*) |  |  |
+
+### Stage 12, American Paint coats
+
+The Splashed White turns up at random campsites; the Overo and Tobiano run wild across New Hanover, Ambarino and West Elizabeth; the Grey Overo is sold at Tumbleweed. Run trigger 62 first.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.76 | Trigger 62, standing beside the horse | Horse | It stares at an empty spot off to its left for about 6 s |  |  |
+| 12.77 | **Any Paint**: walk it past wild carrots or grass a few minutes | Horse, log | It stops now and then to graze (*Snack magnet*) |  |  |
+| 12.78 | **Splashed White**: ride toward wolves far off; stand by it at night; hitch it and walk away | Horse, log | Snorts and looks their way before they're close (*Sixth sense*); stares at nothing at night (*Night stare*); unhitches itself (*Escape artist*) |  |  |
+| 12.79 | **Overo**: get off with a wolf or bear 20-30 m away; stand next to it on foot | Horse, log | Walks a few steps toward the animal (*Curious*); asks you for a treat (*Apple beggar*) |  |  |
+| 12.80 | **Tobiano**: ride through Saint Denis | Horse, log | Stops dead and snorts now and then (*Country bumpkin*) |  |  |
+| 12.81 | **Grey Overo**: ride into a cactus; feed a sugar cube, then a haycube | Horse, log | A flat stare at you (*Deadpan*); a snort for the sugar cube, a happy call for the haycube (needs the item codes) |  |  |
+
+### Stage 12, Appaloosa coats
+
+The Leopard is sold at Van Horn (and comes from No, No and Thrice, No); the Few Spotted turns up at random campsites; the Brown Leopard is sold at Tumbleweed; the Blanket and Leopard Blanket run wild in Big Valley and New Hanover.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.83 | **Any Appaloosa** except the Few Spotted: walk it on a flat road a couple of minutes | Horse, log | Bored, insulted snorts (*Trail snob*) |  |  |
+| 12.84 | **Leopard**: brush it; gallop into town and stop by a crowd; roll it in mud | Horse, log | Happy every brushing (*Vain*), rears for the crowd (*Showboat*), agitated when dirty (*Mud tantrum*) |  |  |
+| 12.85 | **Few Spotted**: hitch it in Saint Denis and stand back; feed it with someone close by; walk away | Horse, log | Side-steps from people (*Crowd shy*), snorts at the treat instead of eating happily, strolls off (*Wanderlust*) |  |  |
+| 12.86 | **Brown Leopard**: spur it up a steep slope; feed it an oatcake; spur it up again | Horse, log | Walks the first climb (*Hill crawler*); sprints the second (*Bribable*; needs the oatcake code) |  |  |
+| 12.87 | **Blanket or Leopard Blanket**: gallop a while; stand next to it on foot; sit still on it | Horse, log | An odd skid at a gallop (*Scatterbrain*), asks you for an apple (*Apple beggar*), fidgets (*Restless*) |  |  |
+
+### Stage 12, story dogs
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.82 | In camp, stand next to Cain and run DevTools trigger 63 (read only) | Panel | Shows a model code; if it isn't 0xC5C5D255 (`a_c_doghobo_01`), copy it into Notes so Cain can be kept off the dog list |  |  |
 
 ## If something goes wrong, and what to send back
 

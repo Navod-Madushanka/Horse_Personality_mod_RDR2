@@ -46,15 +46,13 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
-        public void KickerKicksSomeoneBehindItOnlyWithNoWitnesses()
+        public void KickerKicksSomeoneBehindItEvenWithWitnesses()
         {
             var s = Near(still: 1); s.NpcBehind = 42;
             var d = Q(Horse(Quirk.Kicker), s);
             Assert.Equal(BehaviorAction.KickNpc, d.Action);
             Assert.Equal(42, d.Target);
-            s.Witnesses = 1;
-            Assert.True(Q(Horse(Quirk.Kicker), s).IsNone);
-            s.Witnesses = 0;
+            // Witnesses don't stop it any more (Navod, Nov 28): a kick in town may bring the law.
             Assert.True(Q(Horse(Quirk.Kicker), s, roll: T.KickerChance + 0.01).IsNone);
             var moving = Near(still: 0); moving.NpcBehind = 42;
             Assert.True(Q(Horse(Quirk.Kicker), moving).IsNone); // only while standing still

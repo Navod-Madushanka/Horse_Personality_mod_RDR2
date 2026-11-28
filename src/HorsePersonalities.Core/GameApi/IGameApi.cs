@@ -156,6 +156,8 @@ namespace HorsePersonalities.Core.GameApi
         bool IsVocalizationPlaying(int ped);
         void LookAtEntity(int ped, int target, int durationMs);
         void ClearLookAt(int ped);
+        /// <summary>TASK_LOOK_AT_COORD (Night stare, trigger 62). Arguments past the coordinates are guesses.</summary>
+        void LookAtPoint(int ped, Vec3 point, int durationMs);
         /// <summary>TASK_HORSE_ACTION. Known ids: 1 rear, 2 throw rider, 3 quick stop, 5 rear, 8 skid, 9/10 throw passenger/rider.</summary>
         void HorseAction(int horse, int actionId);
         void HorseAgitate(int horse, bool kickOffRider);

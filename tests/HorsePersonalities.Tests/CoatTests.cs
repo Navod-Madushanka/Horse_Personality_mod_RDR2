@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(42, Catalog.CoatCount);
+            Assert.Equal(62, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -616,6 +616,151 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Beg, S(With(Signature.AppleBeggar), beg).Action);
             beg.PlayerDistance = 8;
             Assert.True(S(With(Signature.AppleBeggar), beg).IsNone);
+        }
+            // ---- Andalusian coats ----
+
+        [Fact]
+        public void AndalusianCoatsAreAllWarHorses()
+        {
+            foreach (string m in new[] { "perlino", "darkbay", "rosegray" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_andalusian_" + m, out Coat c));
+                Assert.Contains(Signature.WarHorse, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void HatesBrushingAlwaysGrumbles()
+        {
+            var care = new CareReactor(T, () => 0.99); // a roll that would normally give no reaction
+            var r = care.React(With(Signature.HatesBrushing), DemeanorTraits.None, CareKind.Brush, 4, 0);
+            Assert.Equal(BehaviorAction.Agitate, r.First);
+            Assert.Equal(BehaviorAction.Snort, r.Second);
+            Assert.Equal(BehaviorAction.None, care.React(With(Signature.HatesBrushing), DemeanorTraits.None, CareKind.Pat, 4, 0).First);
+        }
+            // ---- Ardennes coats ----
+
+        [Fact]
+        public void ArdennesCoatsLoad()
+        {
+            foreach (string m in new[] { "strawberryroan", "bayroan", "irongreyroan" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_ardennes_" + m, out Coat c));
+                Assert.Contains(Signature.WarHorse, c.Signatures);
+            }
+            Catalog.TryGetCoat("a_c_horse_ardennes_strawberryroan", out Coat brawler);
+            Assert.DoesNotContain(Signature.Unhurried, brawler.Signatures); // it begs to charge
+        }
+
+        [Fact]
+        public void BalkerPlantsItsHoovesOnSteepClimbsAndInWater()
+        {
+            var climb = Riding(speed: 1.5); climb.ClimbSpeed = T.HillClimbSpeed;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.Balker), climb).Action);
+            var river = Riding(speed: 2); river.InWater = true;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.Balker), river).Action);
+            Assert.True(S(With(Signature.Balker), Riding(speed: 2)).IsNone);
+        }
+            // ---- Hungarian Halfbred coats ----
+
+        [Fact]
+        public void HungarianHalfbredCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_hungarianhalfbred_liverchestnut", out Coat baseline));
+            Assert.Equal(new[] { Signature.WarHorse, Signature.TrailSnob }, baseline.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_hungarianhalfbred_darkdapplegrey", out Coat officer));
+            Assert.Contains(Signature.Strict, officer.Signatures);
+        }
+
+        [Fact]
+        public void StrictSnortsAndRefusesToSprintAfterSloppyRiding()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Snub, brain.OnHurt(1, With(Signature.Strict), new CooldownBook(T, 0), 0).Action);
+            Assert.Equal(T.StrictRatio, brain.StrictCap(With(Signature.Strict), true, true, true));
+            Assert.Null(brain.StrictCap(With(Signature.Strict), true, true, false)); // the 30 s are over
+            Assert.Null(brain.StrictCap(With(Signature.Strict), true, false, true)); // not spurring
+            Assert.Null(brain.StrictCap(With(), true, true, true));
+        }
+            [Fact]
+        public void DogsAreKnownKickerTargetsButNotPredators()
+        {
+            Assert.Equal(12, Catalog.DogModelCount);
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_dogrufus_01"))); // Rufus stays safe
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_doghobo_01")));  // Cain (to confirm)
+            uint lab = HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_doglab_01");
+            Assert.True(Catalog.IsDog(lab));
+            Assert.False(Catalog.IsPredator(lab));
+            Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_wolf")));
+        }
+            // ---- American Paint coats ----
+
+        [Fact]
+        public void PaintCoatsAllWanderOffForCarrots()
+        {
+            foreach (string m in new[] { "splashedwhite", "overo", "tobiano", "greyovero" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_americanpaint_" + m, out Coat c));
+                Assert.Contains(Signature.SnackMagnet, c.Signatures);
+                Assert.Contains("Wild carrot", c.LovesTreats);
+            }
+            Catalog.TryGetCoat("a_c_horse_americanpaint_greyovero", out Coat scout);
+            Assert.Contains("Sugar cube", scout.IgnoresTreats);
+        }
+
+        [Fact]
+        public void SixthSenseNightStareCuriousBumpkin()
+        {
+            var sensed = Riding(); sensed.SensedPredator = 40;
+            var d = S(With(Signature.SixthSense), sensed);
+            Assert.Equal(BehaviorAction.Snub, d.Action);
+            Assert.Equal(40, d.Target);
+            var night = new SignatureSituation { PlayerNear = true, StandingStillSeconds = 3, GameHour = 23 };
+            Assert.Equal(BehaviorAction.StareAtNothing, S(With(Signature.NightStare), night).Action);
+            night.GameHour = 12;
+            Assert.True(S(With(Signature.NightStare), night).IsNone);
+            var off = new SignatureSituation { PlayerNear = true, CuriousTarget = 9 };
+            Assert.Equal(BehaviorAction.Creep, S(With(Signature.Curious), off).Action);
+            var town = Riding(speed: 2); town.InTown = true;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.CountryBumpkin), town).Action);
+        }
+
+        [Fact]
+        public void DeadpanStaresAfterAHurt()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Stare, brain.OnHurt(1, With(Signature.Deadpan), new CooldownBook(T, 0), 0).Action);
+        }
+            // ---- Appaloosa coats ----
+
+        [Fact]
+        public void AppaloosaCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_blacksnowflake", out Coat baseline));
+            Assert.Equal(new[] { Signature.TrailSnob }, baseline.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_blanket", out Coat a));
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_leopardblanket", out Coat b));
+            Assert.Equal(a.Archetype, b.Archetype);
+            Assert.True(Catalog.TryGetPrized("a_c_horse_appaloosa_fewspotted_pc", out _));
+        }
+
+        [Fact]
+        public void CrowdShySideStepsAndWontEatInFrontOfStrangers()
+        {
+            var off = new SignatureSituation { PlayerNear = true, CrowdPerson = 3 };
+            Assert.Equal(BehaviorAction.SideStep, S(With(Signature.CrowdShy), off).Action);
+            var care = new CareReactor(T, () => 0);
+            Assert.Equal(BehaviorAction.Snort, care.React(With(Signature.CrowdShy), DemeanorTraits.None, CareKind.Feed, 2, 0, strangerNear: true).First);
+        }
+
+        [Fact]
+        public void BribableClimbsForAnOatcake()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var p = With(Signature.HillCrawler, Signature.Bribable);
+            Assert.Equal(T.HillCrawlRatio, brain.HillCap(p, true, T.HillClimbSpeed));
+            Assert.Null(brain.HillCap(p, true, T.HillClimbSpeed, bribed: true));
+            Assert.Equal(T.HillCrawlRatio, brain.HillCap(With(Signature.HillCrawler), true, T.HillClimbSpeed, bribed: true)); // not bribable
         }
     }
 }

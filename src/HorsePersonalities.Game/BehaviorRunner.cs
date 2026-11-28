@@ -69,6 +69,8 @@ namespace HorsePersonalities.Game
         private double _gallopSeconds, _lastGallopSeconds;
         private readonly Dictionary<int, double> _grudgeUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _soothedAt = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _strictUntil = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _bribedUntil = new Dictionary<int, double>();
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -82,12 +84,13 @@ namespace HorsePersonalities.Game
 
         private struct ScanResult
         {
-            public int NewPredator, PasserBy, NpcBehind, Witnesses;
+            public int NewPredator, PasserBy, NpcBehind;
             public bool OtherHorseNear;
             // Phase 7b
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
             public int OtherHorse, HogtiedPerson, GuardTarget;
             public int NearEnemy, LowerTierHorse, Crowd, HorseAhead, Challenger, RushingPerson;
+            public int SensedPredator, CuriousTarget, CrowdPerson;
         }
 
         public BehaviorRunner(IGameApi game, BreedCatalog catalog, ModSettings settings, HorseRegistry registry, ILog log)
@@ -156,13 +159,15 @@ namespace HorsePersonalities.Game
         private void OnHurt(int horse)
         {
             if (_lastHold != null || !TryRecord(horse, out HorseRecord record, out _)) return;
-            bool already = _grudgeUntil.TryGetValue(horse, out double until) && _now < until;
+            bool already = (_grudgeUntil.TryGetValue(horse, out double until) && _now < until)
+                || (_strictUntil.TryGetValue(horse, out double strictUntil) && _now < strictUntil);
             Decision d = _signatures.OnHurt(horse, record.Personality, _cooldowns, _now);
             if (d.IsNone) return;
-            _grudgeUntil[horse] = _now + _t.GrudgeSeconds;
+            if (record.Personality.Has(Signature.Grudge)) _grudgeUntil[horse] = _now + _t.GrudgeSeconds;
+            if (record.Personality.Has(Signature.Strict)) _strictUntil[horse] = _now + _t.StrictSeconds;
             if (already) return; // one sulk at a time: a second knock just makes it longer
             _log.Info(Log, $"{record.Id}: {d.Action} ({d.Cause})");
-            Play(horse, d.Action, 0);
+            Play(horse, d.Action, d.Action == BehaviorAction.Stare ? _game.PlayerPed : 0);
         }
 
         /// <summary>Jealous: the saddle horse sees you with another horse.</summary>
@@ -224,7 +229,17 @@ namespace HorsePersonalities.Game
                 _log.Info(Log, $"{record.Id}: Grudge: forgiven for a treat");
             }
             var (first, second, cause) = _care.React(record.Personality, DemeanorOf(record.Personality, d), kind, d.BondRank, item,
-                CoatOf(record.Personality, d), _catalog.TreatName(item), sulking);
+                CoatOf(record.Personality, d), _catalog.TreatName(item), sulking,
+                record.Personality.Has(Signature.CrowdShy) && _game.GetClosestHumanPed(horse, (float)_t.CrowdShyStrangerRange, _game.PlayerPed) != 0);
+            // Bribable: a treat it loves buys a couple of minutes of sprinting uphill.
+            string fed = _catalog.TreatName(item);
+            Coat coatFed = CoatOf(record.Personality, d);
+            if (kind == CareKind.Feed && record.Personality.Has(Signature.Bribable) && fed != null && coatFed != null
+                && System.Linq.Enumerable.Any(coatFed.LovesTreats, t => string.Equals(t, fed, StringComparison.OrdinalIgnoreCase)))
+            {
+                _bribedUntil[horse] = _now + _t.BribeSeconds;
+                _log.Info(Log, $"{record.Id}: Bribable: {fed} buys {_t.BribeSeconds:0} s of hill sprinting");
+            }
             _log.Info(Log, $"{record.Id}: after {kind}: {(first == BehaviorAction.None ? "no reaction" : first + (second == BehaviorAction.None ? "" : " + " + second))} ({cause})");
             if (first == BehaviorAction.None) return;
             Schedule(_t.ReactionDelaySeconds, "care reaction", () => Play(horse, first, 0));
@@ -363,7 +378,6 @@ namespace HorsePersonalities.Game
                     OtherHorseNear = _lastScan.OtherHorseNear,
                     PasserBy = _lastScan.PasserBy,
                     NpcBehind = _lastScan.NpcBehind,
-                    Witnesses = _lastScan.Witnesses,
                     PlayerWalkedAway = walkedAway,
                     DirtRank = DemeanorOf(p, d).Fussy > 0 ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                 };
@@ -377,12 +391,13 @@ namespace HorsePersonalities.Game
             _aimSeconds = aiming ? _aimSeconds + dt : 0;
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
-            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt);
-            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) ? _game.GetVelocity(horse).Z : 0;
-            double? crawl = _signatures.HillCap(p, mounted, climb);
+            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt)
+                ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
+            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) ? _game.GetVelocity(horse).Z : 0;
+            double? crawl = _signatures.HillCap(p, mounted, climb, _bribedUntil.TryGetValue(horse, out double bribe) && nowSeconds < bribe);
             _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
             _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
-            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried)) _lazyHorse = horse;
+            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried) || p.Has(Signature.Strict)) _lazyHorse = horse;
             if (hurry.HasValue && !_unhurriedSnorted)
             {
                 _unhurriedSnorted = true;
@@ -391,7 +406,7 @@ namespace HorsePersonalities.Game
             }
             if (decision.IsNone && p.Signatures.Count > 0)
             {
-                bool town = p.Has(Signature.TownDisdain) && _game.IsInTown(horse);
+                bool town = (p.Has(Signature.TownDisdain) || p.Has(Signature.CountryBumpkin)) && _game.IsInTown(horse);
                 var sig = new SignatureSituation
                 {
                     Mounted = mounted,
@@ -402,14 +417,17 @@ namespace HorsePersonalities.Game
                     GameHour = s.GameHour,
                     BondLevel = d.BondRank,
                     InTown = town,
-                    TownPerson = town ? _lastScan.TownPerson : 0,
+                    TownPerson = town && p.Has(Signature.TownDisdain) ? _lastScan.TownPerson : 0,
                     StartedAiming = startedAiming,
                     EnemiesInCombat = _lastScan.EnemiesInCombat,
                     PlayerFiredRecently = nowSeconds - _playerFiredAt < 30,
                     ClimbSpeed = climb,
                     SecondsSinceDanger = nowSeconds - _lastDangerAt,
                     SoothedSinceDanger = _soothedAt.TryGetValue(horse, out double soothed) && soothed >= _lastDangerAt,
-                    InWater = p.Has(Signature.WaterSigh) && mounted && _game.IsInWater(horse),
+                    SensedPredator = _lastScan.SensedPredator,
+                    CuriousTarget = _lastScan.CuriousTarget,
+                    CrowdPerson = _lastScan.CrowdPerson,
+                    InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
                     CreepTarget = _lastScan.CreepTarget,
@@ -438,24 +456,25 @@ namespace HorsePersonalities.Game
             _log.Info(Log, $"{record.Id}: {decision.Action} ({decision.Cause})");
         }
 
-        /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, witnesses, other horses.</summary>
+        /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, other horses.</summary>
         private ScanResult Scan(int horse, int player, Personality p, double now, Breed own)
         {
             _threats.Forget(now);
             var r = new ScanResult();
             bool snakeDrama = p.Has(Signature.SnakeDrama);
             double snakeRange = _t.PredatorRange * (snakeDrama ? _t.SnakeRangeMultiplier : 1);
-            float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), Math.Max(_t.NosyRange, _t.KickerWitnessRange));
+            float range = (float)Math.Max(Math.Max(_t.PredatorRange, snakeRange), (float)_t.NosyRange);
             bool fights = p.Has(Signature.Prankster) || p.Has(Signature.Unhurried) || p.Has(Signature.WarHorse) || p.Has(Signature.NeedsSoothing);
             if (fights) range = Math.Max(range, (float)_t.PranksterEnemyRange);
             if (p.Has(Signature.ShortKing) || p.Has(Signature.Snob)) range = Math.Max(range, (float)_t.ShortKingRange);
             if (p.Has(Signature.Showboat)) range = Math.Max(range, (float)_t.ShowboatRange);
             if (p.Has(Signature.MustLead)) range = Math.Max(range, (float)_t.MustLeadRange);
             if (p.Has(Signature.Racer)) range = Math.Max(range, (float)_t.RacerRange);
+            if (p.Has(Signature.SixthSense)) range = Math.Max(range, (float)_t.SixthSenseRange);
+            if (p.Has(Signature.Curious)) range = Math.Max(range, (float)_t.CuriousRange);
             Vec3 me = _game.GetPosition(player);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
-            int humans = 0;
             foreach (int ped in _game.PedsNear(horse, range))
             {
                 if (ped == player || _game.IsDead(ped)) continue;
@@ -465,6 +484,9 @@ namespace HorsePersonalities.Game
                 {
                     double reach = _catalog.IsSnake(model) ? snakeRange : _t.PredatorRange;
                     if (dist <= reach && _threats.IsNew(horse, "predator " + ped, now) && r.NewPredator == 0) r.NewPredator = ped;
+                    else if (p.Has(Signature.SixthSense) && dist > reach && dist <= _t.SixthSenseRange && r.SensedPredator == 0
+                        && _threats.IsNew(horse, "sensed " + ped, now)) r.SensedPredator = ped;
+                    if (p.Has(Signature.Curious) && dist <= _t.CuriousRange && r.CuriousTarget == 0) r.CuriousTarget = ped;
                     continue;
                 }
                 bool human = _game.IsHuman(ped);
@@ -481,6 +503,7 @@ namespace HorsePersonalities.Game
                     if (dist <= _t.ShowboatRange && p.Has(Signature.Showboat)) r.Crowd++;
                     if (r.HogtiedPerson == 0 && dist <= _t.BountyStomperRange && p.Has(Signature.BountyStomper) && _game.IsHogtied(ped)) r.HogtiedPerson = ped;
                     if (r.GuardTarget == 0 && dist <= _t.GuardRange && p.Has(Signature.GuardDog)) r.GuardTarget = ped;
+                    if (r.CrowdPerson == 0 && dist <= _t.CrowdShyRange && p.Has(Signature.CrowdShy)) r.CrowdPerson = ped;
                     if (r.RushingPerson == 0 && p.Has(Signature.StrangerDanger))
                     {
                         Vec3 at2 = _game.GetPosition(ped), toMe = me - at2;
@@ -507,12 +530,12 @@ namespace HorsePersonalities.Game
                 }
                 if (!human && _catalog.IsKnownModel(model) && dist <= _t.NosyRange) r.OtherHorseNear = true;
                 if (dist <= _t.NosyRange && r.PasserBy == 0 && (human || _catalog.IsKnownModel(model))) r.PasserBy = ped;
-                if (!human) continue;
+                bool dog = !human && _catalog.IsDog(model);
+                if (!human && !dog) continue;
                 var (behind, side) = Vec3.BehindAndSide(at, forward, _game.GetPosition(ped));
+                // Kicker: a person or a dog right behind it (Navod, Nov 28: dogs too).
                 if (r.NpcBehind == 0 && behind > 0.3 && behind <= _t.KickBehindDistance && Math.Abs(side) <= 1.0) r.NpcBehind = ped;
-                else if (dist <= _t.KickerWitnessRange) humans++;
             }
-            r.Witnesses = humans;
             return r;
         }
 
@@ -606,6 +629,20 @@ namespace HorsePersonalities.Game
                     Vocal(horse, "CALL");
                     _game.HorseAgitate(horse, false);
                     if (target != 0) _game.LookAtEntity(horse, target, 4000);
+                    break;
+                case BehaviorAction.StareAtNothing:
+                {
+                    // Trigger 62: a spot about 6 m away, off to one side, where there is nothing to see.
+                    Vec3 at = _game.GetPosition(horse), f = _game.GetForward(horse);
+                    double side = _random.NextDouble() < 0.5 ? -1 : 1;
+                    var spot = new Vec3((float)(at.X + 4 * f.X - side * 4 * f.Y), (float)(at.Y + 4 * f.Y + side * 4 * f.X), at.Z + 1.5f);
+                    _game.LookAtPoint(horse, spot, (int)(_t.NightStareSeconds * 1000));
+                    break;
+                }
+                case BehaviorAction.SideStep:
+                    // A step or two away (the tested flee task, short and slow).
+                    _game.FleeFrom(horse, target, 3f, 1500);
+                    Schedule(1.8, "end side-step", () => _game.ClearTasks(horse));
                     break;
                 case BehaviorAction.Beg:
                     Vocal(horse, "CONTENT");

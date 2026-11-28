@@ -30,7 +30,7 @@ namespace HorsePersonalities.Tools.SheetToJson
     public static class SheetConverter
     {
         public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv,
-            string behaviorCsv, string predatorsCsv, string demeanorCsv, string coatsCsv, string treatsCsv)
+            string behaviorCsv, string predatorsCsv, string demeanorCsv, string coatsCsv, string treatsCsv, string dogsCsv = null)
         {
             var problems = new List<string>();
             JsonValue treats = ReadTreats(treatsCsv, problems);
@@ -38,7 +38,8 @@ namespace HorsePersonalities.Tools.SheetToJson
             var demeanor = ReadDemeanor(demeanorCsv, problems);
             JsonValue roller = ReadSettings(rollerCsv, RollerTuning.Fields, "Roller.csv", problems);
             JsonValue behavior = ReadSettings(behaviorCsv, HorsePersonalities.Core.Behavior.BehaviorTuning.Fields, "Behavior.csv", problems);
-            JsonValue predators = ReadPredators(predatorsCsv, problems);
+            JsonValue predators = ReadAnimals(predatorsCsv, "predator-models.csv", problems);
+            JsonValue dogs = dogsCsv == null ? JsonValue.NewArray() : ReadAnimals(dogsCsv, "dog-models.csv", problems);
             JsonValue tiers = ReadTiers(tiersCsv, problems);
 
             // ---- Classes ----
@@ -215,6 +216,7 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("tiers", tiers)
                 .Set("behavior", behavior)
                 .Set("predatorModels", predators)
+                .Set("dogModels", dogs)
                 .Set("breeds", breeds)
                 .Set("otherModels", others)
                 .Set("prizedModels", prizedModels)
@@ -333,19 +335,20 @@ namespace HorsePersonalities.Tools.SheetToJson
             return result;
         }
 
-        private static JsonValue ReadPredators(string csv, List<string> problems)
+        /// <summary>A model,note list of animals (predator-models.csv, dog-models.csv).</summary>
+        private static JsonValue ReadAnimals(string csv, string file, List<string> problems)
         {
             var result = JsonValue.NewArray();
             var rows = Csv.Parse(csv ?? "");
-            if (rows.Count == 0) { problems.Add("predator-models.csv is empty."); return result; }
-            int mCol = Col(Header(rows[0]), "model", problems, "predator-models.csv");
+            if (rows.Count == 0) { problems.Add($"{file} is empty."); return result; }
+            int mCol = Col(Header(rows[0]), "model", problems, file);
             var seen = new SortedSet<string>(StringComparer.Ordinal);
             for (int i = 1; i < rows.Count; i++)
             {
                 string m = Cell(rows[i], mCol).Trim().ToLowerInvariant();
                 if (m.Length == 0) continue;
-                if (!m.StartsWith("a_c_", StringComparison.Ordinal)) problems.Add($"predator-models.csv row {i + 1}: {m} is not an animal model (a_c_...).");
-                else if (!seen.Add(m)) problems.Add($"predator-models.csv row {i + 1}: {m} is listed twice.");
+                if (!m.StartsWith("a_c_", StringComparison.Ordinal)) problems.Add($"{file} row {i + 1}: {m} is not an animal model (a_c_...).");
+                else if (!seen.Add(m)) problems.Add($"{file} row {i + 1}: {m} is listed twice.");
             }
             foreach (string m in seen) result.Add(m);
             return result;

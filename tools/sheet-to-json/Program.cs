@@ -25,6 +25,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             string prized = Path.Combine(root, "data", "sheet-export", "Prized.csv");
             string behavior = Path.Combine(root, "data", "sheet-export", "Behavior.csv");
             string predators = Path.Combine(root, "data", "predator-models.csv");
+            string dogs = Path.Combine(root, "data", "dog-models.csv");
             string demeanor = Path.Combine(root, "data", "sheet-export", "Demeanor.csv");
             string coats = Path.Combine(root, "data", "sheet-export", "Coats.csv");
             string treats = Path.Combine(root, "data", "treats.csv");
@@ -45,13 +46,14 @@ namespace HorsePersonalities.Tools.SheetToJson
                     case "--prized": prized = Next(); break;
                     case "--behavior": behavior = Next(); break;
                     case "--predators": predators = Next(); break;
+                    case "--dogs": dogs = Next(); break;
                     case "--demeanor": demeanor = Next(); break;
                     case "--coats": coats = Next(); break;
                     case "--treats": treats = Next(); break;
                     case "--out": output = Next(); break;
                     case "--check": check = true; break;
                     case "-h": case "--help":
-                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--demeanor Demeanor.csv] [--coats Coats.csv] [--treats treats.csv] [--out breeds.json] [--check]");
+                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--dogs dog-models.csv] [--demeanor Demeanor.csv] [--coats Coats.csv] [--treats treats.csv] [--out breeds.json] [--check]");
                         return 0;
                     default:
                         Console.Error.WriteLine($"Unknown option {a}. Try --help.");
@@ -63,7 +65,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             {
                 var json = SheetConverter.Convert(File.ReadAllText(breeds), File.ReadAllText(classes), File.ReadAllText(models), File.ReadAllText(roller), File.ReadAllText(tiers), File.ReadAllText(prized),
                     File.ReadAllText(behavior), File.ReadAllText(predators), File.ReadAllText(demeanor),
-                    File.ReadAllText(coats), File.ReadAllText(treats));
+                    File.ReadAllText(coats), File.ReadAllText(treats), File.ReadAllText(dogs));
                 string text = json.ToJson();
 
                 // Same validation the mod runs on load, so a file that passes here loads in game.

@@ -452,7 +452,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   Decided Nov 26, 2026:
   - **Quirks, built from what Phase 1 proved:**
     - Chatterbox: calls out and snorts now and then, more when other horses are near.
-    - Kicker: kicks an NPC standing right behind it, only with no other people within 25 m (no witnesses, so no crime).
+    - Kicker: kicks an NPC standing right behind it, in town or out, witnesses or not. Changed Nov 28, 2026 (Navod): a kick seen by the law brings the law, and that is part of the fun; you choose whether to take a Kicker into town. The Kicker witness range setting is retired. It kicks dogs standing behind it too (Navod, Nov 28; the dog models are in `data/dog-models.csv`), except Rufus and Cain, the story dogs (Navod, Nov 28): Rufus is `a_c_dogrufus_01`; Cain is thought to be `a_c_doghobo_01`, to confirm in camp with DevTools trigger 63.
     - Head-tosser: restless head tossing while standing still.
     - Nosy: turns to watch people and animals passing within 12 m.
     - Shadow: follows you a few steps when you walk away.
@@ -543,6 +543,36 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: Clumsy (baseline: trips on rocks with its long legs), Snake drama, Mud tantrum and Vain (Brindle), Snob, Guard dog, Town disdain and Night owl (Reverse Dapple Black), No brakes (Blood Bay), Hill sigh (Dapple Grey).
   - Rachel, John's Dapple Grey in the epilogue, is a story model (a_c_horse_gang_john) and stays vanilla, as decided for gang horses; a Dapple Grey you tame gets this design.
   - Cut: towering over townsfolk (its size is the game's), swamps (no swamp check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping control), nudging you (no nudge animation; Apple beggar asks instead).
+  - Prized (Navod, Nov 27): Reverse Dapple Black Thoroughbred (Special).
+- **Andalusian coats** (Navod, Nov 28, 2026): *The Waterfall Spirit* (Perlino), *The Heavy Enforcer* (Dark Bay) and *The Pit-Fighter* (Rose Gray); the baseline's War horse is on all three, which are the only Andalusian coats. One new signature, code only:
+  - **Hates brushing** (Rose Gray): every brushing gets a stamp and a snort, no dice.
+  - Reused: War horse (all: never spooks in a fight, goes for enemies when you're off), Guard dog and Jealous (Perlino), Hill crawler and Hill sigh (Dark Bay), Short king (Rose Gray).
+  - Prized (Navod, Nov 28): Perlino (Rare).
+  - Cut: slow on straightaways, getting winded, handling like a tank (its stats and the game's handling), refusing jumps (no jumping control), refusing to flee when told (no hook into the flee command; its Shadow quirk keeps it close), pinning its ears at wagons (wagons aren't horses; Short king covers other horses).
+- **Ardennes coats** (Navod, Nov 28, 2026): *The Heavyweight Brawler* (Strawberry Roan), *The Gentle Giant* (Bay Roan) and *The Silent Juggernaut* (Iron Grey Roan); the baseline's War horse is on all three, which are the only Ardennes coats. One new signature:
+  - **Balker** (Iron Grey): on a steep climb or in water it plants its hooves (a refusal), 2/min, however hard you spur. Water needs trigger 61.
+  - Reused: War horse (all), Unhurried (Bay Roan, and the baseline's "sprinting is a punishment"), Wolf brawler, Short king and Restless (Strawberry Roan), Stoic (Iron Grey).
+  - Prized (Navod, Nov 28): Iron Grey Roan (Special).
+  - Cut: plowing through small trees and barrelling over riders, turning like a battleship, the half-mile stopping distance and running off cliffs (no control over movement), shoving you with its head (no nudge animation; Restless stands in), bullying horses off the hay (Short king squares up instead), stepping on wagons, blocking doorways and crushing fences (no control).
+- **Hungarian Halfbred coats** (Navod, Nov 28, 2026): a baseline *Military Pedigree* for the Liver Chestnut, *The Outlaw Mercenary* (Piebald Tobiano), *The Cavalry Officer* (Dapple Dark Grey) and *The Fiery Sergeant* (Flaxen Chestnut). One new signature:
+  - **Strict** (Dapple Dark Grey): hurt by sloppy riding (into a tree, down a ledge: the damage event, trigger 60): a judgmental snort, then no sprinting for 30 s (capped at a trot when you spur).
+  - Reused: War horse and Trail snob (baseline: composed in a fight, routine rides beneath it), Wolf brawler, Town disdain and Snob (Piebald), Restless, No brakes and Racer (Flaxen Chestnut).
+  - Prized (Navod, Nov 28): Piebald Tobiano (Rare).
+  - Cut: plowing through roadblocks, slow off the line and turning like a stagecoach (no movement control), kicking passing dogs (dogs aren't watched; its Kicker quirk kicks people behind it, witnesses or not), refusing to be hitched by smaller breeds (no hitching control; Snob glares at them).
+- **American Paint coats** (Navod, Nov 28, 2026): *The Mystic Wanderer* (Splashed White), *The Trailblazer* (Overo), *The Ranch Hand* (Tobiano) and *The Desert Scout* (Grey Overo); the baseline's Snack magnet (it wanders off for wild carrots) is on all four, which are the only Paint coats. Five new signatures; DevTools trigger 62 checks the look-at-a-spot native:
+  - **Sixth sense** (Splashed White): a predator within 60 m, before it's close enough to scare a horse: a warning snort and a look its way, once per predator.
+  - **Night stare** (Splashed White): at night, standing near you, it stares at an empty spot for 6 s, 0.5/min (trigger 62).
+  - **Curious** (Overo): off it, a predator within 30 m: it walks a few steps toward it instead of backing away, 1/min.
+  - **Country bumpkin** (Tobiano): ridden in a town: it stops dead and snorts, 1/min.
+  - **Deadpan** (Grey Overo): hurt while you ride it (a cactus, a crash; the damage event, trigger 60): a flat, unblinking stare at you, no sound.
+  - Reused: Escape artist (Splashed White unties itself), Apple beggar (Overo noses your satchel), Snack magnet (all). The Grey Overo loves haycubes and ignores sugar cubes; the Paints love wild carrots.
+  - Prized (Navod, Nov 28): Splashed White (Rare).
+  - Cut: navigating fog, the wooden-bridge refusal and standing in a stream (no bridge, fog or stream check), nudging you off balance (no animation), bison (not watched; Curious is for predators), refusing a warm stable (no stable control).
+- **Appaloosa coats** (Navod, Nov 28, 2026): a baseline *Clever Backtalker* for the Black Snowflake, *The Spotted Diva* (Leopard), *The Ghostly Tracker* (Few Spotted, already prized as a PC bonus coat), *The Trail Boss* (Brown Leopard) and *The Wild Adventurer* (Blanket and Leopard Blanket, one design). Two new signatures, code only:
+  - **Crowd shy** (Few Spotted): off it, someone within 3 m: it side-steps away, 2/min; and it won't take a treat with a stranger within 10 m (a snort instead of its usual reaction).
+  - **Bribable** (Brown Leopard): a treat it loves lifts its Hill crawler for 2 minutes, so it will sprint up a mesa for an oatcake.
+  - Reused: Trail snob (baseline: bored on flat roads), Vain, Showboat and Mud tantrum (Leopard), Silent stealth and Wanderlust (Few Spotted), Stoic and Hill crawler (Brown Leopard), Scatterbrain, Apple beggar and Restless (Blanket).
+  - Cut: inventing shortcuts through brush (no steering), admiring its reflection on overlooks (no overlook or reflection check), the swamp in particular (Mud tantrum covers mud anywhere), bumping into camp members (no movement control; Apple beggar asks), the bow in particular (Restless covers standing still).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience
@@ -615,7 +645,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 | Stat changes get written into the game save | Removing the mod may leave changed horses | Test in Phase 5; `RestoreVanillaStats` puts them back before uninstalling; warn in the README; back up saves |
 | Handling can't change per horse | Handling skill does nothing | Keep it experimental; drop it if Phase 1 says so |
 | The breaking minigame can't be controlled | Hard and Unbreakable can't work as planned | Unbreakable forces a buck-off at the end; Hard adds extra buck attempts |
-| A kick in town counts as a crime | Players get a wanted level from a quirk | Test it; turn Kicker off in towns or near lawmen |
+| A kick in town counts as a crime | Players get a wanted level from a quirk | Decided Nov 28, 2026: that is the point. A Kicker kicks in town too, and the law may come; the player chooses where to take it |
 | Other horse mods change stats or temperament | Odd combinations | Apply differences on top of whatever the game reports; list known conflicts |
 | A game update renames or breaks natives | The mod stops working | All native calls in one adapter; the update regression check |
 

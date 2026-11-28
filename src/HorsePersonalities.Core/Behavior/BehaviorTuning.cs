@@ -67,7 +67,6 @@ namespace HorsePersonalities.Core.Behavior
         public double WanderSeconds => _v["wanderSeconds"];
         public double GrazeSeconds => _v["grazeSeconds"];
         public double KickerChance => _v["kickerChance"];
-        public double KickerWitnessRange => _v["kickerWitnessRange"];
         public double ReactionDelaySeconds => _v["reactionDelaySeconds"];
         public double ReactionTraitThreshold => _v["reactionTraitThreshold"];
         public double ReactionChance => _v["reactionChance"];
@@ -163,6 +162,19 @@ namespace HorsePersonalities.Core.Behavior
         public double BeggarRange => _v["beggarRange"];
         public double BeggarSeconds => _v["beggarSeconds"];
         public double BeggarRate => _v["beggarRate"];
+        public double BalkRate => _v["balkRate"];
+        public double StrictSeconds => _v["strictSeconds"];
+        public double StrictRatio => _v["strictRatio"];
+        public double SixthSenseRange => _v["sixthSenseRange"];
+        public double NightStareRate => _v["nightStareRate"];
+        public double NightStareSeconds => _v["nightStareSeconds"];
+        public double CuriousRange => _v["curiousRange"];
+        public double CuriousRate => _v["curiousRate"];
+        public double BumpkinRate => _v["bumpkinRate"];
+        public double CrowdShyRange => _v["crowdShyRange"];
+        public double CrowdShyRate => _v["crowdShyRate"];
+        public double CrowdShyStrangerRange => _v["crowdShyStrangerRange"];
+        public double BribeSeconds => _v["bribeSeconds"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -216,7 +228,6 @@ namespace HorsePersonalities.Core.Behavior
             ("wanderSeconds", "Wander seconds", 1.0, 120.0, false),
             ("grazeSeconds", "Graze seconds", 1.0, 120.0, false),
             ("kickerChance", "Kicker chance", 0.0, 1.0, false),
-            ("kickerWitnessRange", "Kicker witness range", 1.0, 200.0, false),
             ("reactionDelaySeconds", "Reaction delay seconds", 0.0, 10.0, false),
             ("reactionTraitThreshold", "Reaction trait threshold", 0.0, 2.0, false),
             ("reactionChance", "Reaction chance", 0.0, 1.0, false),
@@ -311,6 +322,19 @@ namespace HorsePersonalities.Core.Behavior
             ("beggarRange", "Beggar range", 0.5, 20.0, false),
             ("beggarSeconds", "Beggar seconds", 1.0, 600.0, false),
             ("beggarRate", "Beggar rate", 0.0, 20.0, false),
+            ("balkRate", "Balk rate", 0.0, 20.0, false),
+            ("strictSeconds", "Strict seconds", 1.0, 600.0, false),
+            ("strictRatio", "Strict ratio", 0.1, 3.0, false),
+            ("sixthSenseRange", "Sixth sense range", 1.0, 300.0, false),
+            ("nightStareRate", "Night stare rate", 0.0, 20.0, false),
+            ("nightStareSeconds", "Night stare seconds", 0.5, 60.0, false),
+            ("curiousRange", "Curious range", 1.0, 200.0, false),
+            ("curiousRate", "Curious rate", 0.0, 20.0, false),
+            ("bumpkinRate", "Bumpkin rate", 0.0, 20.0, false),
+            ("crowdShyRange", "Crowd shy range", 0.5, 50.0, false),
+            ("crowdShyRate", "Crowd shy rate", 0.0, 20.0, false),
+            ("crowdShyStrangerRange", "Crowd shy stranger range", 1.0, 100.0, false),
+            ("bribeSeconds", "Bribe seconds", 1.0, 3600.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

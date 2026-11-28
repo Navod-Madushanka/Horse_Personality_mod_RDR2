@@ -18,8 +18,6 @@ namespace HorsePersonalities.Core.Behavior
         public int PasserBy;
         /// <summary>An NPC standing right behind the horse; 0 if none.</summary>
         public int NpcBehind;
-        /// <summary>Other people within the Kicker witness range, not counting the NPC behind it.</summary>
-        public int Witnesses;
         /// <summary>The player just walked past the Shadow trigger distance (reported once per walk-away).</summary>
         public bool PlayerWalkedAway;
         public int DirtRank;
@@ -53,11 +51,11 @@ namespace HorsePersonalities.Core.Behavior
                     return Use(horse, BehaviorAction.Follow, BehaviorGroup.Quirk, "Shadow: you walked away", 0, cd, now);
                 if (Has(p, Quirk.Wanderer) && !s.Mounted && s.StandingStillSeconds >= _t.WandererDelaySeconds && s.PlayerDistance >= _t.WandererPlayerDistance)
                     return Use(horse, BehaviorAction.Wander, BehaviorGroup.Quirk, $"Wanderer: left standing {s.StandingStillSeconds:0} s with you {s.PlayerDistance:0} m away", 0, cd, now);
-                if (Has(p, Quirk.Kicker) && !s.Mounted && still && s.NpcBehind != 0 && s.Witnesses == 0)
+                if (Has(p, Quirk.Kicker) && !s.Mounted && still && s.NpcBehind != 0)
                 {
                     double roll = _random();
                     if (roll < _t.KickerChance)
-                        return Use(horse, BehaviorAction.KickNpc, BehaviorGroup.Quirk, $"Kicker: someone behind it, no witnesses: roll {F3(roll)} vs {F3(_t.KickerChance)}", s.NpcBehind, cd, now);
+                        return Use(horse, BehaviorAction.KickNpc, BehaviorGroup.Quirk, $"Kicker: someone (or a dog) behind it, witnesses or not; the law may come: roll {F3(roll)} vs {F3(_t.KickerChance)}", s.NpcBehind, cd, now);
                 }
                 if (Has(p, Quirk.HeadTosser) && still && Chance(_t.HeadTosserRate, dt))
                     return Use(horse, BehaviorAction.Agitate, BehaviorGroup.Quirk, "Head-tosser: standing still", 0, cd, now);
