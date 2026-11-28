@@ -194,7 +194,7 @@ All four Paint coats have a design, so the baseline's Snack magnet (off the trai
 
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
-| Splashed White | The Mystic Wanderer | +1 / 0 / 0 / +2 | Wanderer | Sixth sense, Night stare, Escape artist, Snack magnet |
+| Splashed White (prized: Rare) | The Mystic Wanderer | +1 / 0 / 0 / +2 | Wanderer | Sixth sense, Night stare, Escape artist, Snack magnet |
 | Overo | The Trailblazer | +1 / 0 / 0 / +1 | Nosy | Curious, Apple beggar, Snack magnet |
 | Tobiano | The Ranch Hand | 0 / +1 / -1 / +2 | Shadow | Country bumpkin, Snack magnet |
 | Grey Overo | The Desert Scout | +1 / -2 / 0 / 0 | Nosy | Deadpan, Snack magnet; loves haycubes, ignores sugar cubes |
@@ -218,4 +218,4 @@ Cut: fog, wooden bridges and standing in a stream (no check for them), nudging (
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian and the Piebald Tobiano Hungarian Halfbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian, the Piebald Tobiano Hungarian Halfbred and the Splashed White Paint are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).

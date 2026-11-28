@@ -31,6 +31,7 @@
 - The Piebald Tobiano Hungarian Halfbred is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable.
 - **Kicker kicks in town too** (Navod, Nov 28): it kicks an NPC standing right behind it whether or not anyone is watching, so a kick in town can bring the law. The *Kicker witness range* setting is retired. It kicks dogs behind it too (new `data/dog-models.csv`, 14 dog models).
 - **American Paint coats** (Navod, Nov 28): the Mystic Wanderer (Splashed White), the Trailblazer (Overo), the Ranch Hand (Tobiano), the Desert Scout (Grey Overo). New signatures Sixth sense, Night stare, Curious, Country bumpkin, Deadpan (6 new Behavior settings); DevTools trigger 62 (stare at a spot).
+- The Splashed White American Paint is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
