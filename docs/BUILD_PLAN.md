@@ -568,6 +568,11 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: Escape artist (Splashed White unties itself), Apple beggar (Overo noses your satchel), Snack magnet (all). The Grey Overo loves haycubes and ignores sugar cubes; the Paints love wild carrots.
   - Prized (Navod, Nov 28): Splashed White (Rare).
   - Cut: navigating fog, the wooden-bridge refusal and standing in a stream (no bridge, fog or stream check), nudging you off balance (no animation), bison (not watched; Curious is for predators), refusing a warm stable (no stable control).
+- **Appaloosa coats** (Navod, Nov 28, 2026): a baseline *Clever Backtalker* for the Black Snowflake, *The Spotted Diva* (Leopard), *The Ghostly Tracker* (Few Spotted, already prized as a PC bonus coat), *The Trail Boss* (Brown Leopard) and *The Wild Adventurer* (Blanket and Leopard Blanket, one design). Two new signatures, code only:
+  - **Crowd shy** (Few Spotted): off it, someone within 3 m: it side-steps away, 2/min; and it won't take a treat with a stranger within 10 m (a snort instead of its usual reaction).
+  - **Bribable** (Brown Leopard): a treat it loves lifts its Hill crawler for 2 minutes, so it will sprint up a mesa for an oatcake.
+  - Reused: Trail snob (baseline: bored on flat roads), Vain, Showboat and Mud tantrum (Leopard), Silent stealth and Wanderlust (Few Spotted), Stoic and Hill crawler (Brown Leopard), Scatterbrain, Apple beggar and Restless (Blanket).
+  - Cut: inventing shortcuts through brush (no steering), admiring its reflection on overlooks (no overlook or reflection check), the swamp in particular (Mud tantrum covers mud anywhere), bumping into camp members (no movement control; Apple beggar asks), the bow in particular (Restless covers standing still).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

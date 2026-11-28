@@ -75,6 +75,9 @@ namespace HorsePersonalities.Core.Breeds
         Curious,
         CountryBumpkin,
         Deadpan,
+        // Appaloosa coats (Nov 28, 2026)
+        CrowdShy,
+        Bribable,
     }
 
     /// <summary>

@@ -209,6 +209,18 @@ All four Paint coats have a design, so the baseline's Snack magnet (off the trai
 
 Cut: fog, wooden bridges and standing in a stream (no check for them), nudging (no animation), bison (not watched), the warm-stable refusal (no stable control).
 
+## Appaloosa coats (added Nov 28)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Black Snowflake | The Clever Backtalker (baseline) | +1 / -1 / +1 / 0 | Kicker | Trail snob |
+| Leopard | The Spotted Diva | +1 / 0 / +1 / -1 | Head-tosser | Vain, Showboat, Mud tantrum, Trail snob |
+| Few Spotted (prized: Special, PC bonus) | The Ghostly Tracker | +1 / -2 / 0 / -1 | Wanderer | Silent stealth, Crowd shy, Wanderlust |
+| Brown Leopard | The Trail Boss | +1 / -2 / +1 / -1 | Kicker | Stoic, Hill crawler, Bribable, Trail snob; loves oatcakes |
+| Blanket, Leopard Blanket | The Wild Adventurer | +1 / +1 / 0 / +1 | Nosy | Scatterbrain, Apple beggar, Restless, Trail snob; loves apples |
+
+New: **Crowd shy** (off it, someone within 3 m: side-steps away, 2/min; won't take a treat with a stranger within 10 m) and **Bribable** (a loved treat lifts Hill crawler for 2 minutes). Cut: shortcuts (no steering), admiring its reflection (no check), bumping into people (no movement control), the bow in particular (Restless covers standing still).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

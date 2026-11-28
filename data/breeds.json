@@ -216,7 +216,11 @@
     "nightStareSeconds": 6,
     "curiousRange": 30,
     "curiousRate": 1,
-    "bumpkinRate": 1
+    "bumpkinRate": 1,
+    "crowdShyRange": 3,
+    "crowdShyRate": 2,
+    "crowdShyStrangerRange": 10,
+    "bribeSeconds": 120
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "dogModels": ["a_c_dogamericanfoxhound_01", "a_c_dogaustraliansheperd_01", "a_c_dogbluetickcoonhound_01", "a_c_dogcatahoulacur_01", "a_c_dogchesbayretriever_01", "a_c_dogcollie_01", "a_c_doghound_01", "a_c_doghusky_01", "a_c_doglab_01", "a_c_doglion_01", "a_c_dogpoodle_01", "a_c_dogstreet_01"],
@@ -2183,6 +2187,138 @@
         "impatient": 0,
         "alert": 1,
         "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_blacksnowflake",
+      "breed": "Appaloosa",
+      "archetype": "The Clever Backtalker (Appaloosa baseline)",
+      "vibe": "Bottomless stamina, rock-solid footing on steep cliffs, a clever, observant nature: cross-country marathons and rugged mountain treks are a casual stroll, and it thrives on complex terrain. Clever enough to talk back and stubborn enough to test your patience: bored on flat, predictable roads, loves inventing its own shortcuts through thick, thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["TrailSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_leopard",
+      "breed": "Appaloosa",
+      "archetype": "The Spotted Diva",
+      "vibe": "The Show-Stopping Eccentric (No, No and Thrice, No; Van Horn). A Dalmatian in a cowboy hat: turns heads in every saloon town and knows it, surprisingly bold in tight spots, agile through dense forest, fiercely loyal once you prove you can keep up. Painfully aware of its looks and dramatic about it: struts through towns, pauses on scenic overlooks to admire its reflection, throws a mini-tantrum in deep swamp mud. Like every Appaloosa: bottomless stamina, rock-solid footing on steep cliffs, clever and observant, a cross-country marathon is a casual stroll and complex terrain is where it thrives; clever enough to talk back, stubborn enough to test you, bored on flat predictable roads, invents its own shortcuts through thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["Vain", "Showboat", "MudTantrum", "TrailSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_fewspotted_pc",
+      "breed": "Appaloosa",
+      "archetype": "The Ghostly Tracker",
+      "vibe": "The Quiet Scout (random campsites; PC bonus coat). Mostly pure white with subtle scattered spots and a calm, almost mystical composure: dead silent on forest trails, unbothered by rain or blizzards, a sixth sense for keeping steady while wolves or cougars prowl. Aloof, elusive, allergic to crowds: hitched in Saint Denis it side-steps away from every pedestrian, won't eat in front of strangers, and silently wanders off the second you turn your back. Like every Appaloosa: bottomless stamina, rock-solid footing on steep cliffs, clever and observant, a cross-country marathon is a casual stroll and complex terrain is where it thrives; clever enough to talk back, stubborn enough to test you, bored on flat predictable roads, invents its own shortcuts through thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Wanderer"],
+      "signatures": ["SilentStealth", "CrowdShy", "Wanderlust"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_brownleopard",
+      "breed": "Appaloosa",
+      "archetype": "The Trail Boss",
+      "vibe": "The Desert Veteran (Tumbleweed). Built for punishing distances over scorching canyons and rocky ridges: top-tier stamina, a tough no-nonsense demeanor, huge hunting trips and high-speed desert chases are routine morning chores. Grumpy, transactional, strictly business: doesn't care for pats or sweet talk; if you want it to sprint up a steep mesa, hand over an oatcake first. Like every Appaloosa: bottomless stamina, rock-solid footing on steep cliffs, clever and observant, a cross-country marathon is a casual stroll and complex terrain is where it thrives; clever enough to talk back, stubborn enough to test you, bored on flat predictable roads, invents its own shortcuts through thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["Stoic", "HillCrawler", "Bribable", "TrailSnob"],
+      "lovesTreats": ["Oatcakes"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_blanket",
+      "breed": "Appaloosa",
+      "archetype": "The Wild Adventurer",
+      "vibe": "The Energetic Explorer (wild across Big Valley and New Hanover; Blanket). Scrappy, adaptable, bursting with frontier spirit: once tamed it loves off-road exploring, bounding over fallen logs, splashing through shallow streams, carrying heavy pelts all day without complaint. Terrible impulse control, zero spatial awareness: distracted by wild turkeys mid-gallop, bumps into camp members begging for apples, won't stand still while you aim a bow. Like every Appaloosa: bottomless stamina, rock-solid footing on steep cliffs, clever and observant, a cross-country marathon is a casual stroll and complex terrain is where it thrives; clever enough to talk back, stubborn enough to test you, bored on flat predictable roads, invents its own shortcuts through thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Scatterbrain", "AppleBeggar", "Restless", "TrailSnob"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_appaloosa_leopardblanket",
+      "breed": "Appaloosa",
+      "archetype": "The Wild Adventurer",
+      "vibe": "The Energetic Explorer (wild across Big Valley and New Hanover; Leopard Blanket). Scrappy, adaptable, bursting with frontier spirit: once tamed it loves off-road exploring, bounding over fallen logs, splashing through shallow streams, carrying heavy pelts all day without complaint. Terrible impulse control, zero spatial awareness: distracted by wild turkeys mid-gallop, bumps into camp members begging for apples, won't stand still while you aim a bow. Like every Appaloosa: bottomless stamina, rock-solid footing on steep cliffs, clever and observant, a cross-country marathon is a casual stroll and complex terrain is where it thrives; clever enough to talk back, stubborn enough to test you, bored on flat predictable roads, invents its own shortcuts through thorny brush.",
+      "leans": {
+        "courage": 1,
+        "nerves": 1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Scatterbrain", "AppleBeggar", "Restless", "TrailSnob"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 2,
+        "affectionate": 1,
         "fussy": 0
       }
     }

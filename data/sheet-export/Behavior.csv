@@ -152,3 +152,7 @@ Night stare seconds,6,Night stare: how long the stare lasts.
 Curious range,30,Curious: a predator within this range (m) gets a closer look while you're off the horse.
 Curious rate,1,"Curious: walks toward it per minute (a few steps, Creeper seconds)."
 Bumpkin rate,1,Country bumpkin: stops dead and snorts per minute while ridden in a town.
+Crowd shy range,3,Crowd shy: someone within this range (m) of it while you're off it makes it side-step away.
+Crowd shy rate,2,Crowd shy: side-steps per minute while someone is that close.
+Crowd shy stranger range,10,Crowd shy: with a stranger within this range (m) it won't take a treat.
+Bribe seconds,120,Bribable: seconds a loved treat lifts its Hill crawler.

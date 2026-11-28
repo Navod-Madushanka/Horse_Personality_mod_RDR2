@@ -71,6 +71,8 @@ namespace HorsePersonalities.Core.Behavior
         public int SensedPredator;
         /// <summary>A predator within Curious range (0 for none).</summary>
         public int CuriousTarget;
+        /// <summary>Someone within Crowd shy range (0 for none).</summary>
+        public int CrowdPerson;
     }
 
     /// <summary>
@@ -225,6 +227,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.StareAtNothing, _t.NightStareRate, "Night stare: staring at an empty corner", 0));
             if (p.Has(Signature.Curious) && !s.Mounted && s.PlayerNear && s.CuriousTarget != 0)
                 candidates.Add((BehaviorAction.Creep, _t.CuriousRate, "Curious: wants a closer look at the predator", s.CuriousTarget));
+            if (p.Has(Signature.CrowdShy) && !s.Mounted && s.CrowdPerson != 0)
+                candidates.Add((BehaviorAction.SideStep, _t.CrowdShyRate, "Crowd shy: side-steps away from a stranger", s.CrowdPerson));
             if (p.Has(Signature.CountryBumpkin) && s.Mounted && s.InTown)
                 candidates.Add((BehaviorAction.QuickStop, _t.BumpkinRate, "Country bumpkin: overwhelmed by the big town", 0));
             if (p.Has(Signature.Balker) && s.Mounted && s.SpeedMs >= _t.StandingStillSpeed && (s.ClimbSpeed >= _t.HillClimbSpeed || s.InWater))
@@ -281,8 +285,10 @@ namespace HorsePersonalities.Core.Behavior
             p != null && p.Has(Signature.Strict) && mounted && spurring && sulking ? _t.StrictRatio : (double?)null;
 
         /// <summary>Hill crawler: the cap on a steep climb, spurred or not, or null.</summary>
-        public double? HillCap(Personality p, bool mounted, double climbSpeed) =>
-            p != null && p.Has(Signature.HillCrawler) && mounted && climbSpeed >= _t.HillClimbSpeed ? _t.HillCrawlRatio : (double?)null;
+        /// <param name="bribed">Bribable: a loved treat in the last Bribe seconds lifts the cap.</param>
+        public double? HillCap(Personality p, bool mounted, double climbSpeed, bool bribed = false) =>
+            p != null && p.Has(Signature.HillCrawler) && mounted && climbSpeed >= _t.HillClimbSpeed && !(bribed && p.Has(Signature.Bribable))
+                ? _t.HillCrawlRatio : (double?)null;
 
         /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
         public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>

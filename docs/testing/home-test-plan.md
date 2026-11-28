@@ -429,6 +429,18 @@ The Splashed White turns up at random campsites; the Overo and Tobiano run wild 
 | 12.80 | **Tobiano**: ride through Saint Denis | Horse, log | Stops dead and snorts now and then (*Country bumpkin*) |  |  |
 | 12.81 | **Grey Overo**: ride into a cactus; feed a sugar cube, then a haycube | Horse, log | A flat stare at you (*Deadpan*); a snort for the sugar cube, a happy call for the haycube (needs the item codes) |  |  |
 
+### Stage 12, Appaloosa coats
+
+The Leopard is sold at Van Horn (and comes from No, No and Thrice, No); the Few Spotted turns up at random campsites; the Brown Leopard is sold at Tumbleweed; the Blanket and Leopard Blanket run wild in Big Valley and New Hanover.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.83 | **Any Appaloosa** except the Few Spotted: walk it on a flat road a couple of minutes | Horse, log | Bored, insulted snorts (*Trail snob*) |  |  |
+| 12.84 | **Leopard**: brush it; gallop into town and stop by a crowd; roll it in mud | Horse, log | Happy every brushing (*Vain*), rears for the crowd (*Showboat*), agitated when dirty (*Mud tantrum*) |  |  |
+| 12.85 | **Few Spotted**: hitch it in Saint Denis and stand back; feed it with someone close by; walk away | Horse, log | Side-steps from people (*Crowd shy*), snorts at the treat instead of eating happily, strolls off (*Wanderlust*) |  |  |
+| 12.86 | **Brown Leopard**: spur it up a steep slope; feed it an oatcake; spur it up again | Horse, log | Walks the first climb (*Hill crawler*); sprints the second (*Bribable*; needs the oatcake code) |  |  |
+| 12.87 | **Blanket or Leopard Blanket**: gallop a while; stand next to it on foot; sit still on it | Horse, log | An odd skid at a gallop (*Scatterbrain*), asks you for an apple (*Apple beggar*), fidgets (*Restless*) |  |  |
+
 ### Stage 12, story dogs
 
 | # | Do this | Look at | Pass if | Result | Notes |

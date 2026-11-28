@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(56, Catalog.CoatCount);
+            Assert.Equal(62, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -730,6 +730,37 @@ namespace HorsePersonalities.Tests
         {
             var brain = new SignatureBrain(T, () => 0);
             Assert.Equal(BehaviorAction.Stare, brain.OnHurt(1, With(Signature.Deadpan), new CooldownBook(T, 0), 0).Action);
+        }
+            // ---- Appaloosa coats ----
+
+        [Fact]
+        public void AppaloosaCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_blacksnowflake", out Coat baseline));
+            Assert.Equal(new[] { Signature.TrailSnob }, baseline.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_blanket", out Coat a));
+            Assert.True(Catalog.TryGetCoat("a_c_horse_appaloosa_leopardblanket", out Coat b));
+            Assert.Equal(a.Archetype, b.Archetype);
+            Assert.True(Catalog.TryGetPrized("a_c_horse_appaloosa_fewspotted_pc", out _));
+        }
+
+        [Fact]
+        public void CrowdShySideStepsAndWontEatInFrontOfStrangers()
+        {
+            var off = new SignatureSituation { PlayerNear = true, CrowdPerson = 3 };
+            Assert.Equal(BehaviorAction.SideStep, S(With(Signature.CrowdShy), off).Action);
+            var care = new CareReactor(T, () => 0);
+            Assert.Equal(BehaviorAction.Snort, care.React(With(Signature.CrowdShy), DemeanorTraits.None, CareKind.Feed, 2, 0, strangerNear: true).First);
+        }
+
+        [Fact]
+        public void BribableClimbsForAnOatcake()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var p = With(Signature.HillCrawler, Signature.Bribable);
+            Assert.Equal(T.HillCrawlRatio, brain.HillCap(p, true, T.HillClimbSpeed));
+            Assert.Null(brain.HillCap(p, true, T.HillClimbSpeed, bribed: true));
+            Assert.Equal(T.HillCrawlRatio, brain.HillCap(With(Signature.HillCrawler), true, T.HillClimbSpeed, bribed: true)); // not bribable
         }
     }
 }
