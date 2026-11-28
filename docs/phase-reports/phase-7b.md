@@ -278,6 +278,19 @@ The baseline's "zero appetite for danger" is Courage -2 and Needs soothing on ev
 
 New: **Freeze** (scared under you: stops dead instead of rearing or bucking) and **Bail out** (scared under you: throws you and trots away from the threat for 4 s). Cut: stamina and health (its stats), the thunderstorm (no weather check), the road it heads for (no road check), keeping up with the posse (no control).
 
+## Morgan coats (added Nov 28)
+
+The baseline's frail nerves is Snake drama on every coat.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Palomino | The Pocket-Sized Prince | 0 / +1 / 0 / +2 | Chatterbox | Vain, Racer, Winded, Mud tantrum, Hill sigh, Snake drama |
+| Liver Chestnut (PC bonus coat; prized, Special) | The Feisty Little Brawler | +1 / +1 / +1 / +1 | Kicker | Short king, Guard dog, No brakes, Snake drama |
+| Flaxen Chestnut | The Gentle Sidekick | -2 / 0 / -2 / +2 | Shadow | Clumsy, Needs soothing, Snake drama |
+| Bay, Bay Roan | The Honest Worker | -1 / -1 / 0 / 0 | Shadow | Bail out, City lover, Hill sigh, Snake drama |
+
+New: **Winded** (after 30 s of galloping it wheezes, 2/min). Cut: size, turning and stamina (its stats), collisions (no control), the swamp in particular (Mud tantrum anywhere), the safe barn (no barn check).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

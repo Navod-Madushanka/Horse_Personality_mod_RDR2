@@ -90,6 +90,8 @@ namespace HorsePersonalities.Core.Breeds
         // Kentucky Saddler coats (Nov 28, 2026)
         Freeze,
         BailOut,
+        // Morgan coats (Nov 28, 2026)
+        Winded,
     }
 
     /// <summary>

@@ -164,3 +164,5 @@ Tantrum rate,0.5,Treat tantrum: tantrums per minute until you feed it.
 Town dawdle ratio,1,"Town dawdler: its pace cap in towns, spurred or not (move blend ratio: 1 walk)."
 Turn grumble degrees,120,Turn grumble: turning this far...
 Turn grumble seconds,2.5,...within this many seconds while moving is turning it round: a grumpy snort.
+Winded seconds,30,Winded: seconds of galloping before it starts wheezing.
+Winded rate,2,"Winded: wheezes per minute after that, until it slows down."

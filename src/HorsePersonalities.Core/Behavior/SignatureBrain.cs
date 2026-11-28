@@ -79,6 +79,8 @@ namespace HorsePersonalities.Core.Behavior
         public double MinutesSinceTreat;
         /// <summary>Degrees the horse has turned in the last Turn grumble seconds while moving.</summary>
         public double TurnedDegrees;
+        /// <summary>Seconds of the gallop it is on now (0 when not galloping).</summary>
+        public double GallopingSeconds;
     }
 
     /// <summary>
@@ -248,6 +250,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Beg, _t.BeggarRate, "Apple beggar: you've been standing here long enough to hand over an apple", 0));
             if (p.Has(Signature.TurnGrumble) && s.Mounted && s.SpeedMs >= _t.StandingStillSpeed && s.TurnedDegrees >= _t.TurnGrumbleDegrees && Ready(horse, cooldowns, now))
                 return Use(horse, BehaviorAction.Snub, $"Turn grumble: turned round {s.TurnedDegrees:0} degrees", cooldowns, now);
+            if (p.Has(Signature.Winded) && galloping && s.GallopingSeconds >= _t.WindedSeconds)
+                candidates.Add((BehaviorAction.Sigh, _t.WindedRate, $"Winded: {s.GallopingSeconds:0} s of galloping on tiny lungs", 0));
             if (p.Has(Signature.TreatTantrum) && s.Mounted && s.MinutesSinceTreat >= _t.TantrumAfterMinutes)
                 candidates.Add((BehaviorAction.Agitate, _t.TantrumRate, $"Treat tantrum: {s.MinutesSinceTreat:0} minutes and not one oatcake", 0));
             if (p.Has(Signature.CliffNerves) && galloping && -s.ClimbSpeed >= _t.DownhillSpeed)

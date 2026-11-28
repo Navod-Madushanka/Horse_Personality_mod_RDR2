@@ -20,6 +20,9 @@ namespace HorsePersonalities.Tests
         private static readonly PersonalityRoller Roller = new PersonalityRoller(Catalog, ModSettings.Defaults());
         private static Breed Arabian { get { Catalog.TryGetBreed("Arabian", out Breed b); return b; } }
 
+        /// <summary>A Morgan model name no coat design will ever use: every real coat now has one (Nov 28).</summary>
+        private const string NoCoatModel = "a_c_horse_morgan_test_nocoat";
+
         private const string White = "a_c_horse_arabian_white", Black = "a_c_horse_arabian_black", RoseGreyBay = "a_c_horse_arabian_rosegreybay";
 
         // ---- Data ----
@@ -27,14 +30,14 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(79, Catalog.CoatCount);
+            Assert.Equal(84, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
             Assert.Contains("Oatcakes", ice.LovesTreats);
             Assert.Contains("Wild carrot", ice.IgnoresTreats);
             Assert.Equal(2, ice.Leans.Courage);
-            Assert.False(Catalog.TryGetCoat("a_c_horse_morgan_bay", out _));
+            Assert.False(Catalog.TryGetCoat(NoCoatModel, out _));
         }
 
         [Theory]
@@ -81,7 +84,7 @@ namespace HorsePersonalities.Tests
         public void HorsesWithoutACoatRollAsBefore()
         {
             Catalog.TryGetBreed("Morgan", out Breed morgan);
-            var a = Roller.Roll(morgan, HorseOrigin.Stable, 42, true, "a_c_horse_morgan_bay");
+            var a = Roller.Roll(morgan, HorseOrigin.Stable, 42, true, NoCoatModel);
             var b = Roller.Roll(morgan, HorseOrigin.Stable, 42, true);
             Assert.Equal(b.ToString(), a.ToString());
             Assert.Null(a.Archetype);
@@ -133,7 +136,7 @@ namespace HorsePersonalities.Tests
             Assert.Equal(-1, ice.Traits.BondAffinity);
             Assert.Contains(Signature.TownDisdain, ice.Signatures);
             Catalog.TryGetBreed("Morgan", out Breed morgan);
-            var plain = coat.For(morgan, HorseOrigin.Stable, 3, "a_c_horse_morgan_bay", Roller, Catalog);
+            var plain = coat.For(morgan, HorseOrigin.Stable, 3, NoCoatModel, Roller, Catalog);
             Assert.Equal(0, plain.Traits.Courage);
             Assert.Empty(plain.Signatures);
         }
@@ -888,6 +891,26 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.QuickStop, brain.Decide(1, Timid(Signature.Freeze), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
             Assert.Equal(BehaviorAction.BailOut, brain.Decide(1, Timid(Signature.BailOut), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
             Assert.Equal(BehaviorAction.Rear, brain.Decide(1, Timid(), wolf, 0.25, new CooldownBook(T, 120), 0).Action);
+        }
+            // ---- Morgan coats ----
+
+        [Fact]
+        public void MorganCoatsAllFearSnakes()
+        {
+            foreach (string m in new[] { "palomino", "liverchestnut_pc", "flaxenchestnut", "bay", "bayroan" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_morgan_" + m, out Coat c));
+                Assert.Contains(Signature.SnakeDrama, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void WindedAfterThirtySecondsOfGalloping()
+        {
+            var s = Riding(speed: T.GallopSpeed + 1); s.GallopingSeconds = T.WindedSeconds;
+            Assert.Equal(BehaviorAction.Sigh, S(With(Signature.Winded), s).Action);
+            s.GallopingSeconds = T.WindedSeconds - 5;
+            Assert.True(S(With(Signature.Winded), s).IsNone);
         }
     }
 }

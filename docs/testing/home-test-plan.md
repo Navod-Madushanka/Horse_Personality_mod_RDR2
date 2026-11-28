@@ -494,6 +494,18 @@ The Buttermilk Buckskin is the PC bonus coat; the Silver Bay and Chestnut Pinto 
 | 12.106 | **Chestnut Pinto**: leave it untied and walk away; ride past bushes; sit still on it | Horse, log | Strolls off (*Wanderlust*), stops to graze (*Snack magnet*), fidgets when kept still (*Restless*) |  |  |
 | 12.107 | **Black or Grey**: ride into an ambush or near gunfire | Horse, log | Throws you and trots away from the trouble (*Bail out*); calm in a busy town otherwise (*City lover*) |  |  |
 
+### Stage 12, Morgan coats
+
+The Palomino and Flaxen Chestnut run wild across New Hanover and West Elizabeth; the Liver Chestnut is the PC bonus coat; the Bay and Bay Roan are common ranch and town mounts (and sold at stables).
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.108 | **Any Morgan**: ride near a snake | Horse, log | Reacts from far off (*Snake drama*) |  |  |
+| 12.109 | **Palomino**: gallop for a minute; ride beside another rider; brush it | Horse, log | Wheezes after about 30 s (*Winded*), calls at the other rider (*Racer*), happy every brushing (*Vain*) |  |  |
+| 12.110 | **Liver Chestnut**: stand it near a Shire or Ardennes; leave it in town with people passing; gallop and stop hard | Horse, log | Squares up to the big horse (*Short king*), stomps at people close by (*Guard dog*), skids on the stop (*No brakes*) |  |  |
+| 12.111 | **Flaxen Chestnut**: trot a while; get into a gunfight, then ride away | Horse, log | Trips now and then (*Clumsy*), frets after the fight until patted (*Needs soothing*) |  |  |
+| 12.112 | **Bay or Bay Roan**: ride near a bear or into gunfire; then through a busy town | Horse, log | Puts you down and trots off (*Bail out*); calm in town (*City lover*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

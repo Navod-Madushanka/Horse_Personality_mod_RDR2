@@ -601,6 +601,10 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Bail out** (Black, Grey): scared while you ride it, it throws you and trots off to safety for 4 s, whatever its Temper.
   - Reused: Needs soothing (all), Vain, Mud tantrum and Hill sigh (Buttermilk Buckskin), Clumsy (Silver Bay), Wanderlust, Snack magnet and Restless (Chestnut Pinto), City lover (Black, Grey: calm around bustling saloons).
   - Cut: frail stamina and low health (its stats), the thunderstorm (no weather check), trotting back to the nearest road (no road check; Bail out trots away from the threat), draining stamina keeping up with the posse (no control).
+- **Morgan coats** (Navod, Nov 28, 2026): *The Pocket-Sized Prince* (Palomino), *The Feisty Little Brawler* (Liver Chestnut, the PC bonus coat, already prized), *The Gentle Sidekick* (Flaxen Chestnut) and *The Honest Worker* (Bay and Bay Roan, one design). The baseline's frail nerves (snakes are the end of the world) is Snake drama on every coat. One new signature, code only:
+  - **Winded** (Palomino): after 30 s of galloping it wheezes dramatically (the sigh sound), 2/min, until it slows down.
+  - Reused: Snake drama (all), Vain, Racer, Mud tantrum and Hill sigh (Palomino), Short king, Guard dog and No brakes (Liver Chestnut), Clumsy and Needs soothing (Flaxen Chestnut), Bail out, City lover and Hill sigh (Bay, Bay Roan).
+  - Cut: small size, quick turns and tiny stamina (its stats), getting tossed in collisions (no control), cheap hay and muddy roads (no fuss is simply no habit), the swamp in particular (Mud tantrum covers mud anywhere), bolting for "the nearest safe barn" (no barn check; the Flaxen Chestnut spooks as a timid horse does).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

@@ -450,6 +450,7 @@ namespace HorsePersonalities.Game
                     RecentSpurPresses = SpurPresses(mounted && p.Has(Signature.SpurSnob), nowSeconds),
                     MinutesSinceTreat = TreatClock(horse, mounted && p.Has(Signature.TreatTantrum), dt),
                     TurnedDegrees = TurnClock(horse, mounted && p.Has(Signature.TurnGrumble), nowSeconds),
+                    GallopingSeconds = _gallopSeconds,
                     InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
