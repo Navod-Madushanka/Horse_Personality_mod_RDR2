@@ -76,6 +76,8 @@ namespace HorsePersonalities.Game
         private readonly Dictionary<int, double> _lastSprintAt = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _minutesSinceSave = new Dictionary<int, double>();
         private bool _wasSprinting;
+        private bool _spurWasDown;
+        private readonly Queue<double> _spurPresses = new Queue<double>();
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -437,6 +439,7 @@ namespace HorsePersonalities.Game
                     SensedPredator = _lastScan.SensedPredator,
                     CuriousTarget = _lastScan.CuriousTarget,
                     CrowdPerson = _lastScan.CrowdPerson,
+                    RecentSpurPresses = SpurPresses(mounted && p.Has(Signature.SpurSnob), nowSeconds),
                     InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
@@ -510,6 +513,17 @@ namespace HorsePersonalities.Game
                 _registry.ExperienceChanged(record);
                 _log.Info(Log, $"{record.Id}: predator encounter counted ({e.Predators:0.#} so far)");
             }
+        }
+
+        /// <summary>Spur snob: sprint presses (rising edges) in the last Spur spam seconds. Read every 250 ms, so a very fast double tap counts once.</summary>
+        private int SpurPresses(bool watch, double now)
+        {
+            if (!watch) { _spurPresses.Clear(); _spurWasDown = false; return 0; }
+            bool down = _game.IsSprintPressed;
+            if (down && !_spurWasDown) _spurPresses.Enqueue(now);
+            _spurWasDown = down;
+            while (_spurPresses.Count > 0 && now - _spurPresses.Peek() > _t.SpurSpamSeconds) _spurPresses.Dequeue();
+            return _spurPresses.Count;
         }
 
         /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, other horses.</summary>

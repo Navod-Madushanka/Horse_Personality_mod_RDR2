@@ -220,7 +220,9 @@
     "crowdShyRange": 3,
     "crowdShyRate": 2,
     "crowdShyStrangerRange": 10,
-    "bribeSeconds": 120
+    "bribeSeconds": 120,
+    "spurSpamPresses": 4,
+    "spurSpamSeconds": 3
   },
   "skills": {
     "gunfightStep": 0.08,
@@ -2338,6 +2340,72 @@
         "impatient": 1,
         "alert": 2,
         "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_dutchwarmblood_chocolateroan",
+      "breed": "Dutch Warmblood",
+      "archetype": "The Polished Professional",
+      "vibe": "The Bougie Executive (Valentine). Sleek, rich, effortlessly capable, the best stats of the stable Warmbloods: grueling hunts and long bounty runs are a brisk morning stroll, never tiring, never stumbling, always sharp. Vain, judgmental, slightly spoiled: expects a brushing the second you leave a muddy trail, snorts at wild mustangs, slows to a walk uphill unless you feed it first. Like every Dutch Warmblood: incredible endurance, rock-solid composure, effortless strength, carries massive carcasses and heavy saddles without slowing, ignores chaotic weather, smooth and planted on long cross-country trips; heavy-steering and allergic to rushing, accelerates like a loaded freight train, won't take sharp turns at speed, offended if you spam the spur button.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["MudTantrum", "Snob", "HillCrawler", "Bribable", "SpurSnob"],
+      "lovesTreats": ["Sugar cube"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_dutchwarmblood_sootybuckskin",
+      "breed": "Dutch Warmblood",
+      "archetype": "The Gritty Prospector",
+      "vibe": "The Blue-Collar Hustler (Scarlett Meadows; rescued from gold panners). Weathered, practical, endlessly resilient, zero ego and a huge work ethic: wades swamps, climbs steep ridges, carries heavy loot without complaint. Opportunistic and mildly mischievous: untied near a camp it raids the nearest oat sack, wanders off to inspect shiny rocks in riverbeds, and ignores your whistle if it found good clover. Like every Dutch Warmblood: incredible endurance, rock-solid composure, effortless strength, carries massive carcasses and heavy saddles without slowing, ignores chaotic weather, smooth and planted on long cross-country trips; heavy-steering and allergic to rushing, accelerates like a loaded freight train, won't take sharp turns at speed, offended if you spam the spur button.",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Wanderlust", "SelectiveHearing", "SnackMagnet", "SpurSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_dutchwarmblood_sealbrown",
+      "breed": "Dutch Warmblood",
+      "archetype": "The Quiet Professional",
+      "vibe": "The Stoic Workhorse (pulls wagons; ridden by lawmen). Dependable, steady, unbothered by noise: used to wagons and busy towns, calm in crowded streets, rock-steady when gunfire erupts nearby. A creature of strict routine with zero imagination: follows main roads instead of shortcuts, stops dead at every crossroads waiting for directions, confused when you ask it to jump a fence. Like every Dutch Warmblood: incredible endurance, rock-solid composure, effortless strength, carries massive carcasses and heavy saddles without slowing, ignores chaotic weather, smooth and planted on long cross-country trips; heavy-steering and allergic to rushing, accelerates like a loaded freight train, won't take sharp turns at speed, offended if you spam the spur button.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": -1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["MoodyRefusal", "SpurSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 0,
         "fussy": 0
       }
     }

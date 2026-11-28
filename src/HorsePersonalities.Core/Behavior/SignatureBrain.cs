@@ -73,6 +73,8 @@ namespace HorsePersonalities.Core.Behavior
         public int CuriousTarget;
         /// <summary>Someone within Crowd shy range (0 for none).</summary>
         public int CrowdPerson;
+        /// <summary>Sprint presses in the last Spur spam seconds.</summary>
+        public int RecentSpurPresses;
     }
 
     /// <summary>
@@ -195,6 +197,8 @@ namespace HorsePersonalities.Core.Behavior
                 return new Decision { Action = BehaviorAction.Snub, Group = BehaviorGroup.Tell, Target = s.SensedPredator,
                     Cause = "Sixth sense: something out there, before you've seen it" };
             }
+            if (p.Has(Signature.SpurSnob) && s.Mounted && s.RecentSpurPresses >= _t.SpurSpamPresses && Ready(horse, cooldowns, now))
+                return Use(horse, BehaviorAction.Snub, $"Spur snob: {s.RecentSpurPresses} spur presses in {_t.SpurSpamSeconds:0.#} s is no way to treat a Warmblood", cooldowns, now);
             if (p.Has(Signature.RoadsideGrazer) && s.Mounted && s.StandingStillSeconds >= _t.GrazerIdleSeconds
                 && !_grazedThisStop.Contains(horse) && Ready(horse, cooldowns, now))
             {

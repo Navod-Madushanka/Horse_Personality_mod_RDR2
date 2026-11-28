@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(62, Catalog.CoatCount);
+            Assert.Equal(65, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -761,6 +761,27 @@ namespace HorsePersonalities.Tests
             Assert.Equal(T.HillCrawlRatio, brain.HillCap(p, true, T.HillClimbSpeed));
             Assert.Null(brain.HillCap(p, true, T.HillClimbSpeed, bribed: true));
             Assert.Equal(T.HillCrawlRatio, brain.HillCap(With(Signature.HillCrawler), true, T.HillClimbSpeed, bribed: true)); // not bribable
+        }
+            // ---- Dutch Warmblood coats ----
+
+        [Fact]
+        public void WarmbloodCoatsAllHateSpurSpam()
+        {
+            foreach (string m in new[] { "chocolateroan", "sootybuckskin", "sealbrown" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_dutchwarmblood_" + m, out Coat c));
+                Assert.Contains(Signature.SpurSnob, c.Signatures);
+            }
+            Assert.False(Catalog.TryGetCoat("a_c_horse_buell_warvets", out _)); // Buell stays vanilla (v1 rule) until decided
+        }
+
+        [Fact]
+        public void SpurSnobSnortsAtSpurSpam()
+        {
+            var s = Riding(speed: 5); s.RecentSpurPresses = (int)T.SpurSpamPresses;
+            Assert.Equal(BehaviorAction.Snub, S(With(Signature.SpurSnob), s).Action);
+            s.RecentSpurPresses = (int)T.SpurSpamPresses - 1;
+            Assert.True(S(With(Signature.SpurSnob), s).IsNone);
         }
     }
 }

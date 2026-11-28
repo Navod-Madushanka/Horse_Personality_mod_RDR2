@@ -577,6 +577,11 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Bribable** (Brown Leopard): a treat it loves lifts its Hill crawler for 2 minutes, so it will sprint up a mesa for an oatcake.
   - Reused: Trail snob (baseline: bored on flat roads), Vain, Showboat and Mud tantrum (Leopard), Silent stealth and Wanderlust (Few Spotted), Stoic and Hill crawler (Brown Leopard), Scatterbrain, Apple beggar and Restless (Blanket).
   - Cut: inventing shortcuts through brush (no steering), admiring its reflection on overlooks (no overlook or reflection check), the swamp in particular (Mud tantrum covers mud anywhere), bumping into camp members (no movement control; Apple beggar asks), the bow in particular (Restless covers standing still).
+- **Dutch Warmblood coats** (Navod, Nov 28, 2026): *The Polished Professional* (Chocolate Roan), *The Gritty Prospector* (Sooty Buckskin) and *The Quiet Professional* (Seal Brown); the baseline's Spur snob is on all three, which are the only regular Warmblood coats. One new signature, code only:
+  - **Spur snob** (all): spam the sprint button (4 presses within 3 s) and it gives an offended snort.
+  - Reused: Mud tantrum, Snob, Hill crawler and Bribable (Chocolate Roan; it loves sugar cubes), Wanderlust, Selective hearing and Snack magnet (Sooty Buckskin), Moody refusal (Seal Brown: stops dead now and then, a stand-in for waiting at crossroads).
+  - Buell (Hamish Sinclair's Cremello Gold, `a_c_horse_buell_warvets`) is a story model and stays vanilla under the v1 rule; Navod's design for him (*The Noble Veteran*) waits on his decision.
+  - Cut: freight-train acceleration and refusing sharp turns (no control over handling), following main roads and stopping at crossroads (no road or junction check; Moody refusal stands in), confusion at fences (no jumping control), raiding oat sacks (no hook into camp items; Wanderlust wanders off).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

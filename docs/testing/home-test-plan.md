@@ -441,6 +441,17 @@ The Leopard is sold at Van Horn (and comes from No, No and Thrice, No); the Few 
 | 12.86 | **Brown Leopard**: spur it up a steep slope; feed it an oatcake; spur it up again | Horse, log | Walks the first climb (*Hill crawler*); sprints the second (*Bribable*; needs the oatcake code) |  |  |
 | 12.87 | **Blanket or Leopard Blanket**: gallop a while; stand next to it on foot; sit still on it | Horse, log | An odd skid at a gallop (*Scatterbrain*), asks you for an apple (*Apple beggar*), fidgets (*Restless*) |  |  |
 
+### Stage 12, Dutch Warmblood coats
+
+The Chocolate Roan is sold at Valentine; the Sooty Buckskin at Scarlett Meadows (and comes from gold panners); the Seal Brown pulls wagons and carries lawmen.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.88 | **Any Warmblood**: tap sprint 4 or 5 times quickly | Horse, log | An offended snort (*Spur snob*) |  |  |
+| 12.89 | **Chocolate Roan**: ride through mud; stand it near a Mustang; spur it uphill, feed it a sugar cube, spur again | Horse, log | Agitated when dirty (*Mud tantrum*), glares at the Mustang (*Snob*), walks the hill until fed (*Hill crawler*, *Bribable*; needs the sugar cube code) |  |  |
+| 12.90 | **Sooty Buckskin**: leave it untied and walk away; whistle; walk it past grass | Horse, log | Strolls off (*Wanderlust*), sometimes ignores the whistle (*Selective hearing*), stops to graze (*Snack magnet*) |  |  |
+| 12.91 | **Seal Brown**: ride at a walk through town a few minutes | Horse, log | Stops dead now and then (*Moody refusal*), calm with the crowds |  |  |
+
 ### Stage 12, story dogs
 
 | # | Do this | Look at | Pass if | Result | Notes |

@@ -78,6 +78,8 @@ namespace HorsePersonalities.Core.Breeds
         // Appaloosa coats (Nov 28, 2026)
         CrowdShy,
         Bribable,
+        // Dutch Warmblood coats (Nov 28, 2026)
+        SpurSnob,
     }
 
     /// <summary>

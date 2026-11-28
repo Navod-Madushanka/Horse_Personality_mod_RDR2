@@ -156,3 +156,5 @@ Crowd shy range,3,Crowd shy: someone within this range (m) of it while you're of
 Crowd shy rate,2,Crowd shy: side-steps per minute while someone is that close.
 Crowd shy stranger range,10,Crowd shy: with a stranger within this range (m) it won't take a treat.
 Bribe seconds,120,Bribable: seconds a loved treat lifts its Hill crawler.
+Spur spam presses,4,Spur snob: this many sprint presses...
+Spur spam seconds,3,...within this many seconds is spamming the spur: an offended snort.

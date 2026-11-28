@@ -221,6 +221,18 @@ Cut: fog, wooden bridges and standing in a stream (no check for them), nudging (
 
 New: **Crowd shy** (off it, someone within 3 m: side-steps away, 2/min; won't take a treat with a stranger within 10 m) and **Bribable** (a loved treat lifts Hill crawler for 2 minutes). Cut: shortcuts (no steering), admiring its reflection (no check), bumping into people (no movement control), the bow in particular (Restless covers standing still).
 
+## Dutch Warmblood coats (added Nov 28)
+
+All three regular Warmblood coats have a design, so the baseline's Spur snob is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Chocolate Roan | The Polished Professional | +1 / -2 / 0 / 0 | Head-tosser | Mud tantrum, Snob, Hill crawler, Bribable, Spur snob; loves sugar cubes |
+| Sooty Buckskin | The Gritty Prospector | +1 / -1 / 0 / +1 | Nosy | Wanderlust, Selective hearing, Snack magnet, Spur snob |
+| Seal Brown | The Quiet Professional | +2 / -2 / -1 / 0 | Shadow | Moody refusal, Spur snob |
+
+New: **Spur snob** (4 sprint presses within 3 s: an offended snort). Buell (`a_c_horse_buell_warvets`) is a story model: vanilla under the v1 rule until Navod decides. Cut: freight-train acceleration and sharp turns (handling), roads and crossroads (no check; Moody refusal stands in), fences (no jumping), oat sacks (no hook into camp items).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

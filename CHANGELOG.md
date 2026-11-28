@@ -49,6 +49,7 @@
 - **American Paint coats** (Navod, Nov 28): the Mystic Wanderer (Splashed White), the Trailblazer (Overo), the Ranch Hand (Tobiano), the Desert Scout (Grey Overo). New signatures Sixth sense, Night stare, Curious, Country bumpkin, Deadpan (6 new Behavior settings); DevTools trigger 62 (stare at a spot).
 - The Splashed White American Paint is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable.
 - **Appaloosa coats** (Navod, Nov 28): the Clever Backtalker baseline (Black Snowflake), the Spotted Diva (Leopard), the Ghostly Tracker (Few Spotted), the Trail Boss (Brown Leopard), the Wild Adventurer (Blanket and Leopard Blanket). New signatures Crowd shy and Bribable (4 new Behavior settings).
+- **Dutch Warmblood coats** (Navod, Nov 28): the Polished Professional (Chocolate Roan), the Gritty Prospector (Sooty Buckskin), the Quiet Professional (Seal Brown). New signature Spur snob (2 new Behavior settings). Buell waits on a decision (story model).
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
