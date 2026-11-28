@@ -452,6 +452,16 @@ The Chocolate Roan is sold at Valentine; the Sooty Buckskin at Scarlett Meadows 
 | 12.90 | **Sooty Buckskin**: leave it untied and walk away; whistle; walk it past grass | Horse, log | Strolls off (*Wanderlust*), sometimes ignores the whistle (*Selective hearing*), stops to graze (*Snack magnet*) |  |  |
 | 12.91 | **Seal Brown**: ride at a walk through town a few minutes | Horse, log | Stops dead now and then (*Moody refusal*), calm with the crowds |  |  |
 
+### Stage 12, Belgian Draft coats
+
+Both coats pull wagons and carts (and turn up at stables that sell drafts).
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.94 | **Either Belgian**: spur it down a quiet road; then during a fight | Horse, log | Holds a trot on the quiet road (*Unhurried*); gallops in the fight |  |  |
+| 12.95 | **Blond Chestnut**: stand next to it on foot; trot a few minutes | Horse, log | Asks you for an apple (*Apple beggar*); trips now and then (*Clumsy*) |  |  |
+| 12.96 | **Mealy Chestnut**: ride without spurring; feed it a haycube and ride again; walk it up a hill; get off 30 m away and whistle | Horse, log | Shuffles at a walk until fed (*Lazy pace*, *Bribable*; needs the haycube code), sighs on the hill (*Hill sigh*), sometimes ignores the whistle (*Selective hearing*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

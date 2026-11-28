@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(67, Catalog.CoatCount);
+            Assert.Equal(69, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -798,6 +798,27 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Snub, S(With(Signature.SpurSnob), s).Action);
             s.RecentSpurPresses = (int)T.SpurSpamPresses - 1;
             Assert.True(S(With(Signature.SpurSnob), s).IsNone);
+        }
+            // ---- Belgian Draft coats ----
+
+        [Fact]
+        public void BelgianCoatsAreUnhurried()
+        {
+            foreach (string m in new[] { "blondchestnut", "mealychestnut" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_belgian_" + m, out Coat c));
+                Assert.Contains(Signature.Unhurried, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void BribableLiftsLazyPaceToo()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            var p = With(Signature.LazyPace, Signature.Bribable);
+            Assert.Equal(T.LazyWalkRatio, brain.LazyCap(p, true, false));
+            Assert.Null(brain.LazyCap(p, true, false, bribed: true));
+            Assert.Equal(T.LazyWalkRatio, brain.LazyCap(With(Signature.LazyPace), true, false, bribed: true)); // not bribable
         }
     }
 }

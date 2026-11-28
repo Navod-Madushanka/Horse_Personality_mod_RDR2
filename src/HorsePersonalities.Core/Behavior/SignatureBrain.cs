@@ -104,8 +104,9 @@ namespace HorsePersonalities.Core.Behavior
         }
 
         /// <summary>Lazy pace: the move blend ratio to cap it at while you aren't spurring, or null for no cap.</summary>
-        public double? LazyCap(Personality p, bool mounted, bool spurring) =>
-            p != null && p.Has(Signature.LazyPace) && mounted && !spurring ? _t.LazyWalkRatio : (double?)null;
+        /// <param name="bribed">Bribable: a loved treat in the last Bribe seconds lifts the cap (Belgian Mealy Chestnut, Nov 28).</param>
+        public double? LazyCap(Personality p, bool mounted, bool spurring, bool bribed = false) =>
+            p != null && p.Has(Signature.LazyPace) && mounted && !spurring && !(bribed && p.Has(Signature.Bribable)) ? _t.LazyWalkRatio : (double?)null;
 
         public Decision Decide(int horse, Personality p, SignatureSituation s, double dt, CooldownBook cooldowns, double now)
         {

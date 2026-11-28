@@ -2445,6 +2445,50 @@
         "affectionate": 2,
         "fussy": 0
       }
+    },
+    {
+      "model": "a_c_horse_belgian_blondchestnut",
+      "breed": "Belgian Draft",
+      "archetype": "The Gentle Giant",
+      "vibe": "The Cheerful Himbo (pulls wagons and carts). Towering, sunny, pure uncomplicated affection: big enough to crush a stagecoach with the temperament of a sleepy puppy, leans its huge forehead on your chest for scratches, hauls massive elk carcasses, never panics in a storm. Oblivious to its own size, zero spatial awareness: steps on your boots while begging for apples, knocks over hitching posts by leaning on them, gets stuck between trees a normal horse would squeeze through. Like every Belgian Draft: unmatched brute strength, unshakable calm, zero sense of urgency; explosions, barking dogs and howling wolves barely register, it bulldozes through thick mud and shallow rivers like a locomotive; painfully slow, handles like a cargo ship, treats galloping as a mild suggestion, can't jump, needs half a mile of runway to stop.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["Unhurried", "AppleBeggar", "Clumsy"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_belgian_mealychestnut",
+      "breed": "Belgian Draft",
+      "archetype": "The Union Foreman",
+      "vibe": "The Grumpy Blue-Collar Veteran (pulls wagons and carts). Rugged, weathered, built for endurance: years hauling freight over rocky mountain passes, rough trails and heavy loads are a routine Tuesday, steady, reliable, practically immune to fatigue. Strictly clock-in, clock-out: unsaddled or stopped at camp it ignores your whistle, won't go faster than a glacial shuffle unless there's food involved, and sighs theatrically at every hill. Like every Belgian Draft: unmatched brute strength, unshakable calm, zero sense of urgency; explosions, barking dogs and howling wolves barely register, it bulldozes through thick mud and shallow rivers like a locomotive; painfully slow, handles like a cargo ship, treats galloping as a mild suggestion, can't jump, needs half a mile of runway to stop.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Wanderer"],
+      "signatures": ["Unhurried", "SelectiveHearing", "LazyPace", "Bribable", "HillSigh"],
+      "lovesTreats": ["Haycube"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
+      }
     }
   ]
 }

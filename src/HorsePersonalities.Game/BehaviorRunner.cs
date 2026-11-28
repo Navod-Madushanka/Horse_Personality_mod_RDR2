@@ -402,7 +402,8 @@ namespace HorsePersonalities.Game
             _wasAiming = aiming;
             _aimSeconds = aiming ? _aimSeconds + dt : 0;
             bool spurring = mounted && _game.IsSprintPressed;
-            double? cap = _signatures.LazyCap(p, mounted, spurring);
+            bool bribedNow = _bribedUntil.TryGetValue(horse, out double bribedTill) && nowSeconds < bribedTill;
+            double? cap = _signatures.LazyCap(p, mounted, spurring, bribedNow);
             double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt)
                 ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
             double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) || p.Has(Signature.CliffNerves) ? _game.GetVelocity(horse).Z : 0;

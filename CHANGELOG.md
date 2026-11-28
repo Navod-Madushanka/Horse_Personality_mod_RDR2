@@ -51,6 +51,7 @@
 - **Appaloosa coats** (Navod, Nov 28): the Clever Backtalker baseline (Black Snowflake), the Spotted Diva (Leopard), the Ghostly Tracker (Few Spotted), the Trail Boss (Brown Leopard), the Wild Adventurer (Blanket and Leopard Blanket). New signatures Crowd shy and Bribable (4 new Behavior settings).
 - **Dutch Warmblood coats** (Navod, Nov 28): the Polished Professional (Chocolate Roan), the Gritty Prospector (Sooty Buckskin), the Quiet Professional (Seal Brown). New signature Spur snob (2 new Behavior settings). Buell waits on a decision (story model).
 - **Buell and Rachel get personalities** (Navod, Nov 28): exceptions to the story-model rule. Buell (Hamish Sinclair's Cremello Gold) counts as a Dutch Warmblood with his own coat, *The Noble Veteran* (new signature Cliff nerves); Rachel (John's epilogue horse, model to confirm) as a Thoroughbred with the Dapple Grey's *Loyal Veteran*.
+- **Belgian Draft coats** (Navod, Nov 28): the Gentle Giant (Blond Chestnut), the Union Foreman (Mealy Chestnut). No new signatures; Bribable now lifts Lazy pace as well as Hill crawler.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)
