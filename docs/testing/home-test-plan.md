@@ -383,6 +383,17 @@ The Brindle is sold at Strawberry; the Blood Bay and Dapple Grey run wild in the
 | 12.62 | **Blood Bay**: gallop and stop hard, a few times | Horse, log | Sideways skids (*No brakes*) |  |  |
 | 12.63 | **Dapple Grey**: spur it up a steep hill; ride through a river; stand next to it on foot | Horse, log | Walks the hill even when spurred (*Hill crawler*), sighs in the water (*Water sigh*), asks you for an apple (*Apple beggar*) |  |  |
 
+### Stage 12, Andalusian coats
+
+The Perlino stands wild by the waterfall at Brandywine Drop (Roanoke Ridge); the Dark Bay is sold at Strawberry, the Rose Gray at Van Horn.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.64 | **Any Andalusian**: ride into a gunfight | Horse, log | It never spooks while the fight is on (*War horse*) |  |  |
+| 12.65 | **Perlino**: get off in town with people passing close; then, as your saddle horse, ride another horse next to it | Horse, log | Stomps at people who come close (*Guard dog*); calls and stamps at the other horse (*Jealous*) |  |  |
+| 12.66 | **Dark Bay**: spur it up a steep trail | Horse, log | Drops to a walk with a snort (*Hill crawler*, *Hill sigh*) |  |  |
+| 12.67 | **Rose Gray**: brush it a few times; stand it near another horse | Horse, log | Stamps and snorts at every brushing (*Hates brushing*); squares up to the other horse (*Short king*) |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.
