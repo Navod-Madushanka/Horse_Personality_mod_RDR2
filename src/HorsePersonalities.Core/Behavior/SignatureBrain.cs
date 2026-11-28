@@ -260,6 +260,10 @@ namespace HorsePersonalities.Core.Behavior
         public static bool WatchedFar(Personality p) => p != null && (p.Has(Signature.EscapeArtist) || p.Has(Signature.Wanderlust) || p.Has(Signature.GuardDog)
             || p.Has(Signature.SeparationAnxiety));
 
+        /// <summary>Strict: the cap while you spur during its sulk after sloppy riding, or null.</summary>
+        public double? StrictCap(Personality p, bool mounted, bool spurring, bool sulking) =>
+            p != null && p.Has(Signature.Strict) && mounted && spurring && sulking ? _t.StrictRatio : (double?)null;
+
         /// <summary>Hill crawler: the cap on a steep climb, spurred or not, or null.</summary>
         public double? HillCap(Personality p, bool mounted, double climbSpeed) =>
             p != null && p.Has(Signature.HillCrawler) && mounted && climbSpeed >= _t.HillClimbSpeed ? _t.HillCrawlRatio : (double?)null;
@@ -271,9 +275,11 @@ namespace HorsePersonalities.Core.Behavior
         /// <summary>Grudge: it was hurt while you rode it. None when it doesn't hold grudges.</summary>
         public Decision OnHurt(int horse, Personality p, CooldownBook cd, double now)
         {
-            if (p == null || !p.Has(Signature.Grudge)) return Decision.None;
+            if (p == null || !(p.Has(Signature.Grudge) || p.Has(Signature.Strict))) return Decision.None;
             cd.Used(horse, BehaviorGroup.Signature, now);
-            return new Decision { Action = BehaviorAction.Agitate, Group = BehaviorGroup.Signature, Cause = $"Grudge: hurt while you rode it; sulks for {_t.GrudgeSeconds:0} s" };
+            string why = p.Has(Signature.Grudge) ? $"Grudge: hurt while you rode it; sulks for {_t.GrudgeSeconds:0} s" : "";
+            if (p.Has(Signature.Strict)) why += (why.Length > 0 ? "; " : "") + $"Strict: sloppy riding, no sprinting for {_t.StrictSeconds:0} s";
+            return new Decision { Action = p.Has(Signature.Strict) ? BehaviorAction.Snub : BehaviorAction.Agitate, Group = BehaviorGroup.Signature, Cause = why };
         }
 
         /// <summary>Saddle hater, as you get on. None when it doesn't happen.</summary>

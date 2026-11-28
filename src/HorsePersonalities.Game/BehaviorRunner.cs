@@ -69,6 +69,7 @@ namespace HorsePersonalities.Game
         private double _gallopSeconds, _lastGallopSeconds;
         private readonly Dictionary<int, double> _grudgeUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _soothedAt = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _strictUntil = new Dictionary<int, double>();
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -156,10 +157,12 @@ namespace HorsePersonalities.Game
         private void OnHurt(int horse)
         {
             if (_lastHold != null || !TryRecord(horse, out HorseRecord record, out _)) return;
-            bool already = _grudgeUntil.TryGetValue(horse, out double until) && _now < until;
+            bool already = (_grudgeUntil.TryGetValue(horse, out double until) && _now < until)
+                || (_strictUntil.TryGetValue(horse, out double strictUntil) && _now < strictUntil);
             Decision d = _signatures.OnHurt(horse, record.Personality, _cooldowns, _now);
             if (d.IsNone) return;
-            _grudgeUntil[horse] = _now + _t.GrudgeSeconds;
+            if (record.Personality.Has(Signature.Grudge)) _grudgeUntil[horse] = _now + _t.GrudgeSeconds;
+            if (record.Personality.Has(Signature.Strict)) _strictUntil[horse] = _now + _t.StrictSeconds;
             if (already) return; // one sulk at a time: a second knock just makes it longer
             _log.Info(Log, $"{record.Id}: {d.Action} ({d.Cause})");
             Play(horse, d.Action, 0);
@@ -377,12 +380,13 @@ namespace HorsePersonalities.Game
             _aimSeconds = aiming ? _aimSeconds + dt : 0;
             bool spurring = mounted && _game.IsSprintPressed;
             double? cap = _signatures.LazyCap(p, mounted, spurring);
-            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt);
+            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt)
+                ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
             double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) ? _game.GetVelocity(horse).Z : 0;
             double? crawl = _signatures.HillCap(p, mounted, climb);
             _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
             _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
-            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried)) _lazyHorse = horse;
+            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried) || p.Has(Signature.Strict)) _lazyHorse = horse;
             if (hurry.HasValue && !_unhurriedSnorted)
             {
                 _unhurriedSnorted = true;

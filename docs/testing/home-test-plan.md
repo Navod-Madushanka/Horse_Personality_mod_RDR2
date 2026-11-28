@@ -405,6 +405,17 @@ The Strawberry Roan is sold at Van Horn, the Bay Roan at Scarlett Meadows; the I
 | 12.70 | **Bay Roan**: spur it down a quiet road; then in a fight | Horse, log | Trots on the quiet road (*Unhurried*), full gallop in the fight |  |  |
 | 12.71 | **Iron Grey Roan**: spur it up a steep trail; then into a river; then pat it | Horse, log | Refuses on the climb and in the water (*Balker*); nothing back for the pat (*Stoic*) |  |  |
 
+### Stage 12, Hungarian Halfbred coats
+
+The Dapple Dark Grey is sold at Valentine (or rescued from Wrobel's barn); the Flaxen Chestnut runs wild in the Heartlands and Big Valley; the Piebald Tobiano rides with bounty hunters.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.72 | **Any Hungarian Halfbred** except the Flaxen Chestnut: walk it a couple of minutes; then ride into a gunfight | Horse, log | Insulted snorts at a walk (*Trail snob*); never spooks in the fight (*War horse*) |  |  |
+| 12.73 | **Piebald Tobiano**: ride through a busy town; stand it next to a Morgan | Horse, log | Snorts and glares at people (*Town disdain*), glares at the Morgan (*Snob*) |  |  |
+| 12.74 | **Dapple Dark Grey**: ride it into a tree, then spur it straight away | Horse, log | A judgmental snort, then only a trot for about 30 s (*Strict*) |  |  |
+| 12.75 | **Flaxen Chestnut**: stop and get off to pick herbs; gallop and stop hard; ride beside another rider | Horse, log | Stomps while you wait (*Restless*), skids on the hard stop (*No brakes*), calls at the other rider (*Racer*) |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

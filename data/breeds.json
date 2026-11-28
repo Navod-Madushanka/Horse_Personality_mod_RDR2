@@ -209,7 +209,9 @@
     "beggarRange": 2.5,
     "beggarSeconds": 10,
     "beggarRate": 1,
-    "balkRate": 2
+    "balkRate": 2,
+    "strictSeconds": 30,
+    "strictRatio": 2
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "breeds": [
@@ -1987,6 +1989,94 @@
       "ignoresTreats": [],
       "demeanorTraits": {
         "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_hungarianhalfbred_liverchestnut",
+      "breed": "Hungarian Halfbred",
+      "archetype": "The Military Pedigree (Hungarian Halfbred baseline)",
+      "vibe": "Ironclad composure and commanding presence: head and shoulders above most riders, dead steady while you aim a sniper rifle from the saddle, plows straight through enemy roadblocks. Heavy-footed, slow off the line, painfully stubborn when not in combat: takes forever to reach top speed, turns like a loaded stagecoach, treats routine trail rides as beneath its military pedigree.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["WarHorse", "TrailSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_hungarianhalfbred_piebaldtobiano",
+      "breed": "Hungarian Halfbred",
+      "archetype": "The Outlaw Mercenary",
+      "vibe": "The Battle-Scarred Renegade (with bounty hunters, and in Guarma). Striking black-and-white war paint and nerves of steel: served with ruthless bounty hunters, survived Guarma, thrives in lawless shootouts, charges into gunfire, stands its ground against charging grizzlies. Anti-social, cynical, fiercely territorial: ears back at every friendly NPC in town, tries to kick passing dogs, refuses to be hitched next to smaller, weaker breeds. Like every Hungarian Halfbred: ironclad composure and commanding presence, head and shoulders above most riders, dead steady while you aim a sniper rifle from the saddle, plows through roadblocks; heavy-footed, slow off the line, stubborn out of combat, turns like a loaded stagecoach, treats routine trail rides as beneath its military pedigree.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 2,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["WarHorse", "WolfBrawler", "TownDisdain", "Snob", "TrailSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 2,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_hungarianhalfbred_darkdapplegrey",
+      "breed": "Hungarian Halfbred",
+      "archetype": "The Cavalry Officer",
+      "vibe": "The Disciplined Veteran (Valentine; Wrobel's barn in Money Lending and Other Sins). Dignified, dependable, built like a fortress: crisp military poise, never panics in a thunderstorm, hauls heavy pelts over rough ground, fiercely loyal. Strict and easily annoyed by sloppy riding: steer it into a tree or jump it down a steep ledge and it lets out a heavy, judgmental snort and refuses to sprint for thirty seconds. Like every Hungarian Halfbred: ironclad composure and commanding presence, head and shoulders above most riders, dead steady while you aim a sniper rifle from the saddle, plows through roadblocks; heavy-footed, slow off the line, stubborn out of combat, turns like a loaded stagecoach, treats routine trail rides as beneath its military pedigree.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["WarHorse", "Strict", "TrailSnob"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 1
+      }
+    },
+    {
+      "model": "a_c_horse_hungarianhalfbred_flaxenchestnut",
+      "breed": "Hungarian Halfbred",
+      "archetype": "The Fiery Sergeant",
+      "vibe": "The Untamed Brawler (wild in the Heartlands and Big Valley). All the fearless grit of a warhorse with a bold, adventurous streak: once broken, the golden-maned giant loves charging across open plains, barrelling through shallow rivers, intimidating rival riders just by towering over them. Hot-tempered and impatient: stomps when you stop to pick herbs, fights the reins when you slow down on a flat road, gets unreasonably competitive riding beside other gang members. Like every Hungarian Halfbred: ironclad composure and commanding presence, head and shoulders above most riders, dead steady while you aim a sniper rifle from the saddle, plows through roadblocks; heavy-footed, slow off the line, stubborn out of combat, turns like a loaded stagecoach, treats routine trail rides as beneath its military pedigree.",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": 2,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["HeadTosser"],
+      "signatures": ["WarHorse", "Restless", "NoBrakes", "Racer"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 2,
         "alert": 1,
         "affectionate": 0,
         "fussy": 0

@@ -67,6 +67,8 @@ namespace HorsePersonalities.Core.Breeds
         HatesBrushing,
         // Ardennes coats (Nov 28, 2026)
         Balker,
+        // Hungarian Halfbred coats (Nov 28, 2026)
+        Strict,
     }
 
     /// <summary>

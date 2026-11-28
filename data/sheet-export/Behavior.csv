@@ -145,3 +145,5 @@ Beggar range,2.5,Apple beggar: you on foot within this range (m) of it.
 Beggar seconds,10,Apple beggar: seconds you stand there before it starts asking.
 Beggar rate,1,Apple beggar: asks per minute after that.
 Balk rate,2,"Balker: refusals per minute on a steep climb (Hill climb speed) or in water, however hard you spur."
+Strict seconds,30,Strict: seconds it refuses to sprint after you ride it into something.
+Strict ratio,2,Strict: the pace cap when you spur during that time (move blend ratio: 2 trot).

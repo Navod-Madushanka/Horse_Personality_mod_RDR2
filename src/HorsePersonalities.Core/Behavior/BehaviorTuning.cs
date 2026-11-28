@@ -164,6 +164,8 @@ namespace HorsePersonalities.Core.Behavior
         public double BeggarSeconds => _v["beggarSeconds"];
         public double BeggarRate => _v["beggarRate"];
         public double BalkRate => _v["balkRate"];
+        public double StrictSeconds => _v["strictSeconds"];
+        public double StrictRatio => _v["strictRatio"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -313,6 +315,8 @@ namespace HorsePersonalities.Core.Behavior
             ("beggarSeconds", "Beggar seconds", 1.0, 600.0, false),
             ("beggarRate", "Beggar rate", 0.0, 20.0, false),
             ("balkRate", "Balk rate", 0.0, 20.0, false),
+            ("strictSeconds", "Strict seconds", 1.0, 600.0, false),
+            ("strictRatio", "Strict ratio", 0.1, 3.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

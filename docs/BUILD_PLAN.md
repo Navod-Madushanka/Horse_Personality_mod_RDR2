@@ -554,6 +554,10 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: War horse (all), Unhurried (Bay Roan, and the baseline's "sprinting is a punishment"), Wolf brawler, Short king and Restless (Strawberry Roan), Stoic (Iron Grey).
   - Prized (Navod, Nov 28): Iron Grey Roan (Special).
   - Cut: plowing through small trees and barrelling over riders, turning like a battleship, the half-mile stopping distance and running off cliffs (no control over movement), shoving you with its head (no nudge animation; Restless stands in), bullying horses off the hay (Short king squares up instead), stepping on wagons, blocking doorways and crushing fences (no control).
+- **Hungarian Halfbred coats** (Navod, Nov 28, 2026): a baseline *Military Pedigree* for the Liver Chestnut, *The Outlaw Mercenary* (Piebald Tobiano), *The Cavalry Officer* (Dapple Dark Grey) and *The Fiery Sergeant* (Flaxen Chestnut). One new signature:
+  - **Strict** (Dapple Dark Grey): hurt by sloppy riding (into a tree, down a ledge: the damage event, trigger 60): a judgmental snort, then no sprinting for 30 s (capped at a trot when you spur).
+  - Reused: War horse and Trail snob (baseline: composed in a fight, routine rides beneath it), Wolf brawler, Town disdain and Snob (Piebald), Restless, No brakes and Racer (Flaxen Chestnut).
+  - Cut: plowing through roadblocks, slow off the line and turning like a stagecoach (no movement control), kicking passing dogs (dogs aren't watched; its Kicker quirk kicks people behind it with no witnesses), refusing to be hitched by smaller breeds (no hitching control; Snob glares at them).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

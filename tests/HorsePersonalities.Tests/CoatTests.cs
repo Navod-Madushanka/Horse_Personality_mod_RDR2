@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(48, Catalog.CoatCount);
+            Assert.Equal(52, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -660,6 +660,27 @@ namespace HorsePersonalities.Tests
             var river = Riding(speed: 2); river.InWater = true;
             Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.Balker), river).Action);
             Assert.True(S(With(Signature.Balker), Riding(speed: 2)).IsNone);
+        }
+            // ---- Hungarian Halfbred coats ----
+
+        [Fact]
+        public void HungarianHalfbredCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_hungarianhalfbred_liverchestnut", out Coat baseline));
+            Assert.Equal(new[] { Signature.WarHorse, Signature.TrailSnob }, baseline.Signatures);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_hungarianhalfbred_darkdapplegrey", out Coat officer));
+            Assert.Contains(Signature.Strict, officer.Signatures);
+        }
+
+        [Fact]
+        public void StrictSnortsAndRefusesToSprintAfterSloppyRiding()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Snub, brain.OnHurt(1, With(Signature.Strict), new CooldownBook(T, 0), 0).Action);
+            Assert.Equal(T.StrictRatio, brain.StrictCap(With(Signature.Strict), true, true, true));
+            Assert.Null(brain.StrictCap(With(Signature.Strict), true, true, false)); // the 30 s are over
+            Assert.Null(brain.StrictCap(With(Signature.Strict), true, false, true)); // not spurring
+            Assert.Null(brain.StrictCap(With(), true, true, true));
         }
     }
 }

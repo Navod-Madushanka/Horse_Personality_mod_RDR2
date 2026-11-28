@@ -177,6 +177,17 @@ All three Ardennes coats have a design, so the baseline's War horse is on each o
 
 New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, however hard you spur; water needs trigger 61). Cut: plowing through trees and riders, battleship turning, the long stop and running off cliffs (no movement control), head shoves (no nudge animation), bullying horses off the hay (Short king squares up), wagons, doorways and fences.
 
+## Hungarian Halfbred coats (added Nov 28)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Liver Chestnut | The Military Pedigree (baseline) | +2 / -2 / +1 / 0 | Nosy | War horse, Trail snob |
+| Piebald Tobiano | The Outlaw Mercenary | +2 / -2 / +2 / -1 | Kicker | War horse, Wolf brawler, Town disdain, Snob, Trail snob |
+| Dapple Dark Grey | The Cavalry Officer | +2 / -2 / +1 / +1 | Nosy | War horse, Strict, Trail snob |
+| Flaxen Chestnut | The Fiery Sergeant | +2 / -1 / +2 / 0 | Head-tosser | War horse, Restless, No brakes, Racer |
+
+New: **Strict** (ridden into a tree or down a ledge, seen through the damage event (trigger 60): a judgmental snort, then capped at a trot when you spur for 30 s). Cut: roadblocks, slow starts and stagecoach turning (no movement control), kicking dogs (dogs aren't watched), hitching next to smaller breeds (no hitching control; Snob glares).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).
