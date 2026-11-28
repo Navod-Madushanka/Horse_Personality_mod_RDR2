@@ -28,6 +28,7 @@
 - **Ardennes coats** (Navod, Nov 28): the Heavyweight Brawler (Strawberry Roan), the Gentle Giant (Bay Roan), the Silent Juggernaut (Iron Grey Roan). New signature Balker (1 new Behavior setting).
 - The Iron Grey Roan Ardennes (pre-order bonus) is on the Prized tab as Special (Navod): always good, never below its design.
 - **Hungarian Halfbred coats** (Navod, Nov 28): the Military Pedigree baseline (Liver Chestnut), the Outlaw Mercenary (Piebald Tobiano), the Cavalry Officer (Dapple Dark Grey), the Fiery Sergeant (Flaxen Chestnut). New signature Strict (2 new Behavior settings).
+- The Piebald Tobiano Hungarian Halfbred is on the Prized tab as Rare (Navod): always good, never below its design, never Unbreakable.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

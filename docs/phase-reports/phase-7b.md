@@ -182,7 +182,7 @@ New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, howe
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
 | Liver Chestnut | The Military Pedigree (baseline) | +2 / -2 / +1 / 0 | Nosy | War horse, Trail snob |
-| Piebald Tobiano | The Outlaw Mercenary | +2 / -2 / +2 / -1 | Kicker | War horse, Wolf brawler, Town disdain, Snob, Trail snob |
+| Piebald Tobiano (prized: Rare) | The Outlaw Mercenary | +2 / -2 / +2 / -1 | Kicker | War horse, Wolf brawler, Town disdain, Snob, Trail snob |
 | Dapple Dark Grey | The Cavalry Officer | +2 / -2 / +1 / +1 | Nosy | War horse, Strict, Trail snob |
 | Flaxen Chestnut | The Fiery Sergeant | +2 / -1 / +2 / 0 | Head-tosser | War horse, Restless, No brakes, Racer |
 
@@ -197,4 +197,4 @@ New: **Strict** (ridden into a tree or down a ledge, seen through the damage eve
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred and the Perlino Andalusian are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred, the Perlino Andalusian and the Piebald Tobiano Hungarian Halfbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).
