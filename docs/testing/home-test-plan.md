@@ -452,6 +452,13 @@ The Chocolate Roan is sold at Valentine; the Sooty Buckskin at Scarlett Meadows 
 | 12.90 | **Sooty Buckskin**: leave it untied and walk away; whistle; walk it past grass | Horse, log | Strolls off (*Wanderlust*), sometimes ignores the whistle (*Selective hearing*), stops to graze (*Snack magnet*) |  |  |
 | 12.91 | **Seal Brown**: ride at a walk through town a few minutes | Horse, log | Stops dead now and then (*Moody refusal*), calm with the crowds |  |  |
 
+### Stage 12, Buell and Rachel
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.92 | **Buell** (after Hamish's missions): gallop him down a steep slope; stop and stand by him on foot; tap sprint quickly | Horse, log | Agitated galloping downhill (*Cliff nerves*), asks for an apple (*Apple beggar*), snorts at the spur spam (*Spur snob*) |  |  |
+| 12.93 | In the epilogue, ride Rachel with the overlay (F9) open | Overlay | The model line reads `a_c_horse_john_endlesssummer` and she shows *Coat: The Loyal Veteran*. If the model is different, copy it into Notes |  |  |
+
 ### Stage 12, story dogs
 
 | # | Do this | Look at | Pass if | Result | Notes |

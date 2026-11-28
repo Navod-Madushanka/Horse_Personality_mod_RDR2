@@ -405,7 +405,7 @@ namespace HorsePersonalities.Game
             double? cap = _signatures.LazyCap(p, mounted, spurring);
             double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt)
                 ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
-            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) ? _game.GetVelocity(horse).Z : 0;
+            double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) || p.Has(Signature.CliffNerves) ? _game.GetVelocity(horse).Z : 0;
             double? crawl = _signatures.HillCap(p, mounted, climb, _bribedUntil.TryGetValue(horse, out double bribe) && nowSeconds < bribe);
             _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
             _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;

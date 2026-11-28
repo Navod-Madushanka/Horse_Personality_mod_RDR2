@@ -80,6 +80,8 @@ namespace HorsePersonalities.Core.Breeds
         Bribable,
         // Dutch Warmblood coats (Nov 28, 2026)
         SpurSnob,
+        // Buell (Nov 28, 2026)
+        CliffNerves,
     }
 
     /// <summary>

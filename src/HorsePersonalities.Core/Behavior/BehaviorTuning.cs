@@ -177,6 +177,7 @@ namespace HorsePersonalities.Core.Behavior
         public double BribeSeconds => _v["bribeSeconds"];
         public double SpurSpamPresses => _v["spurSpamPresses"];
         public double SpurSpamSeconds => _v["spurSpamSeconds"];
+        public double CliffNervesRate => _v["cliffNervesRate"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -339,6 +340,7 @@ namespace HorsePersonalities.Core.Behavior
             ("bribeSeconds", "Bribe seconds", 1.0, 3600.0, false),
             ("spurSpamPresses", "Spur spam presses", 2.0, 50.0, true),
             ("spurSpamSeconds", "Spur spam seconds", 0.5, 30.0, false),
+            ("cliffNervesRate", "Cliff nerves rate", 0.0, 20.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

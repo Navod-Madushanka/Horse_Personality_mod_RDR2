@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(65, Catalog.CoatCount);
+            Assert.Equal(67, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -772,7 +772,23 @@ namespace HorsePersonalities.Tests
                 Assert.True(Catalog.TryGetCoat("a_c_horse_dutchwarmblood_" + m, out Coat c));
                 Assert.Contains(Signature.SpurSnob, c.Signatures);
             }
-            Assert.False(Catalog.TryGetCoat("a_c_horse_buell_warvets", out _)); // Buell stays vanilla (v1 rule) until decided
+            // Buell and Rachel: story models given a personality by exception (Navod, Nov 28).
+            Assert.True(Catalog.TryGetCoat("a_c_horse_buell_warvets", out Coat buell));
+            Assert.Equal("The Noble Veteran", buell.Archetype);
+            Assert.True(Catalog.TryGetBreedByModel(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_horse_buell_warvets"), out Breed dw));
+            Assert.Equal("Dutch Warmblood", dw.Name);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_john_endlesssummer", out Coat rachel));
+            Assert.Equal("The Loyal Veteran", rachel.Archetype);
+            Assert.False(Catalog.TryGetCoat("a_c_horse_gang_john", out _)); // John's chapter horse stays vanilla
+        }
+
+        [Fact]
+        public void CliffNervesOnlyGallopingDownhill()
+        {
+            var down = Riding(speed: T.GallopSpeed + 1); down.ClimbSpeed = -T.DownhillSpeed;
+            Assert.Equal(BehaviorAction.Agitate, S(With(Signature.CliffNerves), down).Action);
+            var walk = Riding(speed: 1.5); walk.ClimbSpeed = -T.DownhillSpeed;
+            Assert.True(S(With(Signature.CliffNerves), walk).IsNone);
         }
 
         [Fact]

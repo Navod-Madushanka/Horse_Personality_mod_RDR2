@@ -85,7 +85,7 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
 ### Who gets a personality
 
 - NPC and wild horses: none. Pure vanilla.
-- Horses with no breed row in the sheet: none, ever, in v1. That covers gang and other story-only models (`a_c_horse_gang_*`, Buell, Eagle Flies' horse, the Murfree Brood horses, the epilogue horses), mules, and the Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster). They stay vanilla even when the player mounts or saddles one.
+- Horses with no breed row in the sheet: none, ever, in v1. That covers gang and other story-only models (`a_c_horse_gang_*`, Buell, Eagle Flies' horse, the Murfree Brood horses, the epilogue horses), mules, and the Online-only breeds (Breton, Criollo, Gypsy Cob, Kladruber, Norfolk Roadster). They stay vanilla even when the player mounts or saddles one. Two exceptions (Navod, Nov 28, 2026): **Buell** (`a_c_horse_buell_warvets`) counts as a Dutch Warmblood and **Rachel**, John's epilogue horse (`a_c_horse_john_endlesssummer`, to confirm in game), as a Thoroughbred, each with a coat of their own.
 - When the player mounts one: a temporary personality, gone on reload.
 - When the player puts their saddle on it: that same personality becomes permanent.
 - Horses the player already owns, including the starting horse, are rolled the first time the mod sees them.
@@ -545,7 +545,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Water sigh** (Dapple Grey): moving through water: a heavy sigh, 1/min (trigger 61).
   - **Apple beggar** (Dapple Grey): you stand on foot next to it for 10 s: it nickers and looks at you for an apple, 1/min. It loves apples.
   - Reused: Clumsy (baseline: trips on rocks with its long legs), Snake drama, Mud tantrum and Vain (Brindle), Snob, Guard dog, Town disdain and Night owl (Reverse Dapple Black), No brakes (Blood Bay), Hill sigh (Dapple Grey).
-  - Rachel, John's Dapple Grey in the epilogue, is a story model (a_c_horse_gang_john) and stays vanilla, as decided for gang horses; a Dapple Grey you tame gets this design.
+  - Rachel, John's Dapple Grey in the epilogue, gets this design too (Navod, Nov 28: an exception to the story-model rule). Her model is thought to be `a_c_horse_john_endlesssummer` (not `a_c_horse_gang_john`, John's horse in the main chapters); home test row 12.93 confirms it from the overlay.
   - Cut: towering over townsfolk (its size is the game's), swamps (no swamp check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping control), nudging you (no nudge animation; Apple beggar asks instead).
   - Prized (Navod, Nov 27): Reverse Dapple Black Thoroughbred (Special).
 - **Andalusian coats** (Navod, Nov 28, 2026): *The Waterfall Spirit* (Perlino), *The Heavy Enforcer* (Dark Bay) and *The Pit-Fighter* (Rose Gray); the baseline's War horse is on all three, which are the only Andalusian coats. One new signature, code only:
@@ -580,7 +580,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Dutch Warmblood coats** (Navod, Nov 28, 2026): *The Polished Professional* (Chocolate Roan), *The Gritty Prospector* (Sooty Buckskin) and *The Quiet Professional* (Seal Brown); the baseline's Spur snob is on all three, which are the only regular Warmblood coats. One new signature, code only:
   - **Spur snob** (all): spam the sprint button (4 presses within 3 s) and it gives an offended snort.
   - Reused: Mud tantrum, Snob, Hill crawler and Bribable (Chocolate Roan; it loves sugar cubes), Wanderlust, Selective hearing and Snack magnet (Sooty Buckskin), Moody refusal (Seal Brown: stops dead now and then, a stand-in for waiting at crossroads).
-  - Buell (Hamish Sinclair's Cremello Gold, `a_c_horse_buell_warvets`) is a story model and stays vanilla under the v1 rule; Navod's design for him (*The Noble Veteran*) waits on his decision.
+  - **Buell** (Hamish Sinclair's Cremello Gold, `a_c_horse_buell_warvets`), *The Noble Veteran*: an exception to the story-model rule (Navod, Nov 28), mapped to Dutch Warmblood. New signature **Cliff nerves**: galloping steeply downhill makes him agitated, 2/min. Reused: Apple beggar (he nudges you for treats when you stop), Spur snob. Cut: the lake in particular (no lake check), refusing to be hitched next to warhorses (no hitching control).
   - Cut: freight-train acceleration and refusing sharp turns (no control over handling), following main roads and stopping at crossroads (no road or junction check; Moody refusal stands in), confusion at fences (no jumping control), raiding oat sacks (no hook into camp items; Wanderlust wanders off).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 

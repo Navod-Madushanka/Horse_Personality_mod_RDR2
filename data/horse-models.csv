@@ -35,7 +35,7 @@ a_c_horse_breton_redroan,,Online-only breed: Breton,no
 a_c_horse_breton_sealbrown,,Online-only breed: Breton,no
 a_c_horse_breton_sorrel,,Online-only breed: Breton,no
 a_c_horse_breton_steelgrey,,Online-only breed: Breton,no
-a_c_horse_buell_warvets,,Special story or Online model,no: vanilla in v1
+a_c_horse_buell_warvets,Dutch Warmblood,Buell (Hamish Sinclair's horse): story model given a personality (Navod Nov 28),
 a_c_horse_criollo_baybrindle,,Online-only breed: Criollo,no
 a_c_horse_criollo_bayframeovero,,Online-only breed: Criollo,no
 a_c_horse_criollo_blueroanovero,,Online-only breed: Criollo,no
@@ -73,7 +73,7 @@ a_c_horse_hungarianhalfbred_darkdapplegrey,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_flaxenchestnut,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_liverchestnut,Hungarian Halfbred,,
 a_c_horse_hungarianhalfbred_piebaldtobiano,Hungarian Halfbred,,
-a_c_horse_john_endlesssummer,,Special story or Online model,no: vanilla in v1
+a_c_horse_john_endlesssummer,Thoroughbred,Rachel (John's epilogue horse): story model given a personality (Navod Nov 28),yes: confirm it is Rachel
 a_c_horse_kentuckysaddle_black,Kentucky Saddler,,
 a_c_horse_kentuckysaddle_buttermilkbuckskin_pc,Kentucky Saddler,,PC-only coat: confirm it is in story mode
 a_c_horse_kentuckysaddle_chestnutpinto,Kentucky Saddler,,

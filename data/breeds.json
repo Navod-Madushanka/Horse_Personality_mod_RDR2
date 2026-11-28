@@ -222,7 +222,8 @@
     "crowdShyStrangerRange": 10,
     "bribeSeconds": 120,
     "spurSpamPresses": 4,
-    "spurSpamSeconds": 3
+    "spurSpamSeconds": 3,
+    "cliffNervesRate": 2
   },
   "skills": {
     "gunfightStep": 0.08,
@@ -388,7 +389,7 @@
     },
     {
       "name": "Dutch Warmblood",
-      "models": ["a_c_horse_dutchwarmblood_chocolateroan", "a_c_horse_dutchwarmblood_sealbrown", "a_c_horse_dutchwarmblood_sootybuckskin"],
+      "models": ["a_c_horse_buell_warvets", "a_c_horse_dutchwarmblood_chocolateroan", "a_c_horse_dutchwarmblood_sealbrown", "a_c_horse_dutchwarmblood_sootybuckskin"],
       "classes": ["Work"],
       "handling": "Standard",
       "leans": {
@@ -588,7 +589,7 @@
     },
     {
       "name": "Thoroughbred",
-      "models": ["a_c_horse_thoroughbred_blackchestnut", "a_c_horse_thoroughbred_bloodbay", "a_c_horse_thoroughbred_brindle", "a_c_horse_thoroughbred_dapplegrey", "a_c_horse_thoroughbred_reversedappleblack"],
+      "models": ["a_c_horse_john_endlesssummer", "a_c_horse_thoroughbred_blackchestnut", "a_c_horse_thoroughbred_bloodbay", "a_c_horse_thoroughbred_brindle", "a_c_horse_thoroughbred_dapplegrey", "a_c_horse_thoroughbred_reversedappleblack"],
       "classes": ["Race"],
       "handling": "Race",
       "leans": {
@@ -651,10 +652,6 @@
     {
       "model": "a_c_horse_breton_steelgrey",
       "note": "Online-only breed: Breton"
-    },
-    {
-      "model": "a_c_horse_buell_warvets",
-      "note": "Special story or Online model"
     },
     {
       "model": "a_c_horse_criollo_baybrindle",
@@ -775,10 +772,6 @@
     {
       "model": "a_c_horse_gypsycob_whiteblagdon",
       "note": "Online-only breed: Gypsy Cob"
-    },
-    {
-      "model": "a_c_horse_john_endlesssummer",
-      "note": "Special story or Online model"
     },
     {
       "model": "a_c_horse_kladruber_black",
@@ -2406,6 +2399,50 @@
         "impatient": 0,
         "alert": 0,
         "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_buell_warvets",
+      "breed": "Dutch Warmblood",
+      "archetype": "The Noble Veteran",
+      "vibe": "The Fiercely Loyal Best Friend (Hamish Sinclair's Cremello Gold, by O'Creagh's Run). A shimmering golden coat and piercing blue eyes, the ultimate ride-or-die partner: years with a one-legged veteran gave him a gentle, soulful wisdom; fearless against grizzlies, calm in shootouts, an unbreakable bond with the rider trusted with him. Deeply sentimental and picky about routine: anxious if galloped hard down rocky cliffs, nudges you nonstop for treats when you stop near a lake, refuses to be hitched next to loud, aggressive warhorses.",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["CliffNerves", "AppleBeggar", "SpurSnob"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_john_endlesssummer",
+      "breed": "Thoroughbred",
+      "archetype": "The Loyal Veteran",
+      "vibe": "Rachel, John Marston's horse in the epilogue. The Graceful Companion (wild in the Heartlands and Big Valley). Steady, affectionate, far calmer than its flashier cousins: speed with genuine dependability, carries you across the frontier without complaint. Stubbornly opinionated about its comfort: slows to a crawl on steep rocky climbs, sighs loudly when you sprint through deep water, nudges you relentlessly for apples whenever you stand still.",
+      "leans": {
+        "courage": 1,
+        "nerves": -1,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["HillCrawler", "HillSigh", "WaterSigh", "AppleBeggar"],
+      "lovesTreats": ["Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
         "fussy": 0
       }
     }

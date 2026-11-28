@@ -241,6 +241,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Sigh, _t.WaterSighRate, "Water sigh: wet hooves, again", 0));
             if (p.Has(Signature.AppleBeggar) && !s.Mounted && s.PlayerNear && s.PlayerDistance <= _t.BeggarRange && s.StandingStillSeconds >= _t.BeggarSeconds)
                 candidates.Add((BehaviorAction.Beg, _t.BeggarRate, "Apple beggar: you've been standing here long enough to hand over an apple", 0));
+            if (p.Has(Signature.CliffNerves) && galloping && -s.ClimbSpeed >= _t.DownhillSpeed)
+                candidates.Add((BehaviorAction.Agitate, _t.CliffNervesRate, $"Cliff nerves: galloping down a steep slope ({-s.ClimbSpeed:0.0} m/s)", 0));
             if (p.Has(Signature.DownhillSnob) && walking && -s.ClimbSpeed >= _t.DownhillSpeed)
                 candidates.Add((BehaviorAction.Snub, _t.DownhillSnobRate, $"Downhill snob: held to a walk going down {-s.ClimbSpeed:0.0} m/s", 0));
             if (p.Has(Signature.StrangerDanger) && s.RushingPerson != 0)

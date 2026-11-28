@@ -142,7 +142,7 @@ Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and
 | Brindle | The Exotic Supermodel | -1 / +2 / +1 / 0 | Chatterbox | Snake drama, Mud tantrum, Vain, Needs soothing, Clumsy |
 | Reverse Dapple Black (prized: Special) | The Brooding Outlaw Prince | +1 / 0 / +1 / 0 | Head-tosser | Snob, Guard dog, Town disdain, Night owl |
 | Blood Bay | The Untamed Rebel | +2 / +1 / +2 / +1 | Head-tosser | No brakes, Needs soothing, Clumsy |
-| Dapple Grey | The Loyal Veteran | +1 / -1 / -1 / +2 | Shadow | Hill crawler, Hill sigh, Water sigh, Apple beggar; loves apples |
+| Dapple Grey, and Rachel (John's epilogue horse) | The Loyal Veteran | +1 / -1 / -1 / +2 | Shadow | Hill crawler, Hill sigh, Water sigh, Apple beggar; loves apples |
 
 | Signature | How it plays | Needs in game |
 | --- | --- | --- |
@@ -231,7 +231,7 @@ All three regular Warmblood coats have a design, so the baseline's Spur snob is 
 | Sooty Buckskin | The Gritty Prospector | +1 / -1 / 0 / +1 | Nosy | Wanderlust, Selective hearing, Snack magnet, Spur snob |
 | Seal Brown | The Quiet Professional | +2 / -2 / -1 / 0 | Shadow | Moody refusal, Spur snob |
 
-New: **Spur snob** (4 sprint presses within 3 s: an offended snort). Buell (`a_c_horse_buell_warvets`) is a story model: vanilla under the v1 rule until Navod decides. Cut: freight-train acceleration and sharp turns (handling), roads and crossroads (no check; Moody refusal stands in), fences (no jumping), oat sacks (no hook into camp items).
+New: **Spur snob** (4 sprint presses within 3 s: an offended snort). Buell (`a_c_horse_buell_warvets`) and Rachel (`a_c_horse_john_endlesssummer`, to confirm) are story models given personalities by exception (Navod, Nov 28): Buell counts as a Dutch Warmblood with *The Noble Veteran* (Cliff nerves, Apple beggar, Spur snob; +2 / -1 / -1 / +2, Shadow), Rachel as a Thoroughbred with the Dapple Grey's *Loyal Veteran*. Cut: freight-train acceleration and sharp turns (handling), roads and crossroads (no check; Moody refusal stands in), fences (no jumping), oat sacks (no hook into camp items).
 
 ## Testing it
 
