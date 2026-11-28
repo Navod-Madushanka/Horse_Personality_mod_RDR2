@@ -84,6 +84,9 @@ namespace HorsePersonalities.Core.Breeds
         CliffNerves,
         // Shire coats (Nov 28, 2026)
         TreatTantrum,
+        // Suffolk Punch coats (Nov 28, 2026)
+        TownDawdler,
+        TurnGrumble,
     }
 
     /// <summary>

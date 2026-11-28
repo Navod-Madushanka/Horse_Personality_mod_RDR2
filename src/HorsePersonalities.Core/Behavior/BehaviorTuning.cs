@@ -180,6 +180,9 @@ namespace HorsePersonalities.Core.Behavior
         public double CliffNervesRate => _v["cliffNervesRate"];
         public double TantrumAfterMinutes => _v["tantrumAfterMinutes"];
         public double TantrumRate => _v["tantrumRate"];
+        public double TownDawdleRatio => _v["townDawdleRatio"];
+        public double TurnGrumbleDegrees => _v["turnGrumbleDegrees"];
+        public double TurnGrumbleSeconds => _v["turnGrumbleSeconds"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -345,6 +348,9 @@ namespace HorsePersonalities.Core.Behavior
             ("cliffNervesRate", "Cliff nerves rate", 0.0, 20.0, false),
             ("tantrumAfterMinutes", "Tantrum after minutes", 1.0, 1440.0, false),
             ("tantrumRate", "Tantrum rate", 0.0, 20.0, false),
+            ("townDawdleRatio", "Town dawdle ratio", 0.1, 3.0, false),
+            ("turnGrumbleDegrees", "Turn grumble degrees", 30.0, 180.0, false),
+            ("turnGrumbleSeconds", "Turn grumble seconds", 0.5, 30.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

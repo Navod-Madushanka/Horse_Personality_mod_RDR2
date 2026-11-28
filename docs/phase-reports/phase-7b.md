@@ -256,6 +256,15 @@ All three Shire coats have a design, so the baseline's War horse is on each.
 
 New: **Treat tantrum** (an hour of riding without a treat: tantrums, 0.5/min, until fed; a loved treat, or one the mod can't name yet, ends it). Cut: handling, stopping, alleys and fences (no control), barrels, NPCs and trees (no control over where it walks), the Bayou in particular (Mud tantrum anywhere), nudging (no animation).
 
+## Suffolk Punch coats (added Nov 28)
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Sorrel | The Round-Bellied Optimist | +1 / -2 / -2 / +2 | Shadow | War horse, Vain, Snack magnet, Apple beggar, Unhurried, Bribable; loves oatcakes and apples |
+| Red Chestnut | The Grumpy Old-Timer | +2 / -2 / +2 / -1 | Kicker | Saddle hater, Town dawdler, Turn grumble |
+
+New: **Town dawdler** (ridden in a town: a walk, spurred or not) and **Turn grumble** (turned round 120 degrees within 2.5 s while moving: a grumpy snort). Bribable now lifts Unhurried too. Cut: handling, logs and straights (no control; its stats), the shootout snack (War horse keeps it calm), pockets (no animation), the saddle coming out (Saddle hater plays on mounting), the riders behind it (no check).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

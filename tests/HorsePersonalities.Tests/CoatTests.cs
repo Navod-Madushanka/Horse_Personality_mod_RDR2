@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(72, Catalog.CoatCount);
+            Assert.Equal(74, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -839,6 +839,31 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Agitate, S(With(Signature.TreatTantrum), s).Action);
             s.MinutesSinceTreat = T.TantrumAfterMinutes - 1;
             Assert.True(S(With(Signature.TreatTantrum), s).IsNone);
+        }
+            // ---- Suffolk Punch coats ----
+
+        [Fact]
+        public void SuffolkCoatsLoad()
+        {
+            Assert.True(Catalog.TryGetCoat("a_c_horse_suffolkpunch_sorrel", out Coat sorrel));
+            Assert.Contains("Oatcakes", sorrel.LovesTreats);
+            Assert.True(Catalog.TryGetCoat("a_c_horse_suffolkpunch_redchestnut", out Coat old));
+            Assert.Contains(Signature.TownDawdler, old.Signatures);
+        }
+
+        [Fact]
+        public void TownDawdlerTurnGrumbleAndBribedUnhurried()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(T.TownDawdleRatio, brain.TownCap(With(Signature.TownDawdler), true, true));
+            Assert.Null(brain.TownCap(With(Signature.TownDawdler), true, false));
+            var turn = Riding(speed: 2); turn.TurnedDegrees = T.TurnGrumbleDegrees;
+            Assert.Equal(BehaviorAction.Snub, S(With(Signature.TurnGrumble), turn).Action);
+            turn.TurnedDegrees = 30;
+            Assert.True(S(With(Signature.TurnGrumble), turn).IsNone);
+            var p = With(Signature.Unhurried, Signature.Bribable);
+            Assert.Equal(T.UnhurriedRatio, brain.UnhurriedCap(p, true, true, 999));
+            Assert.Null(brain.UnhurriedCap(p, true, true, 999, bribed: true));
         }
     }
 }

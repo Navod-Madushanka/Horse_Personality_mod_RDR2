@@ -77,6 +77,8 @@ namespace HorsePersonalities.Core.Behavior
         public int RecentSpurPresses;
         /// <summary>Minutes ridden since its last treat (Treat tantrum).</summary>
         public double MinutesSinceTreat;
+        /// <summary>Degrees the horse has turned in the last Turn grumble seconds while moving.</summary>
+        public double TurnedDegrees;
     }
 
     /// <summary>
@@ -244,6 +246,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Sigh, _t.WaterSighRate, "Water sigh: wet hooves, again", 0));
             if (p.Has(Signature.AppleBeggar) && !s.Mounted && s.PlayerNear && s.PlayerDistance <= _t.BeggarRange && s.StandingStillSeconds >= _t.BeggarSeconds)
                 candidates.Add((BehaviorAction.Beg, _t.BeggarRate, "Apple beggar: you've been standing here long enough to hand over an apple", 0));
+            if (p.Has(Signature.TurnGrumble) && s.Mounted && s.SpeedMs >= _t.StandingStillSpeed && s.TurnedDegrees >= _t.TurnGrumbleDegrees && Ready(horse, cooldowns, now))
+                return Use(horse, BehaviorAction.Snub, $"Turn grumble: turned round {s.TurnedDegrees:0} degrees", cooldowns, now);
             if (p.Has(Signature.TreatTantrum) && s.Mounted && s.MinutesSinceTreat >= _t.TantrumAfterMinutes)
                 candidates.Add((BehaviorAction.Agitate, _t.TantrumRate, $"Treat tantrum: {s.MinutesSinceTreat:0} minutes and not one oatcake", 0));
             if (p.Has(Signature.CliffNerves) && galloping && -s.ClimbSpeed >= _t.DownhillSpeed)
@@ -302,8 +306,14 @@ namespace HorsePersonalities.Core.Behavior
                 ? _t.HillCrawlRatio : (double?)null;
 
         /// <summary>Unhurried: the cap while you spur with no danger in Danger memory seconds, or null.</summary>
-        public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger) =>
-            p != null && p.Has(Signature.Unhurried) && mounted && spurring && secondsSinceDanger > _t.DangerMemorySeconds ? _t.UnhurriedRatio : (double?)null;
+        /// <param name="bribed">Bribable: a loved treat in the last Bribe seconds lifts the cap (Suffolk Sorrel, Nov 28).</param>
+        public double? UnhurriedCap(Personality p, bool mounted, bool spurring, double secondsSinceDanger, bool bribed = false) =>
+            p != null && p.Has(Signature.Unhurried) && mounted && spurring && secondsSinceDanger > _t.DangerMemorySeconds && !(bribed && p.Has(Signature.Bribable))
+                ? _t.UnhurriedRatio : (double?)null;
+
+        /// <summary>Town dawdler: the cap in a town, spurred or not, or null.</summary>
+        public double? TownCap(Personality p, bool mounted, bool inTown) =>
+            p != null && p.Has(Signature.TownDawdler) && mounted && inTown ? _t.TownDawdleRatio : (double?)null;
 
         /// <summary>Grudge: it was hurt while you rode it. None when it doesn't hold grudges.</summary>
         public Decision OnHurt(int horse, Personality p, CooldownBook cd, double now)

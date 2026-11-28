@@ -53,6 +53,7 @@
 - **Buell and Rachel get personalities** (Navod, Nov 28): exceptions to the story-model rule. Buell (Hamish Sinclair's Cremello Gold) counts as a Dutch Warmblood with his own coat, *The Noble Veteran* (new signature Cliff nerves); Rachel (John's epilogue horse, model to confirm) as a Thoroughbred with the Dapple Grey's *Loyal Veteran*.
 - **Belgian Draft coats** (Navod, Nov 28): the Gentle Giant (Blond Chestnut), the Union Foreman (Mealy Chestnut). No new signatures; Bribable now lifts Lazy pace as well as Hill crawler.
 - **Shire coats** (Navod, Nov 28): the Chaotic Titan (Raven Black), the Immovable Mountain (Dark Bay), the Sleepy Cloud (Light Grey). New signature Treat tantrum (2 new Behavior settings).
+- **Suffolk Punch coats** (Navod, Nov 28): the Round-Bellied Optimist (Sorrel), the Grumpy Old-Timer (Red Chestnut). New signatures Town dawdler and Turn grumble (3 new Behavior settings); Bribable now lifts Unhurried too.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

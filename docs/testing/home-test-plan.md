@@ -473,6 +473,15 @@ The Raven Black is Hosea's horse in Exit Pursued by a Bruised Ego (and sold at s
 | 12.99 | **Dark Bay**: tap sprint quickly on a quiet road; walk past grass; spur it up a hill | Horse, log | Snorts and holds a trot (*Spur snob*, *Unhurried*), stops to graze (*Snack magnet*), walks the hill (*Hill crawler*) |  |  |
 | 12.100 | **Light Grey**: brush it; stand next to it on foot; ride through mud | Horse, log | Happy every brushing (*Vain*), asks for a treat (*Apple beggar*), agitated when muddy (*Mud tantrum*) |  |  |
 
+### Stage 12, Suffolk Punch coats
+
+Both coats pull wagons, farm carts and coaches (and turn up at stables that sell drafts).
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.101 | **Sorrel**: spur it on a quiet road, feed it an oatcake, spur again; brush it; stand by it on foot | Horse, log | A jog until fed, then a gallop (*Unhurried*, *Bribable*; needs the oatcake code), happy every brushing (*Vain*), asks for an apple (*Apple beggar*) |  |  |
+| 12.102 | **Red Chestnut**: get on a few times; ride (and spur) through Valentine; turn it round sharply on a road | Horse, log | Ears back as you get on (*Saddle hater*), walks through town however you spur (*Town dawdler*), snorts at the turn (*Turn grumble*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

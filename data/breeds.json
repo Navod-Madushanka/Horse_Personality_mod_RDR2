@@ -225,7 +225,10 @@
     "spurSpamSeconds": 3,
     "cliffNervesRate": 2,
     "tantrumAfterMinutes": 60,
-    "tantrumRate": 0.5
+    "tantrumRate": 0.5,
+    "townDawdleRatio": 1,
+    "turnGrumbleDegrees": 120,
+    "turnGrumbleSeconds": 2.5
   },
   "skills": {
     "gunfightStep": 0.08,
@@ -2556,6 +2559,50 @@
         "alert": 0,
         "affectionate": 2,
         "fussy": 2
+      }
+    },
+    {
+      "model": "a_c_horse_suffolkpunch_sorrel",
+      "breed": "Suffolk Punch",
+      "archetype": "The Round-Bellied Optimist",
+      "vibe": "The Cheerful Farmhand (pulls wagons and farm carts). Warm, friendly, endlessly eager to help: a bright golden-red coat and thick muscular build, every ride a pleasant Sunday chore, happy on dusty backroads, patient while you hunt, obsessed with a brushing after a long day. Food-motivated to a fault and unbothered by danger: dead-stops mid-shootout to munch clover, shoves its nose in your pockets for apples, won't go faster than a leisurely jog unless bribed with oatcakes. Like every Suffolk Punch: unshakable work ethic, rock-solid stability, zero drama, a low center of gravity that keeps it planted on steep slippery hills, ignores loud noises, never complains about heavy carcasses; heavy-footed, slow as molasses on straights, allergic to jumping, treats every six-inch log like a canyon, steers like a loaded wheelbarrow.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["WarHorse", "Vain", "SnackMagnet", "AppleBeggar", "Unhurried", "Bribable"],
+      "lovesTreats": ["Oatcakes", "Apple"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_suffolkpunch_redchestnut",
+      "breed": "Suffolk Punch",
+      "archetype": "The Grumpy Old-Timer",
+      "vibe": "The Stubborn Brawler (pulls wagons and coaches). Tough, weathered, an iron anvil: years dragging timber and supply wagons through rough terrain, nothing rattles it, it plows through thick mud, shrugs off collisions, stands like a boulder when wolves howl. Deeply cynical and aggressively stubborn: ears back whenever you pull out the saddle, walks at a snail's pace through crowded towns to annoy the riders behind you, grumpy snorts every time you turn it around. Like every Suffolk Punch: unshakable work ethic, rock-solid stability, zero drama, a low center of gravity that keeps it planted on steep slippery hills, ignores loud noises, never complains about heavy carcasses; heavy-footed, slow as molasses on straights, allergic to jumping, treats every six-inch log like a canyon, steers like a loaded wheelbarrow.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 2,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["SaddleHater", "TownDawdler", "TurnGrumble"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 0,
+        "affectionate": 0,
+        "fussy": 0
       }
     }
   ]

@@ -72,6 +72,7 @@ namespace HorsePersonalities.Game
         private readonly Dictionary<int, double> _strictUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _bribedUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _minutesSinceTreat = new Dictionary<int, double>();
+        private readonly Queue<(double At, double Heading)> _headings = new Queue<(double, double)>();
         // Phase 8: experience counting.
         private readonly Dictionary<int, double> _lastGunfightAt = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _lastSprintAt = new Dictionary<int, double>();
@@ -409,13 +410,14 @@ namespace HorsePersonalities.Game
             bool spurring = mounted && _game.IsSprintPressed;
             bool bribedNow = _bribedUntil.TryGetValue(horse, out double bribedTill) && nowSeconds < bribedTill;
             double? cap = _signatures.LazyCap(p, mounted, spurring, bribedNow);
-            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt)
+            double? hurry = _signatures.UnhurriedCap(p, mounted, spurring, nowSeconds - _lastDangerAt, bribedNow)
                 ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
             double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) || p.Has(Signature.CliffNerves) ? _game.GetVelocity(horse).Z : 0;
             double? crawl = _signatures.HillCap(p, mounted, climb, _bribedUntil.TryGetValue(horse, out double bribe) && nowSeconds < bribe);
-            _lazyRatio = crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
-            _unhurriedRatio = crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
-            if (cap.HasValue || crawl.HasValue || p.Has(Signature.Unhurried) || p.Has(Signature.Strict)) _lazyHorse = horse;
+            double? dawdle = _signatures.TownCap(p, mounted, p.Has(Signature.TownDawdler) && mounted && _game.IsInTown(horse));
+            _lazyRatio = dawdle.HasValue ? (float)dawdle.Value : crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
+            _unhurriedRatio = dawdle.HasValue ? (float)dawdle.Value : crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
+            if (cap.HasValue || crawl.HasValue || dawdle.HasValue || p.Has(Signature.Unhurried) || p.Has(Signature.Strict)) _lazyHorse = horse;
             if (hurry.HasValue && !_unhurriedSnorted)
             {
                 _unhurriedSnorted = true;
@@ -447,6 +449,7 @@ namespace HorsePersonalities.Game
                     CrowdPerson = _lastScan.CrowdPerson,
                     RecentSpurPresses = SpurPresses(mounted && p.Has(Signature.SpurSnob), nowSeconds),
                     MinutesSinceTreat = TreatClock(horse, mounted && p.Has(Signature.TreatTantrum), dt),
+                    TurnedDegrees = TurnClock(horse, mounted && p.Has(Signature.TurnGrumble), nowSeconds),
                     InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
@@ -520,6 +523,23 @@ namespace HorsePersonalities.Game
                 _registry.ExperienceChanged(record);
                 _log.Info(Log, $"{record.Id}: predator encounter counted ({e.Predators:0.#} so far)");
             }
+        }
+
+        /// <summary>Turn grumble: how far the horse's heading has swung over the last Turn grumble seconds (0 to 180).</summary>
+        private double TurnClock(int horse, bool watching, double now)
+        {
+            if (!watching) { _headings.Clear(); return 0; }
+            Vec3 f = _game.GetForward(horse);
+            double heading = Math.Atan2(f.Y, f.X) * 180 / Math.PI;
+            _headings.Enqueue((now, heading));
+            while (_headings.Count > 0 && now - _headings.Peek().At > _t.TurnGrumbleSeconds) _headings.Dequeue();
+            double most = 0;
+            foreach (var (_, h) in _headings)
+            {
+                double d = Math.Abs(heading - h) % 360;
+                most = Math.Max(most, d > 180 ? 360 - d : d);
+            }
+            return most;
         }
 
         /// <summary>Treat tantrum: minutes ridden since its last treat (this session).</summary>

@@ -590,6 +590,12 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - **Treat tantrum** (Raven Black): after an hour of riding without a treat (*Tantrum after minutes*), it throws tantrums, 0.5/min, until you feed it. A treat it loves ends it; so does any treat whose item code isn't in `treats.csv` yet, so it can't get stuck.
   - Reused: Wolf brawler, Short king and Clumsy (Raven Black; it loves oatcakes), Unhurried, Spur snob, Snack magnet and Hill crawler (Dark Bay), Vain, Apple beggar, Clumsy and Mud tantrum (Light Grey; it loves carrots).
   - Cut: battleship turning, glacial acceleration, tight alleys, the three-business-day stop and fences (no control over handling, stopping or jumping), knocking over barrels and NPCs and getting wedged between trees (no control over where it walks; Clumsy stands in), the Bayou in particular (Mud tantrum covers mud anywhere), nudging (no animation; Apple beggar asks).
+- **Suffolk Punch coats** (Navod, Nov 28, 2026): *The Round-Bellied Optimist* (Sorrel) and *The Grumpy Old-Timer* (Red Chestnut), the only Suffolk coats; the baseline (zero drama, ignores noise) is in their traits. Two new signatures, code only (both use the town check, trigger 43, or the pace cap, trigger 45):
+  - **Town dawdler** (Red Chestnut): ridden in a town, it walks, spurred or not (*Town dawdle ratio*).
+  - **Turn grumble** (Red Chestnut): turned round (120 degrees or more within 2.5 s) while moving: a grumpy snort.
+  - Changed: Bribable now lifts Unhurried as well as Hill crawler and Lazy pace, so oatcakes get the Sorrel past a leisurely jog.
+  - Reused: Vain, Snack magnet, Apple beggar, Unhurried, Bribable and War horse (Sorrel: unbothered by danger, it loves oatcakes and apples), Saddle hater (Red Chestnut: ears back as you get on).
+  - Cut: steering like a wheelbarrow, logs as canyons and slowness on straights (no handling or jumping control; its stats), stopping for clover in the middle of a shootout (War horse keeps it calm; Snack magnet grazes at a walk), pockets (no nudge animation; Apple beggar asks), the saddle coming out (no saddle moment; Saddle hater plays on mounting), annoying the riders behind it (no check for them; Town dawdler covers the snail's pace).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

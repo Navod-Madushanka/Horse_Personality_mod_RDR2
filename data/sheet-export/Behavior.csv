@@ -161,3 +161,6 @@ Spur spam seconds,3,...within this many seconds is spamming the spur: an offende
 Cliff nerves rate,2,Cliff nerves: agitated per minute while galloping steeply downhill (faster than Downhill speed).
 Tantrum after minutes,60,Treat tantrum: minutes of riding without a treat before the tantrums start.
 Tantrum rate,0.5,Treat tantrum: tantrums per minute until you feed it.
+Town dawdle ratio,1,"Town dawdler: its pace cap in towns, spurred or not (move blend ratio: 1 walk)."
+Turn grumble degrees,120,Turn grumble: turning this far...
+Turn grumble seconds,2.5,...within this many seconds while moving is turning it round: a grumpy snort.
