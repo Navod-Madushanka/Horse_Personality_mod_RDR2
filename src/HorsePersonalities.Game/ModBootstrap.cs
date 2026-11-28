@@ -39,6 +39,7 @@ namespace HorsePersonalities.Game
             }
             b.Settings = ModSettings.Load(iniText, b.Log);
             b.Log.MinLevel = b.Settings.LogLevel;
+            foreach (string reminder in b.Settings.TestingReminders()) b.Log.Warn("Settings", reminder + ".");
 
             try
             {

@@ -255,6 +255,9 @@ namespace HorsePersonalities.Game
             string message = "Horse Personalities loaded";
             if (_boot.BreedsError != null) message += " - " + _boot.BreedsError;
             else message += $" ({_boot.Breeds.Breeds.Count} breeds)";
+            // Phase 9: test mode and the faster learning shouldn't go unnoticed on a real save.
+            if (_boot.Settings.TestPersonalities) message += " - TEST MODE";
+            if (Math.Abs(_boot.Settings.ExperienceSpeed - 1) > 1e-9) message += $" - ExperienceSpeed x{_boot.Settings.ExperienceSpeed:0.##}";
             _game.ShowSubtitle(message);
             _boot.Log.Info(Log, message);
         }

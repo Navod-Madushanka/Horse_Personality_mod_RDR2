@@ -1,90 +1,77 @@
 # Horse Personalities
 
-A Red Dead Redemption 2 story-mode mod that gives every horse you own a hidden personality, natural stat differences and learned skills, without changing how breeds work. PC, single player, built on ScriptHookRDR2DotNet V2.
+A Red Dead Redemption 2 story-mode mod (PC) that gives every horse you own its own hidden personality, natural stat differences and learned skills, without changing how breeds work. An Arabian stays the fastest breed and a draft stays heavy, but no two horses, and no two playthroughs, feel the same.
 
-The design is in [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md). Progress per phase is in [docs/phase-reports](docs/phase-reports).
+There's no menu. A new horse looks exactly like a vanilla horse of its breed; you find out who it is by riding it.
 
-**Status:** Phases 0 to 4 have passed in game: horses get a hidden personality, keep it in `horses.json`, and show it on the debug overlay (F9). No behavior uses the personality yet; that starts in Phase 5. Phase 1 decided which game behaviors later phases can use.
+## What it does
 
-## Repository layout
+- **Four traits per horse:** Courage (wolves, gunfire, explosions), Nerves (spooking at nothing), Temper (bucking and kicking when pushed) and Bond affinity (how warm it is and how it takes care). Each breed leans its own way.
+- **Quirks:** Chatterbox, Nosy, Shadow, Wanderer, Head-tosser, Picky eater and Kicker. A Kicker kicks whoever stands behind it, dogs included, in town too, and the law may come.
+- **Every coat has a character.** All 91 horse coats in the game have a hand-written personality and signature habits: the White Arabian snorts at peasants in Saint Denis, the Silver Dapple Pinto strolls off if you leave it untied, the Grullo Dun Mustang guards your saddlebags while you're in the saloon, the Gold Turkoman rears in front of a crowd.
+- **Care gets an answer:** affectionate horses nicker after a pat, aloof ones give nothing back, grumpy ones toss their heads at the brush.
+- **Stats reveal themselves as you bond:** small health and stamina differences show on the stat bars at bond 2 and 3.
+- **Horses learn:** gunfights make a horse steadier under fire and predators steadier around predators, each only in its own situation. Speed and acceleration grow as you gallop and sprint, and a horse kept for the whole story grows past its natural ceiling.
+- **Wild horses** can be hard to break, rarely unbreakable. **Prized horses** (stable-bought, bonus coats, rare wild coats, community favorites) always roll good.
+- **Nothing happens in story missions or cutscenes.**
 
-| Path | What it is |
-| --- | --- |
-| `src/HorsePersonalities.Core` | All logic: breed data, settings, JSON, timing, the `IGameApi` interface. No game references, so it runs in unit tests. |
-| `src/HorsePersonalities.Game` | The script the game loads. Builds `HorsePersonalities.dll`. `RdrGameApi.cs` is the only place that calls natives; `Natives.cs` lists every one. |
-| `src/HorsePersonalities.DevTools` | Phase 1 trigger spike and detectors. Builds `HorsePersonalities.DevTools.dll`. Never shipped. |
-| `tests/HorsePersonalities.Tests` | xUnit tests for Core and the sheet converter. |
-| `tools/sheet-to-json` | Turns the breed sheet's CSV export into `data/breeds.json`. |
-| `data/sheet-export/` | The sheet's Breeds and Classes tabs as CSV. |
-| `data/horse-models.csv` | Every `a_c_horse_` model and the breed it belongs to. |
-| `data/breeds.json` | Generated. Do not edit by hand. |
-| `lib/` | Put `ScriptHookRDRNetAPI.dll` here (not committed; see [lib/README.md](lib/README.md)). |
+## Requirements
 
-Core's source files are compiled into the Game and DevTools DLLs rather than referenced, so the released mod is a single DLL.
+- Red Dead Redemption 2 on PC, story mode.
+- [Script Hook RDR2](https://www.dev-c.com/rdr2/scripthookrdr2/) by Alexander Blade (`ScriptHookRDR2.dll`, `dinput8.dll`).
+- [ScriptHookRDR2DotNet V2](https://github.com/Halen84/ScriptHookRDR2DotNet-V2/releases), release **2.2.0 or newer**.
 
-## Build
+## Install
 
-You need Visual Studio 2022 or newer with the .NET desktop workload (or the .NET 8 SDK on its own).
-
-1. Copy `ScriptHookRDRNetAPI.dll` from your ScriptHookRDR2DotNet V2 release into `lib/`. Use the one from the same release as the `.asi` in your game folder.
-2. Open `HorsePersonalities.sln` and build (Release or Debug), or from a terminal:
-
-```bash
-dotnet build HorsePersonalities.sln -c Release
-```
-
-Output:
-
-- `src/HorsePersonalities.Game/bin/Release/HorsePersonalities.dll` and `HorsePersonalities/breeds.json`
-- `src/HorsePersonalities.DevTools/bin/Release/HorsePersonalities.DevTools.dll`
-
-### Build straight into the game
-
-Set an environment variable to your game's `scripts` folder and every build copies the DLLs and `breeds.json` there:
-
-```bash
-setx RDR2_SCRIPTS_DIR "C:\Program Files (x86)\Steam\steamapps\common\Red Dead Redemption 2\scripts"
-```
-
-Restart Visual Studio after setting it. In game, press Insert to reload scripts.
-
-## Install for testing
-
-Into `Red Dead Redemption 2\scripts\`:
+1. Install the two hooks above.
+2. Copy the zip's `scripts` folder into your game folder (the one with `RDR2.exe`). You should end up with:
 
 ```
-HorsePersonalities.dll
-HorsePersonalities.DevTools.dll     (Phase 1 testing only)
-HorsePersonalities\breeds.json
+Red Dead Redemption 2\scripts\HorsePersonalities.dll
+Red Dead Redemption 2\scripts\HorsePersonalities.ini
+Red Dead Redemption 2\scripts\HorsePersonalities\breeds.json
+Red Dead Redemption 2\scripts\HorsePersonalities\test-personalities.json
 ```
 
-On first run the mod writes `HorsePersonalities.ini` and `HorsePersonalities.DevTools.ini` next to the DLLs, and logs to `HorsePersonalities\log.txt`.
+3. Start the game and load a save. "Horse Personalities loaded" appears once you're in. Your horses are rolled the first time the mod sees them.
 
-## Run the tests
+The mod keeps your horses in `scripts\HorsePersonalities\horses.json` (with a backup) and logs to `scripts\HorsePersonalities\log.txt`.
 
-No game needed. From Visual Studio's Test Explorer, or:
+## Settings
 
-```bash
-dotnet test tests/HorsePersonalities.Tests
-```
+Everything is optional and set in `scripts\HorsePersonalities.ini`; delete a line to go back to its default. Press Insert in game to reload after editing.
 
-## Change breed data
+| Setting | Default | What it changes |
+| --- | --- | --- |
+| `GoodHorseChance` | 80 | How often a horse rolls good overall (percent). |
+| `UnbreakableChance` | 5 | Cap on unbreakable wild horses (percent). |
+| `MaxStatRankChange` | 2 | How far natural stats can stray from the breed, in stat-bar segments (0 turns them off). |
+| `SpookFrequency` | 1 | More or fewer random spooks (0 turns them off). |
+| `QuirkCooldownSeconds` | 120 | The shortest gap between quirks on one horse. |
+| `DisableDuringMissions` | true | Keeps behaviors out of story missions and cutscenes. |
+| `RestoreVanillaStats` | false | Puts every horse's stats back to the game's own (for uninstalling). |
+| `ResetAllHorses` | false | A fresh start: every horse is rolled again, once. |
+| `DebugOverlay`, `DebugKey` | false, F9 | An on-screen panel with your horse's hidden values. |
+| `TestPersonalities`, `TestPresetKey` | false, F11 | Test mode: fixed personalities instead of rolls, saved separately from your real horses. |
+| `ExperienceSpeed` | 1 | Makes horses learn faster, for testing. |
+| `LogLevel` | Info | How much goes in `log.txt` (Debug, Info, Warn, Error). |
 
-1. Edit the [breed sheet](https://claude.ai/artifact/37Yfwtn7EsEtr69NiM3kyp).
-2. Download its Breeds, Classes, Roller and Tiers tabs as CSV into `data/sheet-export/` as `Breeds.csv`, `Classes.csv`, `Roller.csv` and `Tiers.csv`.
-3. If a model belongs to a different breed, edit `data/horse-models.csv`.
-4. Regenerate and check:
+A misspelled setting gets a warning in `log.txt` with the setting it probably meant.
 
-```bash
-dotnet run --project tools/sheet-to-json
-```
+## Uninstall
 
-```bash
-dotnet test tests/HorsePersonalities.Tests
-```
+The game resets the mod's stat changes when you reload without it, so removing the files is enough. If you want to be thorough, set `RestoreVanillaStats = true`, ride or stand by each of your horses once, then delete the files.
 
-The tool finds columns by their header names, so adding or moving columns in the sheet is fine. It refuses to write the file if a class, quirk or breed name doesn't match, and lists every problem at once. A test fails if `breeds.json` is out of date with the CSVs.
+## Known limits
+
+- Story and gang horses stay vanilla, except Buell and Rachel. Mules and Online-only breeds stay vanilla.
+- A script can't steer a horse, make it jump or change how it handles, so personalities show through sounds, looks, spooks, bucks, refusals, grazing, following and pace.
+- Loved and ignored treats need each treat's item code in `breeds.json` (`data/treats.csv` in the source); until they're filled in, treat reactions fall back to the horse's general manner.
+
+## For developers
+
+Building, the breed sheet, tests and releases: [docs/DEVELOPING.md](docs/DEVELOPING.md). The design is in [docs/BUILD_PLAN.md](docs/BUILD_PLAN.md).
 
 ## License
 
-[MIT](LICENSE). Red Dead Redemption 2 belongs to Rockstar Games; Script Hook RDR2 and ScriptHookRDR2DotNet V2 are their authors' own projects and are not included here.
+[MIT](LICENSE). Red Dead Redemption 2 belongs to Rockstar Games; Script Hook RDR2 and ScriptHookRDR2DotNet V2 are their authors' own projects and are not included.

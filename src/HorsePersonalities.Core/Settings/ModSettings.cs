@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using HorsePersonalities.Core.Logging;
@@ -68,7 +69,71 @@ namespace HorsePersonalities.Core.Settings
             s.TestPersonalities = ReadBool(ini, log, nameof(TestPersonalities), s.TestPersonalities);
             s.TestPresetKey = ReadKeyName(ini, log, nameof(TestPresetKey), s.TestPresetKey);
             s.LogLevel = ReadEnum(ini, log, nameof(LogLevel), s.LogLevel);
+
+            // Phase 9: a key the mod doesn't know is almost always a typo, which would otherwise be silently ignored.
+            foreach (var (section, key) in ini.AllKeys())
+            {
+                if (Known.Contains(key)) continue;
+                string near = Closest(key);
+                log.Warn(LogCategory, $"HorsePersonalities.ini: unknown setting \"{key}\"{(section.Length > 0 ? $" in [{section}]" : "")} is ignored." +
+                    (near != null ? $" Did you mean {near}?" : ""));
+            }
             return s;
+        }
+
+        /// <summary>Every setting the file may hold, plus retired ones (they get their own warning above).</summary>
+        private static readonly HashSet<string> Known = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            nameof(GoodHorseChance), nameof(UnbreakableChance), nameof(MaxStatRankChange), nameof(RestoreVanillaStats),
+            nameof(SpookFrequency), nameof(ExperienceSpeed), nameof(QuirkCooldownSeconds), nameof(DisableDuringMissions),
+            nameof(DebugOverlay), nameof(DebugKey), nameof(ResetAllHorses), nameof(TestPersonalities), nameof(TestPresetKey),
+            nameof(LogLevel), "MaxStatVariance", "RevealPerBondLevel",
+        };
+
+        /// <summary>The known setting nearest to a typo (edit distance 3 or less), or null.</summary>
+        private static string Closest(string key)
+        {
+            string best = null;
+            int bestDistance = 4;
+            foreach (string k in Known)
+            {
+                int d = Distance(key.ToLowerInvariant(), k.ToLowerInvariant());
+                if (d < bestDistance) { bestDistance = d; best = k; }
+            }
+            return best;
+        }
+
+        private static int Distance(string a, string b)
+        {
+            var row = new int[b.Length + 1];
+            for (int j = 0; j <= b.Length; j++) row[j] = j;
+            for (int i = 1; i <= a.Length; i++)
+            {
+                int prev = row[0];
+                row[0] = i;
+                for (int j = 1; j <= b.Length; j++)
+                {
+                    int keep = row[j];
+                    row[j] = Math.Min(Math.Min(row[j] + 1, row[j - 1] + 1), prev + (a[i - 1] == b[j - 1] ? 0 : 1));
+                    prev = keep;
+                }
+            }
+            return row[b.Length];
+        }
+
+        /// <summary>
+        /// Phase 9: settings meant for testing that are switched on. Logged as warnings at startup; the first two also go
+        /// in the "loaded" banner, so a real save isn't played in test mode by accident.
+        /// </summary>
+        public List<string> TestingReminders()
+        {
+            var r = new List<string>();
+            if (TestPersonalities) r.Add("TestPersonalities is on: horses get test presets and save to horses.test.json");
+            if (Math.Abs(ExperienceSpeed - 1) > 1e-9) r.Add($"ExperienceSpeed is {ExperienceSpeed.ToString("0.##", CultureInfo.InvariantCulture)}: horses learn faster than normal");
+            if (RestoreVanillaStats) r.Add("RestoreVanillaStats is on: every horse's stats go back to the game's own");
+            if (DebugOverlay) r.Add("DebugOverlay is on");
+            if (LogLevel == LogLevel.Debug) r.Add("LogLevel is Debug: the log grows faster");
+            return r;
         }
 
         /// <summary>The file written on first run and shipped in the release zip.</summary>

@@ -90,5 +90,34 @@ namespace HorsePersonalities.Tests
             Assert.Equal(70, s.GoodHorseChance);
             Assert.Equal(2, log.Entries.FindAll(e => e.Level == LogLevel.Warn).Count);
         }
+            // ---- Phase 9: settings check ----
+
+        [Fact]
+        public void ATypoGetsAWarningWithTheClosestSetting()
+        {
+            var log = new MemoryLog();
+            var s = ModSettings.Load("[HorsePersonalities]\nSpookFrequncy = 3\n", log);
+            Assert.Equal(1.0, s.SpookFrequency); // the typo didn't set anything
+            Assert.Contains(log.Entries, e => e.Level == LogLevel.Warn && e.Message.Contains("unknown setting \"SpookFrequncy\"") && e.Message.Contains("Did you mean SpookFrequency?"));
+        }
+
+        [Fact]
+        public void TheDefaultFileHasNoUnknownSettingsOrReminders()
+        {
+            var log = new MemoryLog();
+            var s = ModSettings.Load(ModSettings.DefaultIniText(), log);
+            Assert.DoesNotContain(log.Entries, e => e.Message.Contains("unknown setting"));
+            Assert.Empty(s.TestingReminders());
+        }
+
+        [Fact]
+        public void TestingSettingsLeftOnAreRemindedOf()
+        {
+            var s = ModSettings.Load("[HorsePersonalities]\nTestPersonalities = true\nExperienceSpeed = 20\nRestoreVanillaStats = true\n", new MemoryLog());
+            var r = s.TestingReminders();
+            Assert.Contains(r, x => x.StartsWith("TestPersonalities is on"));
+            Assert.Contains(r, x => x.StartsWith("ExperienceSpeed is 20"));
+            Assert.Contains(r, x => x.StartsWith("RestoreVanillaStats is on"));
+        }
     }
 }

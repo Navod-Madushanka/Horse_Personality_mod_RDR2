@@ -632,6 +632,13 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Agent builds:** performance pass, settings validation, log levels, overlay off by default, README, changelog and the release zip.
 - **You:** play a full session with a few popular horse mods installed, including the Unruliness mod, and run the end-to-end test.
 - **Done when:** the acceptance run passes and the zip installs cleanly on a fresh game folder.
+- **Built Nov 28, 2026 (the parts that don't need the game):**
+  - **Settings check:** a key the mod doesn't know (a typo such as `SpookFrequncy`) gets a log warning naming the closest real setting. Testing settings left on (`TestPersonalities`, `ExperienceSpeed` other than 1, `RestoreVanillaStats`, `DebugOverlay`, `LogLevel = Debug`) get a warning at startup, and the first two also show in the "loaded" banner, so nobody plays a real save in test mode by accident.
+  - **Performance:** the town check (a map-zone lookup) runs at most once per 250 ms behavior check instead of up to three times. Everything else already runs on the 250 ms or 1 s gates, and the log reports tick time every minute (budget 1 ms).
+  - **Log levels:** nothing logs every frame or every check; behaviors, quirks and stat changes log once per event, bond pacing at Debug.
+  - **README** rewritten for players (what it does, requirements, install, settings, uninstall, known limits); the developer notes moved to `docs/DEVELOPING.md`.
+  - **Release zip:** `tools/make-release.ps1` (Windows) and `tools/make-release.sh` build the mod in Release against your `lib/ScriptHookRDRNetAPI.dll` and pack `dist/HorsePersonalities-<version>.zip`: `scripts/HorsePersonalities.dll`, `scripts/HorsePersonalities/` (breeds.json, test-personalities.json), `scripts/HorsePersonalities.ini` with the defaults, README and LICENSE. DevTools is never packed. Version 0.9.0 until the acceptance run passes; 1.0.0 after.
+  - Still needs the game: the full play session with popular horse mods installed (including the Unruliness mod) and the end-to-end run.
 
 ## Testing
 

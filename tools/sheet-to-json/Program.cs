@@ -54,8 +54,14 @@ namespace HorsePersonalities.Tools.SheetToJson
                     case "--treats": treats = Next(); break;
                     case "--out": output = Next(); break;
                     case "--check": check = true; break;
+                    case "--default-ini":
+                        // Phase 9: the release zip ships the INI the mod would write on first run.
+                        string iniPath = Next();
+                        File.WriteAllText(iniPath, HorsePersonalities.Core.Settings.ModSettings.DefaultIniText());
+                        Console.WriteLine($"Wrote {iniPath}.");
+                        return 0;
                     case "-h": case "--help":
-                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--dogs dog-models.csv] [--skills Skills.csv] [--demeanor Demeanor.csv] [--coats Coats.csv] [--treats treats.csv] [--out breeds.json] [--check]");
+                        Console.WriteLine("sheet-to-json [--breeds Breeds.csv] [--classes Classes.csv] [--models horse-models.csv] [--roller Roller.csv] [--tiers Tiers.csv] [--prized Prized.csv] [--behavior Behavior.csv] [--predators predator-models.csv] [--dogs dog-models.csv] [--skills Skills.csv] [--demeanor Demeanor.csv] [--coats Coats.csv] [--treats treats.csv] [--out breeds.json] [--check] | --default-ini HorsePersonalities.ini");
                         return 0;
                     default:
                         Console.Error.WriteLine($"Unknown option {a}. Try --help.");

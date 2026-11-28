@@ -48,6 +48,13 @@ namespace HorsePersonalities.Core.Settings
             return _sections.TryGetValue(section ?? "", out var s) && s.TryGetValue(key, out value);
         }
 
+        /// <summary>Every key in the file, with its section (Phase 9: unknown keys are reported).</summary>
+        public IEnumerable<(string Section, string Key)> AllKeys()
+        {
+            foreach (var s in _sections)
+                foreach (string k in s.Value.Keys) yield return (s.Key, k);
+        }
+
         /// <summary>Looks in the section first, then anywhere in the file, so a key in the wrong section still counts.</summary>
         public bool TryGetAnywhere(string section, string key, out string value)
         {

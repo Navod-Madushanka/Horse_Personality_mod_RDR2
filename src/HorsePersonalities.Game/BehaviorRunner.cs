@@ -63,6 +63,14 @@ namespace HorsePersonalities.Game
         private double _lastPlayerDistance = -1;
         private ScanResult _lastScan;
         private bool _wasAiming;
+        private bool _townChecked, _townValue;
+
+        /// <summary>The town check, asked once per 250 ms check however many habits need it.</summary>
+        private bool InTown(int horse)
+        {
+            if (!_townChecked) { _townValue = _game.IsInTown(horse); _townChecked = true; }
+            return _townValue;
+        }
         private int _lastMounted;
         private double _walkSeconds;
         private double _lastGallopAt = double.NegativeInfinity;
@@ -268,6 +276,7 @@ namespace HorsePersonalities.Game
             double dt = _lastNow < 0 ? 0.25 : Math.Min(1.0, nowSeconds - _lastNow);
             _lastNow = nowSeconds;
             RunScheduled();
+            _townChecked = false; // Phase 9: the map-zone lookup runs at most once per check
             bool shot = _shotThisWindow, explosion = _explosionThisWindow;
             _shotThisWindow = _explosionThisWindow = false;
 
@@ -359,7 +368,7 @@ namespace HorsePersonalities.Game
                 SpeedMs = speed,
                 GameHour = _game.GameHour,
                 BondLevel = d.BondRank,
-                InTown = p.Has(Signature.CityLover) && _game.IsInTown(horse),
+                InTown = p.Has(Signature.CityLover) && InTown(horse),
                 InFight = _lastScan.EnemiesInCombat > 0,
                 GunfireSkillCourage = skills.Gunfire * bonus,
                 PredatorSkillCourage = skills.Predators * bonus,
@@ -414,7 +423,7 @@ namespace HorsePersonalities.Game
                 ?? _signatures.StrictCap(p, mounted, spurring, _strictUntil.TryGetValue(horse, out double strict) && nowSeconds < strict);
             double climb = p.Has(Signature.HillSigh) || p.Has(Signature.DownhillSnob) || p.Has(Signature.HillCrawler) || p.Has(Signature.Balker) || p.Has(Signature.CliffNerves) ? _game.GetVelocity(horse).Z : 0;
             double? crawl = _signatures.HillCap(p, mounted, climb, _bribedUntil.TryGetValue(horse, out double bribe) && nowSeconds < bribe);
-            double? dawdle = _signatures.TownCap(p, mounted, p.Has(Signature.TownDawdler) && mounted && _game.IsInTown(horse));
+            double? dawdle = _signatures.TownCap(p, mounted, p.Has(Signature.TownDawdler) && mounted && InTown(horse));
             _lazyRatio = dawdle.HasValue ? (float)dawdle.Value : crawl.HasValue ? (float)crawl.Value : cap.HasValue ? (float)cap.Value : 0f;
             _unhurriedRatio = dawdle.HasValue ? (float)dawdle.Value : crawl.HasValue ? (float)crawl.Value : hurry.HasValue ? (float)hurry.Value : 0f;
             if (cap.HasValue || crawl.HasValue || dawdle.HasValue || p.Has(Signature.Unhurried) || p.Has(Signature.Strict)) _lazyHorse = horse;
@@ -426,7 +435,7 @@ namespace HorsePersonalities.Game
             }
             if (decision.IsNone && p.Signatures.Count > 0)
             {
-                bool town = (p.Has(Signature.TownDisdain) || p.Has(Signature.CountryBumpkin)) && _game.IsInTown(horse);
+                bool town = (p.Has(Signature.TownDisdain) || p.Has(Signature.CountryBumpkin)) && InTown(horse);
                 var sig = new SignatureSituation
                 {
                     Mounted = mounted,

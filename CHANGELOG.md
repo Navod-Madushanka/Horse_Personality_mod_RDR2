@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Phase 9: polish and release (built Nov 28, 2026; the play session with other horse mods waits for the game)
+- **Settings check:** a misspelled setting gets a log warning naming the setting it probably meant. Testing settings left on (`TestPersonalities`, `ExperienceSpeed`, `RestoreVanillaStats`, `DebugOverlay`, `LogLevel = Debug`) are warned about at startup; test mode and a changed `ExperienceSpeed` also show in the "loaded" banner.
+- **Performance:** the town check runs at most once per behavior check.
+- **README** rewritten for players; developer notes moved to `docs/DEVELOPING.md`.
+- **Release zip:** `tools/make-release.ps1` (Windows) and `tools/make-release.sh` build `dist/HorsePersonalities-<version>.zip` with the `scripts` folder to copy into the game, the default INI, README, LICENSE and changelog. Version 0.9.0 until the acceptance run passes.
+
 ### Phase 5 in game (Nov 27, 2026)
 - Stage 9 passed: the reveal follows the bond level, the game resets changed base ranks on reload (the mod re-applies within a second) and keeps them through a stable visit, so uninstalling and reloading gives vanilla stats.
 - DevTools trigger 42 now sets the bond XP for the next level: `_SET_MOUNT_BONDING_LEVEL` alone did nothing in game.
