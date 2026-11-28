@@ -223,7 +223,9 @@
     "bribeSeconds": 120,
     "spurSpamPresses": 4,
     "spurSpamSeconds": 3,
-    "cliffNervesRate": 2
+    "cliffNervesRate": 2,
+    "tantrumAfterMinutes": 60,
+    "tantrumRate": 0.5
   },
   "skills": {
     "gunfightStep": 0.08,
@@ -2488,6 +2490,72 @@
         "alert": 0,
         "affectionate": 0,
         "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_shire_ravenblack",
+      "breed": "Shire",
+      "archetype": "The Chaotic Titan",
+      "vibe": "The Grim Reaper's Warhorse (Hosea's horse in Exit Pursued by a Bruised Ego). Massive, jet-black, pure outlaw intimidation: even Hosea thought him too unruly to keep, but once bonded he is fiercely protective, charging into rival gang camps like a freight train and trampling predators without blinking. Equal parts menacing and hilariously clumsy: bullies every other horse away from the feed trough, knocks over barrels and NPCs in narrow saloon alleys, throws earth-shaking tantrums if you forget his oatcakes. Like every Shire: unmatched presence, total fearlessness, monumental strength, wolves look like squirrels from up in the saddle, dense brush parts like tall grass, rock-steady while gunfire erupts; turns like a battleship, accelerates like a glacier, struggles through tight alleys and narrow forest paths, takes three business days to stop at full tilt, treats small fences like brick walls.",
+      "leans": {
+        "courage": 2,
+        "nerves": -1,
+        "temper": 2,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["WarHorse", "WolfBrawler", "ShortKing", "Clumsy", "TreatTantrum"],
+      "lovesTreats": ["Oatcakes"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_shire_darkbay",
+      "breed": "Shire",
+      "archetype": "The Immovable Mountain",
+      "vibe": "The Stoic Bouncer (pulls wagons and coaches). Dignified, deeply dependable, unbothered by chaos: years hauling freight over every muddy road in New Hanover; massive hunting hauls and raging thunderstorms are mild inconveniences, steady, patient, endlessly loyal. Stubbornly immune to urgency: however frantically you tap the spur he moves at his own dignified pace, pauses mid-trail to snack on grass, and gives you a heavy, unimpressed stare if you rush him uphill. Like every Shire: unmatched presence, total fearlessness, monumental strength, wolves look like squirrels from up in the saddle, dense brush parts like tall grass, rock-steady while gunfire erupts; turns like a battleship, accelerates like a glacier, struggles through tight alleys and narrow forest paths, takes three business days to stop at full tilt, treats small fences like brick walls.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["WarHorse", "Unhurried", "SpurSnob", "SnackMagnet", "HillCrawler"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_shire_lightgrey",
+      "breed": "Shire",
+      "archetype": "The Sleepy Cloud",
+      "vibe": "The Gentle Snow-Giant (pulls wagons and coaches). Towering, snowy-white, calm and affectionate: looks like a mythical war-beast but loves gentle grooming, stands patiently while you fish, carries heavy pelts without breaking stride. Oblivious to personal space and allergic to mud: nudges you off balance begging for carrots, gets wedged between trees on narrow trails, looks deeply betrayed whenever you ride it through the Bayou. Like every Shire: unmatched presence, total fearlessness, monumental strength, wolves look like squirrels from up in the saddle, dense brush parts like tall grass, rock-steady while gunfire erupts; turns like a battleship, accelerates like a glacier, struggles through tight alleys and narrow forest paths, takes three business days to stop at full tilt, treats small fences like brick walls.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": -2,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["WarHorse", "Vain", "AppleBeggar", "Clumsy", "MudTantrum"],
+      "lovesTreats": ["Carrot"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 0,
+        "affectionate": 2,
+        "fussy": 2
       }
     }
   ]

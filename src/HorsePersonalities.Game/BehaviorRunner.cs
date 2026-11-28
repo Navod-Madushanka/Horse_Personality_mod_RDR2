@@ -71,6 +71,7 @@ namespace HorsePersonalities.Game
         private readonly Dictionary<int, double> _soothedAt = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _strictUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _bribedUntil = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _minutesSinceTreat = new Dictionary<int, double>();
         // Phase 8: experience counting.
         private readonly Dictionary<int, double> _lastGunfightAt = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _lastSprintAt = new Dictionary<int, double>();
@@ -241,6 +242,10 @@ namespace HorsePersonalities.Game
             // Bribable: a treat it loves buys a couple of minutes of sprinting uphill.
             string fed = _catalog.TreatName(item);
             Coat coatFed = CoatOf(record.Personality, d);
+            // Treat tantrum: a treat it loves ends it; so does one the mod can't name yet (no item code in treats.csv).
+            if (kind == CareKind.Feed && record.Personality.Has(Signature.TreatTantrum)
+                && (fed == null || coatFed == null || System.Linq.Enumerable.Any(coatFed.LovesTreats, t => string.Equals(t, fed, StringComparison.OrdinalIgnoreCase))))
+                _minutesSinceTreat[horse] = 0;
             if (kind == CareKind.Feed && record.Personality.Has(Signature.Bribable) && fed != null && coatFed != null
                 && System.Linq.Enumerable.Any(coatFed.LovesTreats, t => string.Equals(t, fed, StringComparison.OrdinalIgnoreCase)))
             {
@@ -441,6 +446,7 @@ namespace HorsePersonalities.Game
                     CuriousTarget = _lastScan.CuriousTarget,
                     CrowdPerson = _lastScan.CrowdPerson,
                     RecentSpurPresses = SpurPresses(mounted && p.Has(Signature.SpurSnob), nowSeconds),
+                    MinutesSinceTreat = TreatClock(horse, mounted && p.Has(Signature.TreatTantrum), dt),
                     InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
@@ -514,6 +520,14 @@ namespace HorsePersonalities.Game
                 _registry.ExperienceChanged(record);
                 _log.Info(Log, $"{record.Id}: predator encounter counted ({e.Predators:0.#} so far)");
             }
+        }
+
+        /// <summary>Treat tantrum: minutes ridden since its last treat (this session).</summary>
+        private double TreatClock(int horse, bool ticking, double dt)
+        {
+            double m = _minutesSinceTreat.TryGetValue(horse, out double v) ? v : 0;
+            if (ticking) _minutesSinceTreat[horse] = m += dt / 60.0;
+            return m;
         }
 
         /// <summary>Spur snob: sprint presses (rising edges) in the last Spur spam seconds. Read every 250 ms, so a very fast double tap counts once.</summary>

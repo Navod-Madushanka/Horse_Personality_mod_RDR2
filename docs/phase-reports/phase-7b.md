@@ -244,6 +244,18 @@ Both Belgian coats have a design, so the baseline's Unhurried ("galloping is a m
 
 Bribable now lifts Lazy pace as well as Hill crawler. Cut: handling, jumping and stopping distance (no control), boots, hitching posts and trees (no control over where it walks; Clumsy stands in), the saddle-off moment (Selective hearing covers the whistle).
 
+## Shire coats (added Nov 28)
+
+All three Shire coats have a design, so the baseline's War horse is on each.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Raven Black (Hosea's horse) | The Chaotic Titan | +2 / -1 / +2 / -1 | Kicker | War horse, Wolf brawler, Short king, Clumsy, Treat tantrum; loves oatcakes |
+| Dark Bay | The Immovable Mountain | +2 / -2 / 0 / +1 | Shadow | War horse, Unhurried, Spur snob, Snack magnet, Hill crawler |
+| Light Grey | The Sleepy Cloud | +1 / -2 / -2 / +2 | Shadow | War horse, Vain, Apple beggar, Clumsy, Mud tantrum; loves carrots |
+
+New: **Treat tantrum** (an hour of riding without a treat: tantrums, 0.5/min, until fed; a loved treat, or one the mod can't name yet, ends it). Cut: handling, stopping, alleys and fences (no control), barrels, NPCs and trees (no control over where it walks), the Bayou in particular (Mud tantrum anywhere), nudging (no animation).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

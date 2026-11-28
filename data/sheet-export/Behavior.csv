@@ -159,3 +159,5 @@ Bribe seconds,120,Bribable: seconds a loved treat lifts its Hill crawler.
 Spur spam presses,4,Spur snob: this many sprint presses...
 Spur spam seconds,3,...within this many seconds is spamming the spur: an offended snort.
 Cliff nerves rate,2,Cliff nerves: agitated per minute while galloping steeply downhill (faster than Downhill speed).
+Tantrum after minutes,60,Treat tantrum: minutes of riding without a treat before the tantrums start.
+Tantrum rate,0.5,Treat tantrum: tantrums per minute until you feed it.

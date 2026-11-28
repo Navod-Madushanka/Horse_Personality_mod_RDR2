@@ -462,6 +462,17 @@ Both coats pull wagons and carts (and turn up at stables that sell drafts).
 | 12.95 | **Blond Chestnut**: stand next to it on foot; trot a few minutes | Horse, log | Asks you for an apple (*Apple beggar*); trips now and then (*Clumsy*) |  |  |
 | 12.96 | **Mealy Chestnut**: ride without spurring; feed it a haycube and ride again; walk it up a hill; get off 30 m away and whistle | Horse, log | Shuffles at a walk until fed (*Lazy pace*, *Bribable*; needs the haycube code), sighs on the hill (*Hill sigh*), sometimes ignores the whistle (*Selective hearing*) |  |  |
 
+### Stage 12, Shire coats
+
+The Raven Black is Hosea's horse in Exit Pursued by a Bruised Ego (and sold at some stables); the Dark Bay and Light Grey pull wagons and coaches.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.97 | **Any Shire**: ride into a gunfight | Horse, log | Never spooks while the fight is on (*War horse*) |  |  |
+| 12.98 | **Raven Black**: off it near a wolf; stand it near another horse; ride an hour without feeding it, then feed it | Horse, log | Goes for the wolf (*Wolf brawler*), squares up to the horse (*Short king*), tantrums after the hour and stops once fed (*Treat tantrum*) |  |  |
+| 12.99 | **Dark Bay**: tap sprint quickly on a quiet road; walk past grass; spur it up a hill | Horse, log | Snorts and holds a trot (*Spur snob*, *Unhurried*), stops to graze (*Snack magnet*), walks the hill (*Hill crawler*) |  |  |
+| 12.100 | **Light Grey**: brush it; stand next to it on foot; ride through mud | Horse, log | Happy every brushing (*Vain*), asks for a treat (*Apple beggar*), agitated when muddy (*Mud tantrum*) |  |  |
+
 ### Stage 12, Buell and Rachel
 
 | # | Do this | Look at | Pass if | Result | Notes |

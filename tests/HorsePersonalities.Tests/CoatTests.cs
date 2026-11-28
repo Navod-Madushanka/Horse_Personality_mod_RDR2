@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(69, Catalog.CoatCount);
+            Assert.Equal(72, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -819,6 +819,26 @@ namespace HorsePersonalities.Tests
             Assert.Equal(T.LazyWalkRatio, brain.LazyCap(p, true, false));
             Assert.Null(brain.LazyCap(p, true, false, bribed: true));
             Assert.Equal(T.LazyWalkRatio, brain.LazyCap(With(Signature.LazyPace), true, false, bribed: true)); // not bribable
+        }
+            // ---- Shire coats ----
+
+        [Fact]
+        public void ShireCoatsAreWarHorses()
+        {
+            foreach (string m in new[] { "ravenblack", "darkbay", "lightgrey" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_shire_" + m, out Coat c));
+                Assert.Contains(Signature.WarHorse, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void TreatTantrumAfterAnHourWithoutATreat()
+        {
+            var s = Riding(speed: 2); s.MinutesSinceTreat = T.TantrumAfterMinutes;
+            Assert.Equal(BehaviorAction.Agitate, S(With(Signature.TreatTantrum), s).Action);
+            s.MinutesSinceTreat = T.TantrumAfterMinutes - 1;
+            Assert.True(S(With(Signature.TreatTantrum), s).IsNone);
         }
     }
 }

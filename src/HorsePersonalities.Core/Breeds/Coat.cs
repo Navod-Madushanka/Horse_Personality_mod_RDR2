@@ -82,6 +82,8 @@ namespace HorsePersonalities.Core.Breeds
         SpurSnob,
         // Buell (Nov 28, 2026)
         CliffNerves,
+        // Shire coats (Nov 28, 2026)
+        TreatTantrum,
     }
 
     /// <summary>

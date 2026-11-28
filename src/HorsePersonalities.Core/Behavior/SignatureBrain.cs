@@ -75,6 +75,8 @@ namespace HorsePersonalities.Core.Behavior
         public int CrowdPerson;
         /// <summary>Sprint presses in the last Spur spam seconds.</summary>
         public int RecentSpurPresses;
+        /// <summary>Minutes ridden since its last treat (Treat tantrum).</summary>
+        public double MinutesSinceTreat;
     }
 
     /// <summary>
@@ -242,6 +244,8 @@ namespace HorsePersonalities.Core.Behavior
                 candidates.Add((BehaviorAction.Sigh, _t.WaterSighRate, "Water sigh: wet hooves, again", 0));
             if (p.Has(Signature.AppleBeggar) && !s.Mounted && s.PlayerNear && s.PlayerDistance <= _t.BeggarRange && s.StandingStillSeconds >= _t.BeggarSeconds)
                 candidates.Add((BehaviorAction.Beg, _t.BeggarRate, "Apple beggar: you've been standing here long enough to hand over an apple", 0));
+            if (p.Has(Signature.TreatTantrum) && s.Mounted && s.MinutesSinceTreat >= _t.TantrumAfterMinutes)
+                candidates.Add((BehaviorAction.Agitate, _t.TantrumRate, $"Treat tantrum: {s.MinutesSinceTreat:0} minutes and not one oatcake", 0));
             if (p.Has(Signature.CliffNerves) && galloping && -s.ClimbSpeed >= _t.DownhillSpeed)
                 candidates.Add((BehaviorAction.Agitate, _t.CliffNervesRate, $"Cliff nerves: galloping down a steep slope ({-s.ClimbSpeed:0.0} m/s)", 0));
             if (p.Has(Signature.DownhillSnob) && walking && -s.ClimbSpeed >= _t.DownhillSpeed)

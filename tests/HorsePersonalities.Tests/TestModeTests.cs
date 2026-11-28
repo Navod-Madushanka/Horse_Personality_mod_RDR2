@@ -82,8 +82,9 @@ namespace HorsePersonalities.Tests
             var reg = TestRegistry();
             var temp = reg.OnMount(1, new HorseFingerprint("a_c_horse_morgan_bay", true), B("Morgan"), HorseOrigin.Unknown, false);
             var kept = reg.OnSaddle(2, new HorseFingerprint("a_c_horse_shire_ravenblack", true), B("Shire"));
-            Assert.Equal("Average", temp.Preset);
-            Assert.Equal("Average", kept.Preset);
+            // The preset the shipped file gives this model (Average, or Coat design once the coat has a design).
+            Assert.Equal(Shipped.ForModel("a_c_horse_morgan_bay").Name, temp.Preset);
+            Assert.Equal(Shipped.ForModel("a_c_horse_shire_ravenblack").Name, kept.Preset);
             Assert.All(new[] { temp, kept }, r => Assert.Equal(0, r.Personality.Traits.Courage));
         }
 
@@ -127,7 +128,7 @@ namespace HorsePersonalities.Tests
                 Assert.True(store.Save(reg.Permanent));
                 Assert.True(File.Exists(Path.Combine(dir, "horses.test.json")));
                 Assert.False(File.Exists(Path.Combine(dir, "horses.json")));
-                Assert.Equal("Average", store.Load(false, DateTime.Now).Records.Single().Preset);
+                Assert.Equal(Shipped.ForModel("a_c_horse_shire_ravenblack").Name, store.Load(false, DateTime.Now).Records.Single().Preset);
             }
             finally { Directory.Delete(dir, true); }
         }
