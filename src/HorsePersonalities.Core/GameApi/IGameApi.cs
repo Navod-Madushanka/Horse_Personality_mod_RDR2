@@ -135,6 +135,17 @@ namespace HorsePersonalities.Core.GameApi
         /// <summary>IS_ENTITY_IN_WATER (Water sigh, trigger 61).</summary>
         bool IsInWater(int entity);
 
+        // ---- Phase 8b: people admiring the horse (triggers 66-68) ----
+        /// <summary>DOES_CONTEXT_EXIST_FOR_THIS_PED: the person's voice has this speech line (e.g. NICE_HORSE).</summary>
+        bool HasSpeechLine(int ped, string line);
+        /// <summary>IS_ANY_SPEECH_PLAYING.</summary>
+        bool IsSpeaking(int ped);
+        /// <summary>
+        /// PLAY_PED_AMBIENT_SPEECH_NATIVE with the speech-params struct: the line in the person's own voice (no voice name),
+        /// a random variation, the given speech params, addressed to <paramref name="listener"/>. Returns what the game returns.
+        /// </summary>
+        bool Say(int ped, string line, string speechParams, int listener);
+
         // ---- Attributes (stats and bonding) ----
         AttributeReading ReadAttribute(int ped, PedAttribute attribute);
         void SetAttributeBonusRank(int ped, PedAttribute attribute, int rank);

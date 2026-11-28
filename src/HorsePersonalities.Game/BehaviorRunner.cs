@@ -44,6 +44,11 @@ namespace HorsePersonalities.Game
         private readonly ThreatMemory _threats;
         private readonly PushDetector _push;
         private readonly LingerTracker _linger;
+        private readonly AdmirationBrain _admire;
+        private readonly IntervalGateSeconds _admireGate = new IntervalGateSeconds(1.0);
+        private double _lastAdmireCheck = -1;
+        private string _lastAdmireWhy;
+        private const string AdmireSpeechParams = "speech_params_force_normal"; // guess until trigger 67 passes
         private readonly Dictionary<int, BreakingDirector> _breaking = new Dictionary<int, BreakingDirector>();
         private readonly Dictionary<int, (int Rank, int Points)> _bondSeen = new Dictionary<int, (int, int)>();
         private readonly Dictionary<int, BondPace> _pace = new Dictionary<int, BondPace>();
@@ -127,6 +132,7 @@ namespace HorsePersonalities.Game
             _threats = new ThreatMemory(_t);
             _push = new PushDetector(_t);
             _linger = new LingerTracker(_t);
+            _admire = new AdmirationBrain(_t, rng);
         }
 
         // ---- Every frame: events only show in the frame they happen ----
@@ -354,6 +360,7 @@ namespace HorsePersonalities.Game
                 if (!gone.IsNone) { Play(horse, gone.Action, 0); _log.Info(Log, $"{record.Id}: {gone.Action} ({gone.Cause})"); }
                 return;
             }
+            if (_settings.NpcCompliments) Admire(horse, player, record, d, mounted, speed, playerDistance, nowSeconds);
             if (_scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds, d.Breed);
             else _lastScan.NewPredator = 0; // a predator counts once, in the scan that found it
             CountExperience(horse, record, mounted, speed, dt, shot || explosion, _lastScan.NewPredator != 0, nowSeconds);
@@ -536,6 +543,56 @@ namespace HorsePersonalities.Game
         }
 
         /// <summary>Turn grumble: how far the horse's heading has swung over the last Turn grumble seconds (0 to 180).</summary>
+        /// <summary>
+        /// Phase 8b: a person near a clean, fit, bond-4 horse glances at it and says the game's own compliment. Checked once a
+        /// second; the people scan only runs when the horse qualifies and the cooldown is over.
+        /// </summary>
+        private void Admire(int horse, int player, HorseRecord record, HorseDescription d, bool mounted, double speed, double playerDistance, double now)
+        {
+            if (!_admireGate.Due(now)) return;
+            double dt = _lastAdmireCheck < 0 ? 1 : Math.Min(5, now - _lastAdmireCheck);
+            _lastAdmireCheck = now;
+            if (!_admire.Ready(now)) return;
+            var s = new AdmirationSituation { BondLevel = d.BondRank, Mounted = mounted, Speed = speed, PlayerDistance = playerDistance };
+            if (s.BondLevel >= _t.AdmireBond)
+            {
+                s.HealthCore = _game.GetCoreValue(horse, AttributeCore.Health);
+                s.StaminaCore = _game.GetCoreValue(horse, AttributeCore.Stamina);
+                s.DirtRank = _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank;
+            }
+            string why = _admire.WhyNotAdmired(s);
+            if (why != _lastAdmireWhy)
+            {
+                _log.Debug(Log, why == null ? $"{record.Id}: admired (bond 4, clean, fit)." : $"{record.Id}: not admired ({why}).");
+                _lastAdmireWhy = why;
+            }
+            if (why != null || !_admire.OnShow(s)) return;
+
+            var people = new List<Admirer>();
+            foreach (int ped in _game.PedsNear(horse, (float)_t.AdmireRange))
+            {
+                if (ped == player || ped == horse || !_game.IsHuman(ped) || _game.IsDead(ped)) continue;
+                people.Add(new Admirer
+                {
+                    Ped = ped,
+                    Distance = _game.DistanceBetween(horse, ped),
+                    HasNiceHorse = _game.HasSpeechLine(ped, AdmirationBrain.NiceHorse),
+                    HasGoodCondition = _game.HasSpeechLine(ped, AdmirationBrain.GoodCondition),
+                    Speaking = _game.IsSpeaking(ped),
+                    Unfriendly = _game.IsPedInCombatWith(ped, player) || _game.IsHogtied(ped),
+                });
+            }
+            var (admirer, line) = _admire.Pick(s, people, now, dt);
+            if (admirer == 0) return;
+            _game.LookAtEntity(admirer, horse, 3000);
+            Schedule(0.6, "compliment", () =>
+            {
+                if (!_game.Exists(admirer) || _game.IsDead(admirer)) return;
+                bool said = _game.Say(admirer, line, AdmireSpeechParams, player);
+                _log.Info(Log, $"{record.Id}: complimented by person {admirer} ({line}{(said ? "" : ", the game said no")}).");
+            });
+        }
+
         private double TurnClock(int horse, bool watching, double now)
         {
             if (!watching) { _headings.Clear(); return 0; }

@@ -26,6 +26,8 @@ namespace HorsePersonalities.Core.Settings
         public double ExperienceSpeed { get; private set; } = 1.0;
         public int QuirkCooldownSeconds { get; private set; } = 120;
         public bool DisableDuringMissions { get; private set; } = true;
+        /// <summary>Phase 8b: people compliment a clean, fit, bond-4 horse.</summary>
+        public bool NpcCompliments { get; private set; } = true;
         public bool DebugOverlay { get; private set; } = false;
         /// <summary>A System.Windows.Forms.Keys name such as F9. The game layer turns it into a key.</summary>
         public string DebugKey { get; private set; } = "F9";
@@ -63,6 +65,7 @@ namespace HorsePersonalities.Core.Settings
             s.ExperienceSpeed = ReadDouble(ini, log, nameof(ExperienceSpeed), s.ExperienceSpeed, 0, 100);
             s.QuirkCooldownSeconds = ReadInt(ini, log, nameof(QuirkCooldownSeconds), s.QuirkCooldownSeconds, 0, 3600);
             s.DisableDuringMissions = ReadBool(ini, log, nameof(DisableDuringMissions), s.DisableDuringMissions);
+            s.NpcCompliments = ReadBool(ini, log, nameof(NpcCompliments), s.NpcCompliments);
             s.DebugOverlay = ReadBool(ini, log, nameof(DebugOverlay), s.DebugOverlay);
             s.DebugKey = ReadKeyName(ini, log, nameof(DebugKey), s.DebugKey);
             s.ResetAllHorses = ReadBool(ini, log, nameof(ResetAllHorses), s.ResetAllHorses);
@@ -85,7 +88,7 @@ namespace HorsePersonalities.Core.Settings
         private static readonly HashSet<string> Known = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             nameof(GoodHorseChance), nameof(UnbreakableChance), nameof(MaxStatRankChange), nameof(RestoreVanillaStats),
-            nameof(SpookFrequency), nameof(ExperienceSpeed), nameof(QuirkCooldownSeconds), nameof(DisableDuringMissions),
+            nameof(SpookFrequency), nameof(ExperienceSpeed), nameof(QuirkCooldownSeconds), nameof(DisableDuringMissions), nameof(NpcCompliments),
             nameof(DebugOverlay), nameof(DebugKey), nameof(ResetAllHorses), nameof(TestPersonalities), nameof(TestPresetKey),
             nameof(LogLevel), "MaxStatVariance", "RevealPerBondLevel",
         };
@@ -159,6 +162,8 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"QuirkCooldownSeconds = {d.QuirkCooldownSeconds}");
             sb.AppendLine("; Turns behaviors off in story missions and cutscenes (true/false).");
             sb.AppendLine($"DisableDuringMissions = {Bool(d.DisableDuringMissions)}");
+            sb.AppendLine("; People compliment your horse when it's at bond 4, clean and well fed (true/false).");
+            sb.AppendLine($"NpcCompliments = {Bool(d.NpcCompliments)}");
             sb.AppendLine("; Shows hidden values on screen (true/false). For testing.");
             sb.AppendLine($"DebugOverlay = {Bool(d.DebugOverlay)}");
             sb.AppendLine("; Key that toggles the overlay.");

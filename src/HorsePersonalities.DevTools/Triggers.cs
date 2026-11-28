@@ -170,7 +170,7 @@ namespace HorsePersonalities.DevTools
                 ctx =>
                 {
                     var sb = new StringBuilder();
-                    foreach (PedAttribute a in new[] { PedAttribute.Health, PedAttribute.Stamina, PedAttribute.Agility, PedAttribute.Speed, PedAttribute.Acceleration, PedAttribute.Courage, PedAttribute.Bonding, PedAttribute.Unruliness })
+                    foreach (PedAttribute a in new[] { PedAttribute.Health, PedAttribute.Stamina, PedAttribute.Agility, PedAttribute.Speed, PedAttribute.Acceleration, PedAttribute.Courage, PedAttribute.Bonding, PedAttribute.Unruliness, PedAttribute.Dirtiness })
                         ctx.Log(ctx.Game.ReadAttribute(ctx.Horse, a).ToString());
                     sb.Append($"Cores: health {ctx.Game.GetCoreValue(ctx.Horse, AttributeCore.Health)}, stamina {ctx.Game.GetCoreValue(ctx.Horse, AttributeCore.Stamina)}. Full list in log.txt");
                     return sb.ToString();
@@ -462,6 +462,19 @@ namespace HorsePersonalities.DevTools
             // ---- Nov 28, 2026: 64-65, does bond XP set by a script last? (Phase 6 open problem) ----
             t.Add(BondXpTest("bond.add", "Bond XP +50, added (watch 5 min)", true));
             t.Add(BondXpTest("bond.set", "Bond XP +50, set (control, watch 5 min)", false));
+
+            // ---- Nov 28, 2026: 66-68, admired horses (Phase 8b) ----
+            t.Add(new Trigger("speech.lines", "Nearest person: horse lines? (read only)", "Admired horses",
+                "Stand near a townsperson (or a gang member in camp) and press. Copy the result into Notes. Nothing is said.",
+                ctx =>
+                {
+                    int person = NearestPerson(ctx, 10f, out float dist);
+                    if (person == 0) return "No person within 10 m.";
+                    return $"Person {person}, {dist:0.0} m: NICE_HORSE {ctx.Game.HasSpeechLine(person, "NICE_HORSE")}, " +
+                           $"PLAYER_HORSE_IN_GOOD_CONDITION {ctx.Game.HasSpeechLine(person, "PLAYER_HORSE_IN_GOOD_CONDITION")}, speaking {ctx.Game.IsSpeaking(person)}";
+                }, needsHorse: false));
+            t.Add(SpeechTest("speech.nice", "Nearest person says \"Nice horse\"", "speech_params_force_normal", true));
+            t.Add(SpeechTest("speech.nice.force", "Nearest person says \"Nice horse\" (other params)", "speech_params_force", false));
             return t;
         }
 
@@ -493,6 +506,36 @@ namespace HorsePersonalities.DevTools
                     }
                     return $"{how}: bond {before.Rank}, XP {before.Points}. Watching for 5 minutes (see the log).";
                 });
+
+        /// <summary>Phase 8b: the nearest person glances at your horse and says NICE_HORSE (or the gang's good-condition line).</summary>
+        private static Trigger SpeechTest(string id, string name, string speechParams, bool toPlayer) =>
+            new Trigger(id, name, "Admired horses",
+                "Stand or sit on your horse within 10 m of a townsperson and press. Do they look at the horse and say a compliment " +
+                "in their own voice? Try the other speech trigger if this one is silent.",
+                ctx =>
+                {
+                    int person = NearestPerson(ctx, 10f, out float dist);
+                    if (person == 0) return "No person within 10 m.";
+                    string line = ctx.Game.HasSpeechLine(person, "PLAYER_HORSE_IN_GOOD_CONDITION") ? "PLAYER_HORSE_IN_GOOD_CONDITION" : "NICE_HORSE";
+                    ctx.Game.LookAtEntity(person, ctx.Horse, 3000);
+                    int listener = toPlayer ? ctx.Game.PlayerPed : 0;
+                    bool said = ctx.Game.Say(person, line, speechParams, listener);
+                    ctx.After(1500, () => ctx.Log($"{id}: person {person} speaking 1.5 s later: {ctx.Game.IsSpeaking(person)}"));
+                    return $"{line} with {speechParams}, listener {(toPlayer ? "you" : "none")}: game returned {said} (person {person}, {dist:0.0} m; has line {ctx.Game.HasSpeechLine(person, line)})";
+                });
+
+        private static int NearestPerson(ITriggerContext ctx, float range, out float best)
+        {
+            int me = ctx.Game.PlayerPed, found = 0;
+            best = range;
+            foreach (int ped in ctx.Game.PedsNear(me, range))
+            {
+                if (ped == me || !ctx.Game.IsHuman(ped) || ctx.Game.IsDead(ped)) continue;
+                float d = ctx.Game.DistanceBetween(me, ped);
+                if (d < best) { best = d; found = ped; }
+            }
+            return found;
+        }
 
         private static Trigger Action(string id, string name, int actionId, string usedFor, string how) =>
             new Trigger(id, name, usedFor, how, ctx =>

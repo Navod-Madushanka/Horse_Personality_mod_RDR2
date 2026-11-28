@@ -146,6 +146,12 @@ namespace HorsePersonalities.Game
         public const ulong GET_PED_STEALTH_MOVEMENT = 0x7C2AC9CA66575FBF;
         /// <summary>INPUT_WHISTLE and INPUT_WHISTLE_HORSEBACK, from the hook's eInputType.</summary>
         public const uint INPUT_WHISTLE = 0x24978A28, INPUT_WHISTLE_HORSEBACK = 0xE7EB9185;
+        /// <summary>AUDIO::DOES_CONTEXT_EXIST_FOR_THIS_PED(int ped, string speechName, bool unk) -> bool</summary>
+        public const ulong DOES_CONTEXT_EXIST_FOR_THIS_PED = 0x49B99BF3FDA89A7A;
+        /// <summary>AUDIO::IS_ANY_SPEECH_PLAYING(int ped) -> bool</summary>
+        public const ulong IS_ANY_SPEECH_PLAYING = 0x729072355FA39EC9;
+        /// <summary>AUDIO::PLAY_PED_AMBIENT_SPEECH_NATIVE(int speaker, ScriptedSpeechParams* params) -> bool. Struct: 8 slots of 8 bytes.</summary>
+        public const ulong PLAY_PED_AMBIENT_SPEECH_NATIVE = 0x8E04FEDD28D42462;
         /// <summary>ENTITY::IS_ENTITY_IN_WATER(int entity) -> bool</summary>
         public const ulong IS_ENTITY_IN_WATER = 0xDDE5C125AC446723;
         /// <summary>SCRIPTS::GET_NUMBER_OF_EVENTS(int eventGroup) -> int</summary>

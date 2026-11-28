@@ -189,6 +189,36 @@ namespace HorsePersonalities.Game
 
         public int GetCoreValue(int ped, AttributeCore core) => Function.Call<int>(Natives.GET_ATTRIBUTE_CORE_VALUE, ped, (int)core);
 
+        // ---- Phase 8b: people admiring the horse ----
+
+        public bool HasSpeechLine(int ped, string line) => CallBool(Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED, ped, line, false);
+        public bool IsSpeaking(int ped) => CallBool(Natives.IS_ANY_SPEECH_PLAYING, ped);
+
+        // The struct holds string pointers; the game may read them after the call returns, so each string is allocated once and kept.
+        private static readonly System.Collections.Generic.Dictionary<string, System.IntPtr> AnsiStrings =
+            new System.Collections.Generic.Dictionary<string, System.IntPtr>();
+        private static System.IntPtr Ansi(string text)
+        {
+            if (!AnsiStrings.TryGetValue(text, out System.IntPtr p))
+                AnsiStrings[text] = p = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(text);
+            return p;
+        }
+
+        public unsafe bool Say(int ped, string line, string speechParams, int listener)
+        {
+            // ScriptedSpeechParams (native DB): speechName, voiceName, variation, speechParamHash, listenerPed, syncOverNetwork, v7, v8.
+            ulong* args = stackalloc ulong[8];
+            args[0] = (ulong)Ansi(line).ToInt64();
+            args[1] = 0;                                       // no voice name: the person's own voice (guess, trigger 67)
+            args[2] = 0;                                       // variation 0: a random line
+            args[3] = Joaat.Hash(speechParams);
+            args[4] = (ulong)(uint)listener;
+            args[5] = 0;
+            args[6] = 1;
+            args[7] = 1;
+            return (Function.Call<int>(Natives.PLAY_PED_AMBIENT_SPEECH_NATIVE, ped, args) & 0xFF) != 0;
+        }
+
         // ---- Behaviors ----
 
         public void PlayVocalization(int ped, string vocalizationName) =>

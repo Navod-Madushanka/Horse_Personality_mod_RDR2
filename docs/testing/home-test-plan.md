@@ -569,6 +569,26 @@ The last stage, after the others pass. Build the zip on your PC: `powershell -Ex
 | 15.5 | The same with popular horse mods installed, including the Unruliness mod | Game, log | No crashes or fights between mods; note anything odd |  |  |
 | 15.6 | Uninstall: delete the mod's files, reload | Stat bars | Your horses are back to vanilla |  |  |
 
+## Stage 16: Phase 8b admired horses (added Nov 28)
+
+People compliment any horse at bond 4 that is clean and fit, as the game does for its fine breeds. Set `LogLevel = Debug` to see the *admired* / *not admired (why)* lines (back to Info afterwards). Use a breed the game doesn't already praise (a Shire, a Morgan, a Tennessee Walker), so you know the compliment is the mod's. Every compliment writes *complimented by person ...* in the log.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 16.1 | Next to a townsperson: DevTools trigger 66 (*Nearest person: horse lines?*); then a gang member in camp | Panel | Townsperson: NICE_HORSE True. Gang member: PLAYER_HORSE_IN_GOOD_CONDITION True (if not, note it) |  | Copy both lines |
+| 16.2 | On your horse within 10 m of a townsperson: trigger 67 (*Nearest person says "Nice horse"*) | Ears, panel | They look at the horse and compliment it in their own voice |  | If silent, try 16.3 |
+| 16.3 | The same with trigger 68 (*other params*) | Ears, panel | They compliment it |  | Note which of 67 and 68 worked |
+| 16.4 | DevTools trigger *Read all horse stats* on a freshly brushed horse, then after riding through mud | Log | The *Dirtiness* line: note the rank clean and dirty |  | Sets *Admire max dirt rank* |
+| 16.5 | Bond 4 (trigger 42), brushed, fed until both cores are full: ride at a walk through Valentine or Saint Denis for 5 minutes | Ears, log | A compliment every few minutes from different people, never two within 3 minutes |  |  |
+| 16.6 | The same horse: get off and stand beside it near people | Ears, log | Compliments still come |  |  |
+| 16.7 | Gallop through town | Log | No compliments while galloping |  |  |
+| 16.8 | Ride through mud until it's dirty, then through town again | Log | *not admired (dirt rank ...)*; no compliments until you brush it |  |  |
+| 16.9 | Let the cores drop below 70 (a long ride without feeding) | Log | *not admired (cores ...)*; feeding brings them back |  |  |
+| 16.10 | A bond 3 horse, clean and fed | Log | *not admired (bond 3 < 4)*; no compliments from the mod |  |  |
+| 16.11 | Ride into camp on the admired horse | Ears | Gang members say their *good condition* line |  |  |
+| 16.12 | Set `NpcCompliments = false`, reload with Insert, ride through town | Log | No compliments from the mod. Set it back |  |  |
+| 16.13 | During a mission ride past people | Log | No compliments from the mod |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

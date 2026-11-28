@@ -627,6 +627,24 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - The overlay shows the five skills and the long-use ranks.
 - **Done when:** a trained horse behaves differently from the same horse untrained, and a long-kept community favorite out-runs a fresh horse of a higher tier.
 
+### Phase 8b: Admired horses
+
+- **Asked by Navod, Nov 28, 2026.** In the game, people compliment a fine horse (an Arabian, a Turkoman, a Missouri Fox Trotter) as you ride past. With the mod, any horse earns that when you look after it: **bond 4, clean and fit**. A Shire you've kept for the whole story gets "Nice horse" in Saint Denis just as an Arabian does.
+- **When a horse counts as admired** (all from the Behavior tab):
+  - **Bond 4** (*Admire bond*).
+  - **Fit:** its health and stamina cores (the inner rings) are both at least *Admire min core* (70 of 100), so a horse you feed and look after.
+  - **Clean:** its dirtiness rank is at most *Admire max dirt rank* (1; the dirtiness scale is unverified, the stat readout trigger now logs it).
+  - Only horses with a personality (every breed in the sheet); gang horses, mules and Online-only breeds stay vanilla, as everywhere else.
+- **Who says it, and when:**
+  - You ride it at a walk or slow trot (below *Admire max speed*, 5 m/s), or stand on foot within *Admire beside distance* (4 m) of it.
+  - A person within *Admire range* (8 m) of the horse who isn't in combat with you, isn't hogtied and isn't already talking. They glance at the horse and say the game's own line: **NICE_HORSE** ("Nice horse", "Fine animal", ...; 364 voices have it), or **PLAYER_HORSE_IN_GOOD_CONDITION** when they have it (the gang in camp).
+  - At most one compliment per *Admire cooldown* (180 s), at *Admire rate* (2/min) while someone is in range, and the same person only once per *Admire same person minutes* (10).
+  - Held in missions and cutscenes like every behavior. The INI's `NpcCompliments` (default on) turns it off.
+  - The game's own compliments for its fine breeds keep happening as before; the mod adds its own on top for every looked-after horse.
+- **Game calls** (all through `IGameApi`, new DevTools triggers 66-68): `DOES_CONTEXT_EXIST_FOR_THIS_PED` (does this person have the line?), `IS_ANY_SPEECH_PLAYING`, and `PLAY_PED_AMBIENT_SPEECH_NATIVE` with the speech-params struct (line, no voice name so the person's own voice is used, random variation, `speech_params_force_normal`, listener: the player). The voice and params are guesses until trigger 67 passes.
+- **Test:** home test Stage 16.
+- **Done when:** riding a clean, fit bond-4 horse of any breed slowly through town gets a compliment every few minutes, and a dirty or hungry one, or a horse below bond 4, gets none from the mod.
+
 ### Phase 9: Polish and release
 
 - **Agent builds:** performance pass, settings validation, log levels, overlay off by default, README, changelog and the release zip.

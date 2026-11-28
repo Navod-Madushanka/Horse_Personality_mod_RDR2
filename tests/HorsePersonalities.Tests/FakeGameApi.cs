@@ -69,6 +69,12 @@ namespace HorsePersonalities.Tests
         public Vec3 GetVelocity(int entity) => new Vec3(0, 0, 0);
         public bool IsHogtied(int ped) => false;
         public bool IsInWater(int entity) => false;
+        public HashSet<(int, string)> SpeechLines { get; } = new HashSet<(int, string)>();
+        public HashSet<int> Speaking { get; } = new HashSet<int>();
+        public List<(int Ped, string Line, string Params, int Listener)> Said { get; } = new List<(int, string, string, int)>();
+        public bool HasSpeechLine(int ped, string line) => SpeechLines.Contains((ped, line));
+        public bool IsSpeaking(int ped) => Speaking.Contains(ped);
+        public bool Say(int ped, string line, string speechParams, int listener) { Said.Add((ped, line, speechParams, listener)); return true; }
         public void LookAtPoint(int ped, Vec3 point, int durationMs) { }
         public bool IsPlayerSneaking { get; set; }
         public bool IsWhistlePressed { get; set; }

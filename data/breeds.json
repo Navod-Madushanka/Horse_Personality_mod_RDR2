@@ -230,7 +230,16 @@
     "turnGrumbleDegrees": 120,
     "turnGrumbleSeconds": 2.5,
     "windedSeconds": 30,
-    "windedRate": 2
+    "windedRate": 2,
+    "admireBond": 4,
+    "admireMinCore": 70,
+    "admireMaxDirtRank": 1,
+    "admireMaxSpeed": 5,
+    "admireBesideDistance": 4,
+    "admireRange": 8,
+    "admireRate": 2,
+    "admireCooldown": 180,
+    "admireSamePersonMinutes": 10
   },
   "skills": {
     "gunfightStep": 0.08,

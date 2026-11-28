@@ -166,3 +166,12 @@ Turn grumble degrees,120,Turn grumble: turning this far...
 Turn grumble seconds,2.5,...within this many seconds while moving is turning it round: a grumpy snort.
 Winded seconds,30,Winded: seconds of galloping before it starts wheezing.
 Winded rate,2,"Winded: wheezes per minute after that, until it slows down."
+Admire bond,4,Admired horses: the bond level a horse needs before people compliment it.
+Admire min core,70,Admired horses: its health and stamina cores (0-100) must both be at least this (fit and well fed).
+Admire max dirt rank,1,Admired horses: its dirtiness rank must be at most this (clean; the scale is checked in Stage 16).
+Admire max speed,5,"Admired horses: ridden slower than this (m/s), a walk or slow trot, so people get a look."
+Admire beside distance,4,"Admired horses: on foot, you within this range (m) of it count as with it."
+Admire range,8,Admired horses: people within this range (m) of the horse may compliment it.
+Admire rate,2,Admired horses: compliments per minute while someone is in range (after the cooldown).
+Admire cooldown,180,Admired horses: shortest gap (s) between two compliments.
+Admire same person minutes,10,Admired horses: one person compliments the horse at most once in this many minutes.

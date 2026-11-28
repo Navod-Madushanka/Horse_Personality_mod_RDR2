@@ -12,6 +12,7 @@ There's no menu. A new horse looks exactly like a vanilla horse of its breed; yo
 - **Care gets an answer:** affectionate horses nicker after a pat, aloof ones give nothing back, grumpy ones toss their heads at the brush.
 - **Stats reveal themselves as you bond:** small health and stamina differences show on the stat bars at bond 2 and 3.
 - **Horses learn:** gunfights make a horse steadier under fire and predators steadier around predators, each only in its own situation. Speed and acceleration grow as you gallop and sprint, and a horse kept for the whole story grows past its natural ceiling.
+- **A looked-after horse gets noticed:** at bond 4, clean and well fed, any horse gets compliments from people as you ride slowly past, not just the Arabians and Turkomans.
 - **Wild horses** can be hard to break, rarely unbreakable. **Prized horses** (stable-bought, bonus coats, rare wild coats, community favorites) always roll good.
 - **Nothing happens in story missions or cutscenes.**
 
@@ -49,6 +50,7 @@ Everything is optional and set in `scripts\HorsePersonalities.ini`; delete a lin
 | `SpookFrequency` | 1 | More or fewer random spooks (0 turns them off). |
 | `QuirkCooldownSeconds` | 120 | The shortest gap between quirks on one horse. |
 | `DisableDuringMissions` | true | Keeps behaviors out of story missions and cutscenes. |
+| `NpcCompliments` | true | People compliment your horse when it's at bond 4, clean and well fed, whatever its breed. |
 | `RestoreVanillaStats` | false | Puts every horse's stats back to the game's own (for uninstalling). |
 | `ResetAllHorses` | false | A fresh start: every horse is rolled again, once. |
 | `DebugOverlay`, `DebugKey` | false, F9 | An on-screen panel with your horse's hidden values. |

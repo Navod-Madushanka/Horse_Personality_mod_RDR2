@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Phase 8b: admired horses (built Nov 28, 2026; needs the game)
+- People now compliment any horse at bond 4 that is clean and fit (both cores at 70 or more), not just the breeds the game already praises. A person within 8 m glances at the horse and says the game's own *NICE_HORSE* line (the gang in camp: *PLAYER_HORSE_IN_GOOD_CONDITION*) while you ride slowly or stand beside it. At most one compliment every 3 minutes, and each person once in 10 minutes; held in missions.
+- New INI setting `NpcCompliments` (default on). Nine new rows in the sheet's Behavior tab (*Admire ...*).
+- DevTools triggers 66 (does this person have the lines?), 67 and 68 (say "Nice horse", two speech settings); the stat readout now logs Dirtiness. Home test Stage 16.
+
 ### Phase 9: polish and release (built Nov 28, 2026; the play session with other horse mods waits for the game)
 - **Settings check:** a misspelled setting gets a log warning naming the setting it probably meant. Testing settings left on (`TestPersonalities`, `ExperienceSpeed`, `RestoreVanillaStats`, `DebugOverlay`, `LogLevel = Debug`) are warned about at startup; test mode and a changed `ExperienceSpeed` also show in the "loaded" banner.
 - **Performance:** the town check runs at most once per behavior check.

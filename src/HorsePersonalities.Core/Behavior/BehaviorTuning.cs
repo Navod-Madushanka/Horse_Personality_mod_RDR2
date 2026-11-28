@@ -185,6 +185,15 @@ namespace HorsePersonalities.Core.Behavior
         public double TurnGrumbleSeconds => _v["turnGrumbleSeconds"];
         public double WindedSeconds => _v["windedSeconds"];
         public double WindedRate => _v["windedRate"];
+        public int AdmireBond => (int)_v["admireBond"];
+        public double AdmireMinCore => _v["admireMinCore"];
+        public double AdmireMaxDirtRank => _v["admireMaxDirtRank"];
+        public double AdmireMaxSpeed => _v["admireMaxSpeed"];
+        public double AdmireBesideDistance => _v["admireBesideDistance"];
+        public double AdmireRange => _v["admireRange"];
+        public double AdmireRate => _v["admireRate"];
+        public double AdmireCooldown => _v["admireCooldown"];
+        public double AdmireSamePersonMinutes => _v["admireSamePersonMinutes"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -355,6 +364,15 @@ namespace HorsePersonalities.Core.Behavior
             ("turnGrumbleSeconds", "Turn grumble seconds", 0.5, 30.0, false),
             ("windedSeconds", "Winded seconds", 1.0, 600.0, false),
             ("windedRate", "Winded rate", 0.0, 20.0, false),
+            ("admireBond", "Admire bond", 1.0, 4.0, true),
+            ("admireMinCore", "Admire min core", 0.0, 100.0, false),
+            ("admireMaxDirtRank", "Admire max dirt rank", 0.0, 100.0, false),
+            ("admireMaxSpeed", "Admire max speed", 0.5, 30.0, false),
+            ("admireBesideDistance", "Admire beside distance", 0.5, 30.0, false),
+            ("admireRange", "Admire range", 1.0, 50.0, false),
+            ("admireRate", "Admire rate", 0.0, 60.0, false),
+            ("admireCooldown", "Admire cooldown", 0.0, 3600.0, false),
+            ("admireSamePersonMinutes", "Admire same person minutes", 0.0, 1440.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>
