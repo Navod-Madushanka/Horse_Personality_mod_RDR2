@@ -55,12 +55,14 @@ namespace HorsePersonalities.Core.Behavior
             bool battle = s.InFight && p.Has(Breeds.Signature.WarHorse);
             if (s.Threat != Threat.None && !battle)
             {
-                double courage = t.Courage - (s.Threat == Threat.Explosion ? _t.ExplosionCouragePenalty : 0);
+                // Phase 8: a skill eases fear only in its own situation.
+                double learned = s.Threat == Threat.Predator ? s.PredatorSkillCourage : s.GunfireSkillCourage;
+                double courage = t.Courage + learned - (s.Threat == Threat.Explosion ? _t.ExplosionCouragePenalty : 0);
                 double chance = ThreatChance(courage) * (s.Threat == Threat.RiderGunfire ? _t.RiderGunfireScale : 1.0);
                 if (cooldowns.Ready(horse, BehaviorGroup.Spook, now))
                 {
                     double roll = _random();
-                    string why = $"{s.Threat}, Courage {F(t.Courage)}: roll {F3(roll)} vs {F3(chance)}";
+                    string why = $"{s.Threat}, Courage {F(t.Courage)}{(learned > 0 ? $" + skill {F(learned)}" : "")}: roll {F3(roll)} vs {F3(chance)}";
                     if (roll < chance)
                     {
                         BehaviorAction a;

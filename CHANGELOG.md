@@ -8,6 +8,13 @@
 - Bond pace leaves jumps over 300 XP alone (trigger 42, trainers) instead of scaling them.
 - Found: the game puts bond XP the mod sets back within minutes, so Phase 6's bond pace probably has no lasting effect. Check in row 10.10.
 
+### Phase 8: skills, experience and long-use growth (built Nov 28, 2026)
+- Each permanent horse counts gunfights, predator encounters, minutes ridden and galloping, and sprints (`experience` in `horses.json`; older files load with none). Skills come from those counts, the new **Skills** sheet tab and the breed's learning rate.
+- Gunfire and predator skills add Courage in their own situation only.
+- Natural speed and acceleration now show on the stat bars (positive ones once the skill grows into them). Long use adds +1 at bond 3 and 10 hours; community favorites +2 at bond 4 and 30 hours, past the tier.
+- Experimental: handling skill raises the Agility rank.
+- The overlay shows experience, skills and long-use ranks. New INI setting `ExperienceSpeed` (default 1) speeds growth up for testing.
+
 ### Open problem: bond pace does not last (Nov 28, 2026)
 - In game the bond XP the mod sets is put back by the game within about three minutes, so bond pace has no lasting effect. DevTools triggers 64 (add +50 bond XP with `ADD_ATTRIBUTE_POINTS`) and 65 (set +50, the control) watch the bond XP for 5 minutes; home test Stage 13. The plan records what happens next either way.
 

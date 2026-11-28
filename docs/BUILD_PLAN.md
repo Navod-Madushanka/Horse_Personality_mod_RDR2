@@ -250,7 +250,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
       "quirks": ["PickyEater"],
       "naturalStats": { "speed": 1, "acceleration": 0, "health": 1, "stamina": -1 },
       "breaking": "Normal",
-      "skills": { "gunfire": 0.15, "predators": 0.0, "handling": 0.30, "speed": 0.10, "acceleration": 0.05 },
+      "experience": { "gunfights": 3, "predators": 1, "riddenMinutes": 412.5, "gallopMinutes": 61.0, "sprints": 37 },
       "firstSeen": "2026-11-22",
       "lastSeen": "2026-11-22"
     }
@@ -260,7 +260,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 
 - The key is the horse's fingerprint: model, sex and coat. Phase 2 confirms which parts the game exposes.
 - Traits are numbers from -2 to +2, matching the sheet's scale. Natural stats are whole ranks above or below the breed baseline, capped by tier.
-- Skills run from 0 (untrained) to 1 (at the horse's ceiling).
+- Skills run from 0 (untrained) to 1 (at the horse's ceiling). They aren't stored: the file keeps the experience counts, and skills are worked out from them with the Skills tab's steps and the breed's learning rates (Phase 8, Nov 28, 2026). A file without `experience` loads with zero experience.
 - Temporary personalities are never written to this file.
 - Schema 2 (Nov 25, 2026) stores natural stats as whole ranks. A schema 1 file (natural stats as fractions) is upgraded on load: each horse keeps its traits and quirks, and its natural stats are re-rolled from its saved seed under the rank rules. A quirk that no longer exists (Show-off) is dropped.
 - Each record also keeps the roll's `seed` and `rollerVersion`, so a horse can be checked against a fresh roll.
@@ -583,6 +583,15 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 - **Agent builds:** exposure tracking (gunfire near the horse, predator encounters survived, time and distance ridden, sprints) turned into skill growth at the class learning rate; skills reduce panic in their own situation and raise speed, acceleration and handling toward the ceiling. Long-use growth on top: +1 rank past the natural ceiling for any horse (within its tier), up to +2 over the breed's usual value for community favorites, unlocked by bond level and riding time. Handling growth is experimental.
 - **Test (unit):** growth curves and caps. In game: about 10 gunfights make a timid horse visibly calmer under fire but not around bears.
+- **Design (Nov 28, 2026, built ahead of game testing by decision).** Tuning numbers are in the sheet's new **Skills** tab.
+  - **Experience is counted, skills are worked out from it.** Each permanent horse keeps five counts in `horses.json` (`experience`): gunfights it was in, predator encounters, minutes ridden, minutes at a gallop, sprints. A skill (0 to 1) is count x step x the breed's learning rate (combat for gunfire and predators, physical for speed, acceleration and handling), so retuning a step or a class rate changes every horse at once, no save upgrade.
+  - **Counting:** a gunfight is gunfire or an explosion near the horse while you ride it or stand by it, at most one per *Gunfight gap* (60 s). A predator encounter is a predator first seen within Predator range. Ridden and gallop minutes count while you ride a permanent horse. A sprint is a press of the sprint button from below a gallop, at most one per *Sprint gap*. Counting is held in missions and cutscenes like everything else. The INI's `ExperienceSpeed` (default 1) multiplies all of it, for testing.
+  - **Skills ease fear in their own situation only.** Gunfire skill adds up to *Skill courage bonus* (2) Courage against gunfire and explosions; predator skill the same against predators. A timid horse with 10 gunfights is calm under fire and still timid around a bear.
+  - **Speed and acceleration grow toward the natural ceiling.** A horse with a positive natural stat shows it once that skill reaches *Skill rank at* (0.5); a zero or negative natural stat shows from the start (there's nothing to grow toward). So natural speed and acceleration, rolled since Phase 3, finally appear on the stat bars.
+  - **Long-use growth:** +1 rank of speed and acceleration once the horse is at bond 3 and ridden 10 hours (*Long use rank 1 bond / hours*); community favorites get a second rank at bond 4 and 30 hours. Any horse stops at its tier's up cap above the breed's usual value; community favorites stop at +2 (*Favorite max ranks*), past the tier. Nothing passes the game's rank 9.
+  - **Handling (experimental):** handling skill at *Skill rank at* raises the Agility base rank by 1, within the tier cap; *Handling growth* 0 turns it off. Whether Agility changes handling in game is a test row.
+  - Like health and stamina, speed, acceleration and agility change only the base rank; the original is stored on first sight and re-applied every session (the game resets base ranks on reload, Phase 5). `RestoreVanillaStats` puts them back too.
+  - The overlay shows the five skills and the long-use ranks.
 - **Done when:** a trained horse behaves differently from the same horse untrained, and a long-kept community favorite out-runs a fresh horse of a higher tier.
 
 ### Phase 9: Polish and release
@@ -656,7 +665,7 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 ### Open questions
 
 - [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab. Community favorites also get the bigger long-use growth.
-- [ ] Long-use growth: the hours ridden and bond levels that unlock each rank (Phase 8).
+- [x] Long-use growth: the hours ridden and bond levels that unlock each rank. Proposed in the Skills tab (Nov 28, 2026): bond 3 and 10 hours for rank 1, bond 4 and 30 hours for a favorite's rank 2. Navod tunes after testing.
 - [ ] Bonding: how much slower the climb to bond 4 is (proposed 0.75 for good horses, 0.5 for prized), and how much harder prized wild horses are to break (proposed *Prized break score bonus* +1.0). Tune in Phase 6.
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?

@@ -23,6 +23,7 @@ namespace HorsePersonalities.Tools.SheetToJson
     ///   Behavior.csv the sheet's Behavior tab (Setting, Value): Phase 6 and 7 rates, chances and timings
     ///   Demeanor.csv the sheet's Demeanor tab (Breed, Impatient, Alert, Affectionate, Fussy): body language, 0-2
     ///   Coats.csv    the sheet's Coats tab: hand-written coat personalities (Phase 7b)
+    ///   Skills.csv   the sheet's Skills tab (Setting, Value): Phase 8 experience steps and long-use growth
     ///   treats.csv   name,itemHash,note: treat names and the item codes the game reports (kept in the repo)
     ///   predator-models.csv  model,note: animals a horse may spook at (game data, kept in the repo)
     /// Columns are found by header name, so reordering or adding columns in the sheet is fine.
@@ -30,7 +31,7 @@ namespace HorsePersonalities.Tools.SheetToJson
     public static class SheetConverter
     {
         public static JsonValue Convert(string breedsCsv, string classesCsv, string modelsCsv, string rollerCsv, string tiersCsv, string prizedCsv,
-            string behaviorCsv, string predatorsCsv, string demeanorCsv, string coatsCsv, string treatsCsv, string dogsCsv = null)
+            string behaviorCsv, string predatorsCsv, string demeanorCsv, string coatsCsv, string treatsCsv, string dogsCsv = null, string skillsCsv = null)
         {
             var problems = new List<string>();
             JsonValue treats = ReadTreats(treatsCsv, problems);
@@ -38,6 +39,7 @@ namespace HorsePersonalities.Tools.SheetToJson
             var demeanor = ReadDemeanor(demeanorCsv, problems);
             JsonValue roller = ReadSettings(rollerCsv, RollerTuning.Fields, "Roller.csv", problems);
             JsonValue behavior = ReadSettings(behaviorCsv, HorsePersonalities.Core.Behavior.BehaviorTuning.Fields, "Behavior.csv", problems);
+            JsonValue skills = skillsCsv == null ? null : ReadSettings(skillsCsv, HorsePersonalities.Core.Skills.SkillTuning.Fields, "Skills.csv", problems);
             JsonValue predators = ReadAnimals(predatorsCsv, "predator-models.csv", problems);
             JsonValue dogs = dogsCsv == null ? JsonValue.NewArray() : ReadAnimals(dogsCsv, "dog-models.csv", problems);
             JsonValue tiers = ReadTiers(tiersCsv, problems);
@@ -215,6 +217,7 @@ namespace HorsePersonalities.Tools.SheetToJson
                 .Set("roller", roller)
                 .Set("tiers", tiers)
                 .Set("behavior", behavior)
+                .Set("skills", skills ?? JsonValue.NewObject())
                 .Set("predatorModels", predators)
                 .Set("dogModels", dogs)
                 .Set("breeds", breeds)

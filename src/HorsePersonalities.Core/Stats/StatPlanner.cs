@@ -74,5 +74,38 @@ namespace HorsePersonalities.Core.Stats
             One(Stamina, stamina, record.Personality.NaturalStats.Stamina);
             return changes;
         }
+
+        public const string Speed = "speed";
+        public const string Acceleration = "acceleration";
+        public const string Agility = "agility";
+
+        /// <summary>
+        /// Phase 8: speed, acceleration and agility base ranks, each at its original plus the offset GrowthPlanner gave
+        /// (null readings are skipped). Same rules as <see cref="Plan"/>: originals learned on first sight, only permanent
+        /// horses, game range kept, RestoreVanillaStats puts the originals back.
+        /// </summary>
+        public static List<StatChange> PlanGrowth(HorseRecord record, IEnumerable<(string Stat, AttributeReading Reading, int Offset, int Natural)> stats,
+            bool restore, out List<(string Stat, int Base)> learned)
+        {
+            var changes = new List<StatChange>();
+            var found = new List<(string Stat, int Base)>();
+            learned = found;
+            if (record == null || record.Status != PersonalityStatus.Permanent) return changes;
+            foreach (var (stat, reading, offset, natural) in stats)
+            {
+                if (!record.VanillaBase.TryGetValue(stat, out int vanilla))
+                {
+                    if (restore) continue;
+                    vanilla = reading.BaseRank;
+                    found.Add((stat, vanilla));
+                }
+                int shown = restore ? 0 : offset;
+                int max = reading.MaxRank > 0 ? reading.MaxRank : Breeds.TierCap.MaxRank;
+                int target = Math.Max(0, Math.Min(max, vanilla + shown));
+                if (reading.BaseRank != target)
+                    changes.Add(new StatChange { Attribute = reading.Attribute, From = reading.BaseRank, To = target, Vanilla = vanilla, Natural = natural, Revealed = shown });
+            }
+            return changes;
+        }
     }
 }

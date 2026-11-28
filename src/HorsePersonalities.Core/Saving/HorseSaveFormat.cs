@@ -55,6 +55,7 @@ namespace HorsePersonalities.Core.Saving
                     .Set("archetype", JsonValue.From(p.Archetype))
                     .Set("signatures", Sigs(p))
                     .Set("vanillaBase", VanillaJson(r))
+                    .Set("experience", ExperienceJson(r.Experience))
                     .Set("preset", JsonValue.From(r.Preset))
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
                     .Set("seed", p.Seed.ToString("X16", CultureInfo.InvariantCulture))
@@ -155,8 +156,27 @@ namespace HorsePersonalities.Core.Saving
                     if (v < 0 || v > TierCap.MaxRank) throw new SaveFormatException($"vanillaBase.{kv.Key} = {v} is not a rank.");
                     record.VanillaBase[kv.Key] = v;
                 }
+            JsonValue ex = j["experience"]; // Phase 8; absent in older files: zero experience
+            if (ex.Kind == JsonKind.Object)
+            {
+                double E(string k)
+                {
+                    double v = ex.GetNumber(k, 0);
+                    if (double.IsNaN(v) || v < 0) throw new SaveFormatException($"experience.{k} = {v} must be 0 or more.");
+                    return v;
+                }
+                record.Experience = new Skills.Experience
+                {
+                    Gunfights = E("gunfights"), Predators = E("predators"), RiddenMinutes = E("riddenMinutes"),
+                    GallopMinutes = E("gallopMinutes"), Sprints = E("sprints"),
+                };
+            }
             return record;
         }
+
+        private static JsonValue ExperienceJson(Skills.Experience e) => JsonValue.NewObject()
+            .Set("gunfights", Exact(e.Gunfights)).Set("predators", Exact(e.Predators))
+            .Set("riddenMinutes", Exact(e.RiddenMinutes)).Set("gallopMinutes", Exact(e.GallopMinutes)).Set("sprints", Exact(e.Sprints));
 
         private static JsonValue Sigs(Personality p)
         {

@@ -1,0 +1,18 @@
+Setting,Value,What it does
+Gunfight step,0.08,Gunfire skill per gunfight at learning rate 1: about 12 gunfights for a full skill (War breeds 1.5: 8).
+Predator step,0.08,Predator skill per predator encounter at learning rate 1.
+Gunfight gap seconds,60,Gunfire within this many seconds of the last counted gunfight is the same gunfight.
+Skill courage bonus,2,Courage a full skill adds in its own situation only (gunfire skill: gunfire and explosions; predator skill: predators).
+Speed per gallop minute,0.02,Speed skill per minute at a gallop at learning rate 1: about 50 minutes for a full skill.
+Acceleration per sprint,0.02,Acceleration skill per sprint at learning rate 1: about 50 sprints.
+Sprint gap seconds,10,A sprint press within this many seconds of the last counted sprint doesn't count again.
+Handling per ridden minute,0.004,Handling skill per minute ridden at learning rate 1: about 4 hours for a full skill.
+Skill rank at,0.5,A positive natural speed or acceleration (and handling's agility rank) shows once its skill reaches this.
+Long use rank 1 bond,3,"Long-use growth rank 1 (+1 speed and acceleration, within the tier): this bond level..."
+Long use rank 1 hours,10,...and this many hours ridden.
+Long use rank 2 bond,4,"Community favorites' rank 2 (+2 over the breed, past the tier): this bond level..."
+Long use rank 2 hours,30,...and this many hours ridden.
+Favorite max ranks,2,A community favorite's speed and acceleration stop this many ranks above its breed's usual value.
+Handling growth,1,"Experimental: 1 lets handling skill raise the Agility rank, 0 turns it off."
+Handling agility ranks,1,Agility ranks a full handling skill gives (within the tier cap).
+Save every ridden minutes,5,horses.json is written after this many minutes of riding (and after every gunfight or predator encounter).

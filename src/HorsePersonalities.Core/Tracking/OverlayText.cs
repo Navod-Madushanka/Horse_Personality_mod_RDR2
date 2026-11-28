@@ -7,7 +7,9 @@ namespace HorsePersonalities.Core.Tracking
     /// <summary>The debug overlay's text (Build plan: Debug overlay). Built once per mount, drawn every frame; the overlay adds the live tick time.</summary>
     public static class OverlayText
     {
-        public static IReadOnlyList<string> Build(HorseDescription horse, HorseRecord record)
+        /// <param name="skills">Phase 8: with the Skills tab, a permanent horse also shows its experience, skills and long-use ranks.</param>
+        /// <param name="favorite">The horse is a community favorite (Prized tab), for its long-use ranks.</param>
+        public static IReadOnlyList<string> Build(HorseDescription horse, HorseRecord record, Skills.SkillTuning skills = null, bool favorite = false)
         {
             var lines = new List<string>
             {
@@ -27,6 +29,14 @@ namespace HorsePersonalities.Core.Tracking
                 : "Temporary: gone on reload, saddle it to keep it");
             if (record.Preset != null) lines.Add("Test preset: " + record.Preset);
             lines.AddRange(record.Personality.Describe());
+            if (skills != null && horse.Breed != null && record.Status == PersonalityStatus.Permanent)
+            {
+                var set = Skills.SkillSet.From(record.Experience, horse.Breed.Learning, skills);
+                int longUse = Skills.GrowthPlanner.LongUseRanks(horse.BondRank, record.Experience.RiddenHours, favorite, skills);
+                lines.Add("Experience: " + record.Experience);
+                lines.Add("Skills: " + set);
+                lines.Add($"Long-use growth: {longUse} rank{(longUse == 1 ? "" : "s")}{(favorite ? " (community favorite: up to 2)" : "")}");
+            }
             return lines;
         }
     }

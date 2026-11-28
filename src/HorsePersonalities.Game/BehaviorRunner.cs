@@ -71,6 +71,11 @@ namespace HorsePersonalities.Game
         private readonly Dictionary<int, double> _soothedAt = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _strictUntil = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _bribedUntil = new Dictionary<int, double>();
+        // Phase 8: experience counting.
+        private readonly Dictionary<int, double> _lastGunfightAt = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _lastSprintAt = new Dictionary<int, double>();
+        private readonly Dictionary<int, double> _minutesSinceSave = new Dictionary<int, double>();
+        private bool _wasSprinting;
         private double _lastDangerAt = double.NegativeInfinity;
         private float _unhurriedRatio;
         private bool _unhurriedSnorted;
@@ -334,6 +339,9 @@ namespace HorsePersonalities.Game
             }
             if (_scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds, d.Breed);
             else _lastScan.NewPredator = 0; // a predator counts once, in the scan that found it
+            CountExperience(horse, record, mounted, speed, dt, shot || explosion, _lastScan.NewPredator != 0, nowSeconds);
+            Core.Skills.SkillSet skills = _catalog.Skills != null ? Core.Skills.SkillSet.From(record.Experience, d.Breed.Learning, _catalog.Skills) : default;
+            double bonus = _catalog.Skills?.SkillCourageBonus ?? 0;
 
             // ---- Phase 6: threats, pushes, random spooks, kicks ----
             var s = new HorseSituation
@@ -345,6 +353,8 @@ namespace HorsePersonalities.Game
                 BondLevel = d.BondRank,
                 InTown = p.Has(Signature.CityLover) && _game.IsInTown(horse),
                 InFight = _lastScan.EnemiesInCombat > 0,
+                GunfireSkillCourage = skills.Gunfire * bonus,
+                PredatorSkillCourage = skills.Predators * bonus,
                 Pushed = _push.Update(dt, mounted, speed, _game.GetCoreValue(horse, AttributeCore.Stamina), mounted && _game.IsSprintPressed),
             };
             if (!mounted)
@@ -454,6 +464,52 @@ namespace HorsePersonalities.Game
             int target = decision.Target != 0 ? decision.Target : s.ThreatEntity != 0 ? s.ThreatEntity : player;
             Play(horse, decision.Action, target);
             _log.Info(Log, $"{record.Id}: {decision.Action} ({decision.Cause})");
+        }
+
+        /// <summary>
+        /// Phase 8: what this horse lives through, for a permanent horse: minutes ridden and galloping, sprints, gunfights
+        /// (at most one per Gunfight gap) and predators. Held in missions with everything else (the caller returns first).
+        /// Saved on each gunfight or predator, and every Save every ridden minutes of riding (rule 7: events, not frames).
+        /// </summary>
+        private void CountExperience(int horse, HorseRecord record, bool mounted, double speed, double dt, bool gunfire, bool predator, double now)
+        {
+            Core.Skills.SkillTuning st = _catalog.Skills;
+            if (st == null || record.Status != PersonalityStatus.Permanent) { _wasSprinting = false; return; }
+            double k = _settings.ExperienceSpeed;
+            if (k <= 0) return;
+            Core.Skills.Experience e = record.Experience;
+            if (mounted)
+            {
+                double minutes = dt / 60.0 * k;
+                e.RiddenMinutes += minutes;
+                if (speed >= _t.GallopSpeed) e.GallopMinutes += minutes;
+                double since = (_minutesSinceSave.TryGetValue(horse, out double m) ? m : 0) + minutes;
+                if (since >= st.SaveEveryRiddenMinutes) { _registry.ExperienceChanged(record); since = 0; }
+                _minutesSinceSave[horse] = since;
+
+                bool sprinting = _game.IsSprintPressed;
+                if (sprinting && !_wasSprinting && speed < _t.GallopSpeed
+                    && (!_lastSprintAt.TryGetValue(horse, out double ls) || now - ls >= st.SprintGapSeconds))
+                {
+                    e.Sprints += k;
+                    _lastSprintAt[horse] = now;
+                }
+                _wasSprinting = sprinting;
+            }
+            else _wasSprinting = false;
+            if (gunfire && (!_lastGunfightAt.TryGetValue(horse, out double lg) || now - lg >= st.GunfightGapSeconds))
+            {
+                e.Gunfights += k;
+                _lastGunfightAt[horse] = now;
+                _registry.ExperienceChanged(record);
+                _log.Info(Log, $"{record.Id}: gunfight counted ({e.Gunfights:0.#} so far)");
+            }
+            if (predator)
+            {
+                e.Predators += k;
+                _registry.ExperienceChanged(record);
+                _log.Info(Log, $"{record.Id}: predator encounter counted ({e.Predators:0.#} so far)");
+            }
         }
 
         /// <summary>One look at the peds around the horse every 0.5 s: predators, people passing, someone behind it, other horses.</summary>

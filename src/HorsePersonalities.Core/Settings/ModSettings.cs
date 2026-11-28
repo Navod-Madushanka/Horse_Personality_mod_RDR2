@@ -21,6 +21,8 @@ namespace HorsePersonalities.Core.Settings
         /// <summary>Puts every horse's stats back to the game's own values as the mod sees it, and stops applying natural stats.</summary>
         public bool RestoreVanillaStats { get; private set; } = false;
         public double SpookFrequency { get; private set; } = 1.0;
+        /// <summary>Phase 8: multiplies all experience counted (0-100). For testing growth quickly; 1 is normal.</summary>
+        public double ExperienceSpeed { get; private set; } = 1.0;
         public int QuirkCooldownSeconds { get; private set; } = 120;
         public bool DisableDuringMissions { get; private set; } = true;
         public bool DebugOverlay { get; private set; } = false;
@@ -57,6 +59,7 @@ namespace HorsePersonalities.Core.Settings
             if (ini.TryGetAnywhere(Section, "RevealPerBondLevel", out _))
                 log.Warn(LogCategory, "RevealPerBondLevel is no longer used: stat differences show at bond 2 and 3 (the sheet's Roller tab).");
             s.SpookFrequency = ReadDouble(ini, log, nameof(SpookFrequency), s.SpookFrequency, 0, 10);
+            s.ExperienceSpeed = ReadDouble(ini, log, nameof(ExperienceSpeed), s.ExperienceSpeed, 0, 100);
             s.QuirkCooldownSeconds = ReadInt(ini, log, nameof(QuirkCooldownSeconds), s.QuirkCooldownSeconds, 0, 3600);
             s.DisableDuringMissions = ReadBool(ini, log, nameof(DisableDuringMissions), s.DisableDuringMissions);
             s.DebugOverlay = ReadBool(ini, log, nameof(DebugOverlay), s.DebugOverlay);
@@ -85,6 +88,8 @@ namespace HorsePersonalities.Core.Settings
             sb.AppendLine($"RestoreVanillaStats = {Bool(d.RestoreVanillaStats)}");
             sb.AppendLine("; Multiplier on random spook checks (0-10). 0 turns random spooks off.");
             sb.AppendLine($"SpookFrequency = {d.SpookFrequency.ToString("0.0#", CultureInfo.InvariantCulture)}");
+            sb.AppendLine("; Multiplies the experience horses gain from riding, sprints, gunfights and predators (0-100). 1 is normal; higher is for testing.");
+            sb.AppendLine($"ExperienceSpeed = {d.ExperienceSpeed.ToString("0.0#", CultureInfo.InvariantCulture)}");
             sb.AppendLine("; Shortest gap between two quirk events on one horse, in seconds (0-3600).");
             sb.AppendLine($"QuirkCooldownSeconds = {d.QuirkCooldownSeconds}");
             sb.AppendLine("; Turns behaviors off in story missions and cutscenes (true/false).");

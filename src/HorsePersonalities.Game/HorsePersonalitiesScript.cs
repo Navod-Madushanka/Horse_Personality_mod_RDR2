@@ -8,6 +8,7 @@ using HorsePersonalities.Core.GameApi;
 using HorsePersonalities.Core.Identity;
 using HorsePersonalities.Core.Logging;
 using HorsePersonalities.Core.Rolling;
+using HorsePersonalities.Core.Skills;
 using HorsePersonalities.Core.Safety;
 using HorsePersonalities.Core.Saving;
 using HorsePersonalities.Core.Settings;
@@ -164,7 +165,7 @@ namespace HorsePersonalities.Game
                 ?? _registry.OnMount(horse, id, d.Breed, HorseOrigin.Unknown, horse == _game.GetSaddleHorse());
             TestPreset next = _presets.Next(current?.Preset);
             HorseRecord replaced = _registry.Replace(horse, id, next.For(d.Breed, current.Personality.Origin, current.Personality.Seed, d.ModelName, _roller, _boot.Breeds), next.Name);
-            _overlay.SetLines(OverlayText.Build(d, replaced));
+            _overlay.SetLines(OverlayText.Build(d, replaced, _boot.Breeds.Skills, IsFavorite(d)));
             _game.ShowSubtitle($"Test preset: {next.Name}. {next.Purpose}");
             SaveIfChanged("test preset changed");
         }
@@ -275,7 +276,7 @@ namespace HorsePersonalities.Game
                 _boot.Log.Info(Log, $"Mounted horse {horse}: {text} (bond points {d.BondPoints}, model hash 0x{d.ModelHash:X8}, saddle horse {saddle}, origin {origin}, taming state {_game.GetTamingState(horse)})");
                 HorseRecord record = null;
                 _guard.Run("Registry", () => record = _registry?.OnMount(horse, Fingerprint(d), d.Breed, origin, saddle));
-                _overlay.SetLines(OverlayText.Build(d, record));
+                _overlay.SetLines(OverlayText.Build(d, record, _boot.Breeds.Skills, IsFavorite(d)));
                 SaveIfChanged("mounted the saddle horse");
             }
             else
@@ -308,7 +309,7 @@ namespace HorsePersonalities.Game
             HorseDescription d = HorseDescriber.Describe(_game, _boot.Breeds, saddle);
             HorseRecord record = _registry.OnSaddle(saddle, Fingerprint(d), d.Breed);
             _boot.Log.Info(Log, $"Saddle horse is now {saddle} ({d.ModelName}): " + (record == null ? "no breed, stays vanilla." : $"permanent personality {record.Id}."));
-            if (record != null && _mounts.CurrentMount == saddle) _overlay.SetLines(OverlayText.Build(d, record));
+            if (record != null && _mounts.CurrentMount == saddle) _overlay.SetLines(OverlayText.Build(d, record, _boot.Breeds.Skills, IsFavorite(d)));
             SaveIfChanged("saddle horse changed");
         }
 
@@ -341,11 +342,42 @@ namespace HorsePersonalities.Game
                     _game.SetAttributeBaseRank(horse, c.Attribute, c.To);
                     _boot.Log.Info("Stats", $"{record.Id} at bond {d.BondRank}: {c}{(_boot.Settings.RestoreVanillaStats ? " [RestoreVanillaStats]" : "")}");
                 }
+
+                // Phase 8: speed and acceleration toward their natural ceiling and past it with long use; agility from handling.
+                SkillTuning st = _boot.Breeds.Skills;
+                if (st != null)
+                {
+                    SkillSet skills = SkillSet.From(record.Experience, d.Breed.Learning, st);
+                    bool favorite = IsFavorite(d);
+                    int up = _boot.Breeds.TierCaps.TryGetValue(d.Breed.Tier, out TierCap cap) ? cap.Up : 1;
+                    int longUse = GrowthPlanner.LongUseRanks(d.BondRank, record.Experience.RiddenHours, favorite, st);
+                    NaturalStats n = record.Personality.NaturalStats;
+                    var growth = StatPlanner.PlanGrowth(record, new[]
+                    {
+                        (StatPlanner.Speed, _game.ReadAttribute(horse, PedAttribute.Speed), GrowthPlanner.Offset(n.Speed, skills.Speed, longUse, up, favorite, st), n.Speed),
+                        (StatPlanner.Acceleration, _game.ReadAttribute(horse, PedAttribute.Acceleration), GrowthPlanner.Offset(n.Acceleration, skills.Acceleration, longUse, up, favorite, st), n.Acceleration),
+                        (StatPlanner.Agility, _game.ReadAttribute(horse, PedAttribute.Agility), GrowthPlanner.AgilityOffset(skills.Handling, up, st), 0),
+                    }, _boot.Settings.RestoreVanillaStats, out var learnedGrowth);
+                    foreach (var (stat, baseRank) in learnedGrowth)
+                    {
+                        _registry.RememberVanillaBase(record, stat, baseRank);
+                        _boot.Log.Info("Stats", $"{record.Id}: original {stat} base rank is {baseRank}.");
+                    }
+                    foreach (StatChange c in growth)
+                    {
+                        _game.SetAttributeBaseRank(horse, c.Attribute, c.To);
+                        _boot.Log.Info("Stats", $"{record.Id}: {c} (skills {skills}; long use {longUse}){(_boot.Settings.RestoreVanillaStats ? " [RestoreVanillaStats]" : "")}");
+                    }
+                }
             }
             SaveIfChanged("stored original stat ranks");
         }
 
         private static HorseFingerprint Fingerprint(HorseDescription d) => new HorseFingerprint(d.ModelName, d.IsMale);
+
+        /// <summary>A community favorite on the Prized tab (Phase 8: a second long-use rank, past the tier).</summary>
+        private bool IsFavorite(HorseDescription d) =>
+            _boot.Breeds.TryGetPrized(d.ModelName, out PrizedReason why) && why == PrizedReason.CommunityFavorite;
 
         private void RecordTickTime(double ms)
         {

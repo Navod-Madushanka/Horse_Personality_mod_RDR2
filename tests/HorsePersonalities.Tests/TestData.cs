@@ -19,7 +19,8 @@ namespace HorsePersonalities.Tests
         public static string BreedsJson => Read("data", "breeds.json");
 
         /// <summary>A tiny valid breeds.json to edit in tests.</summary>
-        public static string MinimalBreeds => MinimalTemplate.Replace("\"BEHAVIOR\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["behavior"].ToJson(false));
+        public static string MinimalBreeds => MinimalTemplate.Replace("\"BEHAVIOR\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["behavior"].ToJson(false))
+            .Replace("\"SKILLS\"", HorsePersonalities.Core.Json.JsonValue.Parse(BreedsJson)["skills"].ToJson(false));
 
         private const string MinimalTemplate = @"{
   ""schemaVersion"": 7,
@@ -38,6 +39,7 @@ namespace HorsePersonalities.Tests
   ],
   ""otherModels"": [ { ""model"": ""a_c_horsemule_01"", ""note"": ""Mule"" } ],
   ""behavior"": ""BEHAVIOR"",
+  ""skills"": ""SKILLS"",
   ""predatorModels"": [""a_c_wolf_01""],
   ""prizedModels"": [ { ""model"": ""a_c_horse_turkoman_silver"", ""why"": ""CommunityFavorite"", ""note"": """" } ]
 }";

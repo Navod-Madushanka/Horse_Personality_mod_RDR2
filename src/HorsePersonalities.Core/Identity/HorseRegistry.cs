@@ -26,6 +26,9 @@ namespace HorsePersonalities.Core.Identity
         /// <summary>Test mode: the preset this personality came from; null for a rolled one.</summary>
         public string Preset { get; internal set; }
 
+        /// <summary>Phase 8: what the horse has lived through. Kept for permanent horses; skills are worked out from it.</summary>
+        public Skills.Experience Experience { get; internal set; } = new Skills.Experience();
+
         public HorseRecord(HorseFingerprint id, Personality personality, PersonalityStatus status, string firstSeen, string lastSeen)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -37,7 +40,7 @@ namespace HorsePersonalities.Core.Identity
 
         internal HorseRecord AsPermanent(string today)
         {
-            var r = new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today) { Preset = Preset };
+            var r = new HorseRecord(Id, Personality, PersonalityStatus.Permanent, FirstSeen, today) { Preset = Preset, Experience = Experience.Copy() };
             foreach (var kv in VanillaBase) r.VanillaBase[kv.Key] = kv.Value;
             return r;
         }
@@ -93,6 +96,12 @@ namespace HorsePersonalities.Core.Identity
         public void MarkSaved() => Dirty = false;
 
         /// <summary>Stores a stat's original base rank on a permanent horse (Phase 5) and marks the save as changed.</summary>
+        /// <summary>Phase 8: experience changed enough to be worth writing (a gunfight, a predator, a few minutes of riding).</summary>
+        public void ExperienceChanged(HorseRecord record)
+        {
+            if (record != null && record.Status == PersonalityStatus.Permanent) Dirty = true;
+        }
+
         public void RememberVanillaBase(HorseRecord record, string stat, int baseRank)
         {
             if (record.Status != PersonalityStatus.Permanent) return;
@@ -183,7 +192,7 @@ namespace HorsePersonalities.Core.Identity
         {
             HorseRecord old = Find(handle, id);
             if (old == null) return null;
-            var r = new HorseRecord(id, personality, old.Status, old.FirstSeen, old.LastSeen) { Preset = preset };
+            var r = new HorseRecord(id, personality, old.Status, old.FirstSeen, old.LastSeen) { Preset = preset, Experience = old.Experience.Copy() };
             foreach (var kv in old.VanillaBase) r.VanillaBase[kv.Key] = kv.Value;
             if (old.Status == PersonalityStatus.Permanent)
             {

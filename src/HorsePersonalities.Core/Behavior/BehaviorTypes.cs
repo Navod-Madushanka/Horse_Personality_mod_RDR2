@@ -54,6 +54,10 @@ namespace HorsePersonalities.Core.Behavior
         public bool InTown;
         /// <summary>Someone nearby is fighting you (War horse: never spooks then).</summary>
         public bool InFight;
+        /// <summary>Phase 8: Courage the horse's gunfire skill adds against gunfire and explosions.</summary>
+        public double GunfireSkillCourage;
+        /// <summary>Phase 8: Courage the horse's predator skill adds against predators.</summary>
+        public double PredatorSkillCourage;
     }
 
     /// <summary>A behavior to play, with the reason for the log (rule 9: the trait, the roll and the cooldown).</summary>

@@ -457,6 +457,22 @@ Phase 6's bond pace changes the bond XP the game gives, but in Stage 9 the game 
 | 13.2 | DevTools trigger 65 (*Bond XP +50, set*, the control), then wait 5 minutes | Log | Expected to end in *gone*, as in Stage 9 | | Copy the last line into Notes |
 | 13.3 | If 13.1 kept it: save, quit, reload | Overlay or trigger 32 | The bond XP is still the higher number | | |
 
+## Stage 14: Phase 8 skills and long-use growth (added Nov 28)
+
+To see growth without riding for hours, set `ExperienceSpeed = 20` in `HorsePersonalities.ini` (back to 1 afterwards). Test mode off or on both work; use a horse you don't mind changing. Every counted gunfight and predator writes a log line.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 14.1 | Ride a permanent horse with the overlay (F9) open | Overlay | *Experience*, *Skills* and *Long-use growth* lines; minutes ridden go up as you ride |  |  |
+| 14.2 | Gallop a few minutes; press sprint from a walk several times | Overlay | Gallop minutes and sprints go up; speed and acceleration skills rise |  |  |
+| 14.3 | A horse with natural speed +1 (overlay): gallop until its speed skill passes 0.5 | Speed bar, log | One more segment, with a *speed base rank* log line |  |  |
+| 14.4 | A timid horse (Coward preset): get into gunfights until its gunfire skill passes 0.6, then fire near it again; then meet a wolf | Horse, log | Clearly fewer spooks under fire than at the start (the log shows *+ skill*); still scared of the wolf |  |  |
+| 14.5 | Reach bond 3 (trigger 42) with *Long use* hours met (ExperienceSpeed high, or ride) | Speed and acceleration bars | +1 segment each, unless already at the tier cap |  |  |
+| 14.6 | A community favorite (Silver Dapple Pinto, Gold Turkoman or Reverse Dapple Roan) at bond 4 and 30 hours | Bars | Speed and acceleration up to +2 over the breed |  |  |
+| 14.7 | Handling skill past 0.5 (about 2 hours ridden at ExperienceSpeed 1) | Log, riding feel | An *agility base rank* line. Note whether turning feels any different |  |  |
+| 14.8 | Save, quit, reload; then set `RestoreVanillaStats = true` and reload | Bars, overlay | Experience and growth are kept; with Restore on, speed, acceleration and agility go back to the originals |  |  |
+| 14.9 | Start a mission and ride a while | Overlay | No experience counted during it |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

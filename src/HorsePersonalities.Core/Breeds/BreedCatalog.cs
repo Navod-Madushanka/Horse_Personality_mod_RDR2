@@ -87,6 +87,9 @@ namespace HorsePersonalities.Core.Breeds
         /// <summary>Phase 6 tuning from the sheet's Behavior tab.</summary>
         public BehaviorTuning Behavior { get; private set; }
 
+        /// <summary>Phase 8: the sheet's Skills tab.</summary>
+        public Skills.SkillTuning Skills { get; private set; }
+
         /// <summary>True for a predator model (data/predator-models.csv): a threat a horse may spook at.</summary>
         public bool IsPredator(uint modelHash) => _predators.Contains(modelHash);
 
@@ -255,6 +258,7 @@ namespace HorsePersonalities.Core.Breeds
             }
 
             BehaviorTuning behavior = BehaviorTuning.Read(root["behavior"], problems);
+            Skills.SkillTuning skills = HorsePersonalities.Core.Skills.SkillTuning.Read(root["skills"], problems);
             var predators = new HashSet<uint>();
             var snakes = new HashSet<uint>();
             JsonValue predArray = root["predatorModels"];
@@ -314,6 +318,7 @@ namespace HorsePersonalities.Core.Breeds
             foreach (var kv in treats) catalog._treats[kv.Key] = kv.Value;
             foreach (var kv in prized) catalog._prized[kv.Key] = kv.Value;
             catalog.Behavior = behavior;
+            catalog.Skills = skills;
             foreach (uint h in predators) catalog._predators.Add(h);
             log.Info(Log, $"Loaded {breeds.Count} breeds and {catalog.ModelCount} horse models ({others.Count} not tied to a breed, {prized.Count} prized).");
             return catalog;
