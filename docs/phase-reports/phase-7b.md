@@ -173,7 +173,7 @@ All three Ardennes coats have a design, so the baseline's War horse is on each o
 | --- | --- | --- | --- | --- |
 | Strawberry Roan | The Heavyweight Brawler | +2 / -2 / +2 / 0 | Kicker | War horse, Wolf brawler, Short king, Restless |
 | Bay Roan | The Gentle Giant | +2 / -2 / -2 / +2 | Shadow | War horse, Unhurried |
-| Iron Grey Roan | The Silent Juggernaut | +2 / -2 / +1 / 0 | Nosy | War horse, Balker, Stoic |
+| Iron Grey Roan (prized: Special) | The Silent Juggernaut | +2 / -2 / +1 / 0 | Nosy | War horse, Balker, Stoic |
 
 New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, however hard you spur; water needs trigger 61). Cut: plowing through trees and riders, battleship turning, the long stop and running off cliffs (no movement control), head shoves (no nudge animation), bullying horses off the hay (Short king squares up), wagons, doorways and fences.
 
@@ -186,4 +186,4 @@ New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, howe
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred and the Perlino Andalusian are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred and the Perlino Andalusian are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred and the Iron Grey Roan Ardennes prized (Special).
