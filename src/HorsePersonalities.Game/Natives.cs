@@ -104,6 +104,8 @@ namespace HorsePersonalities.Game
         public const ulong IS_ANIMAL_VOCALIZATION_PLAYING = 0xC265DF9FB44A9FBD;
         /// <summary>TASK::TASK_LOOK_AT_ENTITY(int ped, int lookAtTarget, int duration, int p3, int p4, int p5) -> void</summary>
         public const ulong TASK_LOOK_AT_ENTITY = 0x69F4BE8C8CC4796C;
+        /// <summary>TASK::TASK_LOOK_AT_COORD(int ped, float x, float y, float z, int duration, int flags, int priority, int p7) -> void</summary>
+        public const ulong TASK_LOOK_AT_COORD = 0x6FA46612594F7973;
         /// <summary>TASK::TASK_CLEAR_LOOK_AT(int ped) -> void</summary>
         public const ulong TASK_CLEAR_LOOK_AT = 0x0F804F1DB19B9689;
         /// <summary>TASK::TASK_HORSE_ACTION(int ped, int action, int targetPed, ulong p3) -> void</summary>

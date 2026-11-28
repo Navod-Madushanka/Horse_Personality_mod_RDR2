@@ -67,6 +67,10 @@ namespace HorsePersonalities.Core.Behavior
         public bool SoothedSinceDanger;
         /// <summary>IS_ENTITY_IN_WATER on the horse.</summary>
         public bool InWater;
+        /// <summary>A predator first seen this check within Sixth sense range (0 for none).</summary>
+        public int SensedPredator;
+        /// <summary>A predator within Curious range (0 for none).</summary>
+        public int CuriousTarget;
     }
 
     /// <summary>
@@ -183,6 +187,12 @@ namespace HorsePersonalities.Core.Behavior
                 war.Target = s.NearEnemy;
                 return war;
             }
+            if (p.Has(Signature.SixthSense) && s.SensedPredator != 0 && (s.Mounted || s.PlayerNear))
+            {
+                // An answer to a moment (one per predator, the runner's scan dedups), so it ignores the shared cooldown.
+                return new Decision { Action = BehaviorAction.Snub, Group = BehaviorGroup.Tell, Target = s.SensedPredator,
+                    Cause = "Sixth sense: something out there, before you've seen it" };
+            }
             if (p.Has(Signature.RoadsideGrazer) && s.Mounted && s.StandingStillSeconds >= _t.GrazerIdleSeconds
                 && !_grazedThisStop.Contains(horse) && Ready(horse, cooldowns, now))
             {
@@ -211,6 +221,12 @@ namespace HorsePersonalities.Core.Behavior
             if (p.Has(Signature.NeedsSoothing) && (s.Mounted || s.PlayerNear) && !s.SoothedSinceDanger
                 && s.SecondsSinceDanger >= _t.NeedsSoothingDelay && s.SecondsSinceDanger <= _t.NeedsSoothingSeconds)
                 candidates.Add((BehaviorAction.Fret, _t.NeedsSoothingRate, $"Needs soothing: still rattled {s.SecondsSinceDanger:0} s after the danger", 0));
+            if (p.Has(Signature.NightStare) && !s.Mounted && s.PlayerNear && s.StandingStillSeconds > 0 && IsNight(s.GameHour))
+                candidates.Add((BehaviorAction.StareAtNothing, _t.NightStareRate, "Night stare: staring at an empty corner", 0));
+            if (p.Has(Signature.Curious) && !s.Mounted && s.PlayerNear && s.CuriousTarget != 0)
+                candidates.Add((BehaviorAction.Creep, _t.CuriousRate, "Curious: wants a closer look at the predator", s.CuriousTarget));
+            if (p.Has(Signature.CountryBumpkin) && s.Mounted && s.InTown)
+                candidates.Add((BehaviorAction.QuickStop, _t.BumpkinRate, "Country bumpkin: overwhelmed by the big town", 0));
             if (p.Has(Signature.Balker) && s.Mounted && s.SpeedMs >= _t.StandingStillSpeed && (s.ClimbSpeed >= _t.HillClimbSpeed || s.InWater))
                 candidates.Add((BehaviorAction.QuickStop, _t.BalkRate, s.InWater ? "Balker: that river is too deep" : "Balker: that trail is too steep", 0));
             if (p.Has(Signature.WaterSigh) && s.Mounted && s.InWater && s.SpeedMs >= _t.StandingStillSpeed)
@@ -275,6 +291,11 @@ namespace HorsePersonalities.Core.Behavior
         /// <summary>Grudge: it was hurt while you rode it. None when it doesn't hold grudges.</summary>
         public Decision OnHurt(int horse, Personality p, CooldownBook cd, double now)
         {
+            if (p != null && p.Has(Signature.Deadpan) && !p.Has(Signature.Grudge) && !p.Has(Signature.Strict))
+            {
+                cd.Used(horse, BehaviorGroup.Signature, now);
+                return new Decision { Action = BehaviorAction.Stare, Group = BehaviorGroup.Signature, Cause = "Deadpan: a flat, unblinking stare at you" };
+            }
             if (p == null || !(p.Has(Signature.Grudge) || p.Has(Signature.Strict))) return Decision.None;
             cd.Used(horse, BehaviorGroup.Signature, now);
             string why = p.Has(Signature.Grudge) ? $"Grudge: hurt while you rode it; sulks for {_t.GrudgeSeconds:0} s" : "";
@@ -311,6 +332,11 @@ namespace HorsePersonalities.Core.Behavior
                 ? Use(horse, BehaviorAction.JealousCall, $"Jealous: you {what} another horse {distance:0} m away: roll {F3(roll)} vs {F3(_t.JealousChance)}", cd, now)
                 : Decision.None;
         }
+
+        /// <summary>Night: from Night starts hour to Night ends hour (the Behavior tab's own night).</summary>
+        public bool IsNight(int hour) =>
+            _t.NightStartsHour > _t.NightEndsHour ? hour >= _t.NightStartsHour || hour < _t.NightEndsHour
+                                                  : hour >= _t.NightStartsHour && hour < _t.NightEndsHour;
 
         /// <summary>Dusk and night: from Dusk starts hour until Night ends hour.</summary>
         public bool IsDusk(int hour) =>

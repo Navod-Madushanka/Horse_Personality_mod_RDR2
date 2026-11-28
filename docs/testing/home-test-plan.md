@@ -416,6 +416,19 @@ The Dapple Dark Grey is sold at Valentine (or rescued from Wrobel's barn); the F
 | 12.74 | **Dapple Dark Grey**: ride it into a tree, then spur it straight away | Horse, log | A judgmental snort, then only a trot for about 30 s (*Strict*) |  |  |
 | 12.75 | **Flaxen Chestnut**: stop and get off to pick herbs; gallop and stop hard; ride beside another rider | Horse, log | Stomps while you wait (*Restless*), skids on the hard stop (*No brakes*), calls at the other rider (*Racer*) |  |  |
 
+### Stage 12, American Paint coats
+
+The Splashed White turns up at random campsites; the Overo and Tobiano run wild across New Hanover, Ambarino and West Elizabeth; the Grey Overo is sold at Tumbleweed. Run trigger 62 first.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 12.76 | Trigger 62, standing beside the horse | Horse | It stares at an empty spot off to its left for about 6 s |  |  |
+| 12.77 | **Any Paint**: walk it past wild carrots or grass a few minutes | Horse, log | It stops now and then to graze (*Snack magnet*) |  |  |
+| 12.78 | **Splashed White**: ride toward wolves far off; stand by it at night; hitch it and walk away | Horse, log | Snorts and looks their way before they're close (*Sixth sense*); stares at nothing at night (*Night stare*); unhitches itself (*Escape artist*) |  |  |
+| 12.79 | **Overo**: get off with a wolf or bear 20-30 m away; stand next to it on foot | Horse, log | Walks a few steps toward the animal (*Curious*); asks you for a treat (*Apple beggar*) |  |  |
+| 12.80 | **Tobiano**: ride through Saint Denis | Horse, log | Stops dead and snorts now and then (*Country bumpkin*) |  |  |
+| 12.81 | **Grey Overo**: ride into a cactus; feed a sugar cube, then a haycube | Horse, log | A flat stare at you (*Deadpan*); a snort for the sugar cube, a happy call for the haycube (needs the item codes) |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.

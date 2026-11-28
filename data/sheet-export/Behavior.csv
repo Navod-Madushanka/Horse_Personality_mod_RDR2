@@ -146,3 +146,9 @@ Beggar rate,1,Apple beggar: asks per minute after that.
 Balk rate,2,"Balker: refusals per minute on a steep climb (Hill climb speed) or in water, however hard you spur."
 Strict seconds,30,Strict: seconds it refuses to sprint after you ride it into something.
 Strict ratio,2,Strict: the pace cap when you spur during that time (move blend ratio: 2 trot).
+Sixth sense range,60,"Sixth sense: a predator within this range (m), but beyond Predator range, gets a warning snort and a look."
+Night stare rate,0.5,Night stare: stares at an empty spot per minute at night while standing near you.
+Night stare seconds,6,Night stare: how long the stare lasts.
+Curious range,30,Curious: a predator within this range (m) gets a closer look while you're off the horse.
+Curious rate,1,"Curious: walks toward it per minute (a few steps, Creeper seconds)."
+Bumpkin rate,1,Country bumpkin: stops dead and snorts per minute while ridden in a town.

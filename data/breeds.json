@@ -210,7 +210,13 @@
     "beggarRate": 1,
     "balkRate": 2,
     "strictSeconds": 30,
-    "strictRatio": 2
+    "strictRatio": 2,
+    "sixthSenseRange": 60,
+    "nightStareRate": 0.5,
+    "nightStareSeconds": 6,
+    "curiousRange": 30,
+    "curiousRate": 1,
+    "bumpkinRate": 1
   },
   "predatorModels": ["a_c_alligator_01", "a_c_alligator_02", "a_c_alligator_03", "a_c_bear_01", "a_c_bearblack_01", "a_c_boar_01", "a_c_boarlegendary_01", "a_c_cougar_01", "a_c_lionmangy_01", "a_c_panther_01", "a_c_snake_01", "a_c_snakeblacktailrattle_01", "a_c_snakeferdelance_01", "a_c_snakeredboa10ft_01", "a_c_snakeredboa_01", "a_c_snakewater_01", "a_c_wolf_01", "a_c_wolf_medium", "a_c_wolf_small"],
   "dogModels": ["a_c_dogamericanfoxhound_01", "a_c_dogaustraliansheperd_01", "a_c_dogbluetickcoonhound_01", "a_c_dogcatahoulacur_01", "a_c_dogchesbayretriever_01", "a_c_dogcollie_01", "a_c_doghobo_01", "a_c_doghound_01", "a_c_doghusky_01", "a_c_doglab_01", "a_c_doglion_01", "a_c_dogpoodle_01", "a_c_dogrufus_01", "a_c_dogstreet_01"],
@@ -2082,6 +2088,94 @@
       "ignoresTreats": [],
       "demeanorTraits": {
         "impatient": 2,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanpaint_splashedwhite",
+      "breed": "American Paint",
+      "archetype": "The Mystic Wanderer",
+      "vibe": "The Eccentric Nomad (random campsites). A striking half-white coat and piercing blue eyes, a wandering spirit of the frontier: calm, observant, deeply intuitive, spots predators before you do, glides through dense fog, forms a quiet, almost telepathic bond. Superstitious and stubbornly independent: refuses wooden bridges whose sound it doesn't like, stares at empty corners of camp at night, unties itself from hitching posts just to go stand in a stream. Like every American Paint: tireless stamina, sure-footed, easygoing and adaptable, mountain trails and muddy riverbeds are a walk in the park, bonds easily with riders who keep it fed and brushed; easily distracted, unbothered by urgency, not built for street races or charging artillery, wanders off the trail for a patch of wild carrots while you track a legendary animal.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Wanderer"],
+      "signatures": ["SixthSense", "NightStare", "EscapeArtist", "SnackMagnet"],
+      "lovesTreats": ["Wild carrot"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanpaint_overo",
+      "breed": "American Paint",
+      "archetype": "The Trailblazer",
+      "vibe": "The Outdoorsy Adventurer (wild across New Hanover, Ambarino and West Elizabeth). Bold, spirited, built for off-road exploring: every ridge and river crossing an exciting puzzle, a steady upbeat pace over huge distances, never dramatic. Terribly nosy, zero respect for personal space: nose in your satchel every time you open it, nudges you off balance while you skin game, far too curious around bears and bison instead of backing away. Like every American Paint: tireless stamina, sure-footed, easygoing and adaptable, mountain trails and muddy riverbeds are a walk in the park, bonds easily with riders who keep it fed and brushed; easily distracted, unbothered by urgency, not built for street races or charging artillery, wanders off the trail for a patch of wild carrots while you track a legendary animal.",
+      "leans": {
+        "courage": 1,
+        "nerves": 0,
+        "temper": 0,
+        "bondAffinity": 1
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Curious", "AppleBeggar", "SnackMagnet"],
+      "lovesTreats": ["Wild carrot"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanpaint_tobiano",
+      "breed": "American Paint",
+      "archetype": "The Ranch Hand",
+      "vibe": "The Salt-of-the-Earth Partner (wild across New Hanover, Ambarino and West Elizabeth). Classic, steady, endlessly practical: no time for flashy saddles or city streets, just wants a job; hauls pelts to camp, trots calmly through a rainstorm, the ultimate low-maintenance companion. A creature of habit who hates surprises: in the noisy streets of Saint Denis it acts like an overwhelmed country tourist, stopping dead on the trolley tracks and snorting at streetlamps. Like every American Paint: tireless stamina, sure-footed, easygoing and adaptable, mountain trails and muddy riverbeds are a walk in the park, bonds easily with riders who keep it fed and brushed; easily distracted, unbothered by urgency, not built for street races or charging artillery, wanders off the trail for a patch of wild carrots while you track a legendary animal.",
+      "leans": {
+        "courage": 0,
+        "nerves": 1,
+        "temper": -1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["CountryBumpkin", "SnackMagnet"],
+      "lovesTreats": ["Wild carrot"],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_americanpaint_greyovero",
+      "breed": "American Paint",
+      "archetype": "The Desert Scout",
+      "vibe": "The Stoic Tracker (Tumbleweed). Sun-bleached, hardy, sharp-eyed, bred for New Austin's heat and jagged canyons: never loses its footing on loose gravel, conserves energy like a pro, rock-steady in a long-range desert ambush. Dry-humored and unimpressed by luxury: spits out fancy sugar cubes for plain hay, refuses to sleep in a warm stable, gives you a flat, unblinking stare when you crash into a cactus. Like every American Paint: tireless stamina, sure-footed, easygoing and adaptable, mountain trails and muddy riverbeds are a walk in the park, bonds easily with riders who keep it fed and brushed; easily distracted, unbothered by urgency, not built for street races or charging artillery, wanders off the trail for a patch of wild carrots while you track a legendary animal.",
+      "leans": {
+        "courage": 1,
+        "nerves": -2,
+        "temper": 0,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["Deadpan", "SnackMagnet"],
+      "lovesTreats": ["Haycube", "Wild carrot"],
+      "ignoresTreats": ["Sugar cube"],
+      "demeanorTraits": {
+        "impatient": 0,
         "alert": 1,
         "affectionate": 0,
         "fussy": 0

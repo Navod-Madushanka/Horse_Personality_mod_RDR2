@@ -196,6 +196,9 @@ namespace HorsePersonalities.Game
 
         public void ClearLookAt(int ped) => Function.Call(Natives.TASK_CLEAR_LOOK_AT, ped);
 
+        public void LookAtPoint(int ped, Vec3 point, int durationMs) =>
+            Function.Call(Natives.TASK_LOOK_AT_COORD, ped, point.X, point.Y, point.Z, durationMs, 2048, 3, 0); // same flags as the entity look-at; unverified
+
         public void HorseAction(int horse, int actionId) =>
             Function.Call(Natives.TASK_HORSE_ACTION, horse, actionId, 0, 0); // p2, p3 are 0 in R* scripts
 

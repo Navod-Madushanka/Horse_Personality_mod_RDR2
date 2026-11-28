@@ -22,6 +22,8 @@ namespace HorsePersonalities.Core.Behavior
         SquareUp, Ignore, JealousCall,
         // Thoroughbred coats: Fret (call + stamp), Beg (nicker + look at you).
         Fret, Beg,
+        // American Paint coats: StareAtNothing (look at an empty spot, trigger 62).
+        StareAtNothing,
     }
 
     [Flags]

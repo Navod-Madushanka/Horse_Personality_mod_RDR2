@@ -421,6 +421,18 @@ namespace HorsePersonalities.DevTools
                     for (int i = 1; i <= 15; i++) { int n = i; ctx.After(i * 1000, () => ctx.Log($"In water {n}/15: {ctx.Game.IsInWater(h)}")); }
                     return "IS_ENTITY_IN_WATER once a second for 15 s (see the log)";
                 }));
+
+            // ---- American Paint coats (Nov 28, 2026): 62 ----
+            t.Add(new Trigger("look.spot", "Stare at an empty spot (6 s)", "Night stare",
+                "Get off and stand beside the horse. Does it turn its head to stare at a spot off to its left, about 6 m away, for 6 s?",
+                ctx =>
+                {
+                    int h = ctx.Horse;
+                    Vec3 at = ctx.Game.GetPosition(h), f = ctx.Game.GetForward(h);
+                    var spot = new Vec3(at.X + 4 * f.X - 4 * f.Y, at.Y + 4 * f.Y + 4 * f.X, at.Z + 1.5f);
+                    ctx.Game.LookAtPoint(h, spot, 6000);
+                    return $"TASK_LOOK_AT_COORD at ({spot.X:0}, {spot.Y:0}, {spot.Z:0}) for 6 s";
+                }));
             return t;
         }
 

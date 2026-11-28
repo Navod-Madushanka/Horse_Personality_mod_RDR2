@@ -165,6 +165,12 @@ namespace HorsePersonalities.Core.Behavior
         public double BalkRate => _v["balkRate"];
         public double StrictSeconds => _v["strictSeconds"];
         public double StrictRatio => _v["strictRatio"];
+        public double SixthSenseRange => _v["sixthSenseRange"];
+        public double NightStareRate => _v["nightStareRate"];
+        public double NightStareSeconds => _v["nightStareSeconds"];
+        public double CuriousRange => _v["curiousRange"];
+        public double CuriousRate => _v["curiousRate"];
+        public double BumpkinRate => _v["bumpkinRate"];
 
         public static readonly IReadOnlyList<(string Key, string Label, double Min, double Max, bool Whole)> Fields = new[]
         {
@@ -315,6 +321,12 @@ namespace HorsePersonalities.Core.Behavior
             ("balkRate", "Balk rate", 0.0, 20.0, false),
             ("strictSeconds", "Strict seconds", 1.0, 600.0, false),
             ("strictRatio", "Strict ratio", 0.1, 3.0, false),
+            ("sixthSenseRange", "Sixth sense range", 1.0, 300.0, false),
+            ("nightStareRate", "Night stare rate", 0.0, 20.0, false),
+            ("nightStareSeconds", "Night stare seconds", 0.5, 60.0, false),
+            ("curiousRange", "Curious range", 1.0, 200.0, false),
+            ("curiousRate", "Curious rate", 0.0, 20.0, false),
+            ("bumpkinRate", "Bumpkin rate", 0.0, 20.0, false),
         };
 
         /// <summary>Every value at its Behavior tab default, with overrides; for tests.</summary>

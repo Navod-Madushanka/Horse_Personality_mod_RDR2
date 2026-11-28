@@ -89,6 +89,7 @@ namespace HorsePersonalities.Game
             public int TownPerson, StrangerClose, CreepTarget, EnemiesInCombat;
             public int OtherHorse, HogtiedPerson, GuardTarget;
             public int NearEnemy, LowerTierHorse, Crowd, HorseAhead, Challenger, RushingPerson;
+            public int SensedPredator, CuriousTarget;
         }
 
         public BehaviorRunner(IGameApi game, BreedCatalog catalog, ModSettings settings, HorseRegistry registry, ILog log)
@@ -165,7 +166,7 @@ namespace HorsePersonalities.Game
             if (record.Personality.Has(Signature.Strict)) _strictUntil[horse] = _now + _t.StrictSeconds;
             if (already) return; // one sulk at a time: a second knock just makes it longer
             _log.Info(Log, $"{record.Id}: {d.Action} ({d.Cause})");
-            Play(horse, d.Action, 0);
+            Play(horse, d.Action, d.Action == BehaviorAction.Stare ? _game.PlayerPed : 0);
         }
 
         /// <summary>Jealous: the saddle horse sees you with another horse.</summary>
@@ -394,7 +395,7 @@ namespace HorsePersonalities.Game
             }
             if (decision.IsNone && p.Signatures.Count > 0)
             {
-                bool town = p.Has(Signature.TownDisdain) && _game.IsInTown(horse);
+                bool town = (p.Has(Signature.TownDisdain) || p.Has(Signature.CountryBumpkin)) && _game.IsInTown(horse);
                 var sig = new SignatureSituation
                 {
                     Mounted = mounted,
@@ -405,13 +406,15 @@ namespace HorsePersonalities.Game
                     GameHour = s.GameHour,
                     BondLevel = d.BondRank,
                     InTown = town,
-                    TownPerson = town ? _lastScan.TownPerson : 0,
+                    TownPerson = town && p.Has(Signature.TownDisdain) ? _lastScan.TownPerson : 0,
                     StartedAiming = startedAiming,
                     EnemiesInCombat = _lastScan.EnemiesInCombat,
                     PlayerFiredRecently = nowSeconds - _playerFiredAt < 30,
                     ClimbSpeed = climb,
                     SecondsSinceDanger = nowSeconds - _lastDangerAt,
                     SoothedSinceDanger = _soothedAt.TryGetValue(horse, out double soothed) && soothed >= _lastDangerAt,
+                    SensedPredator = _lastScan.SensedPredator,
+                    CuriousTarget = _lastScan.CuriousTarget,
                     InWater = (p.Has(Signature.WaterSigh) || p.Has(Signature.Balker)) && mounted && _game.IsInWater(horse),
                     DirtRank = p.Has(Signature.MudTantrum) ? _game.ReadAttribute(horse, PedAttribute.Dirtiness).Rank : 0,
                     StrangerClose = _lastScan.StrangerClose,
@@ -455,6 +458,8 @@ namespace HorsePersonalities.Game
             if (p.Has(Signature.Showboat)) range = Math.Max(range, (float)_t.ShowboatRange);
             if (p.Has(Signature.MustLead)) range = Math.Max(range, (float)_t.MustLeadRange);
             if (p.Has(Signature.Racer)) range = Math.Max(range, (float)_t.RacerRange);
+            if (p.Has(Signature.SixthSense)) range = Math.Max(range, (float)_t.SixthSenseRange);
+            if (p.Has(Signature.Curious)) range = Math.Max(range, (float)_t.CuriousRange);
             Vec3 me = _game.GetPosition(player);
             if (p.Has(Signature.CampCreeper)) range = Math.Max(range, (float)_t.CreeperRange);
             Vec3 at = _game.GetPosition(horse), forward = _game.GetForward(horse);
@@ -467,6 +472,9 @@ namespace HorsePersonalities.Game
                 {
                     double reach = _catalog.IsSnake(model) ? snakeRange : _t.PredatorRange;
                     if (dist <= reach && _threats.IsNew(horse, "predator " + ped, now) && r.NewPredator == 0) r.NewPredator = ped;
+                    else if (p.Has(Signature.SixthSense) && dist > reach && dist <= _t.SixthSenseRange && r.SensedPredator == 0
+                        && _threats.IsNew(horse, "sensed " + ped, now)) r.SensedPredator = ped;
+                    if (p.Has(Signature.Curious) && dist <= _t.CuriousRange && r.CuriousTarget == 0) r.CuriousTarget = ped;
                     continue;
                 }
                 bool human = _game.IsHuman(ped);
@@ -609,6 +617,15 @@ namespace HorsePersonalities.Game
                     _game.HorseAgitate(horse, false);
                     if (target != 0) _game.LookAtEntity(horse, target, 4000);
                     break;
+                case BehaviorAction.StareAtNothing:
+                {
+                    // Trigger 62: a spot about 6 m away, off to one side, where there is nothing to see.
+                    Vec3 at = _game.GetPosition(horse), f = _game.GetForward(horse);
+                    double side = _random.NextDouble() < 0.5 ? -1 : 1;
+                    var spot = new Vec3((float)(at.X + 4 * f.X - side * 4 * f.Y), (float)(at.Y + 4 * f.Y + side * 4 * f.X), at.Z + 1.5f);
+                    _game.LookAtPoint(horse, spot, (int)(_t.NightStareSeconds * 1000));
+                    break;
+                }
                 case BehaviorAction.Beg:
                     Vocal(horse, "CONTENT");
                     _game.LookAtEntity(horse, player, 3000);

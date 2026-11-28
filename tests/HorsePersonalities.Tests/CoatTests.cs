@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(52, Catalog.CoatCount);
+            Assert.Equal(56, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -690,6 +690,44 @@ namespace HorsePersonalities.Tests
             Assert.True(Catalog.IsDog(lab));
             Assert.False(Catalog.IsPredator(lab));
             Assert.False(Catalog.IsDog(HorsePersonalities.Core.Hashing.Joaat.Hash("a_c_wolf")));
+        }
+            // ---- American Paint coats ----
+
+        [Fact]
+        public void PaintCoatsAllWanderOffForCarrots()
+        {
+            foreach (string m in new[] { "splashedwhite", "overo", "tobiano", "greyovero" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_americanpaint_" + m, out Coat c));
+                Assert.Contains(Signature.SnackMagnet, c.Signatures);
+                Assert.Contains("Wild carrot", c.LovesTreats);
+            }
+            Catalog.TryGetCoat("a_c_horse_americanpaint_greyovero", out Coat scout);
+            Assert.Contains("Sugar cube", scout.IgnoresTreats);
+        }
+
+        [Fact]
+        public void SixthSenseNightStareCuriousBumpkin()
+        {
+            var sensed = Riding(); sensed.SensedPredator = 40;
+            var d = S(With(Signature.SixthSense), sensed);
+            Assert.Equal(BehaviorAction.Snub, d.Action);
+            Assert.Equal(40, d.Target);
+            var night = new SignatureSituation { PlayerNear = true, StandingStillSeconds = 3, GameHour = 23 };
+            Assert.Equal(BehaviorAction.StareAtNothing, S(With(Signature.NightStare), night).Action);
+            night.GameHour = 12;
+            Assert.True(S(With(Signature.NightStare), night).IsNone);
+            var off = new SignatureSituation { PlayerNear = true, CuriousTarget = 9 };
+            Assert.Equal(BehaviorAction.Creep, S(With(Signature.Curious), off).Action);
+            var town = Riding(speed: 2); town.InTown = true;
+            Assert.Equal(BehaviorAction.QuickStop, S(With(Signature.CountryBumpkin), town).Action);
+        }
+
+        [Fact]
+        public void DeadpanStaresAfterAHurt()
+        {
+            var brain = new SignatureBrain(T, () => 0);
+            Assert.Equal(BehaviorAction.Stare, brain.OnHurt(1, With(Signature.Deadpan), new CooldownBook(T, 0), 0).Action);
         }
     }
 }

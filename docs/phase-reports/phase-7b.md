@@ -188,6 +188,27 @@ New: **Balker** (steep climb or water: plants its hooves, a refusal, 2/min, howe
 
 New: **Strict** (ridden into a tree or down a ledge, seen through the damage event (trigger 60): a judgmental snort, then capped at a trot when you spur for 30 s). Cut: roadblocks, slow starts and stagecoach turning (no movement control), kicking dogs (dogs aren't watched), hitching next to smaller breeds (no hitching control; Snob glares).
 
+## American Paint coats (added Nov 28)
+
+All four Paint coats have a design, so the baseline's Snack magnet (off the trail for wild carrots) is on each of them; they all love wild carrots.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Splashed White | The Mystic Wanderer | +1 / 0 / 0 / +2 | Wanderer | Sixth sense, Night stare, Escape artist, Snack magnet |
+| Overo | The Trailblazer | +1 / 0 / 0 / +1 | Nosy | Curious, Apple beggar, Snack magnet |
+| Tobiano | The Ranch Hand | 0 / +1 / -1 / +2 | Shadow | Country bumpkin, Snack magnet |
+| Grey Overo | The Desert Scout | +1 / -2 / 0 / 0 | Nosy | Deadpan, Snack magnet; loves haycubes, ignores sugar cubes |
+
+| Signature | How it plays | Needs in game |
+| --- | --- | --- |
+| Sixth sense | A predator within 60 m, before it's close enough to scare: a warning snort and a look, once per predator | - |
+| Night stare | At night, standing near you: stares at an empty spot 6 s, 0.5/min | Trigger 62 |
+| Curious | Off it, a predator within 30 m: walks a few steps toward it, 1/min | - |
+| Country bumpkin | Ridden in a town: stops dead and snorts, 1/min | Trigger 43 (town) |
+| Deadpan | Hurt while you ride it: a flat stare at you, no sound | Trigger 60 |
+
+Cut: fog, wooden bridges and standing in a stream (no check for them), nudging (no animation), bison (not watched), the warm-stable refusal (no stable control).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

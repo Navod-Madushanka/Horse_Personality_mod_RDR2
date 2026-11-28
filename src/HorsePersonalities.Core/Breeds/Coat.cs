@@ -69,6 +69,12 @@ namespace HorsePersonalities.Core.Breeds
         Balker,
         // Hungarian Halfbred coats (Nov 28, 2026)
         Strict,
+        // American Paint coats (Nov 28, 2026)
+        SixthSense,
+        NightStare,
+        Curious,
+        CountryBumpkin,
+        Deadpan,
     }
 
     /// <summary>

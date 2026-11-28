@@ -559,6 +559,14 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: War horse and Trail snob (baseline: composed in a fight, routine rides beneath it), Wolf brawler, Town disdain and Snob (Piebald), Restless, No brakes and Racer (Flaxen Chestnut).
   - Prized (Navod, Nov 28): Piebald Tobiano (Rare).
   - Cut: plowing through roadblocks, slow off the line and turning like a stagecoach (no movement control), kicking passing dogs (dogs aren't watched; its Kicker quirk kicks people behind it, witnesses or not), refusing to be hitched by smaller breeds (no hitching control; Snob glares at them).
+- **American Paint coats** (Navod, Nov 28, 2026): *The Mystic Wanderer* (Splashed White), *The Trailblazer* (Overo), *The Ranch Hand* (Tobiano) and *The Desert Scout* (Grey Overo); the baseline's Snack magnet (it wanders off for wild carrots) is on all four, which are the only Paint coats. Five new signatures; DevTools trigger 62 checks the look-at-a-spot native:
+  - **Sixth sense** (Splashed White): a predator within 60 m, before it's close enough to scare a horse: a warning snort and a look its way, once per predator.
+  - **Night stare** (Splashed White): at night, standing near you, it stares at an empty spot for 6 s, 0.5/min (trigger 62).
+  - **Curious** (Overo): off it, a predator within 30 m: it walks a few steps toward it instead of backing away, 1/min.
+  - **Country bumpkin** (Tobiano): ridden in a town: it stops dead and snorts, 1/min.
+  - **Deadpan** (Grey Overo): hurt while you ride it (a cactus, a crash; the damage event, trigger 60): a flat, unblinking stare at you, no sound.
+  - Reused: Escape artist (Splashed White unties itself), Apple beggar (Overo noses your satchel), Snack magnet (all). The Grey Overo loves haycubes and ignores sugar cubes; the Paints love wild carrots.
+  - Cut: navigating fog, the wooden-bridge refusal and standing in a stream (no bridge, fog or stream check), nudging you off balance (no animation), bison (not watched; Curious is for predators), refusing a warm stable (no stable control).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience
