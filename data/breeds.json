@@ -1848,6 +1848,72 @@
         "affectionate": 2,
         "fussy": 0
       }
+    },
+    {
+      "model": "a_c_horse_andalusian_perlino",
+      "breed": "Andalusian",
+      "archetype": "The Waterfall Spirit",
+      "vibe": "The Mythical Guardian (wild at Brandywine Drop, Roanoke Ridge, in Murfree Brood country). A shimmering cream warhorse beside a roaring waterfall: ignores hillbilly ambushes, stares down cougars, an ancient protector sworn to keep you alive. Overprotective to the point of annoying: stomps and snorts at friendly townsfolk who come close, won't leave your side even when told to flee, offended if you ride another horse in front of it. Like every Andalusian: ironclad nerves and fearless loyalty, explosions and charging wolves are mild inconveniences, pivots tight in a gunfight; heavy-footed and slow on long straights, handles like a small tank, gets winded racing, won't jump anything taller than a fence post.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 2
+      },
+      "signatureQuirks": ["Shadow"],
+      "signatures": ["WarHorse", "GuardDog", "Jealous"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 2,
+        "affectionate": 1,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_andalusian_darkbay",
+      "breed": "Andalusian",
+      "archetype": "The Heavy Enforcer",
+      "vibe": "The Stoic Bodyguard (Strawberry). Built like a brick wall, unbothered by chaos: holds its ground in a Valentine street brawl or a West Elizabeth thunderstorm, takes bullets like a champ. Stubborn as a mule and allergic to cardio: gallop it up a steep trail and it drops to a slow walk with an exasperated snort, as if you'd asked it to climb Everest. Like every Andalusian: ironclad nerves and fearless loyalty, explosions and charging wolves are mild inconveniences, pivots tight in a gunfight; heavy-footed and slow on long straights, handles like a small tank, gets winded racing, won't jump anything taller than a fence post.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 1,
+        "bondAffinity": 0
+      },
+      "signatureQuirks": ["Nosy"],
+      "signatures": ["WarHorse", "HillCrawler", "HillSigh"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 0,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
+    },
+    {
+      "model": "a_c_horse_andalusian_rosegray",
+      "breed": "Andalusian",
+      "archetype": "The Pit-Fighter",
+      "vibe": "The Dockside Veteran (Van Horn). Survived the bar-brawling chaos of Van Horn Trading Post; nothing rattles it: thrives in dirty close-quarters ambushes, loves trampling rival gang members, rock-steady when dynamite goes off ten feet away. Grumpy, anti-social, always looking for a fight: ears back at every passing wagon, tries to bite other horses at the hitching post, takes a brushing as a personal insult. Like every Andalusian: ironclad nerves and fearless loyalty, explosions and charging wolves are mild inconveniences, pivots tight in a gunfight; heavy-footed and slow on long straights, handles like a small tank, gets winded racing, won't jump anything taller than a fence post.",
+      "leans": {
+        "courage": 2,
+        "nerves": -2,
+        "temper": 2,
+        "bondAffinity": -1
+      },
+      "signatureQuirks": ["Kicker"],
+      "signatures": ["WarHorse", "ShortKing", "HatesBrushing"],
+      "lovesTreats": [],
+      "ignoresTreats": [],
+      "demeanorTraits": {
+        "impatient": 1,
+        "alert": 1,
+        "affectionate": 0,
+        "fussy": 0
+      }
     }
   ]
 }

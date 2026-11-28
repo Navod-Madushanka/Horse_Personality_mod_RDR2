@@ -88,6 +88,8 @@ namespace HorsePersonalities.Core.Behavior
                 if (taste == Taste.Ignores) return (BehaviorAction.Snort, BehaviorAction.None, $"Picky eater: doesn't care for this treat (0x{itemHash:X8})");
             }
 
+            if (kind == CareKind.Brush && p.Has(Signature.HatesBrushing))
+                return (BehaviorAction.Agitate, BehaviorAction.Snort, "Hates brushing: takes it as a personal insult");
             if (kind == CareKind.Brush && p.Has(Signature.Vain))
                 return (BehaviorAction.Content, BehaviorAction.Call, "Vain: practically glows after a brushing");
             if (kind == CareKind.Pat && p.Has(Signature.Stoic))

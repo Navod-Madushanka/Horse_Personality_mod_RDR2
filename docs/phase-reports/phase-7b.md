@@ -153,6 +153,18 @@ Cut: low health (breed stats), slippery when spooked (its Nerves), cornering and
 
 Rachel, John's Dapple Grey in the epilogue, is a story model (`a_c_horse_gang_john`) and stays vanilla, as decided for gang horses. Cut: height (the game's), swamps (no check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping), the nudge (no animation).
 
+## Andalusian coats (added Nov 28)
+
+All three Andalusian coats have a design, so the baseline's War horse is on each of them.
+
+| Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
+| --- | --- | --- | --- | --- |
+| Perlino | The Waterfall Spirit | +2 / -2 / +1 / +2 | Shadow | War horse, Guard dog, Jealous |
+| Dark Bay | The Heavy Enforcer | +2 / -2 / +1 / 0 | Nosy | War horse, Hill crawler, Hill sigh |
+| Rose Gray | The Pit-Fighter | +2 / -2 / +2 / -1 | Kicker | War horse, Short king, Hates brushing |
+
+New: **Hates brushing** (every brushing gets a stamp and a snort). Cut: slowness, getting winded and tank handling (stats and the game's handling), jumps (no control), refusing to flee (no hook into the command; Shadow keeps it close), wagons (Short king covers horses).
+
 ## Testing it
 
 - **Test mode** has a new last preset, **Coat design**: a coat model gets exactly its written design, with no dice. The Arabian, Fox Trotter and Mustang coat models are assigned to it, so in test mode every one you meet is its design. Other presets on an Arabian carry no signatures (F11 cycles as before).

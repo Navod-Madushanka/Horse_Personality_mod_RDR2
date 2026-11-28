@@ -63,6 +63,8 @@ namespace HorsePersonalities.Core.Breeds
         HillCrawler,
         WaterSigh,
         AppleBeggar,
+        // Andalusian coats (Nov 28, 2026)
+        HatesBrushing,
     }
 
     /// <summary>

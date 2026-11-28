@@ -543,6 +543,11 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - Reused: Clumsy (baseline: trips on rocks with its long legs), Snake drama, Mud tantrum and Vain (Brindle), Snob, Guard dog, Town disdain and Night owl (Reverse Dapple Black), No brakes (Blood Bay), Hill sigh (Dapple Grey).
   - Rachel, John's Dapple Grey in the epilogue, is a story model (a_c_horse_gang_john) and stays vanilla, as decided for gang horses; a Dapple Grey you tame gets this design.
   - Cut: towering over townsfolk (its size is the game's), swamps (no swamp check yet), the carcass tantrum (no carcass moment), overshooting turns and hurdling logs (no steering or jumping control), nudging you (no nudge animation; Apple beggar asks instead).
+  - Prized (Navod, Nov 27): Reverse Dapple Black Thoroughbred (Special).
+- **Andalusian coats** (Navod, Nov 28, 2026): *The Waterfall Spirit* (Perlino), *The Heavy Enforcer* (Dark Bay) and *The Pit-Fighter* (Rose Gray); the baseline's War horse is on all three, which are the only Andalusian coats. One new signature, code only:
+  - **Hates brushing** (Rose Gray): every brushing gets a stamp and a snort, no dice.
+  - Reused: War horse (all: never spooks in a fight, goes for enemies when you're off), Guard dog and Jealous (Perlino), Hill crawler and Hill sigh (Dark Bay), Short king (Rose Gray).
+  - Cut: slow on straightaways, getting winded, handling like a tank (its stats and the game's handling), refusing jumps (no jumping control), refusing to flee when told (no hook into the flee command; its Shadow quirk keeps it close), pinning its ears at wagons (wagons aren't horses; Short king covers other horses).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 
 ### Phase 8: Skills and experience

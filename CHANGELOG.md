@@ -23,6 +23,7 @@
 - **Thoroughbred coats** (Navod): the High-Strung Drama Queen baseline (Black Chestnut), the Exotic Supermodel (Brindle), the Brooding Outlaw Prince (Reverse Dapple Black), the Untamed Rebel (Blood Bay), the Loyal Veteran (Dapple Grey). New signatures Needs soothing, Hill crawler, Water sigh, Apple beggar (8 new Behavior settings); DevTools trigger 61 (in water). Rachel (John's horse) is a story model and stays vanilla.
 - The Reverse Dapple Black Thoroughbred (Ultimate Edition) is on the Prized tab as Special (Navod): always good, never below its design.
 - The home test plan (Stages 1 to 12) is now in the repo as `docs/testing/home-test-plan.md`.
+- **Andalusian coats** (Navod, Nov 28): the Waterfall Spirit (Perlino), the Heavy Enforcer (Dark Bay), the Pit-Fighter (Rose Gray). New signature Hates brushing.
 - Fixed: a horse more than 15 m from you was no longer checked, so Escape artist could never fire. Escape artist and Wanderlust horses are now watched at any distance, for those habits only.
 
 ### Phase 7: quirks, care reactions, demeanor, and test mode (built Nov 26, 2026)

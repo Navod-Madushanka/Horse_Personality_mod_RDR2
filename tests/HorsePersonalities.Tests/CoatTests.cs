@@ -27,7 +27,7 @@ namespace HorsePersonalities.Tests
         [Fact]
         public void ShippedArabianCoatsLoad()
         {
-            Assert.Equal(42, Catalog.CoatCount);
+            Assert.Equal(45, Catalog.CoatCount);
             Assert.True(Catalog.TryGetCoat(White, out Coat ice));
             Assert.Equal("The Ice Queen", ice.Archetype);
             Assert.Equal(new[] { Signature.TownDisdain, Signature.MudTantrum, Signature.SnakeDrama }, ice.Signatures);
@@ -616,6 +616,27 @@ namespace HorsePersonalities.Tests
             Assert.Equal(BehaviorAction.Beg, S(With(Signature.AppleBeggar), beg).Action);
             beg.PlayerDistance = 8;
             Assert.True(S(With(Signature.AppleBeggar), beg).IsNone);
+        }
+            // ---- Andalusian coats ----
+
+        [Fact]
+        public void AndalusianCoatsAreAllWarHorses()
+        {
+            foreach (string m in new[] { "perlino", "darkbay", "rosegray" })
+            {
+                Assert.True(Catalog.TryGetCoat("a_c_horse_andalusian_" + m, out Coat c));
+                Assert.Contains(Signature.WarHorse, c.Signatures);
+            }
+        }
+
+        [Fact]
+        public void HatesBrushingAlwaysGrumbles()
+        {
+            var care = new CareReactor(T, () => 0.99); // a roll that would normally give no reaction
+            var r = care.React(With(Signature.HatesBrushing), DemeanorTraits.None, CareKind.Brush, 4, 0);
+            Assert.Equal(BehaviorAction.Agitate, r.First);
+            Assert.Equal(BehaviorAction.Snort, r.Second);
+            Assert.Equal(BehaviorAction.None, care.React(With(Signature.HatesBrushing), DemeanorTraits.None, CareKind.Pat, 4, 0).First);
         }
     }
 }
