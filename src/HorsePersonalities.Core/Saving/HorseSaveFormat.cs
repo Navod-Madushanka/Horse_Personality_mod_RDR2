@@ -56,6 +56,7 @@ namespace HorsePersonalities.Core.Saving
                     .Set("signatures", Sigs(p))
                     .Set("vanillaBase", VanillaJson(r))
                     .Set("experience", ExperienceJson(r.Experience))
+                    .Set("trust", r.Trust.HasValue ? JsonValue.From(Exact(r.Trust.Value)) : JsonValue.Null)
                     .Set("preset", JsonValue.From(r.Preset))
                     // A 64-bit seed doesn't fit a JSON number exactly, so it is stored as hex text.
                     .Set("seed", p.Seed.ToString("X16", CultureInfo.InvariantCulture))
@@ -170,6 +171,13 @@ namespace HorsePersonalities.Core.Saving
                     Gunfights = E("gunfights"), Predators = E("predators"), RiddenMinutes = E("riddenMinutes"),
                     GallopMinutes = E("gallopMinutes"), Sprints = E("sprints"),
                 };
+            }
+            JsonValue trust = j["trust"]; // absent or null in files from before trust: it starts at the game's bond XP
+            if (trust.Kind == JsonKind.Number)
+            {
+                double v = trust.AsNumber();
+                if (double.IsNaN(v) || double.IsInfinity(v) || v < 0) throw new SaveFormatException($"trust = {v} must be 0 or more.");
+                record.Trust = v;
             }
             return record;
         }

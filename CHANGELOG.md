@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Trust: the mod's own bond (built Nov 28, 2026; needs the game)
+- Home test Stage 13 showed that bond XP a script sets never reaches the game's save, so bond pace had no lasting effect. The mod no longer writes bond XP at all: the game's bond is 100% vanilla.
+- Each permanent horse has a **trust** value in `horses.json`, in bond XP points, with levels 1-4 on the game's own thresholds for its model. Every rise in the game's bond XP is scaled by the horse's pace (Bond affinity, the slower climb to level 4 for good and prized horses, Hard wild horses) and added to trust. Drops (the game restoring its saved value) are ignored; jumps over 100 XP (trainers, DevTools trigger 42) are added as they are.
+- Trust starts at the horse's bond XP the first time the mod reads it, so existing horses keep their bond. No schema change.
+- The stat reveal, spook weighting, care reactions, signatures, long-use growth and admired horses follow the trust level. Temporary personalities use the game's bond level.
+- The overlay shows a Trust line. The saddle horse's bond is read as well as the ridden horse's, so pats on foot count.
+
 ### Phase 8b: admired horses (built Nov 28, 2026; needs the game)
 - People now compliment any horse at bond 4 that is clean and fit (both cores at 70 or more), not just the breeds the game already praises. A person within 8 m glances at the horse and says the game's own *NICE_HORSE* line (the gang in camp: *PLAYER_HORSE_IN_GOOD_CONDITION*) while you ride slowly or stand beside it. At most one compliment every 3 minutes, and each person once in 10 minutes; held in missions.
 - New INI setting `NpcCompliments` (default on). Nine new rows in the sheet's Behavior tab (*Admire ...*).

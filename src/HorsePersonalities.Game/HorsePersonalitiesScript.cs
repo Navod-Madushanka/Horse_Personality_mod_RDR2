@@ -165,7 +165,7 @@ namespace HorsePersonalities.Game
                 ?? _registry.OnMount(horse, id, d.Breed, HorseOrigin.Unknown, horse == _game.GetSaddleHorse());
             TestPreset next = _presets.Next(current?.Preset);
             HorseRecord replaced = _registry.Replace(horse, id, next.For(d.Breed, current.Personality.Origin, current.Personality.Seed, d.ModelName, _roller, _boot.Breeds), next.Name);
-            _overlay.SetLines(OverlayText.Build(d, replaced, _boot.Breeds.Skills, IsFavorite(d)));
+            _overlay.SetLines(OverlayText.Build(WithTrust(horse, d, replaced), replaced, _boot.Breeds.Skills, IsFavorite(d)));
             _game.ShowSubtitle($"Test preset: {next.Name}. {next.Purpose}");
             SaveIfChanged("test preset changed");
         }
@@ -209,7 +209,12 @@ namespace HorsePersonalities.Game
             if (_registry != null && _statCheck.Due(Environment.TickCount))
             {
                 _guard.Run("Stats", ApplyStats);
-                _guard.Run("Bonding", () => _behavior.UpdateBonding(_mounts.CurrentMount));
+                _guard.Run("Bonding", () =>
+                {
+                    _behavior.UpdateBonding(_mounts.CurrentMount);
+                    // Pats, brushing and feeding happen on foot, so the saddle horse's bond is read too.
+                    if (_saddleHorse > 0 && _saddleHorse != _mounts.CurrentMount) _behavior.UpdateBonding(_saddleHorse);
+                });
             }
             if (_behavior != null && _behaviorCheck.Due(Environment.TickCount))
                 _guard.Run("Behaviors", () => _behavior.Update(_mounts.CurrentMount, _game.GameTimeMs / 1000.0));
@@ -279,7 +284,7 @@ namespace HorsePersonalities.Game
                 _boot.Log.Info(Log, $"Mounted horse {horse}: {text} (bond points {d.BondPoints}, model hash 0x{d.ModelHash:X8}, saddle horse {saddle}, origin {origin}, taming state {_game.GetTamingState(horse)})");
                 HorseRecord record = null;
                 _guard.Run("Registry", () => record = _registry?.OnMount(horse, Fingerprint(d), d.Breed, origin, saddle));
-                _overlay.SetLines(OverlayText.Build(d, record, _boot.Breeds.Skills, IsFavorite(d)));
+                _overlay.SetLines(OverlayText.Build(WithTrust(horse, d, record), record, _boot.Breeds.Skills, IsFavorite(d)));
                 SaveIfChanged("mounted the saddle horse");
             }
             else
@@ -312,7 +317,7 @@ namespace HorsePersonalities.Game
             HorseDescription d = HorseDescriber.Describe(_game, _boot.Breeds, saddle);
             HorseRecord record = _registry.OnSaddle(saddle, Fingerprint(d), d.Breed);
             _boot.Log.Info(Log, $"Saddle horse is now {saddle} ({d.ModelName}): " + (record == null ? "no breed, stays vanilla." : $"permanent personality {record.Id}."));
-            if (record != null && _mounts.CurrentMount == saddle) _overlay.SetLines(OverlayText.Build(d, record, _boot.Breeds.Skills, IsFavorite(d)));
+            if (record != null && _mounts.CurrentMount == saddle) _overlay.SetLines(OverlayText.Build(WithTrust(saddle, d, record), record, _boot.Breeds.Skills, IsFavorite(d)));
             SaveIfChanged("saddle horse changed");
         }
 
@@ -330,9 +335,10 @@ namespace HorsePersonalities.Game
                 if (d.Breed == null) continue;
                 HorseRecord record = _registry.Find(horse, Fingerprint(d));
                 if (record == null || record.Status != PersonalityStatus.Permanent) continue;
+                d = WithTrust(horse, d, record); // the reveal and long-use growth follow trust (Build plan: Trust)
 
                 RollerTuning t = _boot.Breeds.Roller;
-                List<StatChange> changes = StatPlanner.Plan(record, d.BondRank,
+                List<StatChange> changes = StatPlanner.Plan(record, d.FeatureBond,
                     _game.ReadAttribute(horse, PedAttribute.Health), _game.ReadAttribute(horse, PedAttribute.Stamina),
                     t.RevealFirstRankBond, t.RevealSecondRankBond, _boot.Settings.RestoreVanillaStats, out var learned);
                 foreach (var (stat, baseRank) in learned)
@@ -343,7 +349,7 @@ namespace HorsePersonalities.Game
                 foreach (StatChange c in changes)
                 {
                     _game.SetAttributeBaseRank(horse, c.Attribute, c.To);
-                    _boot.Log.Info("Stats", $"{record.Id} at bond {d.BondRank}: {c}{(_boot.Settings.RestoreVanillaStats ? " [RestoreVanillaStats]" : "")}");
+                    _boot.Log.Info("Stats", $"{record.Id} at trust {d.FeatureBond}: {c}{(_boot.Settings.RestoreVanillaStats ? " [RestoreVanillaStats]" : "")}");
                 }
 
                 // Phase 8: speed and acceleration toward their natural ceiling and past it with long use; agility from handling.
@@ -353,7 +359,7 @@ namespace HorsePersonalities.Game
                     SkillSet skills = SkillSet.From(record.Experience, d.Breed.Learning, st);
                     bool favorite = IsFavorite(d);
                     int up = _boot.Breeds.TierCaps.TryGetValue(d.Breed.Tier, out TierCap cap) ? cap.Up : 1;
-                    int longUse = GrowthPlanner.LongUseRanks(d.BondRank, record.Experience.RiddenHours, favorite, st);
+                    int longUse = GrowthPlanner.LongUseRanks(d.FeatureBond, record.Experience.RiddenHours, favorite, st);
                     NaturalStats n = record.Personality.NaturalStats;
                     var growth = StatPlanner.PlanGrowth(record, new[]
                     {
@@ -374,6 +380,13 @@ namespace HorsePersonalities.Game
                 }
             }
             SaveIfChanged("stored original stat ranks");
+        }
+
+        /// <summary>The description with the horse's trust level filled in (0 when it has none).</summary>
+        private HorseDescription WithTrust(int horse, HorseDescription d, HorseRecord record)
+        {
+            d.TrustLevel = _behavior?.TrustLevel(horse, record) ?? 0;
+            return d;
         }
 
         private static HorseFingerprint Fingerprint(HorseDescription d) => new HorseFingerprint(d.ModelName, d.IsMale);

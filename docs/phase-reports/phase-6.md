@@ -1,6 +1,6 @@
 # Phase 6 report: core behaviors
 
-Written Nov 26, 2026. Built and unit tested; not run in game yet (it waits, with Phase 5, for game time).
+Written Nov 26, 2026. Built and unit tested. Bonding was redesigned as **trust** on Nov 28, 2026 and tested in game the same day; see *Trust: bond pace redesigned* below. The other behaviors still wait for game time.
 
 ## What was built
 
@@ -27,11 +27,13 @@ The first phase where a personality changes how a horse acts. All decisions are 
 
 **Kick (Temper).** Stand within 2.5 m behind the horse for 3 s: 5% at Temper 0, about 37% at +2. Once per time you stand there. Uses the combat task Phase 1 found, cleared after 1.5 s.
 
-**Bonding (Bond affinity and quality).** Each second, the bond XP the game just gave a permanent horse is scaled by adding or removing points:
+**Bonding (Bond affinity and quality).** *Replaced Nov 28, 2026 by trust; see below.* As first built, each second the bond XP the game just gave a permanent horse was scaled by adding or removing points:
 - Bond affinity: about 1.5 times at +2, 0.67 at -2.
 - From bond 3 to 4: × 0.75 for a good horse, × 0.5 for a prized one.
 - A wild horse that broke Hard: × 0.8.
-- Fractions carry over. A gain that raised the bond level is left alone.
+- Fractions carried over. A gain that raised the bond level was left alone.
+
+The same multipliers now scale trust instead.
 
 **Breaking wild horses.**
 - **Hard:** throws you after 8 s on each of its first 2 attempts, then can break normally.
@@ -61,7 +63,7 @@ The first phase where a personality changes how a horse acts. All decisions are 
 1. **Gunfire detection.** Uses `EVENT_SHOT_FIRED` and `EVENT_SHOT_FIRED_WHIZZED_BY` from the event queue; Phase 1 never tested them. If they fire for shots far away, or not at all, gunfire spooks need another signal.
 2. **Your own shots.** "Rider gunfire" relies on `IS_PED_SHOOTING` being true in the same window as the shot event.
 3. **The sprint key.** `IS_CONTROL_PRESSED(0, INPUT_HORSE_SPRINT)` with keyboard and controller.
-4. **Bond points.** `SET_ATTRIBUTE_POINTS` on bonding is untested: the game may ignore it, or only change points and not the level. The log at the Debug level shows each adjustment.
+4. **Bond points.** Answered (Stage 13, Nov 28): the game keeps bond XP a script sets only until it restores its own saved value (after a reload, and sometimes seconds later in the same session). Bond pace moved to trust.
 5. **Predators** come from the hook's ped pool, which can fail at random (the hook returns nothing). A missed scan just tries again 0.5 s later.
 6. **Kick** attacks the player with the combat task. It may do damage, and it should never fire in town (Phase 7 adds a witness and lawman check for the Kicker quirk; this Temper kick only fires when you stand behind your own horse).
 7. **Throwing you at a gallop** can hurt. That is vanilla's behavior too, but if it feels unfair, push bucks could be made refusals above some speed.
@@ -79,7 +81,52 @@ Use a test save in free roam, with Rampage Trainer for spawning. Set `LogLevel =
 6. **Pushed:** on a Temper +1 or higher horse, sprint for over 30 s, spur with low stamina, and stop hard from a gallop. Expect an occasional throw, logged as `pushed (...)`. An average horse only refuses, rarely.
 7. **Kick:** stand right behind a Temper +1.5 horse for 3 s, step away, repeat. Within a few tries it kicks. Never in town.
 8. **Breaking:** use Rampage to find a wild Mustang. Its overlay line `Breaking if wild` (or `Breaking:` once ridden) says Normal, Hard or Unbreakable. A Hard one throws you twice more than usual; an Unbreakable one throws you every time (try 5).
-9. **Bonding:** with `LogLevel = Debug`, ride a permanent horse with Bond affinity far from 0 for 10 minutes, then check `bond XP ... scaled` lines.
+9. **Trust:** done Nov 28 (see below).
 10. **Overall:** ride your own horse for 30 minutes as usual. It should feel alive, not annoying.
 
 **Done when** you can tell a brave horse from a nervous one without the overlay.
+
+## Trust: bond pace redesigned (Nov 28, 2026)
+
+### Why
+
+Home test Stage 13 showed that bond XP the mod sets does not last:
+- `ADD_ATTRIBUTE_POINTS` (trigger 64), `SET_ATTRIBUTE_POINTS` (trigger 65) and trigger 42's level crossings all held for 5 to 7.5 minutes within a session;
+- after save and reload, all were gone: the game restored its own saved bond XP (86).
+
+Re-adding the difference after every reset was rejected. It fights the game, its level-ups repeat, and slowing a horse means taking XP away below levels the game already unlocked. Navod chose a mod-side value instead (Build plan: Trust).
+
+### What was built
+
+- The mod never writes bond XP. The game's bond is 100% vanilla.
+- Each permanent horse has `trust` in `horses.json`, in bond XP points. Levels 1-4 use the game's own thresholds for the model (`GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK`).
+- Each second, for the ridden horse and the saddle horse (so pats on foot count), each rise in the game's bond XP is scaled by the multipliers above and added to trust.
+- Drops (the game restoring its value) are ignored. Jumps over 100 XP (trainers, DevTools trigger 42) are added unscaled.
+- Trust starts at the horse's bond XP the first time the mod reads it, so owned horses keep their bond. No schema change.
+- Saved on a level change, an outside jump, and every 50 points.
+- The stat reveal (Phase 5), spook weighting, care reactions, signatures, long-use growth (Phase 8) and admired horses (Phase 8b) follow the trust level. Temporary personalities use the game's bond.
+- The overlay shows a Trust line. Trigger 42's description now explains that it raises trust.
+
+Unit tests: **576 passed, 0 failed**, including 7 new trust tests (levels, start, scaling, the game's restore, a new session, outside jumps, level-up saves, temporary horses) and a save round trip.
+
+### In-game results (Nov 28, 2026, test mode, Dutch Warmblood chocolate roan)
+
+| Check | Result |
+| --- | --- |
+| Thresholds | The game gave level 2 at 350, 3 at 950, 4 at 1950, matching trigger 42 |
+| Trust starts | At the game's bond XP (86, level 1) as soon as the saddle horse was seen, before mounting |
+| Natural gains | +1 and +2 while riding, +15 for a pat, each added to trust |
+| Trigger 42 | +216, +136 and +600 counted as outside jumps, unscaled; trust 1 → 2 → 3 |
+| The game restores its XP | Within the session: 350 → 136 (about a minute after the trigger), 950 → 216 (8 s after), 350 → 260 (3 s after). Trust kept its value each time and went on counting from the game's new value |
+| Reload | Trust came back at 400 (level 2) while the game's bond was 1 (206 XP) |
+| Pace | Average and Bad horse x1.00; Aloof (Bond affinity -2) x0.67; Prized stats at trust 2 (affinity +0.5) x1.11; at trust 3 x0.55 (the prized 0.5 for the climb to 4) |
+| Stat reveal | Prized stats at trust 2: Health 4 → 5, Stamina 5 → 4; at trust 3: Stamina 4 → 3. The bars stayed revealed while the game's bond fell back to 1 |
+| Saved | `horses.test.json` has the trust value; the other horses have `null` until the mod reads them |
+
+**Passed.** Trust survives reloads and the game's own restores, and the reveal follows it.
+
+Notes:
+- A trigger 42 jump of +92 (from 258 to 350) was under the 100 limit, so it was scaled like a natural gain (x0.55). Only DevTools and trainer jumps of 36 to 100 XP are affected; natural gains seen are at most +35. Left at 100.
+- Not yet seen: a reload after trust 3 (the trust 2 reload passed), and a Hard wild horse's x0.8.
+- Gains under 50 points since the last write are lost if the game closes (the hook never says when it exits); at most about 2 minutes of riding.
+

@@ -29,10 +29,14 @@ namespace HorsePersonalities.Core.Tracking
                 : "Temporary: gone on reload, saddle it to keep it");
             if (record.Preset != null) lines.Add("Test preset: " + record.Preset);
             lines.AddRange(record.Personality.Describe());
+            if (record.Status == PersonalityStatus.Permanent)
+                lines.Add(record.Trust.HasValue
+                    ? $"Trust {(horse.TrustLevel > 0 ? horse.TrustLevel.ToString() : "?")} ({record.Trust.Value:0} points; game bond XP {horse.BondPoints})"
+                    : "Trust: starts at the game's bond XP within a second");
             if (skills != null && horse.Breed != null && record.Status == PersonalityStatus.Permanent)
             {
                 var set = Skills.SkillSet.From(record.Experience, horse.Breed.Learning, skills);
-                int longUse = Skills.GrowthPlanner.LongUseRanks(horse.BondRank, record.Experience.RiddenHours, favorite, skills);
+                int longUse = Skills.GrowthPlanner.LongUseRanks(horse.FeatureBond, record.Experience.RiddenHours, favorite, skills);
                 lines.Add("Experience: " + record.Experience);
                 lines.Add("Skills: " + set);
                 lines.Add($"Long-use growth: {longUse} rank{(longUse == 1 ? "" : "s")}{(favorite ? " (community favorite: up to 2)" : "")}");

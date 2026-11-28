@@ -33,7 +33,7 @@ Every horse is built from three layers: the breed sets the limits, the individua
 
 1. **Breed** (vanilla, untouched): stats tier (its Handling class), and default demeanor. The Arabian stays fastest, drafts stay heavy.
 2. **Individual** (rolled once, hidden):
-   - **Traits:** Courage (big threats), Nerves (small or random things), Temper (bucking, refusing), Bond affinity (how fast it bonds).
+   - **Traits:** Courage (big threats), Nerves (small or random things), Temper (bucking, refusing), Bond affinity (how fast it comes to trust you; see Trust).
    - **Natural stats:** whole-rank ups and downs in speed, acceleration, health and stamina (usually 0 or 1 rank, rarely 2). They set the horse's ceiling.
    - **Quirks:** 1 to 2 habits from the list of 7 (Chatterbox, Kicker, Head-tosser, Nosy, Shadow, Wanderer, Picky eater). Show-off was cut on Nov 25, 2026: the game has no piaffe a script can trigger.
 3. **Experience** (learned, separate from personality): gunfire, predators, handling, speed and acceleration. Learning speed comes from the breed's class.
@@ -61,7 +61,7 @@ Decided Nov 27, 2026. Every coat gets a hand-written personality that fits the h
 
 ### Prized horses
 
-Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or picks a community favorite should never be let down by its personality. These are **prized horses**, and they trade a better personality for a slower bond.
+Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or picks a community favorite should never be let down by its personality. These are **prized horses**, and they trade a better personality for slower trust.
 
 - **Who is prized:**
   - every horse bought from a stable (origin Stable, which also covers horses the player already owned when the mod first saw them);
@@ -70,7 +70,7 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
   Special, rare and favorite horses are a list of models in the breed sheet's Prized tab, never in code. A prized model is prized however the player got it: bought, broken in the wild, or taken.
 - **A better personality:** a prized horse always rolls good, and none of its traits sits on the bad side of its breed. The "one flaw" a normal good horse may have is not allowed.
 - **Its flaws are only fun ones:** quirks such as wandering off, calling out a lot, kicking people or following you when you walk away. Never a serious problem like bucking you off for no reason.
-- **The cost, slower bonding:** a prized horse takes much longer to reach bond level 4 (see Bonding and breaking).
+- **The cost, slower trust:** a prized horse takes much longer to reach trust level 4 (see Trust). The game's own bond meter fills at the normal pace.
 - **The cost, harder to break:** a prized wild horse's breaking score is raised (Roller tab: *Prized break score bonus*), so it breaks Hard more often. It is never Unbreakable: an unusable favorite would be the very disappointment this rule prevents.
 - Breed leanings still apply. A prized Arabian is still more alert than most breeds, just better than an average Arabian.
 
@@ -78,9 +78,9 @@ Decided Nov 25, 2026. A player who pays for a horse, hunts down a rare one or pi
 
 - There is no menu. A new horse looks exactly like a vanilla horse of its breed.
 - Behavior traits show from day one: you learn a horse is nervous when it spooks.
-- Health and stamina differences appear as the bond grows, on top of vanilla bonding: the first rank of difference at bond level 2, a second rank (only a -2 horse has one) at bond level 3 (decided Nov 26, 2026). By bond 3 everything shows, before the slow climb to bond 4.
+- Health and stamina differences appear as trust grows: the first rank of difference at trust level 2, a second rank (only a -2 horse has one) at trust level 3 (decided Nov 26, 2026; trust replaced the game's bond level Nov 28). By trust 3 everything shows, before the slow climb to trust 4.
 - Speed, acceleration and handling grow with training toward the horse's natural ceiling, and with long use past it (see Long-use growth).
-- Bond affinity shows in how fast or slow bonding goes.
+- Bond affinity shows in how fast trust grows: how soon the stats reveal, care reactions soften, and long-use growth and compliments arrive.
 
 ### Who gets a personality
 
@@ -99,14 +99,46 @@ Mounting rolls a temporary personality and your saddle makes it permanent; a wil
 
 ### Bonding and breaking
 
-- **Stable horses** come broken at bond level 1, like vanilla. Only the time to reach levels 2 to 4 differs. No bond limit, ever.
-- **Wild horses** roll a breaking difficulty from Temper and Bond affinity: Normal (vanilla), Hard (longer break, slow bonding) or Unbreakable (never breaks, basically unusable).
+- **Stable horses** come broken at bond level 1, like vanilla. The mod never changes the game's bond (see Trust). No bond or trust limit, ever.
+- **Wild horses** roll a breaking difficulty from Temper and Bond affinity: Normal (vanilla), Hard (longer break, slower trust) or Unbreakable (never breaks, basically unusable).
 - Unbreakable exists only for wild horses, and `UnbreakableChance` (default 5%) keeps it rare.
-- **The climb to bond 4 is earned** (decided Nov 25, 2026). Levels 1 to 3 come at the normal pace, set by Bond affinity as before, so a new horse still feels rewarding. The climb from level 3 to 4 is slower for better horses:
+- **The climb to trust 4 is earned** (decided Nov 25, 2026, for bond; moved to trust Nov 28). Levels 1 to 3 come at the pace Bond affinity sets, so a new horse still feels rewarding. The climb from level 3 to 4 is slower for better horses:
   - a bad horse: normal pace;
   - a good horse: slower (Roller tab: *Good bond 4 speed*, proposed 0.75, so a third longer);
   - a prized horse (stable-bought, special, rare, community favorite; always good): slowest (Roller tab: *Prized bond 4 speed*, proposed 0.5, so twice as long).
 - Prized wild horses also break Hard more often, but are never Unbreakable.
+
+### Trust (the mod's own bond)
+
+Decided Nov 28, 2026 (Navod). Home test Stage 13 showed that bond XP a script sets never reaches the game's save: the game puts its own saved value back on every load (and once mid-session, in Stage 9). Re-adding the difference after every reset was rejected for four reasons:
+
+- it fights the game;
+- its level-ups repeat;
+- slowing a horse means taking XP away, which can drop it below a level the game already unlocked;
+- it clashes with trainers and other bonding mods.
+
+The rules:
+
+- **The game's bond stays 100% vanilla.** The mod never writes bond XP or the bond level. Vanilla bond perks, tricks and the bond meter work exactly as they do without the mod, for every horse.
+- **Each permanent horse has a trust value** in `horses.json`, in the same points as the game's bond XP. Its levels 1 to 4 use the game's own thresholds for that model (`GET_DEFAULT_ATTRIBUTE_POINTS_NEEDED_FOR_RANK` on `PA_BONDING`), so an average horse's trust keeps pace with its bond.
+- **Trust grows from the game's own bond gains.** Every second the mod reads the horse's bond XP. A rise means the game rewarded something (riding, a pat, brushing, feeding, calming). Trust grows by that rise times the horse's pace, which comes from:
+  - Bond affinity: e^(*Bond affinity slope* x affinity), so +2 is about 1.5 times and -2 about 0.67 (Behavior tab);
+  - from trust level 3 to 4, *Good bond 4 speed* or *Prized bond 4 speed* (Roller tab);
+  - a wild horse that broke Hard: *Hard bond speed* (Behavior tab).
+- **A drop is never counted.** When the game puts its saved value back (after a load, or a reset like the one in Stage 9), the mod takes the new value as its starting point. The mod saves trust itself, so trust survives every reload.
+- **A jump of more than 100 XP in one read** (the largest natural gain seen in game is +35) comes from outside (a trainer, DevTools trigger 42, another mod). It is added to trust as it is, not scaled, so a trainer that maxes the bond maxes trust too.
+- **Where trust starts:** when a horse becomes permanent, at its bond XP at that moment. Horses the player already owns keep the bond they have, and a newly broken wild horse starts near 0. Temporary personalities have no trust.
+- **Trust drives the mod's features, not the game's:**
+  - the health and stamina reveal (Phase 5);
+  - random spook weighting (Phase 6);
+  - care reactions softening (Phase 7);
+  - the bond checks in signatures such as Bored buck (Phase 7b);
+  - long-use growth (Phase 8);
+  - admired horses (Phase 8b).
+
+  Wherever this plan or the sheet says "bond level" for a mod feature, it means the trust level. The sheet's setting names keep the word "bond".
+- **The trade-off:** a prized horse's slower climb no longer slows the game's own bond 4. The cost shows in the mod's features instead: its stats reveal later, and growth and compliments come later.
+- `RestoreVanillaStats` and uninstalling need nothing extra: trust lives only in `horses.json`.
 
 ### Skills and learning speed
 
@@ -122,9 +154,9 @@ Decided Nov 25, 2026. A horse ridden from the start of the story to the end shou
 - **Any horse** that is bonded and ridden for a long time grows its speed and acceleration 1 rank past its natural ceiling. It still stops at the top of its tier, so it gets better but stays in its class.
 - **Community favorites** grow to 2 ranks above their breed's usual value. They are the one exception to the tier rule: a long-kept favorite can become the fastest horse in the game.
 - No stat ever passes the game's own maximum rank (9).
-- **Earned two ways:** part unlocks with bond levels, the rest with time ridden and sprints (the Phase 8 experience tracking). A horse only gets the full growth if it is both well bonded and ridden a lot.
-- Only speed and acceleration grow this way; health and stamina keep their natural values (revealed by bond, Phase 5).
-- How many hours and which bond levels unlock each step are tuning numbers in the sheet, set in Phase 8.
+- **Earned two ways:** part unlocks with trust levels, the rest with time ridden and sprints (the Phase 8 experience tracking). A horse only gets the full growth if it is both well trusted and ridden a lot.
+- Only speed and acceleration grow this way; health and stamina keep their natural values (revealed by trust, Phase 5).
+- How many hours and which trust levels unlock each step are tuning numbers in the sheet, set in Phase 8.
 
 ### Hard rules
 
@@ -196,7 +228,7 @@ Detectors turn game state into events, Core decides what happens, and the behavi
 
 - Every frame: only cheap checks, such as the current mount and hotkeys.
 - Every 250 ms: threats near the horse and the horse's state.
-- Every 1000 ms: bond level and whether stats need re-applying.
+- Every 1000 ms: bond XP gains into trust, and whether stats need re-applying.
 - Only on events: rolls, saves and file writes.
 - Keep per-frame work under 1 ms; the overlay can show the measured time.
 
@@ -251,6 +283,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
       "naturalStats": { "speed": 1, "acceleration": 0, "health": 1, "stamina": -1 },
       "breaking": "Normal",
       "experience": { "gunfights": 3, "predators": 1, "riddenMinutes": 412.5, "gallopMinutes": 61.0, "sprints": 37 },
+      "trust": 2140.0,
       "firstSeen": "2026-11-22",
       "lastSeen": "2026-11-22"
     }
@@ -259,6 +292,7 @@ Model names in the example are placeholders; the real list comes from `peds_list
 ```
 
 - The key is the horse's fingerprint: model, sex and coat. Phase 2 confirms which parts the game exposes.
+- `trust` is the mod's own bond, in the game's bond XP points (see Trust). Its level comes from the game's thresholds, so only the points are saved.
 - Traits are numbers from -2 to +2, matching the sheet's scale. Natural stats are whole ranks above or below the breed baseline, capped by tier.
 - Skills run from 0 (untrained) to 1 (at the horse's ceiling). They aren't stored: the file keeps the experience counts, and skills are worked out from them with the Skills tab's steps and the breed's learning rates (Phase 8, Nov 28, 2026). A file without `experience` loads with zero experience.
 - Temporary personalities are never written to this file.
@@ -296,7 +330,7 @@ Behavior is the mod's only interface: no menus, no popups, no new animations. Ev
 | Courage | Ears and head snap toward threats early, snorts, jostles, rears or bolts near predators and gunfire | Stays loose and holds position under fire |
 | Nerves | Calm idle, ears up, ignores small things | Restless idle, random snorts and side-steps, spooks at nothing at night or at a gallop |
 | Temper | Relaxed and tolerant when pushed | Ears back a lot, bucks when pushed or scared, kicks if you linger behind it, fights calming |
-| Bond affinity | Looks away, slow to bond; wild horses can be hard or impossible to break | Perks up when you approach, bonds fast |
+| Bond affinity | Looks away, slow to trust you; wild horses can be hard or impossible to break | Perks up when you approach, trusts you fast |
 
 ### Quirks (1 to 2 per horse)
 
@@ -312,7 +346,7 @@ Behavior is the mod's only interface: no menus, no popups, no new animations. Ev
 
 ### Reactions to care
 
-Reactions come from Bond affinity and Temper, soften as the bond grows, and play right after the vanilla animation.
+Reactions come from Bond affinity and Temper, soften as trust grows, and play right after the vanilla animation.
 
 |  | Affectionate | Aloof | Grumpy |
 | --- | --- | --- | --- |
@@ -332,7 +366,7 @@ Each breed has a default body language, listed in the sheet's Demeanor column. E
 
 ### The game's own stat bars
 
-Health and stamina bars drift above or below the breed's usual values as the bond grows. Speed, acceleration and handling bars climb with training. Nothing else on screen changes.
+Health and stamina bars drift above or below the breed's usual values as trust grows. Speed, acceleration and handling bars climb with training. Nothing else on screen changes.
 
 ### Test mode (development only)
 
@@ -345,7 +379,7 @@ Decided Nov 26, 2026, so each behavior can be tested on a horse whose personalit
 
 ### Debug overlay (development only)
 
-A small text panel in a screen corner, toggled with `DebugKey` and off by default. It shows the current horse's fingerprint, breed, good or bad, traits, quirks, natural stats, skills, bond level and the last behavior event with its cause.
+A small text panel in a screen corner, toggled with `DebugKey` and off by default. It shows the current horse's fingerprint, breed, good or bad, traits, quirks, natural stats, skills, the game's bond level, trust (points and level) and the last behavior event with its cause.
 
 ## Outputs
 
@@ -422,29 +456,35 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 ### Phase 5: Stats and the bond reveal
 
-- **Agent builds:** natural stat differences applied in steps per bond level (health and stamina), tier caps, and re-applying after load or a stable visit if the game resets them.
+- **Agent builds:** natural stat differences applied in steps per trust level (health and stamina; per bond level until Nov 28, 2026, see Trust), tier caps, and re-applying after load or a stable visit if the game resets them.
   - The mod changes the stat's **base rank**, never its bonus rank: the bonus (the yellow segments) is the game's own, from tack, and changes when the saddle does.
   - The first time the mod sees a permanent horse it stores the horse's original base rank for each stat in `horses.json`. From then on it keeps base = original + the revealed difference, inside 0 and the game's max rank.
   - Applied to the horse you ride and to your saddle horse, checked every second. Temporary personalities get no stat changes.
   - `RestoreVanillaStats` puts every horse it sees back to its stored original, for a clean uninstall.
   - Speed and acceleration differences wait for Phase 8, where they grow with use.
-- **Test:** a bond 1 horse shows vanilla bars; each level moves them; nothing passes its tier; check what happens to stats if the mod is removed and note it in the README.
-- **Done when:** two horses of one breed show different bars by bond level 3.
+- **Test:** a trust 1 horse shows vanilla bars; each level moves them; nothing passes its tier; check what happens to stats if the mod is removed and note it in the README.
+- **Done when:** two horses of one breed show different bars by trust level 3.
 
 ### Phase 6: Core behaviors
 
-- **Agent builds:** threat spooks from Courage (predators, gunfire, explosions nearby); random spooks from Nerves (weighted by night, gallop and weak bond); bucks, refusals and kicks from Temper; the bond XP multiplier from Bond affinity; Hard and Unbreakable breaking for wild horses; the mission guard and cooldowns.
+- **Agent builds:** threat spooks from Courage (predators, gunfire, explosions nearby); random spooks from Nerves (weighted by night, gallop and weak bond); bucks, refusals and kicks from Temper; trust pace from Bond affinity; Hard and Unbreakable breaking for wild horses; the mission guard and cooldowns.
   Decided Nov 26, 2026:
-  - **Forests are dropped for v1:** no native says "in a forest". Night, gallop and bond weight random spooks.
+  - **Forests are dropped for v1:** no native says "in a forest". Night, gallop and trust weight random spooks.
   - **"Pushed" means any of:** spurring at low stamina, a long sprint, a hard stop or sharp turn at speed, and being scared (a high-Temper horse may buck instead of rearing).
   - **Strength, noticeable but rare:** a very nervous horse spooks at nothing about once every 10-15 minutes of riding at night; a cowardly one reacts to most nearby gunfire and predators; an average horse rarely does either.
   - Every rate, chance and threshold is in the breed sheet's Behavior tab, multiplied by the player's `SpookFrequency` for random spooks.
   - **Reactions use only behaviors that passed Phase 1:** rear, throw rider, agitate, quick stop, skid, bolt, look at the threat, snort, and kick (combat task, cleared after a moment).
-  - **Bond speed:** the mod scales each bond XP gain the game gives a permanent horse (Bond affinity, the slower climb to bond 4 for good and prized horses, and slower for Hard wild horses) by adding or removing bond points.
+  - **Trust pace** (changed Nov 28, 2026): the mod scales each bond XP gain the game gives a permanent horse and adds it to the horse's trust (see Trust). The scaling comes from Bond affinity, the slower climb to level 4 for good and prized horses, and a slower pace for Hard wild horses. The mod never writes the game's bond XP.
   - **Breaking:** a Hard wild horse throws you a few extra times before it can break; an Unbreakable one always throws you before the break finishes.
   - **The mission guard** holds every behavior while `GET_MISSION_FLAG` is on or a cutscene shows (letterbox bars, anim scene camera, gameplay camera off, or player control off), when `DisableDuringMissions` is true.
 - **Test:** with Rampage, spawn wolves beside a low-courage and a high-courage horse; ride a high-nerves horse at night; push a high-temper horse until it bucks; try to break an Unbreakable wild horse 5 times; start a mission and confirm nothing fires.
 - **Done when:** you can tell a brave horse from a nervous one without the overlay.
+
+**Resolved Nov 28, 2026: bond pace moved to trust.** Stage 13 tested `ADD_ATTRIBUTE_POINTS` (trigger 64), `SET_ATTRIBUTE_POINTS` (trigger 65) and trigger 42's level crossings. All three lasted within a session (5 to 7.5 minutes watched), and all were gone after save and reload: the game restores its own saved bond XP. Navod chose the mod's own trust value (see Trust) over re-adding the difference after every reset.
+
+**Built Nov 28, 2026** (needs the game): a `trust` value in `horses.json` (no schema change: a save without it starts at the horse's current bond XP), trust gains in `BehaviorRunner.UpdateBonding` in place of the XP writes, every bond-level check in Phases 5 to 8b reading the trust level, trust on the overlay, and DevTools trigger 42, whose jump to the next bond level is added to trust as an outside jump. The saddle horse's bond is read too, so pats on foot count. Next: rerun the Stage 9 reveal rows and Stage 13 against trust.
+
+The history:
 
 **Open problem (found in game Nov 27, 2026, Phase 5 testing): bond pace does not last.** About three minutes after the mod sets a horse's bond XP (`SET_ATTRIBUTE_POINTS` on `PA_BONDING`), the game puts back its own value, so Bond affinity, the slower climb to bond 4 for good and prized horses, and the Hard wild horse pace have no lasting effect. The game keeps the real bond XP somewhere the mod does not write. Next step:
 - DevTools trigger 64 adds +50 bond XP with `ADD_ATTRIBUTE_POINTS` (the game may treat it like a real pat); trigger 65 sets +50 with `SET_ATTRIBUTE_POINTS`, as the mod does now, as the control. Each logs the bond XP every 30 s for 5 minutes. Home test Stage 13.
@@ -468,7 +508,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
     - Grumpy: Temper +0.75 or more.
     - Aloof: Bond affinity -0.75 or less.
     - Anything else: vanilla only.
-    Each reaction is less likely as the bond grows.
+    Each reaction is less likely as trust grows.
   - **Breed demeanor** is four numbers per breed in the sheet's new Demeanor tab, from each breed's demeanor text:
     - Impatient: fidgets when kept standing.
     - Alert: watches its surroundings.
@@ -496,7 +536,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Missouri Fox Trotter coats** (Navod, Nov 27, 2026): a baseline *Blue-Collar Athlete* for the five coats without their own design, *The Elusive Celebrity* (Silver Dapple Pinto) and *The Golden Retriever* (Amber Champagne). Five new signatures, built from tested pieces, so no new DevTools triggers:
   - **Stoic** (baseline, Silver Dapple): a pat gets nothing back, whatever its traits ("the emotional range of a brick wall").
   - **Wanderlust** (Silver Dapple): left untied with you 8 m+ away for 8 s, it walks off down the road freely (trigger 40's wander) for 40 s; whistle it back.
-  - **Bored buck** (Silver Dapple): you aim from its back, standing still, for 8 s: 30% it throws you (bond 1-2) or fidgets and spoils your aim (bond 3-4). Once per aim.
+  - **Bored buck** (Silver Dapple): you aim from its back, standing still, for 8 s: 30% it throws you (trust 1-2) or fidgets and spoils your aim (trust 3-4). Once per aim.
   - **Clumsy** (Amber Champagne): a trip (skid) now and then at a trot or canter, 0.3/min.
   - **Snack magnet** (Amber Champagne): at a walk it stops dead and grazes a few seconds, 0.3/min (needs trigger 46).
   - Cut: cornering like a wagon and knocking over fences (no script control over handling or jumping), nudging you while you loot (no nudge animation; its Shadow quirk keeps it close instead). Endurance is the breed's own stamina.
@@ -614,14 +654,14 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 ### Phase 8: Skills and experience
 
-- **Agent builds:** exposure tracking (gunfire near the horse, predator encounters survived, time and distance ridden, sprints) turned into skill growth at the class learning rate; skills reduce panic in their own situation and raise speed, acceleration and handling toward the ceiling. Long-use growth on top: +1 rank past the natural ceiling for any horse (within its tier), up to +2 over the breed's usual value for community favorites, unlocked by bond level and riding time. Handling growth is experimental.
+- **Agent builds:** exposure tracking (gunfire near the horse, predator encounters survived, time and distance ridden, sprints) turned into skill growth at the class learning rate; skills reduce panic in their own situation and raise speed, acceleration and handling toward the ceiling. Long-use growth on top: +1 rank past the natural ceiling for any horse (within its tier), up to +2 over the breed's usual value for community favorites, unlocked by trust level and riding time. Handling growth is experimental.
 - **Test (unit):** growth curves and caps. In game: about 10 gunfights make a timid horse visibly calmer under fire but not around bears.
 - **Design (Nov 28, 2026, built ahead of game testing by decision).** Tuning numbers are in the sheet's new **Skills** tab.
   - **Experience is counted, skills are worked out from it.** Each permanent horse keeps five counts in `horses.json` (`experience`): gunfights it was in, predator encounters, minutes ridden, minutes at a gallop, sprints. A skill (0 to 1) is count x step x the breed's learning rate (combat for gunfire and predators, physical for speed, acceleration and handling), so retuning a step or a class rate changes every horse at once, no save upgrade.
   - **Counting:** a gunfight is gunfire or an explosion near the horse while you ride it or stand by it, at most one per *Gunfight gap* (60 s). A predator encounter is a predator first seen within Predator range. Ridden and gallop minutes count while you ride a permanent horse. A sprint is a press of the sprint button from below a gallop, at most one per *Sprint gap*. Counting is held in missions and cutscenes like everything else. The INI's `ExperienceSpeed` (default 1) multiplies all of it, for testing.
   - **Skills ease fear in their own situation only.** Gunfire skill adds up to *Skill courage bonus* (2) Courage against gunfire and explosions; predator skill the same against predators. A timid horse with 10 gunfights is calm under fire and still timid around a bear.
   - **Speed and acceleration grow toward the natural ceiling.** A horse with a positive natural stat shows it once that skill reaches *Skill rank at* (0.5); a zero or negative natural stat shows from the start (there's nothing to grow toward). So natural speed and acceleration, rolled since Phase 3, finally appear on the stat bars.
-  - **Long-use growth:** +1 rank of speed and acceleration once the horse is at bond 3 and ridden 10 hours (*Long use rank 1 bond / hours*); community favorites get a second rank at bond 4 and 30 hours. Any horse stops at its tier's up cap above the breed's usual value; community favorites stop at +2 (*Favorite max ranks*), past the tier. Nothing passes the game's rank 9.
+  - **Long-use growth:** +1 rank of speed and acceleration once the horse is at trust 3 and ridden 10 hours (*Long use rank 1 bond / hours*); community favorites get a second rank at trust 4 and 30 hours. Any horse stops at its tier's up cap above the breed's usual value; community favorites stop at +2 (*Favorite max ranks*), past the tier. Nothing passes the game's rank 9.
   - **Handling (experimental):** handling skill at *Skill rank at* raises the Agility base rank by 1, within the tier cap; *Handling growth* 0 turns it off. Whether Agility changes handling in game is a test row.
   - Like health and stamina, speed, acceleration and agility change only the base rank; the original is stored on first sight and re-applied every session (the game resets base ranks on reload, Phase 5). `RestoreVanillaStats` puts them back too.
   - The overlay shows the five skills and the long-use ranks.
@@ -629,9 +669,9 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 
 ### Phase 8b: Admired horses
 
-- **Asked by Navod, Nov 28, 2026.** In the game, people compliment a fine horse (an Arabian, a Turkoman, a Missouri Fox Trotter) as you ride past. With the mod, any horse earns that when you look after it: **bond 4, clean and fit**. A Shire you've kept for the whole story gets "Nice horse" in Saint Denis just as an Arabian does.
+- **Asked by Navod, Nov 28, 2026.** In the game, people compliment a fine horse (an Arabian, a Turkoman, a Missouri Fox Trotter) as you ride past. With the mod, any horse earns that when you look after it: **trust 4, clean and fit**. A Shire you've kept for the whole story gets "Nice horse" in Saint Denis just as an Arabian does.
 - **When a horse counts as admired** (all from the Behavior tab):
-  - **Bond 4** (*Admire bond*).
+  - **Trust 4** (*Admire bond*).
   - **Fit:** its health and stamina cores (the inner rings) are both at least *Admire min core* (70 of 100), so a horse you feed and look after.
   - **Clean:** its dirtiness rank is at most *Admire max dirt rank* (1; the dirtiness scale is unverified, the stat readout trigger now logs it).
   - Only horses with a personality (every breed in the sheet); gang horses, mules and Online-only breeds stay vanilla, as everywhere else.
@@ -643,7 +683,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
   - The game's own compliments for its fine breeds keep happening as before; the mod adds its own on top for every looked-after horse.
 - **Game calls** (all through `IGameApi`, new DevTools triggers 66-68): `DOES_CONTEXT_EXIST_FOR_THIS_PED` (does this person have the line?), `IS_ANY_SPEECH_PLAYING`, and `PLAY_PED_AMBIENT_SPEECH_NATIVE` with the speech-params struct (line, no voice name so the person's own voice is used, random variation, `speech_params_force_normal`, listener: the player). The voice and params are guesses until trigger 67 passes.
 - **Test:** home test Stage 16.
-- **Done when:** riding a clean, fit bond-4 horse of any breed slowly through town gets a compliment every few minutes, and a dirty or hungry one, or a horse below bond 4, gets none from the mod.
+- **Done when:** riding a clean, fit trust-4 horse of any breed slowly through town gets a compliment every few minutes, and a dirty or hungry one, or a horse below trust 4, gets none from the mod.
 
 ### Phase 9: Polish and release
 
@@ -653,7 +693,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Built Nov 28, 2026 (the parts that don't need the game):**
   - **Settings check:** a key the mod doesn't know (a typo such as `SpookFrequncy`) gets a log warning naming the closest real setting. Testing settings left on (`TestPersonalities`, `ExperienceSpeed` other than 1, `RestoreVanillaStats`, `DebugOverlay`, `LogLevel = Debug`) get a warning at startup, and the first two also show in the "loaded" banner, so nobody plays a real save in test mode by accident.
   - **Performance:** the town check (a map-zone lookup) runs at most once per 250 ms behavior check instead of up to three times. Everything else already runs on the 250 ms or 1 s gates, and the log reports tick time every minute (budget 1 ms).
-  - **Log levels:** nothing logs every frame or every check; behaviors, quirks and stat changes log once per event, bond pacing at Debug.
+  - **Log levels:** nothing logs every frame or every check; behaviors, quirks and stat changes log once per event, trust gains at Debug.
   - **README** rewritten for players (what it does, requirements, install, settings, uninstall, known limits); the developer notes moved to `docs/DEVELOPING.md`.
   - **Release zip:** `tools/make-release.ps1` (Windows) and `tools/make-release.sh` build the mod in Release against your `lib/ScriptHookRDRNetAPI.dll` and pack `dist/HorsePersonalities-<version>.zip`: `scripts/HorsePersonalities.dll`, `scripts/HorsePersonalities/` (breeds.json, test-personalities.json), `scripts/HorsePersonalities.ini` with the defaults, README and LICENSE. DevTools is never packed. Version 0.9.0 until the acceptance run passes; 1.0.0 after.
   - Still needs the game: the full play session with popular horse mods installed (including the Unruliness mod) and the end-to-end run.
@@ -687,7 +727,7 @@ Run from Visual Studio's Test Explorer against `HorsePersonalities.Core`:
 3. Buy a Turkoman: bond 1, vanilla bars, fidgets when kept standing too long.
 4. Mount an NPC's horse, then reload: its temporary personality is gone.
 5. Break 3 wild Mustangs: breaking difficulty differs; a forced Unbreakable never breaks.
-6. Bond two horses of one breed to level 2: their bars and bonding speed differ.
+6. Bond two horses of one breed with different Bond affinity. Their trust grows at different speeds (overlay), so their bars reveal at different times, while their game bond meters fill at the same pace.
 7. Spawn wolves beside a low-courage and a high-courage horse: one panics, one holds.
 8. Ride a high-nerves horse through a forest at night: random spooks, cooldowns respected.
 9. Pat, brush and feed: reactions match each horse's temperament.
@@ -718,13 +758,15 @@ The biggest unknown is which behaviors a script can trigger on one horse; Phase 
 | The breaking minigame can't be controlled | Hard and Unbreakable can't work as planned | Unbreakable forces a buck-off at the end; Hard adds extra buck attempts |
 | A kick in town counts as a crime | Players get a wanted level from a quirk | Decided Nov 28, 2026: that is the point. A Kicker kicks in town too, and the law may come; the player chooses where to take it |
 | Other horse mods change stats or temperament | Odd combinations | Apply differences on top of whatever the game reports; list known conflicts |
+| Script-set bond XP doesn't reach the game's save | Bond pace would vanish on reload | Found Nov 27-28, 2026 (Stage 13). Decided: the mod keeps its own trust value and never writes bond XP (see Trust) |
 | A game update renames or breaks natives | The mod stops working | All native calls in one adapter; the update regression check |
 
 ### Open questions
 
 - [ ] Prized horses: which models are special, rare or community favorites? Navod fills the sheet's Prized tab. Community favorites also get the bigger long-use growth.
 - [x] Long-use growth: the hours ridden and bond levels that unlock each rank. Proposed in the Skills tab (Nov 28, 2026): bond 3 and 10 hours for rank 1, bond 4 and 30 hours for a favorite's rank 2. Navod tunes after testing.
-- [ ] Bonding: how much slower the climb to bond 4 is (proposed 0.75 for good horses, 0.5 for prized), and how much harder prized wild horses are to break (proposed *Prized break score bonus* +1.0). Tune in Phase 6.
+- [x] Bond pace: decided Nov 28, 2026, the mod's own trust value, never the game's bond XP (see Trust).
+- [ ] Trust: how much slower the climb to trust 4 is (proposed 0.75 for good horses, 0.5 for prized), and how much harder prized wild horses are to break (proposed *Prized break score bonus* +1.0). Tune in Phase 6.
 
 - [ ] Training: is it only experience, or also deliberate training with its own actions?
 - [x] What counts as "pushed" for a Temper buck: decided Nov 26, all of spurring at low stamina, a long sprint, hard stops and turns, and being scared.

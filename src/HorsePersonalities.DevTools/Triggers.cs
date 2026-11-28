@@ -233,8 +233,8 @@ namespace HorsePersonalities.DevTools
                     return "TASK_WANDER_IN_AREA 12 s, then grazing with its animation named";
                 }));
             // Phase 5 testing (Nov 26, 2026), number 42: step the bond level to see the stat reveal without hours of bonding.
-            t.Add(new Trigger("bond.next", "Bond level: next (1-4, wraps)", "Phase 5 bond reveal",
-                "Use a test save: the game may keep the new level. Ride or stand by the horse, press, wait 1-2 s, check its health and stamina bars.",
+            t.Add(new Trigger("bond.next", "Bond level: next (1-4, wraps)", "Trust (the mod's bond): reveal, growth, admired",
+                "Raises the game's bond XP to the next level; the mod adds the jump to trust (gone from the game on reload, kept in trust). Trust never goes down: wrapping to 1 lowers only the game's bond. Wait 1-2 s, check the bars and the overlay's Trust line.",
                 ctx =>
                 {
                     int h = ctx.Horse;

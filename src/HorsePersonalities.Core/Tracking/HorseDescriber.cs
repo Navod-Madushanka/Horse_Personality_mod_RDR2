@@ -15,6 +15,14 @@ namespace HorsePersonalities.Core.Tracking
         /// <summary>GET_ATTRIBUTE_RANK for PA_BONDING. Phase 1 confirms whether this matches the game's 1-4 bond level.</summary>
         public int BondRank;
         public int BondPoints;
+        /// <summary>
+        /// The mod's trust level (1-4) for a permanent horse with trust (Build plan: Trust); 0 when there is none (a
+        /// temporary personality, or before the first read). Set by the caller, which knows the horse's record.
+        /// </summary>
+        public int TrustLevel;
+
+        /// <summary>The level the mod's features use: trust when the horse has it, otherwise the game's bond.</summary>
+        public int FeatureBond => TrustLevel > 0 ? TrustLevel : BondRank;
 
         public string BreedLabel => Breed != null ? Breed.Name : (string.IsNullOrEmpty(Note) ? "Unknown breed" : "No breed (" + Note + ")");
 

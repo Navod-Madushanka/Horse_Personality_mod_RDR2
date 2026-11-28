@@ -328,17 +328,100 @@ namespace HorsePersonalities.Tests
         public void HardWildHorsesBondSlower() =>
             Assert.Equal(0.8, new BondPace(T, Catalog.Roller).Multiplier(Horse(breaking: BreakingDifficulty.Hard), 2), 9);
 
+        // ---- Trust (Build plan: Trust) ----
+
+        private static readonly int[] Scale = { 350, 950, 1950 }; // the Dutch Warmblood's thresholds, read in game
+
+        private static Core.Identity.HorseRecord Kept(Personality p, Core.Identity.PersonalityStatus status = Core.Identity.PersonalityStatus.Permanent) =>
+            new Core.Identity.HorseRecord(new Core.Identity.HorseFingerprint("a_c_horse_morgan_bay", true), p, status, "2026-11-28", "2026-11-28");
+
         [Fact]
-        public void BondAdjustmentCarriesFractionsAndNeverUndoesTheGain()
+        public void TrustLevelsFollowTheGameThresholds()
         {
-            var pace = new BondPace(T, Catalog.Roller);
-            var prized = Horse(prized: true); // x0.5 at bond 3
-            int total = 0;
-            for (int i = 0; i < 10; i++) total += pace.Adjustment(prized, 3, 3, 3); // 10 gains of 3 points
-            Assert.Equal(-15, total);                                            // half of 30, fractions carried
-            Assert.Equal(0, pace.Adjustment(prized, 3, 4, 5));                   // the gain that levelled up: leave it
-            Assert.Equal(0, pace.Adjustment(prized, 3, 3, 0));
-            Assert.True(pace.Adjustment(Horse(bond: -2, breaking: BreakingDifficulty.Hard, prized: true), 3, 3, 1) >= -1);
+            Assert.Equal(1, TrustLevels.Level(0, Scale));
+            Assert.Equal(1, TrustLevels.Level(349.9, Scale));
+            Assert.Equal(2, TrustLevels.Level(350, Scale));
+            Assert.Equal(3, TrustLevels.Level(1949, Scale));
+            Assert.Equal(4, TrustLevels.Level(5000, Scale));
+            Assert.NotNull(TrustLevels.Valid(350, 950, 1950));
+            Assert.Null(TrustLevels.Valid(0, 0, 0));
+            Assert.Null(TrustLevels.Valid(350, 350, 1950));
+        }
+
+        [Fact]
+        public void TrustStartsAtTheGameBondAndKeepsIt()
+        {
+            var tracker = new TrustTracker(new BondPace(T, Catalog.Roller));
+            var r = Kept(Horse(q: HorseQuality.Bad));
+            TrustUpdate u = tracker.Update(1, r, 960, Scale);
+            Assert.Equal(TrustUpdateKind.Started, u.Kind);
+            Assert.True(u.Save);
+            Assert.Equal(960, r.Trust);
+            Assert.Equal(3, u.Level);
+        }
+
+        [Fact]
+        public void TrustScalesEachGainAndNeverWritesTheGame()
+        {
+            var tracker = new TrustTracker(new BondPace(T, Catalog.Roller));
+            var r = Kept(Horse(prized: true)); // x0.5 from level 3 to 4
+            tracker.Update(1, r, 1000, Scale);
+            TrustUpdate u = tracker.Update(1, r, 1010, Scale);
+            Assert.Equal(TrustUpdateKind.Gained, u.Kind);
+            Assert.Equal(1005, r.Trust.Value, 9);
+            Assert.False(u.Save); // 5 points: not worth a write yet
+        }
+
+        [Fact]
+        public void TrustIgnoresTheGamePuttingItsXpBack()
+        {
+            var tracker = new TrustTracker(new BondPace(T, Catalog.Roller));
+            var r = Kept(Horse(q: HorseQuality.Bad));
+            tracker.Update(1, r, 500, Scale);
+            tracker.Update(1, r, 520, Scale);                      // +20
+            TrustUpdate drop = tracker.Update(1, r, 86, Scale);   // the game restores its saved value
+            Assert.Equal(TrustUpdateKind.GameRestored, drop.Kind);
+            Assert.Equal(520, r.Trust.Value, 9);
+            tracker.Update(1, r, 96, Scale);                       // counting goes on from the restored value
+            Assert.Equal(530, r.Trust.Value, 9);
+        }
+
+        [Fact]
+        public void ANewSessionStartsFromTheGameValueWithoutCountingTheDifference()
+        {
+            var r = Kept(Horse(q: HorseQuality.Bad));
+            new TrustTracker(new BondPace(T, Catalog.Roller)).Update(1, r, 500, Scale);
+            var after = new TrustTracker(new BondPace(T, Catalog.Roller)); // a reload: new tracker, new handle
+            Assert.Equal(TrustUpdateKind.None, after.Update(7, r, 86, Scale).Kind);
+            Assert.Equal(500, r.Trust.Value, 9);
+        }
+
+        [Fact]
+        public void AnOutsideJumpCountsAsItIs()
+        {
+            var tracker = new TrustTracker(new BondPace(T, Catalog.Roller));
+            var r = Kept(Horse(prized: true, bond: -2));
+            tracker.Update(1, r, 86, Scale);
+            TrustUpdate u = tracker.Update(1, r, 350, Scale); // DevTools trigger 42: level 2
+            Assert.Equal(TrustUpdateKind.FromOutside, u.Kind);
+            Assert.Equal(350, r.Trust.Value, 9);
+            Assert.Equal(2, u.Level);
+            Assert.True(u.Save);
+        }
+
+        [Fact]
+        public void ALevelUpIsSavedAndTemporaryHorsesHaveNoTrust()
+        {
+            var tracker = new TrustTracker(new BondPace(T, Catalog.Roller));
+            var r = Kept(Horse(q: HorseQuality.Bad));
+            tracker.Update(1, r, 345, Scale);
+            TrustUpdate u = tracker.Update(1, r, 352, Scale);
+            Assert.Equal((1, 2), (u.LevelBefore, u.Level));
+            Assert.True(u.Save);
+
+            var temp = Kept(Horse(), Core.Identity.PersonalityStatus.Temporary);
+            Assert.Equal(TrustUpdateKind.None, tracker.Update(2, temp, 500, Scale).Kind);
+            Assert.Null(temp.Trust);
         }
 
         // ---- Breaking ----

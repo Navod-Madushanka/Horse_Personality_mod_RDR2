@@ -50,8 +50,8 @@ namespace HorsePersonalities.Game
         private string _lastAdmireWhy;
         private const string AdmireSpeechParams = "speech_params_force_normal"; // guess until trigger 67 passes
         private readonly Dictionary<int, BreakingDirector> _breaking = new Dictionary<int, BreakingDirector>();
-        private readonly Dictionary<int, (int Rank, int Points)> _bondSeen = new Dictionary<int, (int, int)>();
-        private readonly Dictionary<int, BondPace> _pace = new Dictionary<int, BondPace>();
+        private readonly TrustTracker _trust;
+        private readonly Dictionary<uint, int[]> _trustScale = new Dictionary<uint, int[]>();
         private readonly Dictionary<int, double> _stillSeconds = new Dictionary<int, double>();
         private readonly Dictionary<int, double> _lastSpook = new Dictionary<int, double>();
         private readonly Dictionary<int, uint> _interactionType = new Dictionary<int, uint>();
@@ -133,6 +133,7 @@ namespace HorsePersonalities.Game
             _push = new PushDetector(_t);
             _linger = new LingerTracker(_t);
             _admire = new AdmirationBrain(_t, rng);
+            _trust = new TrustTracker(new BondPace(_t, catalog.Roller));
         }
 
         // ---- Every frame: events only show in the frame they happen ----
@@ -251,7 +252,7 @@ namespace HorsePersonalities.Game
                 sulking = false;
                 _log.Info(Log, $"{record.Id}: Grudge: forgiven for a treat");
             }
-            var (first, second, cause) = _care.React(record.Personality, DemeanorOf(record.Personality, d), kind, d.BondRank, item,
+            var (first, second, cause) = _care.React(record.Personality, DemeanorOf(record.Personality, d), kind, d.FeatureBond, item,
                 CoatOf(record.Personality, d), _catalog.TreatName(item), sulking,
                 record.Personality.Has(Signature.CrowdShy) && _game.GetClosestHumanPed(horse, (float)_t.CrowdShyStrangerRange, _game.PlayerPed) != 0);
             // Bribable: a treat it loves buys a couple of minutes of sprinting uphill.
@@ -354,7 +355,7 @@ namespace HorsePersonalities.Game
             if (far)
             {
                 if (p.Has(Signature.GuardDog) && _scan.Due(nowSeconds)) _lastScan = Scan(horse, player, p, nowSeconds, d.Breed);
-                var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.BondRank,
+                var away = new SignatureSituation { PlayerDistance = playerDistance, StandingStillSeconds = still, GameHour = _game.GameHour, BondLevel = d.FeatureBond,
                     GuardTarget = _lastScan.GuardTarget };
                 Decision gone = _signatures.Decide(horse, p, away, dt, _cooldowns, nowSeconds);
                 if (!gone.IsNone) { Play(horse, gone.Action, 0); _log.Info(Log, $"{record.Id}: {gone.Action} ({gone.Cause})"); }
@@ -374,7 +375,7 @@ namespace HorsePersonalities.Game
                 PlayerNear = near,
                 SpeedMs = speed,
                 GameHour = _game.GameHour,
-                BondLevel = d.BondRank,
+                BondLevel = d.FeatureBond,
                 InTown = p.Has(Signature.CityLover) && InTown(horse),
                 InFight = _lastScan.EnemiesInCombat > 0,
                 GunfireSkillCourage = skills.Gunfire * bonus,
@@ -451,7 +452,7 @@ namespace HorsePersonalities.Game
                     SpeedMs = speed,
                     StandingStillSeconds = still,
                     GameHour = s.GameHour,
-                    BondLevel = d.BondRank,
+                    BondLevel = d.FeatureBond,
                     InTown = town,
                     TownPerson = town && p.Has(Signature.TownDisdain) ? _lastScan.TownPerson : 0,
                     StartedAiming = startedAiming,
@@ -553,7 +554,7 @@ namespace HorsePersonalities.Game
             double dt = _lastAdmireCheck < 0 ? 1 : Math.Min(5, now - _lastAdmireCheck);
             _lastAdmireCheck = now;
             if (!_admire.Ready(now)) return;
-            var s = new AdmirationSituation { BondLevel = d.BondRank, Mounted = mounted, Speed = speed, PlayerDistance = playerDistance };
+            var s = new AdmirationSituation { BondLevel = d.FeatureBond, Mounted = mounted, Speed = speed, PlayerDistance = playerDistance };
             if (s.BondLevel >= _t.AdmireBond)
             {
                 s.HealthCore = _game.GetCoreValue(horse, AttributeCore.Health);
@@ -719,7 +720,33 @@ namespace HorsePersonalities.Game
             d = HorseDescriber.Describe(_game, _catalog, horse);
             if (d.Breed == null) return false;
             record = _registry.Find(horse, new HorseFingerprint(d.ModelName, d.IsMale));
-            return record != null;
+            if (record == null) return false;
+            d.TrustLevel = TrustLevel(horse, record);
+            return true;
+        }
+
+        /// <summary>
+        /// The horse's trust level (1-4), or 0 when it has none: a temporary personality, trust not started yet, or a model
+        /// whose bond thresholds the game doesn't give (the caller then uses the game's bond level).
+        /// </summary>
+        public int TrustLevel(int horse, HorseRecord record)
+        {
+            if (record == null || record.Status != PersonalityStatus.Permanent || !record.Trust.HasValue) return 0;
+            int[] needed = TrustScale(horse);
+            return needed != null ? TrustLevels.Level(record.Trust.Value, needed) : 0;
+        }
+
+        /// <summary>The bond XP the game needs for levels 2, 3 and 4 of this horse's model, read once per model.</summary>
+        private int[] TrustScale(int horse)
+        {
+            uint model = _game.GetModel(horse);
+            if (_trustScale.TryGetValue(model, out int[] needed)) return needed;
+            int l2 = _game.BondPointsForRank(horse, 2), l3 = _game.BondPointsForRank(horse, 3), l4 = _game.BondPointsForRank(horse, 4);
+            needed = TrustLevels.Valid(l2, l3, l4);
+            _trustScale[model] = needed;
+            if (needed != null) _log.Debug(Log, $"Trust scale for model 0x{model:X8}: level 2 at {l2}, 3 at {l3}, 4 at {l4} bond XP.");
+            else _log.Warn(Log, $"Model 0x{model:X8}: the game gave no usable bond thresholds ({l2}, {l3}, {l4}); its features use the game's bond level.");
+            return needed;
         }
 
         private void Play(int horse, BehaviorAction action, int target)
@@ -875,39 +902,34 @@ namespace HorsePersonalities.Game
         }
 
         /// <summary>
-        /// Every second, for a permanent horse you ride: scales the bond XP the game just gave (Bond affinity, slower to
-        /// bond 4 for good and prized horses, Hard wild horses) by adding or removing points.
+        /// Every second, for the horse you ride and your saddle horse (Build plan: Trust): each rise in the game's bond XP is
+        /// scaled by the horse's pace (Bond affinity, slower to level 4 for good and prized horses, Hard wild horses) and
+        /// added to its trust. The game's bond XP is never written.
         /// </summary>
-        private const int MaxNaturalBondGain = 300;
-
         public void UpdateBonding(int horse)
         {
             if (!TryRecord(horse, out HorseRecord record, out _) || record.Status != PersonalityStatus.Permanent) return;
             AttributeReading bond = _game.ReadAttribute(horse, PedAttribute.Bonding);
-            if (!_bondSeen.TryGetValue(horse, out var before))
+            TrustUpdate u = _trust.Update(horse, record, bond.Points, TrustScale(horse));
+            switch (u.Kind)
             {
-                _bondSeen[horse] = (bond.Rank, bond.Points);
-                return;
+                case TrustUpdateKind.None: return;
+                case TrustUpdateKind.Started:
+                    _log.Info(Log, $"{record.Id}: trust starts at {record.Trust:0} (the game's bond XP; bond {bond.Rank}), trust level {u.Level}.");
+                    break;
+                case TrustUpdateKind.GameRestored:
+                    _log.Debug(Log, $"{record.Id}: bond XP {bond.Points - u.BondChange} -> {bond.Points} (the game put its own value back); trust stays {record.Trust:0.#}.");
+                    break;
+                case TrustUpdateKind.FromOutside:
+                    _log.Info(Log, $"{record.Id}: bond XP jumped +{u.BondChange} (set from outside: a trainer or DevTools); trust +{u.Added:0} to {record.Trust:0}, level {u.Level}.");
+                    break;
+                default:
+                    _log.Debug(Log, $"{record.Id}: bond XP +{u.BondChange} x{u.Multiplier:0.00} -> trust +{u.Added:0.##} = {record.Trust:0.#} (trust {u.Level}, bond {bond.Rank})");
+                    break;
             }
-            int gained = bond.Points - before.Points;
-            // A jump far bigger than bonding ever gives (the largest natural gain seen in game was +35) was set from outside:
-            // DevTools trigger 42 or a trainer's "max bond". Scaling it would undo the jump, so take it as it is.
-            if (gained > MaxNaturalBondGain)
-            {
-                _log.Debug(Log, $"{record.Id}: bond XP jumped +{gained} to {bond.Points} (bond {bond.Rank}), set from outside; not scaled.");
-                _bondSeen[horse] = (bond.Rank, bond.Points);
-                return;
-            }
-            if (!_pace.TryGetValue(horse, out BondPace pace)) _pace[horse] = pace = new BondPace(_t, _catalog.Roller);
-            int adjust = pace.Adjustment(record.Personality, before.Rank, bond.Rank, gained);
-            int points = bond.Points;
-            if (adjust != 0)
-            {
-                points = Math.Max(before.Points, bond.Points + adjust);
-                _game.SetAttributePoints(horse, PedAttribute.Bonding, points);
-                _log.Debug(Log, $"{record.Id}: bond XP +{gained} scaled x{pace.Multiplier(record.Personality, before.Rank):0.00} -> {points - before.Points:+0;-0;0} (bond {bond.Rank})");
-            }
-            _bondSeen[horse] = (bond.Rank, points);
+            if (u.Level != u.LevelBefore && u.Kind != TrustUpdateKind.Started)
+                _log.Info(Log, $"{record.Id}: trust level {u.LevelBefore} -> {u.Level} ({record.Trust:0} points; the game's bond is {bond.Rank}).");
+            if (u.Save) _registry.TrustChanged(record);
         }
     }
 

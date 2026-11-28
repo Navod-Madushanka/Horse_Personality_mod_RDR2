@@ -68,6 +68,20 @@ namespace HorsePersonalities.Tests
         }
 
         [Fact]
+        public void TrustIsSavedExactlyAndAnOldFileHasNone()
+        {
+            var reg = RegistryWith(FiveHorses);
+            var first = reg.Permanent.First();
+            first.Trust = 1234.56;
+            var back = HorseSaveFormat.Read(HorseSaveFormat.Write(reg.Permanent), _log);
+            Assert.Equal(1234.56, back.Single(x => x.Id.Equals(first.Id)).Trust);
+            Assert.All(back.Where(x => !x.Id.Equals(first.Id)), r => Assert.Null(r.Trust)); // not started yet: stays null
+
+            string old = HorseSaveFormat.Write(reg.Permanent).Replace("\"trust\": 1234.56", "\"trust\": -5");
+            Assert.DoesNotContain(HorseSaveFormat.Read(old, _log), r => r.Id.Equals(first.Id)); // a negative trust skips the record
+        }
+
+        [Fact]
         public void WritesThePlansFormat()
         {
             var json = HorsePersonalities.Core.Json.JsonValue.Parse(HorseSaveFormat.Write(RegistryWith(("a_c_horse_turkoman_gold", "Turkoman")).Permanent));
