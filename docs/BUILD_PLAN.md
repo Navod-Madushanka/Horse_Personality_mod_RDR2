@@ -547,6 +547,7 @@ Nothing after Phase 1 uses a behavior that failed its trigger test, so a missing
 - **Andalusian coats** (Navod, Nov 28, 2026): *The Waterfall Spirit* (Perlino), *The Heavy Enforcer* (Dark Bay) and *The Pit-Fighter* (Rose Gray); the baseline's War horse is on all three, which are the only Andalusian coats. One new signature, code only:
   - **Hates brushing** (Rose Gray): every brushing gets a stamp and a snort, no dice.
   - Reused: War horse (all: never spooks in a fight, goes for enemies when you're off), Guard dog and Jealous (Perlino), Hill crawler and Hill sigh (Dark Bay), Short king (Rose Gray).
+  - Prized (Navod, Nov 28): Perlino (Rare).
   - Cut: slow on straightaways, getting winded, handling like a tank (its stats and the game's handling), refusing jumps (no jumping control), refusing to flee when told (no hook into the flee command; its Shadow quirk keeps it close), pinning its ears at wagons (wagons aren't horses; Short king covers other horses).
   - Fixed with this: the behavior runner stopped looking at a horse once you were 15 m away, so Escape artist (20 m) could never fire. A horse with Escape artist or Wanderlust is now watched at any distance, for those two habits only.
 

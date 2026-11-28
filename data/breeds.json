@@ -830,6 +830,11 @@
       "note": "The Midnight Legend: the only solid black you can tame, wild in Big Valley. Navod, Nov 27, 2026"
     },
     {
+      "model": "a_c_horse_andalusian_perlino",
+      "why": "Rare",
+      "note": "The Waterfall Spirit: wild only, by the waterfall at Brandywine Drop. Navod, Nov 28, 2026"
+    },
+    {
       "model": "a_c_horse_appaloosa_fewspotted_pc",
       "why": "Special",
       "note": "PC bonus coat"

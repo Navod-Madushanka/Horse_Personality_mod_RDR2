@@ -159,7 +159,7 @@ All three Andalusian coats have a design, so the baseline's War horse is on each
 
 | Coat | Archetype | Leans (C/N/T/B) | Quirk | Signatures |
 | --- | --- | --- | --- | --- |
-| Perlino | The Waterfall Spirit | +2 / -2 / +1 / +2 | Shadow | War horse, Guard dog, Jealous |
+| Perlino (prized: Rare) | The Waterfall Spirit | +2 / -2 / +1 / +2 | Shadow | War horse, Guard dog, Jealous |
 | Dark Bay | The Heavy Enforcer | +2 / -2 / +1 / 0 | Nosy | War horse, Hill crawler, Hill sigh |
 | Rose Gray | The Pit-Fighter | +2 / -2 / +2 / -1 | Kicker | War horse, Short king, Hates brushing |
 
@@ -174,4 +174,4 @@ New: **Hates brushing** (every brushing gets a stamp and a snort). Cut: slowness
 
 - Treat item codes (`data/treats.csv`): feed each treat and copy the code from the log.
 - Hill sigh's sound and climb threshold after triggers 51-55.
-- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay and the Black Standardbred are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred prized (Special).
+- Navod writes the other breeds' coats. Decided Nov 27: the White Arabian, the Tiger Striped Bay, the Black Standardbred and the Perlino Andalusian are prized (Rare) and the Silver Dapple Pinto, Gold Turkoman and Reverse Dapple Roan Nokota prized (community favorites); the Reverse Dapple Black Thoroughbred prized (Special).
