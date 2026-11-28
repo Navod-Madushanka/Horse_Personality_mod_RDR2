@@ -556,6 +556,19 @@ To see growth without riding for hours, set `ExperienceSpeed = 20` in `HorsePers
 | 14.8 | Save, quit, reload; then set `RestoreVanillaStats = true` and reload | Bars, overlay | Experience and growth are kept; with Restore on, speed, acceleration and agility go back to the originals |  |  |
 | 14.9 | Start a mission and ride a while | Overlay | No experience counted during it |  |  |
 
+## Stage 15: Phase 9 release check (added Nov 28)
+
+The last stage, after the others pass. Build the zip on your PC: `powershell -ExecutionPolicy Bypass -File tools\make-release.ps1` writes `dist\HorsePersonalities-0.9.0.zip`.
+
+| # | Do this | Look at | Pass if | Result | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 15.1 | On a clean game folder (hooks only, no DevTools, no old HorsePersonalities files), copy the zip's `scripts` folder in and load a save | Banner, log | *Horse Personalities loaded (19 breeds)*, no errors in `log.txt` |  |  |
+| 15.2 | Misspell a setting in the INI (for example `SpookFrequncy = 2`), reload with Insert | Log | A warning naming the typo and suggesting SpookFrequency |  |  |
+| 15.3 | Set `TestPersonalities = true` and `ExperienceSpeed = 20`, reload | Banner, log | The banner says TEST MODE and ExperienceSpeed x20; the log warns about both. Set them back |  |  |
+| 15.4 | Play a full session (an hour or more): missions, towns, a hunt, a fight | Log, feel | Nothing breaks; behaviors feel alive, not spammy; the log's tick-time lines stay under 1 ms |  |  |
+| 15.5 | The same with popular horse mods installed, including the Unruliness mod | Game, log | No crashes or fights between mods; note anything odd |  |  |
+| 15.6 | Uninstall: delete the mod's files, reload | Stat bars | Your horses are back to vanilla |  |  |
+
 ## If something goes wrong, and what to send back
 
 - **A test does nothing:** press Delete and write *nothing happened*. That's a result, not a failure of the session.
